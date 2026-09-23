@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{34EF91A0-2E99-5173-B93B-60637269E146}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shared">
+      <UniqueIdentifier>{64EFE0E1-AF10-59AB-992F-AF32281B08F5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shared\anchors">
+      <UniqueIdentifier>{A7E720BD-DFEE-5763-88C9-4C4A398333CE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shared\patches">
+      <UniqueIdentifier>{88614062-4EB0-5C05-AF76-5C84FD787CA6}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\patches\Win11Patch.cpp">
+      <Filter>src\shared\patches</Filter>
+    </ClCompile>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\patches\Win11Patch.h">
+      <Filter>src\shared\patches</Filter>
+    </ClInclude>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\anchors\patches.cpp">
+      <Filter>src\shared\anchors</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

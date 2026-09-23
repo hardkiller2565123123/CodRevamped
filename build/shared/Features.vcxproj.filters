@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{34EF91A0-2E99-5173-B93B-60637269E146}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shared">
+      <UniqueIdentifier>{64EFE0E1-AF10-59AB-992F-AF32281B08F5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shared\anchors">
+      <UniqueIdentifier>{A7E720BD-DFEE-5763-88C9-4C4A398333CE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shared\features">
+      <UniqueIdentifier>{14FFEBF1-1DE4-5870-9A42-7BC7F37A4976}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shared\features\camo">
+      <UniqueIdentifier>{89BA3561-B110-56F7-A648-467594F41B93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shared\features\content">
+      <UniqueIdentifier>{7CCA36BF-4C9A-5CC7-8954-0F9F19DFA35C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shared\features\mods">
+      <UniqueIdentifier>{04AFA359-EFA0-5B1B-B54B-8FDB7ED0CBB5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shared\features\mods\lua">
+      <UniqueIdentifier>{4B72908A-0659-50D5-AFD6-22536A455399}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\features\camo\CamoManager.cpp">
+      <Filter>src\shared\features\camo</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\features\camo\CamoTextureUpload.cpp">
+      <Filter>src\shared\features\camo</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\features\OfflineFeatures.cpp">
+      <Filter>src\shared\features</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\features\CamoPrototype1.cpp">
+      <Filter>src\shared\features</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\features\ColdWarFrontendDvars.cpp">
+      <Filter>src\shared\features</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\features\LanProfileResearch.cpp">
+      <Filter>src\shared\features</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\features\OnlineResearch.cpp">
+      <Filter>src\shared\features</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\features\content\ContentManager.cpp">
+      <Filter>src\shared\features\content</Filter>
+    </ClCompile>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\features\camo\CamoManager.h">
+      <Filter>src\shared\features\camo</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\features\camo\CamoTextureUpload.h">
+      <Filter>src\shared\features\camo</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\features\OfflineFeatures.h">
+      <Filter>src\shared\features</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\features\LanProfileResearch.h">
+      <Filter>src\shared\features</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\features\OnlineResearch.h">
+      <Filter>src\shared\features</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\features\CamoPrototype1.h">
+      <Filter>src\shared\features</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\features\ColdWarFrontendDvars.h">
+      <Filter>src\shared\features</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\features\content\ContentManager.h">
+      <Filter>src\shared\features\content</Filter>
+    </ClInclude>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\anchors\features.cpp">
+      <Filter>src\shared\anchors</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

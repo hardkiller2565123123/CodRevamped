@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="BlackoutBeta|x64">
+      <Configuration>BlackoutBeta</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{B1ABCF54-5BFC-5147-B1D6-4C334A429C3A}</ProjectGuid>
+    <RootNamespace>CodRevamped</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>ClientRuntime</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="Shared" />
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <Import Project="$(CodRevampedRoot)build\CodRevamped.Shared.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(CodRevampedRoot)artifacts\lib\$(Configuration)\</OutDir>
+    <IntDir>$(CodRevampedRoot)artifacts\obj\$(Configuration)\ColdWar\</IntDir>
+    <TargetName>CodRevamped.ColdWar</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(CodRevampedRoot)artifacts\lib\$(Configuration)\</OutDir>
+    <IntDir>$(CodRevampedRoot)artifacts\obj\$(Configuration)\ColdWar\</IntDir>
+    <TargetName>CodRevamped.ColdWar</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">
+    <OutDir>$(CodRevampedRoot)artifacts\lib\$(Configuration)\</OutDir>
+    <IntDir>$(CodRevampedRoot)artifacts\obj\$(Configuration)\ColdWar\</IntDir>
+    <TargetName>CodRevamped.ColdWar</TargetName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\coldwar\game\T9Dvar.cpp">
+      <ObjectFileName>$(IntDir)cr_c60691290240_Dvar.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\coldwar\game\alpha\AlphaSupport.cpp">
+      <ObjectFileName>$(IntDir)cr_49f669fdb94d_AlphaSupport.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\coldwar\game\beta\BetaSupport.cpp">
+      <ObjectFileName>$(IntDir)cr_beta_support.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\coldwar\game\beta\BetaResearch.cpp">
+      <ObjectFileName>$(IntDir)cr_beta_research.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\coldwar\game\beta\BetaOffline.cpp">
+      <ObjectFileName>$(IntDir)cr_beta_offline.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\coldwar\game\season2\Season2Support.cpp">
+      <ObjectFileName>$(IntDir)cr_season2_support.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\coldwar\game\ColdWarPatches.cpp">
+      <ObjectFileName>$(IntDir)cr_coldwar_patches.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\coldwar\game\T9Dvar.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\coldwar\game\alpha\AlphaSupport.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\coldwar\game\beta\BetaSupport.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\coldwar\game\beta\BetaResearch.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\coldwar\game\beta\BetaOffline.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\coldwar\game\season2\Season2Support.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\coldwar\game\T9Addresses.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\coldwar\game\ColdWarPatches.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\coldwar\anchor.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+</Project>

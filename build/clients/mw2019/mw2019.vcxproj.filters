@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{34EF91A0-2E99-5173-B93B-60637269E146}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\clients">
+      <UniqueIdentifier>{AD241426-5414-5C49-B12B-A0B1B352EF05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\clients\mw2019">
+      <UniqueIdentifier>{BA0F8A7F-DADB-5285-ADB4-E1589EB0F43C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\clients\mw2019\diagnostics">
+      <UniqueIdentifier>{856C2363-F4C1-5668-B67A-92F371B828A2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\clients\mw2019\diagnostics\diagnostics">
+      <UniqueIdentifier>{A05D7553-6EB6-5067-95CE-AD173F9672E5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\clients\mw2019\game">
+      <UniqueIdentifier>{FE6B726F-21F4-502C-BD1E-AFB13A50E3A0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party">
+      <UniqueIdentifier>{06686099-FB5A-57A5-B23B-C9AD7366F80E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4">
+      <UniqueIdentifier>{F9502D10-4052-514A-A6B6-198CFA82569B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\minhook">
+      <UniqueIdentifier>{C0BAF369-C0CC-5CF4-822E-2D6A0B3F4BF0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\minhook\src">
+      <UniqueIdentifier>{EFF9890D-994A-51A4-9AA1-709F7B568637}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\minhook\src\hde">
+      <UniqueIdentifier>{F98D5901-A6D2-5C65-B899-4E9AD0542F6F}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\minhook\src\buffer.c">
+      <Filter>third_party\bo4\minhook\src</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\minhook\src\hook.c">
+      <Filter>third_party\bo4\minhook\src</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\minhook\src\trampoline.c">
+      <Filter>third_party\bo4\minhook\src</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\minhook\src\hde\hde64.c">
+      <Filter>third_party\bo4\minhook\src\hde</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\mw2019\diagnostics\MW2019Diag.cpp">
+      <Filter>src\clients\mw2019\diagnostics</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\mw2019\diagnostics\MW2019MemoryScanner.cpp">
+      <Filter>src\clients\mw2019\diagnostics</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\mw2019\diagnostics\MW2019NetworkBlocker.cpp">
+      <Filter>src\clients\mw2019\diagnostics</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\mw2019\diagnostics\MW2019LuaDump.cpp">
+      <Filter>src\clients\mw2019\diagnostics</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\mw2019\diagnostics\IW8SessionCompletionProbe.cpp">
+      <Filter>src\clients\mw2019\diagnostics</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\mw2019\game\MW2019Patches.cpp">
+      <Filter>src\clients\mw2019\game</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\mw2019\game\IW8144Compat.cpp">
+      <Filter>src\clients\mw2019\game</Filter>
+    </ClCompile>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\mw2019\game\1.44addressess.h">
+      <Filter>src\clients\mw2019\game</Filter>
+    </ClInclude>
+    <None Include="$(CodRevampedRoot)src\clients\mw2019\diagnostics\diagnostics\SessionCompletion144.inl">
+      <Filter>src\clients\mw2019\diagnostics\diagnostics</Filter>
+    </None>
+  </ItemGroup>
+</Project>

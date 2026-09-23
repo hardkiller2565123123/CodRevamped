@@ -1,0 +1,184 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{34EF91A0-2E99-5173-B93B-60637269E146}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shared">
+      <UniqueIdentifier>{64EFE0E1-AF10-59AB-992F-AF32281B08F5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shared\anchors">
+      <UniqueIdentifier>{A7E720BD-DFEE-5763-88C9-4C4A398333CE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shared\runtime">
+      <UniqueIdentifier>{D0B1D4C5-80AE-5A9E-9594-31277DCEDA29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shared\runtime\asm">
+      <UniqueIdentifier>{A80D6497-60B0-5B36-92B3-CA7BAF841D6A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shared\runtime\console">
+      <UniqueIdentifier>{56450EB0-5629-5FB6-9045-F6EA5EBED161}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shared\runtime\network">
+      <UniqueIdentifier>{A2A2BC59-FB89-5253-8A5C-6B933E68C9B7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shared\runtime\protection">
+      <UniqueIdentifier>{8D05B8C1-0FDD-5230-9251-AFF6A87806F2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shared\runtime\proxy">
+      <UniqueIdentifier>{17155C24-013D-565E-99DA-F3CFADE777A8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shared\runtime\scanner">
+      <UniqueIdentifier>{9D3EBC21-E475-5F87-AAC7-CD08BB7450CC}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shared\runtime\startup">
+      <UniqueIdentifier>{1D738A46-27B5-5B7B-A37A-0054A86F557C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shared\runtime\ui">
+      <UniqueIdentifier>{B313F269-9ADB-5DF1-A24A-6DDD45763E4C}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\runtime\console\console.cpp">
+      <Filter>src\shared\runtime\console</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\runtime\RuntimeIpc.cpp">
+      <Filter>src\shared\runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\runtime\network\UniversalLan.cpp">
+      <Filter>src\shared\runtime\network</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\runtime\ClientIdentity.cpp">
+      <Filter>src\shared\runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\runtime\scanner\UniversalScanner.cpp">
+      <Filter>src\shared\runtime\scanner</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\runtime\scanner\AdvancedAnalysisScanner.cpp">
+      <Filter>src\shared\runtime\scanner</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\runtime\scanner\ValidatedAddressScanner.cpp">
+      <Filter>src\shared\runtime\scanner</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\runtime\proxy\RuntimeOwnership.cpp">
+      <Filter>src\shared\runtime\proxy</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\runtime\ui\ImGuiBackendBridge.cpp">
+      <Filter>src\shared\runtime\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\runtime\ui\ClientServices.cpp">
+      <Filter>src\shared\runtime\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\runtime\RuntimeScheduler.cpp">
+      <Filter>src\shared\runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\runtime\RuntimeStageManager.cpp">
+      <Filter>src\shared\runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\runtime\CrashDiagnostics.cpp">
+      <Filter>src\shared\runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\runtime\PointerRegistry.cpp">
+      <Filter>src\shared\runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\runtime\ui\ResearchImGui.cpp">
+      <Filter>src\shared\runtime\ui</Filter>
+    </ClCompile>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\console\console.h">
+      <Filter>src\shared\runtime\console</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\console\T9ConsoleCommandSuggestions.h">
+      <Filter>src\shared\runtime\console</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\RuntimeIpc.h">
+      <Filter>src\shared\runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\T9Ipc.h">
+      <Filter>src\shared\runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\protection\SecureEngineCustomVMs.h">
+      <Filter>src\shared\runtime\protection</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\protection\SecureEngineCustomVMs_BorlandC_inline.h">
+      <Filter>src\shared\runtime\protection</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\protection\SecureEngineCustomVMs_GNU_inline.h">
+      <Filter>src\shared\runtime\protection</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\protection\SecureEngineCustomVMs_ICL_inline.h">
+      <Filter>src\shared\runtime\protection</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\protection\SecureEngineCustomVMs_LCC_inline.h">
+      <Filter>src\shared\runtime\protection</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\protection\SecureEngineCustomVMs_VC_inline.h">
+      <Filter>src\shared\runtime\protection</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\protection\ThemidaSDK.h">
+      <Filter>src\shared\runtime\protection</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\LogPaths.h">
+      <Filter>src\shared\runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\StoragePaths.h">
+      <Filter>src\shared\runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\network\UniversalLan.h">
+      <Filter>src\shared\runtime\network</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\ClientIdentity.h">
+      <Filter>src\shared\runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\scanner\UniversalScanner.h">
+      <Filter>src\shared\runtime\scanner</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\proxy\RuntimeOwnership.h">
+      <Filter>src\shared\runtime\proxy</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\ui\ImGuiBackendBridge.h">
+      <Filter>src\shared\runtime\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\ui\ClientServices.h">
+      <Filter>src\shared\runtime\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\RuntimeScheduler.h">
+      <Filter>src\shared\runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\RuntimeStageManager.h">
+      <Filter>src\shared\runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\CrashDiagnostics.h">
+      <Filter>src\shared\runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\PointerRegistry.h">
+      <Filter>src\shared\runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\ui\ResearchImGui.h">
+      <Filter>src\shared\runtime\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\scanner\AdvancedAnalysisScanner.h">
+      <Filter>src\shared\runtime\scanner</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\scanner\ValidatedAddressScanner.h">
+      <Filter>src\shared\runtime\scanner</Filter>
+    </ClInclude>
+    <MASM Include="$(CodRevampedRoot)src\shared\runtime\asm\spoof_call.asm">
+      <Filter>src\shared\runtime\asm</Filter>
+    </MASM>
+    <MASM Include="$(CodRevampedRoot)src\shared\runtime\asm\FloatProbe.asm">
+      <Filter>src\shared\runtime\asm</Filter>
+    </MASM>
+    <None Include="$(CodRevampedRoot)src\shared\runtime\asm\spoof_call.h">
+      <Filter>src\shared\runtime\asm</Filter>
+    </None>
+    <None Include="$(CodRevampedRoot)src\shared\runtime\scanner\RuntimeDiscovery.inl">
+      <Filter>src\shared\runtime\scanner</Filter>
+    </None>
+    <None Include="$(CodRevampedRoot)src\shared\runtime\console\CommandConsoleBackend.inl">
+      <Filter>src\shared\runtime\console</Filter>
+    </None>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\anchors\runtime.cpp">
+      <Filter>src\shared\anchors</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

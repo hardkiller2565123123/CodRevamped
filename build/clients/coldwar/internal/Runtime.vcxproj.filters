@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{34EF91A0-2E99-5173-B93B-60637269E146}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\clients">
+      <UniqueIdentifier>{AD241426-5414-5C49-B12B-A0B1B352EF05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\clients\coldwar">
+      <UniqueIdentifier>{147EE5BA-E2AC-5CF1-AE2A-9CFE672819CC}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\clients\coldwar\game">
+      <UniqueIdentifier>{510B8756-1D05-52C3-930A-818D53D825F7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\clients\coldwar\game\alpha">
+      <UniqueIdentifier>{DF2CAB35-8D01-5173-AE39-CDD518317925}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\clients\coldwar\game\beta">
+      <UniqueIdentifier>{5DE14AD5-A989-56F9-930A-6DA8D5A6FE8A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\clients\coldwar\game\season2">
+      <UniqueIdentifier>{9A442036-2F05-58F8-9D5D-A4D43079ABD4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\coldwar\game\T9Dvar.cpp">
+      <Filter>src\clients\coldwar\game</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\coldwar\game\alpha\AlphaSupport.cpp">
+      <Filter>src\clients\coldwar\game\alpha</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\coldwar\game\beta\BetaSupport.cpp">
+      <Filter>src\clients\coldwar\game\beta</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\coldwar\game\beta\BetaResearch.cpp">
+      <Filter>src\clients\coldwar\game\beta</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\coldwar\game\beta\BetaOffline.cpp">
+      <Filter>src\clients\coldwar\game\beta</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\coldwar\game\season2\Season2Support.cpp">
+      <Filter>src\clients\coldwar\game\season2</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\coldwar\game\ColdWarPatches.cpp">
+      <Filter>src\clients\coldwar\game</Filter>
+    </ClCompile>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\coldwar\game\T9Dvar.h">
+      <Filter>src\clients\coldwar\game</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\coldwar\game\alpha\AlphaSupport.h">
+      <Filter>src\clients\coldwar\game\alpha</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\coldwar\game\beta\BetaSupport.h">
+      <Filter>src\clients\coldwar\game\beta</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\coldwar\game\beta\BetaResearch.h">
+      <Filter>src\clients\coldwar\game\beta</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\coldwar\game\beta\BetaOffline.h">
+      <Filter>src\clients\coldwar\game\beta</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\coldwar\game\season2\Season2Support.h">
+      <Filter>src\clients\coldwar\game\season2</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\coldwar\game\T9Addresses.h">
+      <Filter>src\clients\coldwar\game</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\coldwar\game\ColdWarPatches.h">
+      <Filter>src\clients\coldwar\game</Filter>
+    </ClInclude>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\coldwar\anchor.cpp">
+      <Filter>src\clients\coldwar</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

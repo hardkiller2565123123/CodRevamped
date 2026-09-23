@@ -1,0 +1,41 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--
+    Debug build with Release CRT ABI.
+
+    Keep the Debug configuration useful for source debugging (/Od + PDB), but
+    do not compile against the Debug CRT/STL ABI.  MW2019 1.28 reaches the
+    unified DLL before CodRevamped's CRT path is selected; avoiding the *D.dll
+    CRT dependency chain keeps that pre-CRT route loader-safe.
+
+    IMPORTANT: this sheet is force-imported immediately before
+    Microsoft.Cpp.targets, after the normal project/shared property sheets, so
+    RuntimeLibrary actually reaches cl.exe.  The previous Directory.Build.targets
+    approach changed link-time properties but left objects stamped MDd.
+  -->
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <ClCompile>
+      <!-- Real compiler ABI: /MD, not /MDd. -->
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+
+      <!-- Prevent debug CRT heap/report and Debug STL ABI references. -->
+      <UndefinePreprocessorDefinitions>_DEBUG;%(UndefinePreprocessorDefinitions)</UndefinePreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_ITERATOR_DEBUG_LEVEL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+
+      <!-- Keep Debug configuration debuggable without /ZI or /JMC baggage. -->
+      <Optimization>Disabled</Optimization>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <SupportJustMyCode>false</SupportJustMyCode>
+    </ClCompile>
+
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <LinkIncremental>false</LinkIncremental>
+    </Link>
+  </ItemDefinitionGroup>
+</Project>

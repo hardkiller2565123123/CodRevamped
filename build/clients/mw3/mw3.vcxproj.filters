@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{34EF91A0-2E99-5173-B93B-60637269E146}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\clients">
+      <UniqueIdentifier>{AD241426-5414-5C49-B12B-A0B1B352EF05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\clients\mw3">
+      <UniqueIdentifier>{9B9A37BC-CD40-5E8A-9B2A-81FE330E529B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\clients\mw3\loader">
+      <UniqueIdentifier>{55E374FD-0E22-5583-A0AF-FBEE280E2C66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shared">
+      <UniqueIdentifier>{64EFE0E1-AF10-59AB-992F-AF32281B08F5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shared\loader">
+      <UniqueIdentifier>{F8F591E4-4D4C-5F0E-BF1E-4C099C26EEEA}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\mw3\loader\MW3ClientMain.cpp">
+      <Filter>src\clients\mw3\loader</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\loader\VersionProxy.cpp">
+      <Filter>src\shared\loader</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

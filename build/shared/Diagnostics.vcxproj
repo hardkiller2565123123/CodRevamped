@@ -1,0 +1,194 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="BlackoutBeta|x64">
+      <Configuration>BlackoutBeta</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{CDF52F14-1EEF-5692-8356-D1D7E8E2286F}</ProjectGuid>
+    <RootNamespace>CodRevamped</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Diagnostics</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="Shared" />
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <Import Project="$(CodRevampedRoot)build\CodRevamped.Shared.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(CodRevampedRoot)artifacts\lib\$(Configuration)\</OutDir>
+    <IntDir>$(CodRevampedRoot)artifacts\obj\$(Configuration)\Research\</IntDir>
+    <TargetName>CodRevamped.Research</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(CodRevampedRoot)artifacts\lib\$(Configuration)\</OutDir>
+    <IntDir>$(CodRevampedRoot)artifacts\obj\$(Configuration)\Research\</IntDir>
+    <TargetName>CodRevamped.Research</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">
+    <OutDir>$(CodRevampedRoot)artifacts\lib\$(Configuration)\</OutDir>
+    <IntDir>$(CodRevampedRoot)artifacts\obj\$(Configuration)\Research\</IntDir>
+    <TargetName>CodRevamped.Research</TargetName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\diagnostics\camo\CamoPrototypeReadiness.cpp">
+      <ObjectFileName>$(IntDir)cr_30a94ae19ae2_CamoPrototypeReadiness.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\diagnostics\lui\LuaOwnerStateTrace.cpp">
+      <ObjectFileName>$(IntDir)cr_9b3bb84a8abc_LuaOwnerStateTrace.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\diagnostics\lui\FrontendStateEdgeTrace.cpp">
+      <ObjectFileName>$(IntDir)cr_f54d68570bf3_FrontendStateEdgeTrace.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\diagnostics\lui\FrontendCustomButtons.cpp">
+      <ObjectFileName>$(IntDir)cr_5e7cd8feea31_FrontendCustomButtons.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\diagnostics\lui\LuaNativeButtonPatch.cpp">
+      <ObjectFileName>$(IntDir)cr_37846f692b3f_LuaNativeButtonPatch.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\diagnostics\t9\T9ScriptDump.cpp">
+      <ObjectFileName>$(IntDir)cr_a8c38c0a8443_T9ScriptDump.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\diagnostics\t9\T9DvarDump.cpp">
+      <ObjectFileName>$(IntDir)cr_19f6ca0a4261_T9DvarDump.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\diagnostics\NativeDevConsole.cpp">
+      <ObjectFileName>$(IntDir)cr_8ddab7427b10_NativeDevConsole.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\diagnostics\ResearchCatalog.cpp">
+      <ObjectFileName>$(IntDir)cr_be0246491b9e_ResearchCatalog.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\diagnostics\RuntimeFocusTrace.cpp">
+      <ObjectFileName>$(IntDir)cr_299b4cd402fa_RuntimeFocusTrace.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\diagnostics\online\OnlineStatePassiveTrace.cpp">
+      <ObjectFileName>$(IntDir)cr_c9fd7eb09446_OnlineStatePassiveTrace.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\diagnostics\lua\T9LuaDump.cpp">
+      <ObjectFileName>$(IntDir)cr_8769dc42a568_T9LuaDump.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\diagnostics\lui\NativeLuiRouteTrace.cpp">
+      <ObjectFileName>$(IntDir)cr_3cea1b2e32e7_NativeLuiRouteTrace.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\diagnostics\lui\NativeLuiPatchLab.cpp">
+      <ObjectFileName>$(IntDir)cr_af81af80cd74_NativeLuiPatchLab.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\diagnostics\lui\NativeDirectorMap.cpp">
+      <ObjectFileName>$(IntDir)cr_fff47eaa67db_NativeDirectorMap.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\diagnostics\lui\LuaBridgeDiscovery.cpp">
+      <ObjectFileName>$(IntDir)cr_8de0d1dc2210_LuaBridgeDiscovery.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\diagnostics\lui\LuaRuntimePathTrace.cpp">
+      <ObjectFileName>$(IntDir)cr_22cc959e584a_LuaRuntimePathTrace.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\diagnostics\lui\NativeDirectorStateRouter.cpp">
+      <ObjectFileName>$(IntDir)cr_595dc163bf27_NativeDirectorStateRouter.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\diagnostics\camo\CamoAllocatorTrace.cpp">
+      <ObjectFileName>$(IntDir)cr_ed771ac2ce88_CamoAllocatorTrace.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\diagnostics\CommandDiscovery.cpp">
+      <ObjectFileName>$(IntDir)cr_0abc50bdef85_CommandDiscovery.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\diagnostics\lui\LuiResearch.cpp">
+      <ObjectFileName>$(IntDir)cr_570cd0933284_LuiResearch.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\diagnostics\lui\LuaOwnerStateTrace.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\diagnostics\lui\FrontendStateEdgeTrace.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\diagnostics\lui\FrontendCustomButtons.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\diagnostics\lui\LuaNativeButtonPatch.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\diagnostics\t9\T9ScriptDump.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\diagnostics\t9\T9DvarDump.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\diagnostics\NativeDevConsole.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\diagnostics\camo\CamoPrototypeReadiness.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\diagnostics\ResearchCatalog.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\diagnostics\RuntimeFocusTrace.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\diagnostics\online\OnlineStatePassiveTrace.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\diagnostics\lua\T9LuaDump.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\diagnostics\lui\NativeLuiRouteTrace.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\diagnostics\lui\NativeLuiPatchLab.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\diagnostics\lui\NativeDirectorMap.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\diagnostics\lui\LuaBridgeDiscovery.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\diagnostics\lui\LuaRuntimePathTrace.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\diagnostics\lui\NativeDirectorStateRouter.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\diagnostics\camo\CamoAllocatorTrace.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\diagnostics\CommandDiscovery.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\diagnostics\RuntimeDiscoveredCandidates.generated.inl" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\diagnostics\lui\LuiResearch.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(CodRevampedRoot)src\shared\diagnostics\T9ResearchCatalog.generated.inl" />
+    <None Include="$(CodRevampedRoot)src\shared\diagnostics\T9ResearchPatterns.generated.inl" />
+    <None Include="$(CodRevampedRoot)src\shared\diagnostics\camo\CamoManagerLegacyResearch.inl" />
+    <None Include="$(CodRevampedRoot)src\shared\diagnostics\camo\CamoTextureUploadLegacyResearch.inl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\anchors\research.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+</Project>

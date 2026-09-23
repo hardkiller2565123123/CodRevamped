@@ -1,0 +1,2512 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{34EF91A0-2E99-5173-B93B-60637269E146}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shared">
+      <UniqueIdentifier>{64EFE0E1-AF10-59AB-992F-AF32281B08F5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shared\anchors">
+      <UniqueIdentifier>{A7E720BD-DFEE-5763-88C9-4C4A398333CE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party">
+      <UniqueIdentifier>{06686099-FB5A-57A5-B23B-C9AD7366F80E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4">
+      <UniqueIdentifier>{F9502D10-4052-514A-A6B6-198CFA82569B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\asmjit">
+      <UniqueIdentifier>{BE4B5E64-3942-5BF1-B5C4-07DD5ABD3E7C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\asmjit\src">
+      <UniqueIdentifier>{17F6DA21-CBB7-5B4B-9504-ABF1E0429A72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\asmjit\src\asmjit">
+      <UniqueIdentifier>{FD2483C5-45DF-590F-9F82-56B6F261B321}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\asmjit\src\asmjit\arm">
+      <UniqueIdentifier>{A22D95C3-5508-53B9-8E94-D8AFCA39E917}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\asmjit\src\asmjit\core">
+      <UniqueIdentifier>{0BC7A819-3499-5878-914D-7B659701D989}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\asmjit\src\asmjit\x86">
+      <UniqueIdentifier>{0927136C-3197-5D19-9807-4CEEBF93CB1C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt">
+      <UniqueIdentifier>{A227A049-747C-55A8-8F4C-DD84BB96C905}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src">
+      <UniqueIdentifier>{5687CA18-FA85-5917-8EC2-02D257FB3881}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\ciphers">
+      <UniqueIdentifier>{557A3E6F-BE71-56ED-9517-898660D2A9ED}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\ciphers\aes">
+      <UniqueIdentifier>{9B583A01-A1A0-5D44-B967-F4E231876CFE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\ciphers\safer">
+      <UniqueIdentifier>{412BBB78-8FCD-562A-8E0F-E31363E6746E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\ciphers\twofish">
+      <UniqueIdentifier>{51C33702-DEBA-5628-8C91-A8EA88E48561}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\encauth">
+      <UniqueIdentifier>{C088B829-2D35-5870-B052-5C88B62CD2D4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\encauth\ccm">
+      <UniqueIdentifier>{4A212181-4C52-5B01-8E1E-9A4360D1A3D5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\encauth\chachapoly">
+      <UniqueIdentifier>{BA149B6A-CE77-5BC2-9EA4-B61241126204}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\encauth\eax">
+      <UniqueIdentifier>{45D14428-A7E6-5B5E-AD6C-2B5DB25B9697}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\encauth\gcm">
+      <UniqueIdentifier>{F38B70B7-2F46-59D3-9090-17627B306A90}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\encauth\ocb">
+      <UniqueIdentifier>{1AF1003B-D394-589D-90D9-EC43306FCC43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\hashes">
+      <UniqueIdentifier>{F6D8AD3D-C13B-52DB-8723-E8C42CDB1BE5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\hashes\chc">
+      <UniqueIdentifier>{0DEE2BFD-CF3E-5999-A969-33EC2AB8492F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\hashes\helper">
+      <UniqueIdentifier>{5537B55E-8611-587B-9DF3-87D975CD7065}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\hashes\sha2">
+      <UniqueIdentifier>{9B7706FC-C32B-5595-83D6-DE220822BB6D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\hashes\whirl">
+      <UniqueIdentifier>{CE12262B-35C1-5823-AF60-A38B5328CCA1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\mac">
+      <UniqueIdentifier>{E3034C2F-38BA-5A4C-B558-0D6DA8F2415D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\mac\blake2">
+      <UniqueIdentifier>{FE55B0F1-7009-5478-B9B0-E8C86873C743}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\mac\f9">
+      <UniqueIdentifier>{A77BDF09-1482-5483-9799-8356D47A39C7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\mac\hmac">
+      <UniqueIdentifier>{E6EACAFE-7D89-5048-991B-9AF5655F8195}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\mac\omac">
+      <UniqueIdentifier>{7307881F-6660-539E-B827-4AB17FC6F99C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\mac\pelican">
+      <UniqueIdentifier>{0F28F029-F274-5045-9F10-B7A625AC46A0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\mac\pmac">
+      <UniqueIdentifier>{81B4ECBE-059B-592E-A016-0D87AA577E8F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\mac\poly1305">
+      <UniqueIdentifier>{32FC72F3-3682-5486-AC42-59B80EF144E4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\mac\xcbc">
+      <UniqueIdentifier>{32B65FDE-F692-557F-B165-FC792455BB1E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\math">
+      <UniqueIdentifier>{C85C48FA-23AB-5AEB-A8A8-9B9E8F926E69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\math\fp">
+      <UniqueIdentifier>{C3C93820-792E-5E78-A620-FC642EED6F5A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\misc">
+      <UniqueIdentifier>{7C187FE4-B0A0-5565-BB34-92B57026B120}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\misc\base16">
+      <UniqueIdentifier>{D2DEA026-F9EB-5276-B4A2-E901B525AA8A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\misc\base32">
+      <UniqueIdentifier>{0DC10AC4-A465-5A32-9669-321B76D2B3C3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\misc\base64">
+      <UniqueIdentifier>{D62F5C0C-7357-5037-913B-8D933E4C2131}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\misc\bcrypt">
+      <UniqueIdentifier>{9C53F56D-2AF8-5959-83CE-AAA15CCBB010}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\misc\crypt">
+      <UniqueIdentifier>{5FC69137-E0D1-5544-B6C8-5D18BC97CC05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\misc\hkdf">
+      <UniqueIdentifier>{73C0B67B-1388-5DD3-B1B8-CEA3EEF1725E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\misc\padding">
+      <UniqueIdentifier>{9902E0AB-9A39-5FA0-A5E9-615202AAC1E9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\misc\pbes">
+      <UniqueIdentifier>{EB70EA38-0C44-5805-8568-6B4557817252}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\misc\pkcs12">
+      <UniqueIdentifier>{FEA6B2D7-ADAF-5458-8D17-8EE11A0C9A8F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\misc\pkcs5">
+      <UniqueIdentifier>{BBB5AD3B-4CE4-5D48-9E4B-898FD15C4FB0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\misc\ssh">
+      <UniqueIdentifier>{186CFA45-25B7-5EE3-A1D8-6954AFC4CC96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\modes">
+      <UniqueIdentifier>{BDFEBB43-AEA7-5B40-8E29-12AE933176B9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\modes\cbc">
+      <UniqueIdentifier>{741635C6-DC3F-599C-809F-9EE899A72FA7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\modes\cfb">
+      <UniqueIdentifier>{977B1AE9-D440-55EC-B77A-CCBB37A00DD6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\modes\ctr">
+      <UniqueIdentifier>{B9C9BCC4-59F0-50CB-A9A7-C1726F634C45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\modes\ecb">
+      <UniqueIdentifier>{4130A936-B241-5334-B56C-D3BEC23451E8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\modes\f8">
+      <UniqueIdentifier>{AB0B32C6-ADA6-5740-8DEF-234455B3DDB7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\modes\lrw">
+      <UniqueIdentifier>{0A79DB5F-647F-5154-9AA5-52FC2FC1FDF7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\modes\ofb">
+      <UniqueIdentifier>{6DBF98B8-01D5-53DA-A146-6B627EEC124A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\modes\xts">
+      <UniqueIdentifier>{3C355C9A-9034-57C8-9C5E-7C4F25697BEE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\pk">
+      <UniqueIdentifier>{EEBA624B-C78C-55FE-889F-D61074C202AF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\pk\asn1">
+      <UniqueIdentifier>{DB108351-6179-5D14-8807-5B4DE4B53988}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\pk\asn1\der">
+      <UniqueIdentifier>{D5428F79-FAAB-51C9-BDDD-92CEB4B605D5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\pk\asn1\der\bit">
+      <UniqueIdentifier>{D493652B-C554-5197-84FA-EC34F978DB89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\pk\asn1\der\boolean">
+      <UniqueIdentifier>{0269C739-515A-506A-B3E4-FAB72998E00B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\pk\asn1\der\choice">
+      <UniqueIdentifier>{E60B7410-7B6B-5CDC-98D8-08C0D1BCBCE4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\pk\asn1\der\custom_type">
+      <UniqueIdentifier>{0A51DC43-F714-5BFD-A476-A58EC6EBD09E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\pk\asn1\der\general">
+      <UniqueIdentifier>{E72D1D95-168D-5DB1-B3BF-29E27A12315D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\pk\asn1\der\generalizedtime">
+      <UniqueIdentifier>{1F927A2F-0434-51FE-9BC4-52B8DADC71C2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\pk\asn1\der\ia5">
+      <UniqueIdentifier>{FE81EFC3-2B73-5857-89DD-8B6CF44608A2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\pk\asn1\der\integer">
+      <UniqueIdentifier>{BDBFF1AF-071A-5F39-A2FA-5E1944E3B303}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\pk\asn1\der\object_identifier">
+      <UniqueIdentifier>{F1648649-C28E-53F1-87D1-9BA0FB23C1E1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\pk\asn1\der\octet">
+      <UniqueIdentifier>{F7E7663D-717E-58C0-BFE6-262663FDD7D0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\pk\asn1\der\printable_string">
+      <UniqueIdentifier>{8DF7B812-015E-5F3F-92B6-48835CF91396}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\pk\asn1\der\sequence">
+      <UniqueIdentifier>{3591923E-6786-5999-A357-5ECCA79EB17C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\pk\asn1\der\set">
+      <UniqueIdentifier>{F732FF92-8011-547D-8BE4-BA5F84291C6B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\pk\asn1\der\short_integer">
+      <UniqueIdentifier>{C1ED3EC8-CE8E-597B-A331-725EFD764DF2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\pk\asn1\der\teletex_string">
+      <UniqueIdentifier>{E6916918-F68D-54C2-844A-02A22BA58546}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\pk\asn1\der\utctime">
+      <UniqueIdentifier>{113BCFC4-C570-5FC3-BC69-5A84B6A50E4B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\pk\asn1\der\utf8">
+      <UniqueIdentifier>{5164E0DC-1817-5BCC-A8AF-C704E9BF2C80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\pk\asn1\oid">
+      <UniqueIdentifier>{C7D5ED74-5615-51B1-9E49-BD1B780E536D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\pk\asn1\pkcs8">
+      <UniqueIdentifier>{60D95216-0734-5357-BA72-90EEAAC2CD6D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\pk\asn1\x509">
+      <UniqueIdentifier>{34B65DF3-3CFE-5325-B531-8C6841C65651}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\pk\dh">
+      <UniqueIdentifier>{9EAC63E9-1FC1-5E2B-8EF7-A2F32CD41B2C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\pk\dsa">
+      <UniqueIdentifier>{4C4FBF79-8679-56BD-A22E-6C6D2E236C92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\pk\ec25519">
+      <UniqueIdentifier>{F46A7BD7-2A96-5A56-B5F3-7E51EE049ED1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\pk\ecc">
+      <UniqueIdentifier>{4CF248CE-A0F2-5805-B89D-1B7D348C755E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\pk\ed25519">
+      <UniqueIdentifier>{35072D3F-23B4-50CE-B9DC-2E3F64BE3831}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\pk\pkcs1">
+      <UniqueIdentifier>{4C4FBCCD-04E2-5F37-8982-BB1664DDA298}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\pk\rsa">
+      <UniqueIdentifier>{61BF0DC3-DB98-585C-808C-28439CE179BB}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\pk\x25519">
+      <UniqueIdentifier>{46BE4631-26E7-5285-855E-F75D67AE3E0F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\prngs">
+      <UniqueIdentifier>{C4A9E3C4-E52A-5637-B420-E06975F804F2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\stream">
+      <UniqueIdentifier>{711ADF99-9484-5272-8FFF-C7440351858E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\stream\chacha">
+      <UniqueIdentifier>{E7F66D15-C15D-519E-8E66-D1FF7EC21388}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\stream\rabbit">
+      <UniqueIdentifier>{4428333F-71A9-5DD9-8921-4DBF77EA5EDF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\stream\rc4">
+      <UniqueIdentifier>{1A06AE1E-700B-5F80-BE5A-DA431B2F6037}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\stream\salsa20">
+      <UniqueIdentifier>{BE5FD381-233B-5616-9976-2F7FCBF01AA9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\stream\sober128">
+      <UniqueIdentifier>{AC2FDEEB-7595-5FD1-9F76-EECB5EC5CAE5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtomcrypt\src\stream\sosemanuk">
+      <UniqueIdentifier>{BBBB55C0-8DBF-5978-8645-E1595116B848}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\libtommath">
+      <UniqueIdentifier>{EF92D140-A6E3-5A8C-8313-9720D7A4DE3E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\minhook">
+      <UniqueIdentifier>{C0BAF369-C0CC-5CF4-822E-2D6A0B3F4BF0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\minhook\src">
+      <UniqueIdentifier>{EFF9890D-994A-51A4-9AA1-709F7B568637}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\minhook\src\hde">
+      <UniqueIdentifier>{F98D5901-A6D2-5C65-B899-4E9AD0542F6F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\picoproto">
+      <UniqueIdentifier>{BAFC4D08-0198-5295-A851-0F8D727170E2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\zlib">
+      <UniqueIdentifier>{1A568244-AE7E-5665-AA9E-6E570343982F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\zlib\contrib">
+      <UniqueIdentifier>{A75B49DD-DC6A-5DB3-AF96-0B98929238FE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\bo4\zlib\contrib\minizip">
+      <UniqueIdentifier>{90E3E197-27AF-5EB0-B23C-D8AF5BDB7502}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\imgui">
+      <UniqueIdentifier>{51E93607-B178-5ABD-9D9D-E00D382A6270}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\imgui\backends">
+      <UniqueIdentifier>{F4EC0319-1318-5F53-AA6B-3AD76F66E7EF}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\arm\a64assembler.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\arm</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\arm\a64builder.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\arm</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\arm\a64compiler.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\arm</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\arm\a64emithelper.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\arm</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\arm\a64formatter.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\arm</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\arm\a64func.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\arm</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\arm\a64instapi.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\arm</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\arm\a64instdb.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\arm</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\arm\a64operand.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\arm</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\arm\a64rapass.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\arm</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\arm\armformatter.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\arm</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\core\archtraits.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\core</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\core\assembler.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\core</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\core\builder.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\core</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\core\codeholder.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\core</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\core\codewriter.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\core</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\core\compiler.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\core</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\core\constpool.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\core</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\core\cpuinfo.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\core</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\core\emithelper.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\core</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\core\emitter.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\core</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\core\emitterutils.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\core</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\core\environment.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\core</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\core\errorhandler.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\core</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\core\formatter.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\core</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\core\func.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\core</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\core\funcargscontext.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\core</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\core\globals.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\core</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\core\inst.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\core</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\core\jitallocator.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\core</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\core\jitruntime.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\core</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\core\logger.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\core</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\core\operand.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\core</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\core\osutils.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\core</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\core\ralocal.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\core</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\core\rapass.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\core</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\core\rastack.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\core</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\core\string.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\core</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\core\support.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\core</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\core\target.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\core</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\core\type.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\core</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\core\virtmem.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\core</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\core\zone.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\core</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\core\zonehash.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\core</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\core\zonelist.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\core</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\core\zonestack.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\core</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\core\zonetree.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\core</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\core\zonevector.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\core</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\x86\x86assembler.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\x86</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\x86\x86builder.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\x86</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\x86\x86compiler.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\x86</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\x86\x86emithelper.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\x86</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\x86\x86formatter.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\x86</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\x86\x86func.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\x86</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\x86\x86instapi.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\x86</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\x86\x86instdb.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\x86</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\x86\x86operand.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\x86</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\asmjit\src\asmjit\x86\x86rapass.cpp">
+      <Filter>third_party\bo4\asmjit\src\asmjit\x86</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\minhook\src\buffer.c">
+      <Filter>third_party\bo4\minhook\src</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\minhook\src\hde\hde32.c">
+      <Filter>third_party\bo4\minhook\src\hde</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\minhook\src\hde\hde64.c">
+      <Filter>third_party\bo4\minhook\src\hde</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\minhook\src\hook.c">
+      <Filter>third_party\bo4\minhook\src</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\minhook\src\trampoline.c">
+      <Filter>third_party\bo4\minhook\src</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\zlib\adler32.c">
+      <Filter>third_party\bo4\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\zlib\compress.c">
+      <Filter>third_party\bo4\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\zlib\crc32.c">
+      <Filter>third_party\bo4\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\zlib\deflate.c">
+      <Filter>third_party\bo4\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\zlib\gzclose.c">
+      <Filter>third_party\bo4\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\zlib\gzlib.c">
+      <Filter>third_party\bo4\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\zlib\gzread.c">
+      <Filter>third_party\bo4\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\zlib\gzwrite.c">
+      <Filter>third_party\bo4\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\zlib\infback.c">
+      <Filter>third_party\bo4\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\zlib\inffast.c">
+      <Filter>third_party\bo4\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\zlib\inflate.c">
+      <Filter>third_party\bo4\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\zlib\inftrees.c">
+      <Filter>third_party\bo4\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\zlib\trees.c">
+      <Filter>third_party\bo4\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\zlib\uncompr.c">
+      <Filter>third_party\bo4\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\zlib\zutil.c">
+      <Filter>third_party\bo4\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\zlib\contrib\minizip\ioapi.c">
+      <Filter>third_party\bo4\zlib\contrib\minizip</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\zlib\contrib\minizip\iowin32.c">
+      <Filter>third_party\bo4\zlib\contrib\minizip</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\zlib\contrib\minizip\mztools.c">
+      <Filter>third_party\bo4\zlib\contrib\minizip</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\zlib\contrib\minizip\unzip.c">
+      <Filter>third_party\bo4\zlib\contrib\minizip</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\zlib\contrib\minizip\zip.c">
+      <Filter>third_party\bo4\zlib\contrib\minizip</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\picoproto\picoproto.cc">
+      <Filter>third_party\bo4\picoproto</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\ciphers\aes\aes.c">
+      <Filter>third_party\bo4\libtomcrypt\src\ciphers\aes</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\ciphers\anubis.c">
+      <Filter>third_party\bo4\libtomcrypt\src\ciphers</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\ciphers\blowfish.c">
+      <Filter>third_party\bo4\libtomcrypt\src\ciphers</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\ciphers\camellia.c">
+      <Filter>third_party\bo4\libtomcrypt\src\ciphers</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\ciphers\cast5.c">
+      <Filter>third_party\bo4\libtomcrypt\src\ciphers</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\ciphers\des.c">
+      <Filter>third_party\bo4\libtomcrypt\src\ciphers</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\ciphers\idea.c">
+      <Filter>third_party\bo4\libtomcrypt\src\ciphers</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\ciphers\kasumi.c">
+      <Filter>third_party\bo4\libtomcrypt\src\ciphers</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\ciphers\khazad.c">
+      <Filter>third_party\bo4\libtomcrypt\src\ciphers</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\ciphers\kseed.c">
+      <Filter>third_party\bo4\libtomcrypt\src\ciphers</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\ciphers\multi2.c">
+      <Filter>third_party\bo4\libtomcrypt\src\ciphers</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\ciphers\noekeon.c">
+      <Filter>third_party\bo4\libtomcrypt\src\ciphers</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\ciphers\rc2.c">
+      <Filter>third_party\bo4\libtomcrypt\src\ciphers</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\ciphers\rc5.c">
+      <Filter>third_party\bo4\libtomcrypt\src\ciphers</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\ciphers\rc6.c">
+      <Filter>third_party\bo4\libtomcrypt\src\ciphers</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\ciphers\safer\safer.c">
+      <Filter>third_party\bo4\libtomcrypt\src\ciphers\safer</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\ciphers\safer\saferp.c">
+      <Filter>third_party\bo4\libtomcrypt\src\ciphers\safer</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\ciphers\serpent.c">
+      <Filter>third_party\bo4\libtomcrypt\src\ciphers</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\ciphers\skipjack.c">
+      <Filter>third_party\bo4\libtomcrypt\src\ciphers</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\ciphers\tea.c">
+      <Filter>third_party\bo4\libtomcrypt\src\ciphers</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\ciphers\twofish\twofish.c">
+      <Filter>third_party\bo4\libtomcrypt\src\ciphers\twofish</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\ciphers\xtea.c">
+      <Filter>third_party\bo4\libtomcrypt\src\ciphers</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\encauth\ccm\ccm_add_aad.c">
+      <Filter>third_party\bo4\libtomcrypt\src\encauth\ccm</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\encauth\ccm\ccm_add_nonce.c">
+      <Filter>third_party\bo4\libtomcrypt\src\encauth\ccm</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\encauth\ccm\ccm_done.c">
+      <Filter>third_party\bo4\libtomcrypt\src\encauth\ccm</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\encauth\ccm\ccm_init.c">
+      <Filter>third_party\bo4\libtomcrypt\src\encauth\ccm</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\encauth\ccm\ccm_memory.c">
+      <Filter>third_party\bo4\libtomcrypt\src\encauth\ccm</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\encauth\ccm\ccm_process.c">
+      <Filter>third_party\bo4\libtomcrypt\src\encauth\ccm</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\encauth\ccm\ccm_reset.c">
+      <Filter>third_party\bo4\libtomcrypt\src\encauth\ccm</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\encauth\ccm\ccm_test.c">
+      <Filter>third_party\bo4\libtomcrypt\src\encauth\ccm</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\encauth\chachapoly\chacha20poly1305_add_aad.c">
+      <Filter>third_party\bo4\libtomcrypt\src\encauth\chachapoly</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\encauth\chachapoly\chacha20poly1305_decrypt.c">
+      <Filter>third_party\bo4\libtomcrypt\src\encauth\chachapoly</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\encauth\chachapoly\chacha20poly1305_done.c">
+      <Filter>third_party\bo4\libtomcrypt\src\encauth\chachapoly</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\encauth\chachapoly\chacha20poly1305_encrypt.c">
+      <Filter>third_party\bo4\libtomcrypt\src\encauth\chachapoly</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\encauth\chachapoly\chacha20poly1305_init.c">
+      <Filter>third_party\bo4\libtomcrypt\src\encauth\chachapoly</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\encauth\chachapoly\chacha20poly1305_memory.c">
+      <Filter>third_party\bo4\libtomcrypt\src\encauth\chachapoly</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\encauth\chachapoly\chacha20poly1305_setiv.c">
+      <Filter>third_party\bo4\libtomcrypt\src\encauth\chachapoly</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\encauth\chachapoly\chacha20poly1305_setiv_rfc7905.c">
+      <Filter>third_party\bo4\libtomcrypt\src\encauth\chachapoly</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\encauth\chachapoly\chacha20poly1305_test.c">
+      <Filter>third_party\bo4\libtomcrypt\src\encauth\chachapoly</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\encauth\eax\eax_addheader.c">
+      <Filter>third_party\bo4\libtomcrypt\src\encauth\eax</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\encauth\eax\eax_decrypt.c">
+      <Filter>third_party\bo4\libtomcrypt\src\encauth\eax</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\encauth\eax\eax_decrypt_verify_memory.c">
+      <Filter>third_party\bo4\libtomcrypt\src\encauth\eax</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\encauth\eax\eax_done.c">
+      <Filter>third_party\bo4\libtomcrypt\src\encauth\eax</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\encauth\eax\eax_encrypt.c">
+      <Filter>third_party\bo4\libtomcrypt\src\encauth\eax</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\encauth\eax\eax_encrypt_authenticate_memory.c">
+      <Filter>third_party\bo4\libtomcrypt\src\encauth\eax</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\encauth\eax\eax_init.c">
+      <Filter>third_party\bo4\libtomcrypt\src\encauth\eax</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\encauth\eax\eax_test.c">
+      <Filter>third_party\bo4\libtomcrypt\src\encauth\eax</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\encauth\gcm\gcm_add_aad.c">
+      <Filter>third_party\bo4\libtomcrypt\src\encauth\gcm</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\encauth\gcm\gcm_add_iv.c">
+      <Filter>third_party\bo4\libtomcrypt\src\encauth\gcm</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\encauth\gcm\gcm_done.c">
+      <Filter>third_party\bo4\libtomcrypt\src\encauth\gcm</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\encauth\gcm\gcm_gf_mult.c">
+      <Filter>third_party\bo4\libtomcrypt\src\encauth\gcm</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\encauth\gcm\gcm_init.c">
+      <Filter>third_party\bo4\libtomcrypt\src\encauth\gcm</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\encauth\gcm\gcm_memory.c">
+      <Filter>third_party\bo4\libtomcrypt\src\encauth\gcm</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\encauth\gcm\gcm_mult_h.c">
+      <Filter>third_party\bo4\libtomcrypt\src\encauth\gcm</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\encauth\gcm\gcm_process.c">
+      <Filter>third_party\bo4\libtomcrypt\src\encauth\gcm</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\encauth\gcm\gcm_reset.c">
+      <Filter>third_party\bo4\libtomcrypt\src\encauth\gcm</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\encauth\gcm\gcm_test.c">
+      <Filter>third_party\bo4\libtomcrypt\src\encauth\gcm</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\encauth\ocb\ocb_decrypt.c">
+      <Filter>third_party\bo4\libtomcrypt\src\encauth\ocb</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\encauth\ocb\ocb_decrypt_verify_memory.c">
+      <Filter>third_party\bo4\libtomcrypt\src\encauth\ocb</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\encauth\ocb\ocb_done_decrypt.c">
+      <Filter>third_party\bo4\libtomcrypt\src\encauth\ocb</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\encauth\ocb\ocb_done_encrypt.c">
+      <Filter>third_party\bo4\libtomcrypt\src\encauth\ocb</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\encauth\ocb\ocb_encrypt.c">
+      <Filter>third_party\bo4\libtomcrypt\src\encauth\ocb</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\encauth\ocb\ocb_encrypt_authenticate_memory.c">
+      <Filter>third_party\bo4\libtomcrypt\src\encauth\ocb</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\encauth\ocb\ocb_init.c">
+      <Filter>third_party\bo4\libtomcrypt\src\encauth\ocb</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\encauth\ocb\ocb_ntz.c">
+      <Filter>third_party\bo4\libtomcrypt\src\encauth\ocb</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\encauth\ocb\ocb_shift_xor.c">
+      <Filter>third_party\bo4\libtomcrypt\src\encauth\ocb</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\encauth\ocb\ocb_test.c">
+      <Filter>third_party\bo4\libtomcrypt\src\encauth\ocb</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\encauth\ocb\s_ocb_done.c">
+      <Filter>third_party\bo4\libtomcrypt\src\encauth\ocb</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\hashes\blake2b.c">
+      <Filter>third_party\bo4\libtomcrypt\src\hashes</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\hashes\blake2s.c">
+      <Filter>third_party\bo4\libtomcrypt\src\hashes</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\hashes\chc\chc.c">
+      <Filter>third_party\bo4\libtomcrypt\src\hashes\chc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\hashes\helper\hash_file.c">
+      <Filter>third_party\bo4\libtomcrypt\src\hashes\helper</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\hashes\helper\hash_filehandle.c">
+      <Filter>third_party\bo4\libtomcrypt\src\hashes\helper</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\hashes\helper\hash_memory.c">
+      <Filter>third_party\bo4\libtomcrypt\src\hashes\helper</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\hashes\helper\hash_memory_multi.c">
+      <Filter>third_party\bo4\libtomcrypt\src\hashes\helper</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\hashes\md2.c">
+      <Filter>third_party\bo4\libtomcrypt\src\hashes</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\hashes\md4.c">
+      <Filter>third_party\bo4\libtomcrypt\src\hashes</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\hashes\md5.c">
+      <Filter>third_party\bo4\libtomcrypt\src\hashes</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\hashes\rmd128.c">
+      <Filter>third_party\bo4\libtomcrypt\src\hashes</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\hashes\rmd160.c">
+      <Filter>third_party\bo4\libtomcrypt\src\hashes</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\hashes\rmd256.c">
+      <Filter>third_party\bo4\libtomcrypt\src\hashes</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\hashes\rmd320.c">
+      <Filter>third_party\bo4\libtomcrypt\src\hashes</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\hashes\sha1.c">
+      <Filter>third_party\bo4\libtomcrypt\src\hashes</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\hashes\sha2\sha224.c">
+      <Filter>third_party\bo4\libtomcrypt\src\hashes\sha2</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\hashes\sha2\sha256.c">
+      <Filter>third_party\bo4\libtomcrypt\src\hashes\sha2</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\hashes\sha2\sha384.c">
+      <Filter>third_party\bo4\libtomcrypt\src\hashes\sha2</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\hashes\sha2\sha512.c">
+      <Filter>third_party\bo4\libtomcrypt\src\hashes\sha2</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\hashes\sha2\sha512_224.c">
+      <Filter>third_party\bo4\libtomcrypt\src\hashes\sha2</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\hashes\sha2\sha512_256.c">
+      <Filter>third_party\bo4\libtomcrypt\src\hashes\sha2</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\hashes\sha3.c">
+      <Filter>third_party\bo4\libtomcrypt\src\hashes</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\hashes\sha3_test.c">
+      <Filter>third_party\bo4\libtomcrypt\src\hashes</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\hashes\tiger.c">
+      <Filter>third_party\bo4\libtomcrypt\src\hashes</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\hashes\whirl\whirl.c">
+      <Filter>third_party\bo4\libtomcrypt\src\hashes\whirl</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\blake2\blake2bmac.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\blake2</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\blake2\blake2bmac_file.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\blake2</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\blake2\blake2bmac_memory.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\blake2</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\blake2\blake2bmac_memory_multi.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\blake2</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\blake2\blake2bmac_test.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\blake2</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\blake2\blake2smac.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\blake2</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\blake2\blake2smac_file.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\blake2</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\blake2\blake2smac_memory.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\blake2</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\blake2\blake2smac_memory_multi.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\blake2</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\blake2\blake2smac_test.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\blake2</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\f9\f9_done.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\f9</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\f9\f9_file.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\f9</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\f9\f9_init.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\f9</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\f9\f9_memory.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\f9</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\f9\f9_memory_multi.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\f9</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\f9\f9_process.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\f9</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\f9\f9_test.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\f9</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\hmac\hmac_done.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\hmac</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\hmac\hmac_file.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\hmac</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\hmac\hmac_init.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\hmac</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\hmac\hmac_memory.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\hmac</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\hmac\hmac_memory_multi.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\hmac</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\hmac\hmac_process.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\hmac</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\hmac\hmac_test.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\hmac</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\omac\omac_done.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\omac</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\omac\omac_file.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\omac</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\omac\omac_init.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\omac</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\omac\omac_memory.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\omac</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\omac\omac_memory_multi.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\omac</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\omac\omac_process.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\omac</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\omac\omac_test.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\omac</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\pelican\pelican.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\pelican</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\pelican\pelican_memory.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\pelican</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\pelican\pelican_test.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\pelican</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\pmac\pmac_done.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\pmac</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\pmac\pmac_file.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\pmac</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\pmac\pmac_init.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\pmac</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\pmac\pmac_memory.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\pmac</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\pmac\pmac_memory_multi.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\pmac</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\pmac\pmac_ntz.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\pmac</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\pmac\pmac_process.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\pmac</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\pmac\pmac_shift_xor.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\pmac</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\pmac\pmac_test.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\pmac</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\poly1305\poly1305.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\poly1305</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\poly1305\poly1305_file.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\poly1305</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\poly1305\poly1305_memory.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\poly1305</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\poly1305\poly1305_memory_multi.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\poly1305</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\poly1305\poly1305_test.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\poly1305</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\xcbc\xcbc_done.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\xcbc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\xcbc\xcbc_file.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\xcbc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\xcbc\xcbc_init.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\xcbc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\xcbc\xcbc_memory.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\xcbc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\xcbc\xcbc_memory_multi.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\xcbc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\xcbc\xcbc_process.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\xcbc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\mac\xcbc\xcbc_test.c">
+      <Filter>third_party\bo4\libtomcrypt\src\mac\xcbc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\math\fp\ltc_ecc_fp_mulmod.c">
+      <Filter>third_party\bo4\libtomcrypt\src\math\fp</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\math\gmp_desc.c">
+      <Filter>third_party\bo4\libtomcrypt\src\math</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\math\ltm_desc.c">
+      <Filter>third_party\bo4\libtomcrypt\src\math</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\math\multi.c">
+      <Filter>third_party\bo4\libtomcrypt\src\math</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\math\radix_to_bin.c">
+      <Filter>third_party\bo4\libtomcrypt\src\math</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\math\rand_bn.c">
+      <Filter>third_party\bo4\libtomcrypt\src\math</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\math\rand_prime.c">
+      <Filter>third_party\bo4\libtomcrypt\src\math</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\math\tfm_desc.c">
+      <Filter>third_party\bo4\libtomcrypt\src\math</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\adler32.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\base16\base16_decode.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\base16</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\base16\base16_encode.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\base16</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\base32\base32_decode.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\base32</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\base32\base32_encode.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\base32</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\base64\base64_decode.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\base64</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\base64\base64_encode.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\base64</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\bcrypt\bcrypt.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\bcrypt</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\burn_stack.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\compare_testvector.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\copy_or_zeromem.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\crc32.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\crypt\crypt.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\crypt</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\crypt\crypt_argchk.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\crypt</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\crypt\crypt_cipher_descriptor.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\crypt</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\crypt\crypt_cipher_is_valid.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\crypt</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\crypt\crypt_constants.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\crypt</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\crypt\crypt_find_cipher.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\crypt</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\crypt\crypt_find_cipher_any.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\crypt</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\crypt\crypt_find_cipher_id.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\crypt</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\crypt\crypt_find_hash.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\crypt</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\crypt\crypt_find_hash_any.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\crypt</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\crypt\crypt_find_hash_id.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\crypt</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\crypt\crypt_find_hash_oid.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\crypt</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\crypt\crypt_find_prng.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\crypt</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\crypt\crypt_fsa.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\crypt</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\crypt\crypt_hash_descriptor.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\crypt</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\crypt\crypt_hash_is_valid.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\crypt</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\crypt\crypt_inits.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\crypt</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\crypt\crypt_ltc_mp_descriptor.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\crypt</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\crypt\crypt_prng_descriptor.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\crypt</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\crypt\crypt_prng_is_valid.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\crypt</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\crypt\crypt_prng_rng_descriptor.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\crypt</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\crypt\crypt_register_all_ciphers.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\crypt</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\crypt\crypt_register_all_hashes.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\crypt</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\crypt\crypt_register_all_prngs.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\crypt</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\crypt\crypt_register_cipher.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\crypt</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\crypt\crypt_register_hash.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\crypt</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\crypt\crypt_register_prng.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\crypt</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\crypt\crypt_sizes.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\crypt</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\crypt\crypt_unregister_cipher.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\crypt</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\crypt\crypt_unregister_hash.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\crypt</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\crypt\crypt_unregister_prng.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\crypt</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\error_to_string.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\hkdf\hkdf.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\hkdf</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\hkdf\hkdf_test.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\hkdf</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\mem_neq.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\padding\padding_depad.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\padding</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\padding\padding_pad.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\padding</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\pbes\pbes.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\pbes</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\pbes\pbes1.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\pbes</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\pbes\pbes2.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\pbes</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\pkcs12\pkcs12_kdf.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\pkcs12</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\pkcs12\pkcs12_utf8_to_utf16.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\pkcs12</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\pkcs5\pkcs_5_1.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\pkcs5</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\pkcs5\pkcs_5_2.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\pkcs5</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\pkcs5\pkcs_5_test.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\pkcs5</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\ssh\ssh_decode_sequence_multi.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\ssh</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\ssh\ssh_encode_sequence_multi.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc\ssh</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\misc\zeromem.c">
+      <Filter>third_party\bo4\libtomcrypt\src\misc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\cbc\cbc_decrypt.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\cbc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\cbc\cbc_done.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\cbc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\cbc\cbc_encrypt.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\cbc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\cbc\cbc_getiv.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\cbc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\cbc\cbc_setiv.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\cbc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\cbc\cbc_start.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\cbc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\cfb\cfb_decrypt.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\cfb</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\cfb\cfb_done.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\cfb</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\cfb\cfb_encrypt.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\cfb</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\cfb\cfb_getiv.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\cfb</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\cfb\cfb_setiv.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\cfb</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\cfb\cfb_start.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\cfb</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\ctr\ctr_decrypt.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\ctr</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\ctr\ctr_done.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\ctr</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\ctr\ctr_encrypt.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\ctr</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\ctr\ctr_getiv.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\ctr</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\ctr\ctr_setiv.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\ctr</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\ctr\ctr_start.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\ctr</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\ctr\ctr_test.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\ctr</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\ecb\ecb_decrypt.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\ecb</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\ecb\ecb_done.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\ecb</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\ecb\ecb_encrypt.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\ecb</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\ecb\ecb_start.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\ecb</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\f8\f8_decrypt.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\f8</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\f8\f8_done.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\f8</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\f8\f8_encrypt.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\f8</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\f8\f8_getiv.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\f8</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\f8\f8_setiv.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\f8</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\f8\f8_start.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\f8</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\f8\f8_test_mode.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\f8</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\lrw\lrw_decrypt.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\lrw</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\lrw\lrw_done.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\lrw</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\lrw\lrw_encrypt.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\lrw</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\lrw\lrw_getiv.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\lrw</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\lrw\lrw_process.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\lrw</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\lrw\lrw_setiv.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\lrw</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\lrw\lrw_start.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\lrw</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\lrw\lrw_test.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\lrw</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\ofb\ofb_decrypt.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\ofb</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\ofb\ofb_done.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\ofb</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\ofb\ofb_encrypt.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\ofb</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\ofb\ofb_getiv.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\ofb</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\ofb\ofb_setiv.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\ofb</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\ofb\ofb_start.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\ofb</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\xts\xts_decrypt.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\xts</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\xts\xts_done.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\xts</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\xts\xts_encrypt.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\xts</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\xts\xts_init.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\xts</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\xts\xts_mult_x.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\xts</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\modes\xts\xts_test.c">
+      <Filter>third_party\bo4\libtomcrypt\src\modes\xts</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\bit\der_decode_bit_string.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\bit</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\bit\der_decode_raw_bit_string.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\bit</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\bit\der_encode_bit_string.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\bit</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\bit\der_encode_raw_bit_string.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\bit</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\bit\der_length_bit_string.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\bit</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\boolean\der_decode_boolean.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\boolean</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\boolean\der_encode_boolean.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\boolean</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\boolean\der_length_boolean.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\boolean</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\choice\der_decode_choice.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\choice</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\custom_type\der_decode_custom_type.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\custom_type</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\custom_type\der_encode_custom_type.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\custom_type</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\custom_type\der_length_custom_type.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\custom_type</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\general\der_asn1_maps.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\general</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\general\der_decode_asn1_identifier.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\general</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\general\der_decode_asn1_length.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\general</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\general\der_encode_asn1_identifier.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\general</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\general\der_encode_asn1_length.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\general</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\general\der_length_asn1_identifier.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\general</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\general\der_length_asn1_length.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\general</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\generalizedtime\der_decode_generalizedtime.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\generalizedtime</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\generalizedtime\der_encode_generalizedtime.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\generalizedtime</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\generalizedtime\der_length_generalizedtime.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\generalizedtime</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\ia5\der_decode_ia5_string.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\ia5</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\ia5\der_encode_ia5_string.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\ia5</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\ia5\der_length_ia5_string.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\ia5</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\integer\der_decode_integer.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\integer</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\integer\der_encode_integer.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\integer</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\integer\der_length_integer.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\integer</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\object_identifier\der_decode_object_identifier.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\object_identifier</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\object_identifier\der_encode_object_identifier.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\object_identifier</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\object_identifier\der_length_object_identifier.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\object_identifier</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\octet\der_decode_octet_string.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\octet</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\octet\der_encode_octet_string.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\octet</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\octet\der_length_octet_string.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\octet</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\printable_string\der_decode_printable_string.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\printable_string</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\printable_string\der_encode_printable_string.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\printable_string</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\printable_string\der_length_printable_string.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\printable_string</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\sequence\der_decode_sequence_ex.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\sequence</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\sequence\der_decode_sequence_flexi.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\sequence</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\sequence\der_decode_sequence_multi.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\sequence</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\sequence\der_encode_sequence_ex.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\sequence</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\sequence\der_encode_sequence_multi.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\sequence</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\sequence\der_length_sequence.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\sequence</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\sequence\der_sequence_free.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\sequence</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\sequence\der_sequence_shrink.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\sequence</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\set\der_encode_set.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\set</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\set\der_encode_setof.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\set</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\short_integer\der_decode_short_integer.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\short_integer</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\short_integer\der_encode_short_integer.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\short_integer</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\short_integer\der_length_short_integer.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\short_integer</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\teletex_string\der_decode_teletex_string.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\teletex_string</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\teletex_string\der_length_teletex_string.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\teletex_string</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\utctime\der_decode_utctime.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\utctime</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\utctime\der_encode_utctime.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\utctime</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\utctime\der_length_utctime.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\utctime</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\utf8\der_decode_utf8_string.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\utf8</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\utf8\der_encode_utf8_string.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\utf8</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\der\utf8\der_length_utf8_string.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\der\utf8</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\oid\pk_get_oid.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\oid</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\oid\pk_oid_cmp.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\oid</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\oid\pk_oid_str.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\oid</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\pkcs8\pkcs8_decode_flexi.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\pkcs8</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\x509\x509_decode_public_key_from_certificate.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\x509</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\x509\x509_decode_subject_public_key_info.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\x509</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\asn1\x509\x509_encode_subject_public_key_info.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\asn1\x509</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\dh\dh.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\dh</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\dh\dh_check_pubkey.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\dh</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\dh\dh_export.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\dh</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\dh\dh_export_key.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\dh</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\dh\dh_free.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\dh</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\dh\dh_generate_key.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\dh</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\dh\dh_import.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\dh</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\dh\dh_set.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\dh</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\dh\dh_set_pg_dhparam.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\dh</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\dh\dh_shared_secret.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\dh</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\dsa\dsa_decrypt_key.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\dsa</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\dsa\dsa_encrypt_key.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\dsa</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\dsa\dsa_export.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\dsa</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\dsa\dsa_free.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\dsa</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\dsa\dsa_generate_key.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\dsa</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\dsa\dsa_generate_pqg.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\dsa</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\dsa\dsa_import.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\dsa</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\dsa\dsa_make_key.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\dsa</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\dsa\dsa_set.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\dsa</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\dsa\dsa_set_pqg_dsaparam.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\dsa</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\dsa\dsa_shared_secret.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\dsa</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\dsa\dsa_sign_hash.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\dsa</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\dsa\dsa_verify_hash.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\dsa</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\dsa\dsa_verify_key.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\dsa</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ec25519\ec25519_crypto_ctx.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ec25519</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ec25519\ec25519_export.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ec25519</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ec25519\ec25519_import_pkcs8.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ec25519</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ec25519\tweetnacl.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ec25519</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ecc\ecc.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ecc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ecc\ecc_ansi_x963_export.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ecc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ecc\ecc_ansi_x963_import.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ecc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ecc\ecc_decrypt_key.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ecc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ecc\ecc_encrypt_key.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ecc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ecc\ecc_export.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ecc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ecc\ecc_export_openssl.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ecc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ecc\ecc_find_curve.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ecc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ecc\ecc_free.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ecc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ecc\ecc_get_key.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ecc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ecc\ecc_get_oid_str.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ecc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ecc\ecc_get_size.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ecc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ecc\ecc_import.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ecc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ecc\ecc_import_openssl.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ecc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ecc\ecc_import_pkcs8.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ecc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ecc\ecc_import_x509.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ecc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ecc\ecc_make_key.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ecc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ecc\ecc_recover_key.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ecc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ecc\ecc_set_curve.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ecc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ecc\ecc_set_curve_internal.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ecc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ecc\ecc_set_key.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ecc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ecc\ecc_shared_secret.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ecc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ecc\ecc_sign_hash.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ecc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ecc\ecc_sizes.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ecc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ecc\ecc_ssh_ecdsa_encode_name.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ecc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ecc\ecc_verify_hash.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ecc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ecc\ltc_ecc_export_point.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ecc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ecc\ltc_ecc_import_point.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ecc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ecc\ltc_ecc_is_point.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ecc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ecc\ltc_ecc_is_point_at_infinity.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ecc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ecc\ltc_ecc_map.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ecc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ecc\ltc_ecc_mul2add.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ecc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ecc\ltc_ecc_mulmod.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ecc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ecc\ltc_ecc_mulmod_timing.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ecc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ecc\ltc_ecc_points.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ecc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ecc\ltc_ecc_projective_add_point.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ecc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ecc\ltc_ecc_projective_dbl_point.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ecc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ecc\ltc_ecc_verify_key.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ecc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ed25519\ed25519_export.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ed25519</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ed25519\ed25519_import.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ed25519</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ed25519\ed25519_import_pkcs8.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ed25519</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ed25519\ed25519_import_raw.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ed25519</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ed25519\ed25519_import_x509.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ed25519</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ed25519\ed25519_make_key.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ed25519</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ed25519\ed25519_sign.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ed25519</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\ed25519\ed25519_verify.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\ed25519</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\pkcs1\pkcs_1_i2osp.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\pkcs1</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\pkcs1\pkcs_1_mgf1.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\pkcs1</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\pkcs1\pkcs_1_oaep_decode.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\pkcs1</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\pkcs1\pkcs_1_oaep_encode.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\pkcs1</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\pkcs1\pkcs_1_os2ip.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\pkcs1</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\pkcs1\pkcs_1_pss_decode.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\pkcs1</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\pkcs1\pkcs_1_pss_encode.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\pkcs1</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\pkcs1\pkcs_1_v1_5_decode.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\pkcs1</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\pkcs1\pkcs_1_v1_5_encode.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\pkcs1</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\rsa\rsa_decrypt_key.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\rsa</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\rsa\rsa_encrypt_key.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\rsa</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\rsa\rsa_export.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\rsa</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\rsa\rsa_exptmod.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\rsa</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\rsa\rsa_get_size.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\rsa</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\rsa\rsa_import.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\rsa</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\rsa\rsa_import_pkcs8.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\rsa</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\rsa\rsa_import_x509.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\rsa</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\rsa\rsa_key.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\rsa</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\rsa\rsa_make_key.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\rsa</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\rsa\rsa_set.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\rsa</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\rsa\rsa_sign_hash.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\rsa</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\rsa\rsa_sign_saltlen_get.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\rsa</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\rsa\rsa_verify_hash.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\rsa</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\x25519\x25519_export.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\x25519</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\x25519\x25519_import.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\x25519</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\x25519\x25519_import_pkcs8.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\x25519</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\x25519\x25519_import_raw.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\x25519</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\x25519\x25519_import_x509.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\x25519</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\x25519\x25519_make_key.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\x25519</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\pk\x25519\x25519_shared_secret.c">
+      <Filter>third_party\bo4\libtomcrypt\src\pk\x25519</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\prngs\chacha20.c">
+      <Filter>third_party\bo4\libtomcrypt\src\prngs</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\prngs\fortuna.c">
+      <Filter>third_party\bo4\libtomcrypt\src\prngs</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\prngs\rc4.c">
+      <Filter>third_party\bo4\libtomcrypt\src\prngs</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\prngs\rng_get_bytes.c">
+      <Filter>third_party\bo4\libtomcrypt\src\prngs</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\prngs\rng_make_prng.c">
+      <Filter>third_party\bo4\libtomcrypt\src\prngs</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\prngs\sober128.c">
+      <Filter>third_party\bo4\libtomcrypt\src\prngs</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\prngs\sprng.c">
+      <Filter>third_party\bo4\libtomcrypt\src\prngs</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\prngs\yarrow.c">
+      <Filter>third_party\bo4\libtomcrypt\src\prngs</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\stream\chacha\chacha_crypt.c">
+      <Filter>third_party\bo4\libtomcrypt\src\stream\chacha</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\stream\chacha\chacha_done.c">
+      <Filter>third_party\bo4\libtomcrypt\src\stream\chacha</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\stream\chacha\chacha_ivctr32.c">
+      <Filter>third_party\bo4\libtomcrypt\src\stream\chacha</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\stream\chacha\chacha_ivctr64.c">
+      <Filter>third_party\bo4\libtomcrypt\src\stream\chacha</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\stream\chacha\chacha_keystream.c">
+      <Filter>third_party\bo4\libtomcrypt\src\stream\chacha</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\stream\chacha\chacha_memory.c">
+      <Filter>third_party\bo4\libtomcrypt\src\stream\chacha</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\stream\chacha\chacha_setup.c">
+      <Filter>third_party\bo4\libtomcrypt\src\stream\chacha</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\stream\chacha\chacha_test.c">
+      <Filter>third_party\bo4\libtomcrypt\src\stream\chacha</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\stream\rabbit\rabbit.c">
+      <Filter>third_party\bo4\libtomcrypt\src\stream\rabbit</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\stream\rabbit\rabbit_memory.c">
+      <Filter>third_party\bo4\libtomcrypt\src\stream\rabbit</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\stream\rc4\rc4_stream.c">
+      <Filter>third_party\bo4\libtomcrypt\src\stream\rc4</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\stream\rc4\rc4_stream_memory.c">
+      <Filter>third_party\bo4\libtomcrypt\src\stream\rc4</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\stream\rc4\rc4_test.c">
+      <Filter>third_party\bo4\libtomcrypt\src\stream\rc4</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\stream\salsa20\salsa20_crypt.c">
+      <Filter>third_party\bo4\libtomcrypt\src\stream\salsa20</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\stream\salsa20\salsa20_done.c">
+      <Filter>third_party\bo4\libtomcrypt\src\stream\salsa20</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\stream\salsa20\salsa20_ivctr64.c">
+      <Filter>third_party\bo4\libtomcrypt\src\stream\salsa20</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\stream\salsa20\salsa20_keystream.c">
+      <Filter>third_party\bo4\libtomcrypt\src\stream\salsa20</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\stream\salsa20\salsa20_memory.c">
+      <Filter>third_party\bo4\libtomcrypt\src\stream\salsa20</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\stream\salsa20\salsa20_setup.c">
+      <Filter>third_party\bo4\libtomcrypt\src\stream\salsa20</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\stream\salsa20\salsa20_test.c">
+      <Filter>third_party\bo4\libtomcrypt\src\stream\salsa20</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\stream\salsa20\xsalsa20_memory.c">
+      <Filter>third_party\bo4\libtomcrypt\src\stream\salsa20</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\stream\salsa20\xsalsa20_setup.c">
+      <Filter>third_party\bo4\libtomcrypt\src\stream\salsa20</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\stream\salsa20\xsalsa20_test.c">
+      <Filter>third_party\bo4\libtomcrypt\src\stream\salsa20</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\stream\sober128\sober128_stream.c">
+      <Filter>third_party\bo4\libtomcrypt\src\stream\sober128</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\stream\sober128\sober128_stream_memory.c">
+      <Filter>third_party\bo4\libtomcrypt\src\stream\sober128</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\stream\sober128\sober128_test.c">
+      <Filter>third_party\bo4\libtomcrypt\src\stream\sober128</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\stream\sosemanuk\sosemanuk.c">
+      <Filter>third_party\bo4\libtomcrypt\src\stream\sosemanuk</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\stream\sosemanuk\sosemanuk_memory.c">
+      <Filter>third_party\bo4\libtomcrypt\src\stream\sosemanuk</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\stream\sosemanuk\sosemanuk_test.c">
+      <Filter>third_party\bo4\libtomcrypt\src\stream\sosemanuk</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_2expt.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_abs.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_add.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_add_d.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_addmod.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_and.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_clamp.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_clear.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_clear_multi.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_cmp.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_cmp_d.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_cmp_mag.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_cnt_lsb.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_complement.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_copy.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_count_bits.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_cutoffs.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_div.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_div_2.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_div_2d.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_div_d.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_dr_is_modulus.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_dr_reduce.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_dr_setup.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_error_to_string.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_exch.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_expt_n.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_exptmod.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_exteuclid.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_fread.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_from_sbin.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_from_ubin.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_fwrite.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_gcd.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_get_double.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_get_i32.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_get_i64.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_get_l.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_get_mag_u32.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_get_mag_u64.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_get_mag_ul.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_grow.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_hash.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_init.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_init_copy.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_init_i32.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_init_i64.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_init_l.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_init_multi.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_init_set.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_init_size.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_init_u32.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_init_u64.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_init_ul.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_invmod.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_is_square.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_kronecker.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_lcm.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_log_n.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_lshd.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_mod.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_mod_2d.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_montgomery_calc_normalization.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_montgomery_reduce.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_montgomery_setup.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_mul.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_mul_2.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_mul_2d.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_mul_d.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_mulmod.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_neg.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_or.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_pack.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_pack_count.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_prime_fermat.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_prime_frobenius_underwood.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_prime_is_prime.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_prime_miller_rabin.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_prime_next_prime.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_prime_rabin_miller_trials.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_prime_rand.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_prime_strong_lucas_selfridge.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_radix_size.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_radix_size_overestimate.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_rand.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_rand_source.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_read_radix.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_reduce.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_reduce_2k.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_reduce_2k_l.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_reduce_2k_setup.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_reduce_2k_setup_l.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_reduce_is_2k.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_reduce_is_2k_l.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_reduce_setup.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_root_n.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_rshd.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_sbin_size.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_set.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_set_double.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_set_i32.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_set_i64.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_set_l.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_set_u32.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_set_u64.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_set_ul.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_shrink.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_signed_rsh.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_sqrmod.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_sqrt.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_sqrtmod_prime.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_sub.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_sub_d.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_submod.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_to_radix.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_to_sbin.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_to_ubin.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_ubin_size.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_unpack.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_xor.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\mp_zero.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\s_mp_add.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\s_mp_copy_digs.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\s_mp_div_3.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\s_mp_div_recursive.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\s_mp_div_school.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\s_mp_div_small.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\s_mp_exptmod.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\s_mp_exptmod_fast.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\s_mp_get_bit.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\s_mp_invmod.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\s_mp_invmod_odd.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\s_mp_log.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\s_mp_log_2expt.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\s_mp_log_d.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\s_mp_montgomery_reduce_comba.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\s_mp_mul.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\s_mp_mul_balance.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\s_mp_mul_comba.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\s_mp_mul_high.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\s_mp_mul_high_comba.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\s_mp_mul_karatsuba.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\s_mp_mul_toom.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\s_mp_prime_is_divisible.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\s_mp_prime_tab.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\s_mp_radix_map.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\s_mp_radix_size_overestimate.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\s_mp_rand_platform.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\s_mp_sqr.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\s_mp_sqr_comba.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\s_mp_sqr_karatsuba.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\s_mp_sqr_toom.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\s_mp_sub.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\s_mp_zero_buf.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\libtommath\s_mp_zero_digs.c">
+      <Filter>third_party\bo4\libtommath</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\imgui\imgui.cpp">
+      <Filter>third_party\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\imgui\imgui_draw.cpp">
+      <Filter>third_party\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\imgui\imgui_tables.cpp">
+      <Filter>third_party\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\imgui\imgui_widgets.cpp">
+      <Filter>third_party\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\imgui\backends\imgui_impl_win32.cpp">
+      <Filter>third_party\imgui\backends</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)third_party\imgui\backends\imgui_impl_dx12.cpp">
+      <Filter>third_party\imgui\backends</Filter>
+    </ClCompile>
+    <ClInclude Include="$(CodRevampedRoot)third_party\imgui\imgui.h">
+      <Filter>third_party\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)third_party\imgui\imgui_internal.h">
+      <Filter>third_party\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)third_party\imgui\imconfig.h">
+      <Filter>third_party\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)third_party\imgui\imstb_rectpack.h">
+      <Filter>third_party\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)third_party\imgui\imstb_textedit.h">
+      <Filter>third_party\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)third_party\imgui\imstb_truetype.h">
+      <Filter>third_party\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)third_party\imgui\backends\imgui_impl_win32.h">
+      <Filter>third_party\imgui\backends</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)third_party\imgui\backends\imgui_impl_dx12.h">
+      <Filter>third_party\imgui\backends</Filter>
+    </ClInclude>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\anchors\dependencies.cpp">
+      <Filter>src\shared\anchors</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

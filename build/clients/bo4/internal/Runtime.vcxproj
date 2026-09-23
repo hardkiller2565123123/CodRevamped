@@ -1,0 +1,432 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="BlackoutBeta|x64">
+      <Configuration>BlackoutBeta</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{3DAD9334-390A-518D-A139-0DBDC70057EA}</ProjectGuid>
+    <RootNamespace>CodRevamped</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>ClientRuntime</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="Shared" />
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <Import Project="$(CodRevampedRoot)build\CodRevamped.Shared.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(CodRevampedRoot)artifacts\lib\$(Configuration)\</OutDir>
+    <IntDir>$(CodRevampedRoot)artifacts\obj\$(Configuration)\BO4\</IntDir>
+    <TargetName>CodRevamped.BO4</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(CodRevampedRoot)artifacts\lib\$(Configuration)\</OutDir>
+    <IntDir>$(CodRevampedRoot)artifacts\obj\$(Configuration)\BO4\</IntDir>
+    <TargetName>CodRevamped.BO4</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">
+    <OutDir>$(CodRevampedRoot)artifacts\lib\$(Configuration)\</OutDir>
+    <IntDir>$(CodRevampedRoot)artifacts\obj\$(Configuration)\BO4\</IntDir>
+    <TargetName>CodRevamped.BO4</TargetName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\T8Module.cpp">
+      <ObjectFileName>$(IntDir)cr_c9bcc6277e75_T8Module.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\T8Runtime.cpp">
+      <ObjectFileName>$(IntDir)cr_d160921532a7_T8Runtime.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\T8Scanner.cpp">
+      <ObjectFileName>$(IntDir)cr_af84937f1ee8_T8Scanner.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\T8BuildProfile.cpp">
+      <ObjectFileName>$(IntDir)cr_t8_build_profile.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\arxan.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_1a1a16b6c31d_arxan.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\blackbox.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_e86bc53f18a2_blackbox.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\command.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_460054d8a194_command.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\T8Console.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_83641a8b5a55_console.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\debugging.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_5304f2dc6822_debugging.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\demonware.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_82bb0297b15b_demonware.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\dvars.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_8d9bb297dc8d_dvars.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\game_console.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_37dc942c3eb0_game_console.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\gsc_custom.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_e37267af33cd_gsc_custom.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\gsc_funcs.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_628a94fb1125_gsc_funcs.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\hashes.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_251f573f3d4a_hashes.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\keycatchers.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_f8727c2435fe_keycatchers.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\logger.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_872515544c40_logger.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\lua.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_4dde3b126600_lua.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\mods.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_d291c18347d2_mods.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\platform.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_6315f0fe9e33_platform.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\plugins.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_9a80606b8b41_plugins.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\scheduler.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_7b1c073c6eec_scheduler.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\splash.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_b90215111a79_splash.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\unlockall.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_fdfb0fdb7976_unlockall.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\watermark.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_375b259ab6de_watermark.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\definitions\game.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_de74d75e5b61_game.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\definitions\GameKeys.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_ec984caca004_keys.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\definitions\network.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_3ec735d69e30_network.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\definitions\scripting.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_c2801ad6d0dd_scripting.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\definitions\variables.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_6d654c8c2088_variables.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\definitions\xassets.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_c89015a8ea99_xassets.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\bit_buffer.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_d67292df57ed_bit_buffer.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\byte_buffer.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_03d7a98c7257_byte_buffer.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\fileshare.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_6bd42c0aa338_fileshare.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\DemonwareKeys.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_8f64fcc4ceb2_keys.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\objects.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_2e7db10c4b55_objects.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\protobuf.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_5dbf89f13d00_protobuf.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\reply.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_de3664f66ecb_reply.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers\auth3_server.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_7eeeee120fa4_auth3_server.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers\base_server.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_fdde9b47247e_base_server.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers\fileshare_server.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_cec8ee57c26d_fileshare_server.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers\lobby_server.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_efddcc982147_lobby_server.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers\stun_server.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_c86ea68308fb_stun_server.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers\tcp_server.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_f2802e5e5683_tcp_server.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers\udp_server.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_a5982101b007_udp_server.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers\umbrella_server.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_07796835a435_umbrella_server.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdAnticheat.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_b7aa761b568b_bdAnticheat.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdBandwidthTest.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_b7d7c0285431_bdBandwidthTest.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdCounter.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_9a8a371c1c2a_bdCounter.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdDML.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_5b4e533fc871_bdDML.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdEventLog.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_f4b8ff5f7347_bdEventLog.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdGroup.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_528c5c519e2a_bdGroup.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdKeyArchive.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_d0d75cbdae26_bdKeyArchive.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdLootGeneration.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_7dcb88fe7aaf_bdLootGeneration.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdMarketingComms.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_0574cb493f77_bdMarketingComms.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdMarketplace.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_2da5699878e0_bdMarketplace.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdObjectStore.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_2248bd131ca8_bdObjectStore.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdPooledStorage.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_e3b0f7a8251d_bdPooledStorage.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdProfiles.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_8f2cafd0b1a5_bdProfiles.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdPublisherVariables.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_03a5864b6cbd_bdPublisherVariables.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdRichPresence.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_280413d55d9e_bdRichPresence.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdStats.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_95dd5dc2c255_bdStats.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdTags.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_53ef376c2be8_bdTags.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdTitleUtilities.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_5f3b7e92199d_bdTitleUtilities.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdUNK125.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_0ec3b92d83ad_bdUNK125.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\loader\component_loader.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_93f295f1c14d_component_loader.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\T8Client.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_9cdd421fd4ff_main.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\spoofer\spoofcall.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_b5ddab1c8e7f_spoofcall.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\BlackoutBetaResearch.cpp">
+      <ObjectFileName>$(IntDir)cr_t8_blackout_beta_research.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\BO4Patches.cpp">
+      <ObjectFileName>$(IntDir)cr_bo4_patches.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\BO4Entry.cpp">
+      <ObjectFileName>$(IntDir)cr_bo4_entry.obj</ObjectFileName>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\T8Module.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\T8Addresses.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\T8BuildProfile.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\T8Runtime.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\T8Scanner.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\T8FullBridge.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\BlackoutBetaResearch.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\MultiplayerBetaResearch.inl" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\T8Console.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\command.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\dvars.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\game_console.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\gsc_custom.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\gsc_funcs.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\hashes.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\keycatchers.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\logger.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\platform.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\scheduler.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\splash.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\version.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\definitions\GameKeys.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\definitions\game.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\definitions\network.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\definitions\scripting.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\definitions\variables.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\definitions\xassets.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\DemonwareKeys.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\bit_buffer.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\byte_buffer.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\data_types.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\fileshare.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\objects.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\protobuf.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\reply.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\server_registry.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers\auth3_server.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers\base_server.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers\fileshare_server.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers\lobby_server.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers\service_server.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers\stun_server.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers\tcp_server.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers\udp_server.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers\umbrella_server.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\service.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdAnticheat.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdBandwidthTest.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdCounter.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdDML.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdEventLog.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdGroup.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdKeyArchive.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdLootGeneration.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdMarketingComms.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdMarketplace.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdObjectStore.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdPooledStorage.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdProfiles.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdPublisherVariables.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdRichPresence.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdStats.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdTags.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdTitleUtilities.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdUNK125.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\loader\component_interface.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\loader\component_loader.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\resource.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\spoofer\spoofcall.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\std_include.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\BO4Patches.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\BO4Entry.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\anchor.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+</Project>

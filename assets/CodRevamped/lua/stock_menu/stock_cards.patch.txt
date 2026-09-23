@@ -1,0 +1,26 @@
+CodRevamped stock LAN cards v5
+strategy=stock-card-datasource
+primary_asset_hash=2CBD14A5E53ED76B
+primary_cache_file=lua_01610_2CBD14A5E53ED76B.luac
+fallback_asset_hash=5BCA1EA30C053DDD
+fallback_cache_file=lua_01641_5BCA1EA30C053DDD.luac
+preserve_existing_cards=true
+preserve_campaign=true
+preserve_multiplayer=true
+preserve_zombies=true
+insert_after=ZOMBIES
+card.0.id=codrevamped_lan_mp
+card.0.displayName=LAN MULTIPLAYER
+card.0.mainMode=MP
+card.0.route=LuaUtils.GetLanSelectMenu
+card.1.id=codrevamped_lan_zm
+card.1.displayName=LAN ZOMBIES
+card.1.mainMode=ZM
+card.1.route=LuaUtils.GetLanSelectMenu
+online.mp.route=LuaUtils.GetOnlineSelectMenu
+online.zm.route=LuaUtils.GetOnlineSelectMenu
+known_stock_fields=DataSources,cards,models,properties,displayName,actionParam,action,mainMode,available,hidden,icon,name
+known_stock_helpers=GetLanMenu,GetLanSelectMenu,GetOnlinePublicMenu,GetOnlineSelectMenu,LobbyData.GetCurrentMenuTarget
+public_network=BLOCKED
+directorhub_loader=RETIRED
+full_lua_dump=DISABLED

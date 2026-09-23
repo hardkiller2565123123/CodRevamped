@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{E7F44D7E-0D9E-4045-AFCC-5C8109A7C0DE}</ProjectGuid>
+    <RootNamespace>CodRevamped</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>MW2019</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="Shared" />
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <Import Project="$(CodRevampedRoot)build\CodRevamped.Shared.props" />
+  <PropertyGroup>
+    <TargetName>version</TargetName>
+    <OutDir>$(CodRevampedRoot)artifacts\bin\MW2019\$(Configuration)\</OutDir>
+    <IntDir>$(CodRevampedRoot)artifacts\obj\MW2019\$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)'=='Debug'">true</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)'=='Release'">false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation Condition="'$(Configuration)'=='Debug'">true</GenerateDebugInformation>
+      <GenerateDebugInformation Condition="'$(Configuration)'=='Release'">false</GenerateDebugInformation>
+      <EnableCOMDATFolding Condition="'$(Configuration)'=='Release'">true</EnableCOMDATFolding>
+      <OptimizeReferences Condition="'$(Configuration)'=='Release'">true</OptimizeReferences>
+      <AdditionalLibraryDirectories>$(CodRevampedRoot)artifacts\lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>ws2_32.lib;iphlpapi.lib;user32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\minhook\src\buffer.c" />
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\minhook\src\hook.c" />
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\minhook\src\trampoline.c" />
+    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\minhook\src\hde\hde64.c" />
+    <ClCompile Include="$(CodRevampedRoot)src\clients\mw2019\diagnostics\MW2019Diag.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\clients\mw2019\diagnostics\MW2019MemoryScanner.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\clients\mw2019\diagnostics\MW2019NetworkBlocker.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\clients\mw2019\diagnostics\MW2019LuaDump.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\clients\mw2019\diagnostics\IW8SessionCompletionProbe.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\clients\mw2019\game\MW2019Patches.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\clients\mw2019\game\IW8144Compat.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\mw2019\game\1.44addressess.h" />
+    <None Include="$(CodRevampedRoot)src\clients\mw2019\diagnostics\diagnostics\SessionCompletion144.inl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(CodRevampedRoot)build\backend\IW8Server.vcxproj">
+      <Project>{1EAC151E-7BB8-4FA6-A0C7-9CB85619294B}</Project>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+</Project>

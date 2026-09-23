@@ -1,0 +1,190 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="BlackoutBeta|x64">
+      <Configuration>BlackoutBeta</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{BA20C849-D39F-5B39-BD24-4FCCF200C667}</ProjectGuid>
+    <RootNamespace>CodRevamped</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Runtime</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.props" />
+  </ImportGroup>
+  <ImportGroup Label="Shared" />
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <Import Project="$(CodRevampedRoot)build\CodRevamped.Shared.props" />
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <PreprocessorDefinitions>CODREVAMPED_COLDWAR_RUNTIME_ONLY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(CodRevampedRoot)artifacts\lib\$(Configuration)\</OutDir>
+    <IntDir>$(CodRevampedRoot)artifacts\obj\$(Configuration)\Runtime\</IntDir>
+    <TargetName>CodRevamped.Runtime</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(CodRevampedRoot)artifacts\lib\$(Configuration)\</OutDir>
+    <IntDir>$(CodRevampedRoot)artifacts\obj\$(Configuration)\Runtime\</IntDir>
+    <TargetName>CodRevamped.Runtime</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">
+    <OutDir>$(CodRevampedRoot)artifacts\lib\$(Configuration)\</OutDir>
+    <IntDir>$(CodRevampedRoot)artifacts\obj\$(Configuration)\Runtime\</IntDir>
+    <TargetName>CodRevamped.Runtime</TargetName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\runtime\console\console.cpp">
+      <ObjectFileName>$(IntDir)cr_3e643b17b1b2_console.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\runtime\RuntimeIpc.cpp">
+      <ObjectFileName>$(IntDir)cr_ba0605b1858a_RuntimeIpc.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\runtime\network\UniversalLan.cpp">
+      <ObjectFileName>$(IntDir)cr_97d74f7d3e2c_UniversalLan.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\runtime\ClientIdentity.cpp">
+      <ObjectFileName>$(IntDir)cr_fb8b9a732e9c_ClientIdentity.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\runtime\scanner\UniversalScanner.cpp">
+      <ObjectFileName>$(IntDir)cr_b727752df9b9_UniversalScanner.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\runtime\scanner\AdvancedAnalysisScanner.cpp">
+      <ObjectFileName>$(IntDir)cr_48cc4c1b354b_AdvancedAnalysisScanner.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\runtime\scanner\ValidatedAddressScanner.cpp">
+      <ObjectFileName>$(IntDir)cr_4c3bb14848cf_ValidatedAddressScanner.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\runtime\proxy\RuntimeOwnership.cpp">
+      <ObjectFileName>$(IntDir)cr_1d261c0cc53f_RuntimeOwnership.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\runtime\ui\ImGuiBackendBridge.cpp">
+      <ObjectFileName>$(IntDir)cr_ee52c027d1ab_ImGuiBackendBridge.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\runtime\ui\ClientServices.cpp">
+      <ObjectFileName>$(IntDir)cr_f74b269ac037_ClientServices.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\runtime\RuntimeScheduler.cpp">
+      <ObjectFileName>$(IntDir)cr_412ee2e39fae_RuntimeScheduler.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\runtime\RuntimeStageManager.cpp">
+      <ObjectFileName>$(IntDir)cr_b53ddd30f1f5_RuntimeStageManager.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\runtime\CrashDiagnostics.cpp">
+      <ObjectFileName>$(IntDir)cr_25c097f55c50_CrashDiagnostics.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\runtime\PointerRegistry.cpp">
+      <ObjectFileName>$(IntDir)cr_523c090a3759_PointerRegistry.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\runtime\ui\ResearchImGui.cpp">
+      <ObjectFileName>$(IntDir)cr_eb054436ab76_ResearchImGui.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\console\console.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\console\T9ConsoleCommandSuggestions.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\RuntimeIpc.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\T9Ipc.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\protection\SecureEngineCustomVMs.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\protection\SecureEngineCustomVMs_BorlandC_inline.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\protection\SecureEngineCustomVMs_GNU_inline.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\protection\SecureEngineCustomVMs_ICL_inline.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\protection\SecureEngineCustomVMs_LCC_inline.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\protection\SecureEngineCustomVMs_VC_inline.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\protection\ThemidaSDK.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\LogPaths.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\StoragePaths.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\network\UniversalLan.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\ClientIdentity.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\scanner\UniversalScanner.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\proxy\RuntimeOwnership.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\ui\ImGuiBackendBridge.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\ui\ClientServices.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\RuntimeScheduler.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\RuntimeStageManager.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\CrashDiagnostics.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\PointerRegistry.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\ui\ResearchImGui.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\scanner\AdvancedAnalysisScanner.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\runtime\scanner\ValidatedAddressScanner.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <MASM Include="$(CodRevampedRoot)src\shared\runtime\asm\spoof_call.asm">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </MASM>
+    <MASM Include="$(CodRevampedRoot)src\shared\runtime\asm\FloatProbe.asm">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </MASM>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(CodRevampedRoot)src\shared\runtime\asm\spoof_call.h" />
+    <None Include="$(CodRevampedRoot)src\shared\runtime\scanner\RuntimeDiscovery.inl" />
+    <None Include="$(CodRevampedRoot)src\shared\runtime\console\CommandConsoleBackend.inl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\anchors\runtime.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.targets" />
+  </ImportGroup>
+</Project>

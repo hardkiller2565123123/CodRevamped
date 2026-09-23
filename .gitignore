@@ -1,0 +1,28 @@
+# Generated files and local IDE state
+/artifacts/
+/.vs/
+*.user
+*.suo
+*.VC.db
+*.VC.opendb
+*.obj
+*.pdb
+*.ilk
+*.exp
+*.tlog
+*.lastbuildstate
+*.log
+*.dmp
+*.rartemp
+__pycache__/
+*.pyc
+
+# Private configuration and research state
+.env
+.env.*
+!.env.example
+agent_data/
+CodResearchAI/
+/exes/
+/backup/
+/backups/

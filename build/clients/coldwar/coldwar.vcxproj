@@ -1,0 +1,110 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{C75CFF4A-1924-4BD4-B7DF-8777B2BE47D3}</ProjectGuid>
+    <RootNamespace>CodRevamped</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>ColdWar</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="Shared" />
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <Import Project="$(CodRevampedRoot)build\CodRevamped.Shared.props" />
+  <PropertyGroup>
+    <TargetName>version</TargetName>
+    <OutDir>$(CodRevampedRoot)artifacts\bin\ColdWar\$(Configuration)\</OutDir>
+    <IntDir>$(CodRevampedRoot)artifacts\obj\ColdWar\$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)'=='Debug'">true</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)'=='Release'">false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation Condition="'$(Configuration)'=='Debug'">true</GenerateDebugInformation>
+      <GenerateDebugInformation Condition="'$(Configuration)'=='Release'">false</GenerateDebugInformation>
+      <EnableCOMDATFolding Condition="'$(Configuration)'=='Release'">true</EnableCOMDATFolding>
+      <OptimizeReferences Condition="'$(Configuration)'=='Release'">true</OptimizeReferences>
+      <AdditionalDependencies>$(CodRevampedRoot)artifacts\lib\$(Configuration)\CodRevamped.ColdWar.lib;ws2_32.lib;iphlpapi.lib;winhttp.lib;crypt32.lib;advapi32.lib;user32.lib;shell32.lib;ole32.lib;d3d12.lib;dxgi.lib;dxguid.lib;windowscodecs.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\coldwar\loader\ColdWarClientMain.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\shared\loader\VersionProxy.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(CodRevampedRoot)build\shared\Common.vcxproj">
+      <Project>{8205F281-3171-5D5B-9043-E7B0578A561B}</Project>
+    </ProjectReference>
+    <ProjectReference Include="$(CodRevampedRoot)build\shared\Dependencies.vcxproj">
+      <Project>{44CB4612-AE25-521E-A321-C14A52E6E466}</Project>
+    </ProjectReference>
+    <ProjectReference Include="$(CodRevampedRoot)build\shared\Features.vcxproj">
+      <Project>{9EA94922-EA2D-5313-A329-B6372FEA9DCA}</Project>
+    </ProjectReference>
+    <ProjectReference Include="$(CodRevampedRoot)build\shared\Patches.vcxproj">
+      <Project>{081AF474-B518-5CEF-A2C3-ADF4A228FCBB}</Project>
+    </ProjectReference>
+    <ProjectReference Include="$(CodRevampedRoot)build\shared\Diagnostics.vcxproj">
+      <Project>{CDF52F14-1EEF-5692-8356-D1D7E8E2286F}</Project>
+    </ProjectReference>
+    <ProjectReference Include="$(CodRevampedRoot)build\shared\Runtime.vcxproj">
+      <Project>{BA20C849-D39F-5B39-BD24-4FCCF200C667}</Project>
+    </ProjectReference>
+    <ProjectReference Include="$(CodRevampedRoot)build\shared\Core.vcxproj">
+      <Project>{313028F6-9C79-5AD1-AEA0-914040453881}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+  <Target Name="BuildClientRuntime" BeforeTargets="Link">
+    <MSBuild Projects="$(CodRevampedRoot)build\clients\coldwar\internal\Runtime.vcxproj" Targets="Build" BuildInParallel="false" Properties="Configuration=$(Configuration);Platform=x64;SolutionDir=$(CodRevampedRoot)" />
+  </Target>
+  <ItemGroup Label="ClientSourceView">
+    <None Include="$(CodRevampedRoot)src\clients\coldwar\game\T9Dvar.cpp" />
+    <None Include="$(CodRevampedRoot)src\clients\coldwar\game\alpha\AlphaSupport.cpp" />
+    <None Include="$(CodRevampedRoot)src\clients\coldwar\game\beta\BetaSupport.cpp" />
+    <None Include="$(CodRevampedRoot)src\clients\coldwar\game\beta\BetaResearch.cpp" />
+    <None Include="$(CodRevampedRoot)src\clients\coldwar\game\beta\BetaOffline.cpp" />
+    <None Include="$(CodRevampedRoot)src\clients\coldwar\game\season2\Season2Support.cpp" />
+    <None Include="$(CodRevampedRoot)src\clients\coldwar\game\ColdWarPatches.cpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\coldwar\game\T9Dvar.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\coldwar\game\alpha\AlphaSupport.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\coldwar\game\beta\BetaSupport.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\coldwar\game\beta\BetaResearch.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\coldwar\game\beta\BetaOffline.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\coldwar\game\season2\Season2Support.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\coldwar\game\T9Addresses.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\clients\coldwar\game\ColdWarPatches.h" />
+    <None Include="$(CodRevampedRoot)src\clients\coldwar\anchor.cpp" />
+  </ItemGroup>
+</Project>

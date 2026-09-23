@@ -1,0 +1,124 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="BlackoutBeta|x64">
+      <Configuration>BlackoutBeta</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{9EA94922-EA2D-5313-A329-B6372FEA9DCA}</ProjectGuid>
+    <RootNamespace>CodRevamped</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Features</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="Shared" />
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <Import Project="$(CodRevampedRoot)build\CodRevamped.Shared.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(CodRevampedRoot)artifacts\lib\$(Configuration)\</OutDir>
+    <IntDir>$(CodRevampedRoot)artifacts\obj\$(Configuration)\Features\</IntDir>
+    <TargetName>CodRevamped.Features</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(CodRevampedRoot)artifacts\lib\$(Configuration)\</OutDir>
+    <IntDir>$(CodRevampedRoot)artifacts\obj\$(Configuration)\Features\</IntDir>
+    <TargetName>CodRevamped.Features</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">
+    <OutDir>$(CodRevampedRoot)artifacts\lib\$(Configuration)\</OutDir>
+    <IntDir>$(CodRevampedRoot)artifacts\obj\$(Configuration)\Features\</IntDir>
+    <TargetName>CodRevamped.Features</TargetName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\features\camo\CamoManager.cpp">
+      <ObjectFileName>$(IntDir)cr_5dee5c51a7d3_CamoManager.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\features\camo\CamoTextureUpload.cpp">
+      <ObjectFileName>$(IntDir)cr_4e08560c0b5e_CamoTextureUpload.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\features\OfflineFeatures.cpp">
+      <ObjectFileName>$(IntDir)cr_dd732d26450d_OfflineFeatures.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\features\CamoPrototype1.cpp">
+      <ObjectFileName>$(IntDir)cr_8f6fbefbeac3_CamoPrototype1.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\features\ColdWarFrontendDvars.cpp">
+      <ObjectFileName>$(IntDir)cr_e33399934323_ColdWarFrontendDvars.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\features\LanProfileResearch.cpp">
+      <ObjectFileName>$(IntDir)cr_3d96e43c8fac_LanProfileResearch.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\features\OnlineResearch.cpp">
+      <ObjectFileName>$(IntDir)cr_44a0110e5be6_OnlineResearch.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\features\content\ContentManager.cpp">
+      <ObjectFileName>$(IntDir)cr_5926757ec127_ContentManager.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\features\camo\CamoManager.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\features\camo\CamoTextureUpload.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\features\OfflineFeatures.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\features\LanProfileResearch.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\features\OnlineResearch.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\features\CamoPrototype1.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\features\ColdWarFrontendDvars.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\features\content\ContentManager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\anchors\features.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+</Project>

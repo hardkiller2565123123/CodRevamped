@@ -1,0 +1,484 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{34EF91A0-2E99-5173-B93B-60637269E146}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\clients">
+      <UniqueIdentifier>{AD241426-5414-5C49-B12B-A0B1B352EF05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\clients\bo4">
+      <UniqueIdentifier>{CE6C25D4-2351-5292-8715-609ABAAE10A7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\clients\bo4\game">
+      <UniqueIdentifier>{05F120F1-46F8-5ADF-AEF1-9F59C667A669}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\clients\bo4\game\full_client">
+      <UniqueIdentifier>{209DE481-9DE6-5146-901E-09C5CFE02580}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\clients\bo4\game\full_client\source">
+      <UniqueIdentifier>{261D4B73-A64A-5C58-8078-FE4BFC5B86FD}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\clients\bo4\game\full_client\source\proxy-dll">
+      <UniqueIdentifier>{43F3CEA2-F18A-5F75-89AA-5C5E0C54AC2B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\clients\bo4\game\full_client\source\proxy-dll\component">
+      <UniqueIdentifier>{BA60B321-8DFB-5518-A726-64B360EDF81A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\clients\bo4\game\full_client\source\proxy-dll\definitions">
+      <UniqueIdentifier>{DFC5B6F1-DE64-5328-8666-BA43604DE61B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\clients\bo4\game\full_client\source\proxy-dll\demonware">
+      <UniqueIdentifier>{4A3508C2-CD87-59D7-BA71-8F859923E5D4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers">
+      <UniqueIdentifier>{3DE07515-F527-5650-B438-DE3E543D4705}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\clients\bo4\game\full_client\source\proxy-dll\demonware\services">
+      <UniqueIdentifier>{12E5D1FA-63BE-554F-BDFE-10F69F7D0BFB}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\clients\bo4\game\full_client\source\proxy-dll\loader">
+      <UniqueIdentifier>{4B90CDE3-1E03-50E4-99B9-44C71C3A0D9C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\clients\bo4\game\full_client\source\proxy-dll\spoofer">
+      <UniqueIdentifier>{93FC6838-0DA1-50D8-9374-25612A95E441}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\T8Module.cpp">
+      <Filter>src\clients\bo4\game</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\T8Runtime.cpp">
+      <Filter>src\clients\bo4\game</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\T8Scanner.cpp">
+      <Filter>src\clients\bo4\game</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\T8BuildProfile.cpp">
+      <Filter>src\clients\bo4\game</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\arxan.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\component</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\blackbox.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\component</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\command.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\component</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\T8Console.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\component</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\debugging.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\component</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\demonware.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\component</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\dvars.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\component</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\game_console.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\component</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\gsc_custom.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\component</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\gsc_funcs.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\component</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\hashes.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\component</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\keycatchers.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\component</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\logger.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\component</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\lua.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\component</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\mods.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\component</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\platform.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\component</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\plugins.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\component</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\scheduler.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\component</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\splash.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\component</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\unlockall.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\component</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\watermark.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\component</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\definitions\game.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\definitions</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\definitions\GameKeys.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\definitions</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\definitions\network.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\definitions</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\definitions\scripting.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\definitions</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\definitions\variables.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\definitions</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\definitions\xassets.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\definitions</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\bit_buffer.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\byte_buffer.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\fileshare.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\DemonwareKeys.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\objects.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\protobuf.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\reply.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers\auth3_server.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers\base_server.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers\fileshare_server.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers\lobby_server.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers\stun_server.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers\tcp_server.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers\udp_server.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers\umbrella_server.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdAnticheat.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\services</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdBandwidthTest.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\services</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdCounter.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\services</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdDML.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\services</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdEventLog.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\services</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdGroup.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\services</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdKeyArchive.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\services</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdLootGeneration.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\services</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdMarketingComms.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\services</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdMarketplace.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\services</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdObjectStore.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\services</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdPooledStorage.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\services</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdProfiles.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\services</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdPublisherVariables.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\services</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdRichPresence.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\services</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdStats.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\services</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdTags.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\services</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdTitleUtilities.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\services</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdUNK125.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\services</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\loader\component_loader.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\loader</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\T8Client.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\spoofer\spoofcall.cpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\spoofer</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\BlackoutBetaResearch.cpp">
+      <Filter>src\clients\bo4\game</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\BO4Patches.cpp">
+      <Filter>src\clients\bo4\game</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\game\BO4Entry.cpp">
+      <Filter>src\clients\bo4\game</Filter>
+    </ClCompile>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\T8Module.h">
+      <Filter>src\clients\bo4\game</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\T8Addresses.h">
+      <Filter>src\clients\bo4\game</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\T8BuildProfile.h">
+      <Filter>src\clients\bo4\game</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\T8Runtime.h">
+      <Filter>src\clients\bo4\game</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\T8Scanner.h">
+      <Filter>src\clients\bo4\game</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\T8FullBridge.h">
+      <Filter>src\clients\bo4\game</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\BlackoutBetaResearch.h">
+      <Filter>src\clients\bo4\game</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\MultiplayerBetaResearch.inl">
+      <Filter>src\clients\bo4\game</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\T8Console.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\component</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\command.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\component</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\dvars.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\component</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\game_console.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\component</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\gsc_custom.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\component</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\gsc_funcs.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\component</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\hashes.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\component</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\keycatchers.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\component</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\logger.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\component</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\platform.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\component</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\scheduler.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\component</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\splash.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\component</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\component\version.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\component</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\definitions\GameKeys.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\definitions</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\definitions\game.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\definitions</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\definitions\network.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\definitions</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\definitions\scripting.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\definitions</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\definitions\variables.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\definitions</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\definitions\xassets.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\definitions</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\DemonwareKeys.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\bit_buffer.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\byte_buffer.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\data_types.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\fileshare.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\objects.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\protobuf.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\reply.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\server_registry.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers\auth3_server.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers\base_server.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers\fileshare_server.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers\lobby_server.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers\service_server.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers\stun_server.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers\tcp_server.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers\udp_server.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers\umbrella_server.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\servers</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\service.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdAnticheat.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\services</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdBandwidthTest.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\services</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdCounter.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\services</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdDML.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\services</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdEventLog.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\services</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdGroup.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\services</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdKeyArchive.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\services</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdLootGeneration.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\services</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdMarketingComms.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\services</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdMarketplace.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\services</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdObjectStore.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\services</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdPooledStorage.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\services</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdProfiles.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\services</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdPublisherVariables.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\services</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdRichPresence.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\services</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdStats.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\services</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdTags.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\services</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdTitleUtilities.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\services</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\demonware\services\bdUNK125.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\demonware\services</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\loader\component_interface.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\loader</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\loader\component_loader.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\loader</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\resource.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\spoofer\spoofcall.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll\spoofer</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll\std_include.hpp">
+      <Filter>src\clients\bo4\game\full_client\source\proxy-dll</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\BO4Patches.h">
+      <Filter>src\clients\bo4\game</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\bo4\game\BO4Entry.h">
+      <Filter>src\clients\bo4\game</Filter>
+    </ClInclude>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\anchor.cpp">
+      <Filter>src\clients\bo4</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

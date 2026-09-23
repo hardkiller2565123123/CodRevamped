@@ -1,0 +1,199 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{34EF91A0-2E99-5173-B93B-60637269E146}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shared">
+      <UniqueIdentifier>{64EFE0E1-AF10-59AB-992F-AF32281B08F5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shared\anchors">
+      <UniqueIdentifier>{A7E720BD-DFEE-5763-88C9-4C4A398333CE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shared\common">
+      <UniqueIdentifier>{8B7A28AD-F245-5A8E-A29B-726E26B7DCA0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shared\common\exception">
+      <UniqueIdentifier>{8E38C42B-5FD1-5247-B1C8-78489724F053}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shared\common\runtime">
+      <UniqueIdentifier>{49A56D48-F428-5502-808B-68E9694B0E76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shared\common\utils">
+      <UniqueIdentifier>{DD854A42-C52B-574C-B1CB-A8985B5B7DA8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shared\compat">
+      <UniqueIdentifier>{FD345E6F-9E06-5963-8F47-123CD87429DD}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shared\compat\games">
+      <UniqueIdentifier>{7E7B66EB-10FA-59B1-9642-0D75B9F2156E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shared\compat\games\common">
+      <UniqueIdentifier>{BFDFB37B-EB03-584D-9D97-13794D75F374}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\common\exception\minidump.cpp">
+      <Filter>src\shared\common\exception</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\common\utils\binary_resource.cpp">
+      <Filter>src\shared\common\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\common\utils\hardware_breakpoint.cpp">
+      <Filter>src\shared\common\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\common\utils\hook.cpp">
+      <Filter>src\shared\common\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\common\utils\http.cpp">
+      <Filter>src\shared\common\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\common\utils\io.cpp">
+      <Filter>src\shared\common\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\common\utils\memory.cpp">
+      <Filter>src\shared\common\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\common\utils\nt.cpp">
+      <Filter>src\shared\common\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\common\utils\pattern_scan.cpp">
+      <Filter>src\shared\common\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\common\utils\signature.cpp">
+      <Filter>src\shared\common\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\common\utils\smbios.cpp">
+      <Filter>src\shared\common\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\common\utils\string.cpp">
+      <Filter>src\shared\common\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\common\utils\thread.cpp">
+      <Filter>src\shared\common\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\common\utils\com.cpp">
+      <Filter>src\shared\common\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\common\utils\compression.cpp">
+      <Filter>src\shared\common\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\common\utils\cryptography.cpp">
+      <Filter>src\shared\common\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\common\utils\flags.cpp">
+      <Filter>src\shared\common\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\common\utils\identity.cpp">
+      <Filter>src\shared\common\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\common\utils\image.cpp">
+      <Filter>src\shared\common\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\common\utils\info_string.cpp">
+      <Filter>src\shared\common\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\common\utils\json_config.cpp">
+      <Filter>src\shared\common\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\common\utils\progress_ui.cpp">
+      <Filter>src\shared\common\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\common\runtime\Addressing.cpp">
+      <Filter>src\shared\common\runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\common\runtime\CryptoCompat.cpp">
+      <Filter>src\shared\common\runtime</Filter>
+    </ClCompile>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\exception\minidump.hpp">
+      <Filter>src\shared\common\exception</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\utils\binary_resource.hpp">
+      <Filter>src\shared\common\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\utils\concurrency.hpp">
+      <Filter>src\shared\common\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\utils\finally.hpp">
+      <Filter>src\shared\common\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\utils\hardware_breakpoint.hpp">
+      <Filter>src\shared\common\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\utils\hook.hpp">
+      <Filter>src\shared\common\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\utils\http.hpp">
+      <Filter>src\shared\common\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\utils\io.hpp">
+      <Filter>src\shared\common\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\utils\memory.hpp">
+      <Filter>src\shared\common\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\utils\nt.hpp">
+      <Filter>src\shared\common\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\utils\pattern_scan.hpp">
+      <Filter>src\shared\common\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\utils\signature.hpp">
+      <Filter>src\shared\common\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\utils\smbios.hpp">
+      <Filter>src\shared\common\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\utils\string.hpp">
+      <Filter>src\shared\common\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\utils\thread.hpp">
+      <Filter>src\shared\common\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\compat\games\common\GameTypes.h">
+      <Filter>src\shared\compat\games\common</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\utils\MinHook.hpp">
+      <Filter>src\shared\common\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\xorstr.hpp">
+      <Filter>src\shared\common</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\runtime\Addressing.hpp">
+      <Filter>src\shared\common\runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\utils\com.hpp">
+      <Filter>src\shared\common\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\utils\compression.hpp">
+      <Filter>src\shared\common\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\utils\cryptography.hpp">
+      <Filter>src\shared\common\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\utils\flags.hpp">
+      <Filter>src\shared\common\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\utils\identity.hpp">
+      <Filter>src\shared\common\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\utils\image.hpp">
+      <Filter>src\shared\common\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\utils\info_string.hpp">
+      <Filter>src\shared\common\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\utils\json_config.hpp">
+      <Filter>src\shared\common\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\utils\progress_ui.hpp">
+      <Filter>src\shared\common\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\compat\games\common\IGameModule.h">
+      <Filter>src\shared\compat\games\common</Filter>
+    </ClInclude>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\anchors\common.cpp">
+      <Filter>src\shared\anchors</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

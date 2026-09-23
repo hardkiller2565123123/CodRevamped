@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <CodRevampedRoot>$(MSBuildThisFileDirectory)..\</CodRevampedRoot>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <PreprocessorDefinitions>__STDC_IEC_559__;MP_NO_DEV_URANDOM;LTC_NO_RSA_BLINDING;LTC_NO_PROTOTYPES;LTC_NO_FAST;LTM_DESC;ZLIB_CONST;RAPIDJSON_HAS_STDSTRING;ASMJIT_NO_AARCH64;ASMJIT_NO_FOREIGN;ASMJIT_STATIC;WIN32_LEAN_AND_MEAN;NOMINMAX;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(CodRevampedRoot);$(CodRevampedRoot)third_party\iw8\zlib\include;$(CodRevampedRoot)src\clients\mw2019\game\full_client\source;$(CodRevampedRoot)src\clients\bo4\game\full_client\source\proxy-dll;$(CodRevampedRoot)src\clients\bo4\game\full_client\source\shared-code;$(CodRevampedRoot)third_party\bo4\zlib\contrib\minizip;$(CodRevampedRoot)third_party\bo4\zlib;$(CodRevampedRoot)third_party\bo4\xxhash;$(CodRevampedRoot)third_party\bo4\winreg\WinReg;$(CodRevampedRoot)third_party\bo4\stb;$(CodRevampedRoot)third_party\bo4\rapidjson\include;$(CodRevampedRoot)third_party\bo4\rapidcsv\src;$(CodRevampedRoot)third_party\bo4\picoproto;$(CodRevampedRoot)third_party\bo4\minhook\include;$(CodRevampedRoot)third_party\bo4\libtommath;$(CodRevampedRoot)third_party\bo4\libtomcrypt\src\headers;$(CodRevampedRoot)third_party\bo4\asmjit\src;$(CodRevampedRoot)third_party\imgui;$(CodRevampedRoot)third_party\imgui\backends;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
+    <ClCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
+    <ClCompile>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+</Project>

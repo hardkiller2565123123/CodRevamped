@@ -1,0 +1,184 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{34EF91A0-2E99-5173-B93B-60637269E146}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shared">
+      <UniqueIdentifier>{64EFE0E1-AF10-59AB-992F-AF32281B08F5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shared\anchors">
+      <UniqueIdentifier>{A7E720BD-DFEE-5763-88C9-4C4A398333CE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shared\diagnostics">
+      <UniqueIdentifier>{A4E0672C-B516-5A15-B07A-265E0CC937DA}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shared\diagnostics\camo">
+      <UniqueIdentifier>{043971A4-36E7-5ACD-8CE8-1875430FBF1B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shared\diagnostics\iw8">
+      <UniqueIdentifier>{9FE62119-5F3E-5109-BD8C-00DB6D191E6B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shared\diagnostics\legacy">
+      <UniqueIdentifier>{8C4F3BBD-D8B6-5CE3-BF61-A5B4D5B12896}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shared\diagnostics\lua">
+      <UniqueIdentifier>{C795B655-D46D-59D5-B4E5-FF7017881AC4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shared\diagnostics\lui">
+      <UniqueIdentifier>{736879CC-DA4F-58BB-93CD-C35804895FF6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shared\diagnostics\online">
+      <UniqueIdentifier>{342FA1FB-724B-53A1-A16D-1A296951FFE8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shared\diagnostics\t9">
+      <UniqueIdentifier>{8419556B-738F-51A4-8FA3-5B04DBC1D0BC}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\diagnostics\camo\CamoPrototypeReadiness.cpp">
+      <Filter>src\shared\diagnostics\camo</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\diagnostics\lui\LuaOwnerStateTrace.cpp">
+      <Filter>src\shared\diagnostics\lui</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\diagnostics\lui\FrontendStateEdgeTrace.cpp">
+      <Filter>src\shared\diagnostics\lui</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\diagnostics\lui\FrontendCustomButtons.cpp">
+      <Filter>src\shared\diagnostics\lui</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\diagnostics\lui\LuaNativeButtonPatch.cpp">
+      <Filter>src\shared\diagnostics\lui</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\diagnostics\t9\T9ScriptDump.cpp">
+      <Filter>src\shared\diagnostics\t9</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\diagnostics\t9\T9DvarDump.cpp">
+      <Filter>src\shared\diagnostics\t9</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\diagnostics\NativeDevConsole.cpp">
+      <Filter>src\shared\diagnostics</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\diagnostics\ResearchCatalog.cpp">
+      <Filter>src\shared\diagnostics</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\diagnostics\RuntimeFocusTrace.cpp">
+      <Filter>src\shared\diagnostics</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\diagnostics\online\OnlineStatePassiveTrace.cpp">
+      <Filter>src\shared\diagnostics\online</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\diagnostics\lua\T9LuaDump.cpp">
+      <Filter>src\shared\diagnostics\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\diagnostics\lui\NativeLuiRouteTrace.cpp">
+      <Filter>src\shared\diagnostics\lui</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\diagnostics\lui\NativeLuiPatchLab.cpp">
+      <Filter>src\shared\diagnostics\lui</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\diagnostics\lui\NativeDirectorMap.cpp">
+      <Filter>src\shared\diagnostics\lui</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\diagnostics\lui\LuaBridgeDiscovery.cpp">
+      <Filter>src\shared\diagnostics\lui</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\diagnostics\lui\LuaRuntimePathTrace.cpp">
+      <Filter>src\shared\diagnostics\lui</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\diagnostics\lui\NativeDirectorStateRouter.cpp">
+      <Filter>src\shared\diagnostics\lui</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\diagnostics\camo\CamoAllocatorTrace.cpp">
+      <Filter>src\shared\diagnostics\camo</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\diagnostics\CommandDiscovery.cpp">
+      <Filter>src\shared\diagnostics</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\diagnostics\lui\LuiResearch.cpp">
+      <Filter>src\shared\diagnostics\lui</Filter>
+    </ClCompile>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\diagnostics\lui\LuaOwnerStateTrace.h">
+      <Filter>src\shared\diagnostics\lui</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\diagnostics\lui\FrontendStateEdgeTrace.h">
+      <Filter>src\shared\diagnostics\lui</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\diagnostics\lui\FrontendCustomButtons.h">
+      <Filter>src\shared\diagnostics\lui</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\diagnostics\lui\LuaNativeButtonPatch.h">
+      <Filter>src\shared\diagnostics\lui</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\diagnostics\t9\T9ScriptDump.h">
+      <Filter>src\shared\diagnostics\t9</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\diagnostics\t9\T9DvarDump.h">
+      <Filter>src\shared\diagnostics\t9</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\diagnostics\NativeDevConsole.h">
+      <Filter>src\shared\diagnostics</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\diagnostics\camo\CamoPrototypeReadiness.h">
+      <Filter>src\shared\diagnostics\camo</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\diagnostics\ResearchCatalog.h">
+      <Filter>src\shared\diagnostics</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\diagnostics\RuntimeFocusTrace.h">
+      <Filter>src\shared\diagnostics</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\diagnostics\online\OnlineStatePassiveTrace.h">
+      <Filter>src\shared\diagnostics\online</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\diagnostics\lua\T9LuaDump.h">
+      <Filter>src\shared\diagnostics\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\diagnostics\lui\NativeLuiRouteTrace.h">
+      <Filter>src\shared\diagnostics\lui</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\diagnostics\lui\NativeLuiPatchLab.h">
+      <Filter>src\shared\diagnostics\lui</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\diagnostics\lui\NativeDirectorMap.h">
+      <Filter>src\shared\diagnostics\lui</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\diagnostics\lui\LuaBridgeDiscovery.h">
+      <Filter>src\shared\diagnostics\lui</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\diagnostics\lui\LuaRuntimePathTrace.h">
+      <Filter>src\shared\diagnostics\lui</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\diagnostics\lui\NativeDirectorStateRouter.h">
+      <Filter>src\shared\diagnostics\lui</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\diagnostics\camo\CamoAllocatorTrace.h">
+      <Filter>src\shared\diagnostics\camo</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\diagnostics\CommandDiscovery.h">
+      <Filter>src\shared\diagnostics</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\diagnostics\RuntimeDiscoveredCandidates.generated.inl">
+      <Filter>src\shared\diagnostics</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\diagnostics\lui\LuiResearch.h">
+      <Filter>src\shared\diagnostics\lui</Filter>
+    </ClInclude>
+    <None Include="$(CodRevampedRoot)src\shared\diagnostics\T9ResearchCatalog.generated.inl">
+      <Filter>src\shared\diagnostics</Filter>
+    </None>
+    <None Include="$(CodRevampedRoot)src\shared\diagnostics\T9ResearchPatterns.generated.inl">
+      <Filter>src\shared\diagnostics</Filter>
+    </None>
+    <None Include="$(CodRevampedRoot)src\shared\diagnostics\camo\CamoManagerLegacyResearch.inl">
+      <Filter>src\shared\diagnostics\camo</Filter>
+    </None>
+    <None Include="$(CodRevampedRoot)src\shared\diagnostics\camo\CamoTextureUploadLegacyResearch.inl">
+      <Filter>src\shared\diagnostics\camo</Filter>
+    </None>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\anchors\research.cpp">
+      <Filter>src\shared\anchors</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{34EF91A0-2E99-5173-B93B-60637269E146}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\clients">
+      <UniqueIdentifier>{AD241426-5414-5C49-B12B-A0B1B352EF05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\clients\bo4">
+      <UniqueIdentifier>{CE6C25D4-2351-5292-8715-609ABAAE10A7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\clients\bo4\loader">
+      <UniqueIdentifier>{97EAD00E-F011-5DA7-AAA4-03F4C39CD49E}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\bo4\loader\BO4DxgiBootstrap.cpp">
+      <Filter>src\clients\bo4\loader</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

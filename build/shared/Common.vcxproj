@@ -1,0 +1,210 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="BlackoutBeta|x64">
+      <Configuration>BlackoutBeta</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{8205F281-3171-5D5B-9043-E7B0578A561B}</ProjectGuid>
+    <RootNamespace>CodRevamped</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Common</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="Shared" />
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <Import Project="$(CodRevampedRoot)build\CodRevamped.Shared.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(CodRevampedRoot)artifacts\lib\$(Configuration)\</OutDir>
+    <IntDir>$(CodRevampedRoot)artifacts\obj\$(Configuration)\Common\</IntDir>
+    <TargetName>CodRevamped.Common</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(CodRevampedRoot)artifacts\lib\$(Configuration)\</OutDir>
+    <IntDir>$(CodRevampedRoot)artifacts\obj\$(Configuration)\Common\</IntDir>
+    <TargetName>CodRevamped.Common</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">
+    <OutDir>$(CodRevampedRoot)artifacts\lib\$(Configuration)\</OutDir>
+    <IntDir>$(CodRevampedRoot)artifacts\obj\$(Configuration)\Common\</IntDir>
+    <TargetName>CodRevamped.Common</TargetName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\common\exception\minidump.cpp">
+      <ObjectFileName>$(IntDir)cr_0b7cca68aef6_minidump.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\common\utils\binary_resource.cpp">
+      <ObjectFileName>$(IntDir)cr_b7d78b30a859_binary_resource.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\common\utils\hardware_breakpoint.cpp">
+      <ObjectFileName>$(IntDir)cr_aedf7f91d47d_hardware_breakpoint.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\common\utils\hook.cpp">
+      <ObjectFileName>$(IntDir)cr_6c93d792f40d_hook.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\common\utils\http.cpp">
+      <ObjectFileName>$(IntDir)cr_be1edcafd3f5_http.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\common\utils\io.cpp">
+      <ObjectFileName>$(IntDir)cr_9db21c67fa84_io.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\common\utils\memory.cpp">
+      <ObjectFileName>$(IntDir)cr_a41122ad5a05_memory.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\common\utils\nt.cpp">
+      <ObjectFileName>$(IntDir)cr_0927566d9013_nt.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\common\utils\pattern_scan.cpp">
+      <ObjectFileName>$(IntDir)cr_pattern_scan.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\common\utils\signature.cpp">
+      <ObjectFileName>$(IntDir)cr_34705c12cb7e_signature.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\common\utils\smbios.cpp">
+      <ObjectFileName>$(IntDir)cr_6026c3ba39d6_smbios.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\common\utils\string.cpp">
+      <ObjectFileName>$(IntDir)cr_0be055ecc867_string.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\common\utils\thread.cpp">
+      <ObjectFileName>$(IntDir)cr_db11fb5d5509_thread.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\common\utils\com.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_031d10460caa_com.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\common\utils\compression.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_04e9aa768e01_compression.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\common\utils\cryptography.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_8ae11c48b7cb_cryptography.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\common\utils\flags.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_469ff5ab387c_flags.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\common\utils\identity.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_2e840d88005f_identity.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\common\utils\image.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_c5869d563d83_image.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\common\utils\info_string.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_02a59fbcb3c6_info_string.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\common\utils\json_config.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_e51c8c894497_json_config.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\common\utils\progress_ui.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(IntDir)cr_899c8b136227_progress_ui.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BlackoutBeta|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\common\runtime\Addressing.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\shared\common\runtime\CryptoCompat.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\exception\minidump.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\utils\binary_resource.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\utils\concurrency.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\utils\finally.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\utils\hardware_breakpoint.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\utils\hook.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\utils\http.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\utils\io.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\utils\memory.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\utils\nt.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\utils\pattern_scan.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\utils\signature.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\utils\smbios.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\utils\string.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\utils\thread.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\compat\games\common\GameTypes.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\utils\MinHook.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\xorstr.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\runtime\Addressing.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\utils\com.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\utils\compression.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\utils\cryptography.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\utils\flags.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\utils\identity.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\utils\image.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\utils\info_string.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\utils\json_config.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\common\utils\progress_ui.hpp" />
+    <ClInclude Include="$(CodRevampedRoot)src\shared\compat\games\common\IGameModule.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(CodRevampedRoot)src\shared\anchors\common.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+</Project>
