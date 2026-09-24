@@ -1,6 +1,6 @@
 #include "ConnectionService.h"
 #include "../BgsDispatcher.h"
-#include "../../Log.h"
+#include "Common/Logging/Log.h"
 
 namespace revamped::iw8::bgs
 {

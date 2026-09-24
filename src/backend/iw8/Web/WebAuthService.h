@@ -7,10 +7,10 @@
 
 namespace revamped::iw8::web
 {
-    // Initializes the persistent local RSA-PSS key used to sign Auth3 JSON
-    // replies and exports its 294-byte DER public key beside the server.
+    // Sets up the local Auth3 signer.
     bool InitializeLocalAuthSigner();
 
+    // HTTP request result.
     struct HttpResult
     {
         bool complete = false;
@@ -25,19 +25,33 @@ namespace revamped::iw8::web
         std::string response;
     };
 
-    // Consumes exactly one complete HTTP/1.x request from buffer. Values from
-    // Authorization headers and form/query parameters are never copied into
-    // HttpResult; only parameter names are surfaced for diagnostics.
+    // Handles one local web request.
     HttpResult TryHandleLocalWebRequest(std::vector<std::uint8_t>& buffer);
 
-    // Read-only auth-pipeline diagnostics. These do not fabricate client auth
-    // state; they only correlate the last accepted Auth3/Umbrella exchange with
-    // any subsequent local Demonware lobby transport observed by the server.
+    // Tracks the LSG connection.
     void NotePostLsgTransport(std::uint16_t port, const char* transport);
+
+    // Updates auth diagnostics.
     void PollAuthPipelineDiagnostics();
 
-    // Returns the 24-byte session key associated with the most recent local
-    // Auth3 ticket pair.  The server uses it only to authenticate the stock
-    // LSG binary handshake; no client-side state is modified.
-    bool GetLatestAuth3SessionKey(std::uint8_t outKey[24], std::uint64_t* auth3Serial = nullptr);
+    // Gets available LSG session keys.
+    std::size_t GetLsgSessionKeyCandidatesV72(
+        std::uint8_t* outKeys,
+        std::uint32_t* outKinds,
+        std::size_t maxKeys,
+        std::uint64_t* auth3Serial = nullptr);
+
+    // Gets available Auth3 key data.
+    std::size_t GetLsgKeyMaterialBlobsV73(
+        std::uint8_t* outBlobs,
+        std::uint32_t* outSizes,
+        std::uint32_t* outKinds,
+        std::size_t stride,
+        std::size_t maxBlobs,
+        std::uint64_t* auth3Serial = nullptr);
+
+    // Gets the latest Auth3 session key.
+    bool GetLatestAuth3SessionKey(
+        std::uint8_t outKey[24],
+        std::uint64_t* auth3Serial = nullptr);
 }

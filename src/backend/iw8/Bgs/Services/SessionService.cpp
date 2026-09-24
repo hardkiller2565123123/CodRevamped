@@ -1,7 +1,7 @@
 #include "SessionService.h"
 #include "../BgsDispatcher.h"
 #include "../Listeners/SessionListener.h"
-#include "../../Log.h"
+#include "Common/Logging/Log.h"
 
 #include <algorithm>
 #include <cctype>

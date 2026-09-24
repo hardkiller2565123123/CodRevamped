@@ -1,5 +1,5 @@
 #include "BgsDispatcher.h"
-#include "../Log.h"
+#include "Common/Logging/Log.h"
 #include "ProtocolIntrospection.h"
 #include "Services/AccountService.h"
 #include "Services/BlockListService.h"

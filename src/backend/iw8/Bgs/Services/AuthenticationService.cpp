@@ -1,6 +1,6 @@
 #include "AuthenticationService.h"
 #include "../BgsDispatcher.h"
-#include "../../Log.h"
+#include "Common/Logging/Log.h"
 
 #include <random>
 

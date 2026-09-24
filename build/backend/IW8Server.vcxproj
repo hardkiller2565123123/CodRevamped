@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
@@ -54,6 +54,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalIncludeDirectories>$(CodRevampedRoot)src\backend\iw8;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -71,6 +72,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalIncludeDirectories>$(CodRevampedRoot)src\backend\iw8;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -81,46 +83,262 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\main.cpp" />
-    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Server.cpp" />
-    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ServerTls.cpp" />
-    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ServerLsg.cpp" />
-    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Protocol.cpp" />
-    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Log.cpp" />
-    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Bgs\BgsRpc.cpp" />
-    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Bgs\ProtocolIntrospection.cpp" />
-    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Demonware\DemonwareTaskRouter.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\App\Main.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Auth\ExternalChallenge.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Bgs\BgsDispatcher.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Bgs\BgsRpc.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Diagnostics\PlaintextIntrospection.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Listeners\SessionListener.cpp" />
-    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\ConnectionService.cpp" />
-    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\AuthenticationService.cpp" />
-    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\SessionService.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Bgs\ProtocolIntrospection.cpp" />
     <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\AccountService.cpp" />
-    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\PresenceService.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\AuthenticationService.cpp" />
     <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\BlockListService.cpp" />
-    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\RecentPlayersService.cpp" />
     <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\ChannelMembershipService.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\ConnectionService.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\PresenceService.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\RecentPlayersService.cpp" />
     <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\ResourcesService.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\SessionService.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Transport\BgsPlaintext.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Common\Logging\Log.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Common\Protocol\Protocol.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Demonware\DemonwareTaskRouter.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Internal\JsonObjectStoreParsing.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Internal\Serialization.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Lsg\CryptoPrimitives.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Lsg\Diagnostics.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Lsg\LsgServer.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Lsg\LsgSessionHandler.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Lsg\TrafficSigningKeys.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Lsg\TransportPrimitives.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Public\TaskRouter.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Services\Achievements.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Services\LegacyBootstrap.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Services\ObjectStore.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Services\PublisherVariables.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Services\RestBootstrap.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Server\Core\Server.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Server\Lifecycle\CloseClient.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Server\Lifecycle\Construction.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Server\Lifecycle\Run.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Server\Lifecycle\Start.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Server\Lifecycle\Stop.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Server\Networking\SocketHelpers.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Server\Networking\TcpAccept.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Server\Networking\TcpListener.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Server\Networking\TcpReceive.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Server\Networking\UdpListener.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Server\Networking\UdpReceive.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Tls\Certificates\CertificateAuthority.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Tls\Certificates\LeafCertificate.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Tls\Certificates\RevocationArtifacts.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Tls\Credentials\CredentialPolicy.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Tls\Handshake\ClientHello.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Tls\TlsServer.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Tls\TlsSessionState.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Tls\Transport\SocketIo.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Tls\Transport\TlsEngine.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Tls\Transport\TlsRecordIo.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Tls\Trust\BundleJson.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Tls\Trust\BundleSigner.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Tls\Trust\StockBundleDiscovery.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Tls\Trust\TrustManifest.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Tls\WebSocket\WebSocketProtocol.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Web\Internal\AuthPipelineState.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Web\Internal\AuthResponseBuilders.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Web\Internal\AuthSigner.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Web\Internal\EncodingCrypto.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Web\Internal\HttpFormParsing.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Web\Internal\JsonParsing.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Web\Internal\LsgKeyDecoding.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Web\Public\HttpRouter.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Web\Public\InitializeSigner.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Web\Public\LsgKeyMaterial.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Web\Public\PipelinePolling.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Web\Public\PostLsgDiagnostics.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Web\TlsWebRequest.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Web\WebAuthService.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Server.h" />
-    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Protocol.h" />
-    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Log.h" />
-    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Bgs\BgsRpc.h" />
-    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Bgs\ProtocolIntrospection.h" />
-    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Demonware\DemonwareTaskRouter.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Auth\ExternalChallenge.h" />
     <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Bgs\BgsDispatcher.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Bgs\BgsRpc.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Diagnostics\PlaintextIntrospection.h" />
     <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Listeners\SessionListener.h" />
-    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\ConnectionService.h" />
-    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\AuthenticationService.h" />
-    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\SessionService.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Bgs\ProtocolIntrospection.h" />
     <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\AccountService.h" />
-    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\PresenceService.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\AuthenticationService.h" />
     <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\BlockListService.h" />
-    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\RecentPlayersService.h" />
     <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\ChannelMembershipService.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\ConnectionService.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\PresenceService.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\RecentPlayersService.h" />
     <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\ResourcesService.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\SessionService.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Transport\BgsPlaintext.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Common\Logging\Log.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Common\Protocol\Protocol.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Demonware\DemonwareTaskRouter.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Internal\JsonObjectStoreParsing.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Internal\Serialization.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Lsg\CryptoPrimitives.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Lsg\Diagnostics.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Lsg\LsgSessionHandler.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Lsg\TrafficSigningKeys.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Lsg\TransportPrimitives.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Public\TaskRouter.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Services\Achievements.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Services\LegacyBootstrap.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Services\ObjectStore.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Services\PublisherVariables.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Services\RestBootstrap.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Server\Core\Server.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Server\Lifecycle\CloseClient.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Server\Lifecycle\Construction.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Server\Lifecycle\Run.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Server\Lifecycle\Start.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Server\Lifecycle\Stop.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Server\Networking\SocketHelpers.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Server\Networking\TcpAccept.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Server\Networking\TcpListener.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Server\Networking\TcpReceive.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Server\Networking\UdpListener.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Server\Networking\UdpReceive.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Tls\Certificates\CertificateAuthority.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Tls\Certificates\LeafCertificate.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Tls\Certificates\RevocationArtifacts.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Tls\Credentials\CredentialPolicy.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Tls\Handshake\ClientHello.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Tls\TlsSessionState.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Tls\Transport\SocketIo.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Tls\Transport\TlsEngine.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Tls\Transport\TlsRecordIo.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Tls\Trust\BundleJson.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Tls\Trust\BundleSigner.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Tls\Trust\StockBundleDiscovery.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Tls\Trust\TrustManifest.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Tls\WebSocket\WebSocketProtocol.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Web\Internal\AuthPipelineState.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Web\Internal\AuthResponseBuilders.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Web\Internal\AuthSigner.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Web\Internal\EncodingCrypto.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Web\Internal\HttpFormParsing.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Web\Internal\JsonParsing.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Web\Internal\LsgKeyDecoding.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Web\Public\HttpRouter.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Web\Public\InitializeSigner.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Web\Public\LsgKeyMaterial.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Web\Public\PipelinePolling.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Web\Public\PostLsgDiagnostics.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Web\TlsWebRequest.h" />
     <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Web\WebAuthService.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

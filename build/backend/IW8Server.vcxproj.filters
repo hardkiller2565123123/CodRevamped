@@ -1,148 +1,537 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <ItemGroup>
-    <Filter Include="src">
-      <UniqueIdentifier>{34EF91A0-2E99-5173-B93B-60637269E146}</UniqueIdentifier>
+    <Filter Include="App">
+      <UniqueIdentifier>{F5F304F2-4B5A-5028-8E75-254D9E099275}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\backend">
-      <UniqueIdentifier>{EA171CF7-C4F8-50DA-941C-97185438AA0C}</UniqueIdentifier>
+    <Filter Include="Bgs">
+      <UniqueIdentifier>{8C9A461E-3C74-5003-9657-991F34A7256E}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\backend\iw8">
-      <UniqueIdentifier>{E5870BDA-920C-52D9-AE0A-6D6F5CA6DBCE}</UniqueIdentifier>
+    <Filter Include="Common">
+      <UniqueIdentifier>{3843C647-998D-5BC7-82FF-9C68AE1D8FDA}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\backend\iw8\Bgs">
-      <UniqueIdentifier>{649A01D3-8BD1-56DB-9F76-44FF1A8D018A}</UniqueIdentifier>
+    <Filter Include="Demonware">
+      <UniqueIdentifier>{228B5AE4-9B60-5D44-8C83-92EE6BB9817C}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\backend\iw8\Bgs\Listeners">
-      <UniqueIdentifier>{E5DFF87F-1362-5B1F-A977-7B56881D2938}</UniqueIdentifier>
+    <Filter Include="Server">
+      <UniqueIdentifier>{D7D7AB7D-5C30-5EF6-9B76-2DED4975B68C}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\backend\iw8\Bgs\Services">
-      <UniqueIdentifier>{DF3D7F5F-4C58-53A9-B105-0051665D7A39}</UniqueIdentifier>
+    <Filter Include="Tls">
+      <UniqueIdentifier>{23DDBAD8-B7C2-5DB4-9859-6942119FA140}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\backend\iw8\Demonware">
-      <UniqueIdentifier>{A3A86AC8-6E8D-56AF-A17F-EC4DDA531912}</UniqueIdentifier>
+    <Filter Include="Web">
+      <UniqueIdentifier>{E8990CC3-B9F1-5EEC-A00E-5A3B1BA1234E}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\backend\iw8\Web">
-      <UniqueIdentifier>{46AECD6B-D147-5458-AF19-F481361633C8}</UniqueIdentifier>
+    <Filter Include="Bgs\Auth">
+      <UniqueIdentifier>{0D0ADB2C-B4F1-5420-BD5A-B11541C42D17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bgs\Diagnostics">
+      <UniqueIdentifier>{220CA557-01BC-5A3E-B831-810CEDA477AE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bgs\Listeners">
+      <UniqueIdentifier>{388FFE25-98DA-5121-BF70-2ABB146CFE55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bgs\Services">
+      <UniqueIdentifier>{244740EF-24F5-587F-964C-49E3097878E5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bgs\Transport">
+      <UniqueIdentifier>{811FB32B-E066-58DA-9F00-C16436F6319C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Logging">
+      <UniqueIdentifier>{C0EB27E3-B9E2-5539-BD85-FE72B8F46254}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Protocol">
+      <UniqueIdentifier>{2DE6761A-0A04-506C-BE75-461E9BB09590}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demonware\Internal">
+      <UniqueIdentifier>{CF08065A-29B0-5376-9664-CA58D0CAAC68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demonware\Lsg">
+      <UniqueIdentifier>{52931F5C-72A5-5CD9-8726-7BF252CDD440}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demonware\Public">
+      <UniqueIdentifier>{D6BB6EA3-7425-5B03-8C64-B9908375182F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demonware\Services">
+      <UniqueIdentifier>{C139CDE4-0BB8-597F-B73F-B6770662A177}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Server\Core">
+      <UniqueIdentifier>{E2796C74-4BB2-5504-A6B7-1A650BA4497D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Server\Lifecycle">
+      <UniqueIdentifier>{CF51D4A1-27F4-53E3-95E8-D5776DFC9E3B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Server\Networking">
+      <UniqueIdentifier>{27730FAF-222E-57BB-A54C-327DDCE56CC9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tls\Certificates">
+      <UniqueIdentifier>{35F59B83-9655-52D6-9410-72E7BD74A2A7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tls\Credentials">
+      <UniqueIdentifier>{CACDBBDC-C459-54D7-81DE-2BF926A3E031}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tls\Handshake">
+      <UniqueIdentifier>{F7FC6839-F525-50D0-820C-A3E7EADB0D12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tls\Transport">
+      <UniqueIdentifier>{54A4072F-61CD-56F9-968D-56504D553DF4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tls\Trust">
+      <UniqueIdentifier>{788F3FCC-D804-512E-9DE5-34D017CEFED4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tls\WebSocket">
+      <UniqueIdentifier>{36FA977C-40EA-5ACF-BFFB-7AD92620EBF6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Web\Internal">
+      <UniqueIdentifier>{991B5C2A-6049-5A4A-A859-02D8D7E6BE4A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Web\Public">
+      <UniqueIdentifier>{1FEC5803-CE69-514B-BCE1-E063623905BF}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\main.cpp">
-      <Filter>src\backend\iw8</Filter>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\App\Main.cpp">
+      <Filter>App</Filter>
     </ClCompile>
-    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Server.cpp">
-      <Filter>src\backend\iw8</Filter>
-    </ClCompile>
-    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ServerTls.cpp">
-      <Filter>src\backend\iw8</Filter>
-    </ClCompile>
-    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ServerLsg.cpp">
-      <Filter>src\backend\iw8</Filter>
-    </ClCompile>
-    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Protocol.cpp">
-      <Filter>src\backend\iw8</Filter>
-    </ClCompile>
-    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Log.cpp">
-      <Filter>src\backend\iw8</Filter>
-    </ClCompile>
-    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Bgs\BgsRpc.cpp">
-      <Filter>src\backend\iw8\Bgs</Filter>
-    </ClCompile>
-    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Bgs\ProtocolIntrospection.cpp">
-      <Filter>src\backend\iw8\Bgs</Filter>
-    </ClCompile>
-    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Demonware\DemonwareTaskRouter.cpp">
-      <Filter>src\backend\iw8\Demonware</Filter>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Auth\ExternalChallenge.cpp">
+      <Filter>Bgs\Auth</Filter>
     </ClCompile>
     <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Bgs\BgsDispatcher.cpp">
-      <Filter>src\backend\iw8\Bgs</Filter>
+      <Filter>Bgs</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Bgs\BgsRpc.cpp">
+      <Filter>Bgs</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Diagnostics\PlaintextIntrospection.cpp">
+      <Filter>Bgs\Diagnostics</Filter>
     </ClCompile>
     <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Listeners\SessionListener.cpp">
-      <Filter>src\backend\iw8\Bgs\Listeners</Filter>
+      <Filter>Bgs\Listeners</Filter>
     </ClCompile>
-    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\ConnectionService.cpp">
-      <Filter>src\backend\iw8\Bgs\Services</Filter>
-    </ClCompile>
-    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\AuthenticationService.cpp">
-      <Filter>src\backend\iw8\Bgs\Services</Filter>
-    </ClCompile>
-    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\SessionService.cpp">
-      <Filter>src\backend\iw8\Bgs\Services</Filter>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Bgs\ProtocolIntrospection.cpp">
+      <Filter>Bgs</Filter>
     </ClCompile>
     <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\AccountService.cpp">
-      <Filter>src\backend\iw8\Bgs\Services</Filter>
+      <Filter>Bgs\Services</Filter>
     </ClCompile>
-    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\PresenceService.cpp">
-      <Filter>src\backend\iw8\Bgs\Services</Filter>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\AuthenticationService.cpp">
+      <Filter>Bgs\Services</Filter>
     </ClCompile>
     <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\BlockListService.cpp">
-      <Filter>src\backend\iw8\Bgs\Services</Filter>
-    </ClCompile>
-    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\RecentPlayersService.cpp">
-      <Filter>src\backend\iw8\Bgs\Services</Filter>
+      <Filter>Bgs\Services</Filter>
     </ClCompile>
     <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\ChannelMembershipService.cpp">
-      <Filter>src\backend\iw8\Bgs\Services</Filter>
+      <Filter>Bgs\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\ConnectionService.cpp">
+      <Filter>Bgs\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\PresenceService.cpp">
+      <Filter>Bgs\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\RecentPlayersService.cpp">
+      <Filter>Bgs\Services</Filter>
     </ClCompile>
     <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\ResourcesService.cpp">
-      <Filter>src\backend\iw8\Bgs\Services</Filter>
+      <Filter>Bgs\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\SessionService.cpp">
+      <Filter>Bgs\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Transport\BgsPlaintext.cpp">
+      <Filter>Bgs\Transport</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Common\Logging\Log.cpp">
+      <Filter>Common\Logging</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Common\Protocol\Protocol.cpp">
+      <Filter>Common\Protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Demonware\DemonwareTaskRouter.cpp">
+      <Filter>Demonware</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Internal\JsonObjectStoreParsing.cpp">
+      <Filter>Demonware\Internal</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Internal\Serialization.cpp">
+      <Filter>Demonware\Internal</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Lsg\CryptoPrimitives.cpp">
+      <Filter>Demonware\Lsg</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Lsg\Diagnostics.cpp">
+      <Filter>Demonware\Lsg</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Lsg\LsgServer.cpp">
+      <Filter>Demonware\Lsg</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Lsg\LsgSessionHandler.cpp">
+      <Filter>Demonware\Lsg</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Lsg\TrafficSigningKeys.cpp">
+      <Filter>Demonware\Lsg</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Lsg\TransportPrimitives.cpp">
+      <Filter>Demonware\Lsg</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Public\TaskRouter.cpp">
+      <Filter>Demonware\Public</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Services\Achievements.cpp">
+      <Filter>Demonware\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Services\LegacyBootstrap.cpp">
+      <Filter>Demonware\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Services\ObjectStore.cpp">
+      <Filter>Demonware\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Services\PublisherVariables.cpp">
+      <Filter>Demonware\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Services\RestBootstrap.cpp">
+      <Filter>Demonware\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Server\Core\Server.cpp">
+      <Filter>Server\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Server\Lifecycle\CloseClient.cpp">
+      <Filter>Server\Lifecycle</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Server\Lifecycle\Construction.cpp">
+      <Filter>Server\Lifecycle</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Server\Lifecycle\Run.cpp">
+      <Filter>Server\Lifecycle</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Server\Lifecycle\Start.cpp">
+      <Filter>Server\Lifecycle</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Server\Lifecycle\Stop.cpp">
+      <Filter>Server\Lifecycle</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Server\Networking\SocketHelpers.cpp">
+      <Filter>Server\Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Server\Networking\TcpAccept.cpp">
+      <Filter>Server\Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Server\Networking\TcpListener.cpp">
+      <Filter>Server\Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Server\Networking\TcpReceive.cpp">
+      <Filter>Server\Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Server\Networking\UdpListener.cpp">
+      <Filter>Server\Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Server\Networking\UdpReceive.cpp">
+      <Filter>Server\Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Tls\Certificates\CertificateAuthority.cpp">
+      <Filter>Tls\Certificates</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Tls\Certificates\LeafCertificate.cpp">
+      <Filter>Tls\Certificates</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Tls\Certificates\RevocationArtifacts.cpp">
+      <Filter>Tls\Certificates</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Tls\Credentials\CredentialPolicy.cpp">
+      <Filter>Tls\Credentials</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Tls\Handshake\ClientHello.cpp">
+      <Filter>Tls\Handshake</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Tls\TlsServer.cpp">
+      <Filter>Tls</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Tls\TlsSessionState.cpp">
+      <Filter>Tls</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Tls\Transport\SocketIo.cpp">
+      <Filter>Tls\Transport</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Tls\Transport\TlsEngine.cpp">
+      <Filter>Tls\Transport</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Tls\Transport\TlsRecordIo.cpp">
+      <Filter>Tls\Transport</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Tls\Trust\BundleJson.cpp">
+      <Filter>Tls\Trust</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Tls\Trust\BundleSigner.cpp">
+      <Filter>Tls\Trust</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Tls\Trust\StockBundleDiscovery.cpp">
+      <Filter>Tls\Trust</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Tls\Trust\TrustManifest.cpp">
+      <Filter>Tls\Trust</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Tls\WebSocket\WebSocketProtocol.cpp">
+      <Filter>Tls\WebSocket</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Web\Internal\AuthPipelineState.cpp">
+      <Filter>Web\Internal</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Web\Internal\AuthResponseBuilders.cpp">
+      <Filter>Web\Internal</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Web\Internal\AuthSigner.cpp">
+      <Filter>Web\Internal</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Web\Internal\EncodingCrypto.cpp">
+      <Filter>Web\Internal</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Web\Internal\HttpFormParsing.cpp">
+      <Filter>Web\Internal</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Web\Internal\JsonParsing.cpp">
+      <Filter>Web\Internal</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Web\Internal\LsgKeyDecoding.cpp">
+      <Filter>Web\Internal</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Web\Public\HttpRouter.cpp">
+      <Filter>Web\Public</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Web\Public\InitializeSigner.cpp">
+      <Filter>Web\Public</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Web\Public\LsgKeyMaterial.cpp">
+      <Filter>Web\Public</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Web\Public\PipelinePolling.cpp">
+      <Filter>Web\Public</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Web\Public\PostLsgDiagnostics.cpp">
+      <Filter>Web\Public</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Web\TlsWebRequest.cpp">
+      <Filter>Web</Filter>
     </ClCompile>
     <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Web\WebAuthService.cpp">
-      <Filter>src\backend\iw8\Web</Filter>
+      <Filter>Web</Filter>
     </ClCompile>
-    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Server.h">
-      <Filter>src\backend\iw8</Filter>
-    </ClInclude>
-    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Protocol.h">
-      <Filter>src\backend\iw8</Filter>
-    </ClInclude>
-    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Log.h">
-      <Filter>src\backend\iw8</Filter>
-    </ClInclude>
-    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Bgs\BgsRpc.h">
-      <Filter>src\backend\iw8\Bgs</Filter>
-    </ClInclude>
-    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Bgs\ProtocolIntrospection.h">
-      <Filter>src\backend\iw8\Bgs</Filter>
-    </ClInclude>
-    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Demonware\DemonwareTaskRouter.h">
-      <Filter>src\backend\iw8\Demonware</Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Auth\ExternalChallenge.h">
+      <Filter>Bgs\Auth</Filter>
     </ClInclude>
     <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Bgs\BgsDispatcher.h">
-      <Filter>src\backend\iw8\Bgs</Filter>
+      <Filter>Bgs</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Bgs\BgsRpc.h">
+      <Filter>Bgs</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Diagnostics\PlaintextIntrospection.h">
+      <Filter>Bgs\Diagnostics</Filter>
     </ClInclude>
     <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Listeners\SessionListener.h">
-      <Filter>src\backend\iw8\Bgs\Listeners</Filter>
+      <Filter>Bgs\Listeners</Filter>
     </ClInclude>
-    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\ConnectionService.h">
-      <Filter>src\backend\iw8\Bgs\Services</Filter>
-    </ClInclude>
-    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\AuthenticationService.h">
-      <Filter>src\backend\iw8\Bgs\Services</Filter>
-    </ClInclude>
-    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\SessionService.h">
-      <Filter>src\backend\iw8\Bgs\Services</Filter>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Bgs\ProtocolIntrospection.h">
+      <Filter>Bgs</Filter>
     </ClInclude>
     <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\AccountService.h">
-      <Filter>src\backend\iw8\Bgs\Services</Filter>
+      <Filter>Bgs\Services</Filter>
     </ClInclude>
-    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\PresenceService.h">
-      <Filter>src\backend\iw8\Bgs\Services</Filter>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\AuthenticationService.h">
+      <Filter>Bgs\Services</Filter>
     </ClInclude>
     <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\BlockListService.h">
-      <Filter>src\backend\iw8\Bgs\Services</Filter>
-    </ClInclude>
-    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\RecentPlayersService.h">
-      <Filter>src\backend\iw8\Bgs\Services</Filter>
+      <Filter>Bgs\Services</Filter>
     </ClInclude>
     <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\ChannelMembershipService.h">
-      <Filter>src\backend\iw8\Bgs\Services</Filter>
+      <Filter>Bgs\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\ConnectionService.h">
+      <Filter>Bgs\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\PresenceService.h">
+      <Filter>Bgs\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\RecentPlayersService.h">
+      <Filter>Bgs\Services</Filter>
     </ClInclude>
     <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\ResourcesService.h">
-      <Filter>src\backend\iw8\Bgs\Services</Filter>
+      <Filter>Bgs\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Services\SessionService.h">
+      <Filter>Bgs\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Transport\BgsPlaintext.h">
+      <Filter>Bgs\Transport</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Common\Logging\Log.h">
+      <Filter>Common\Logging</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Common\Protocol\Protocol.h">
+      <Filter>Common\Protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Demonware\DemonwareTaskRouter.h">
+      <Filter>Demonware</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Internal\JsonObjectStoreParsing.h">
+      <Filter>Demonware\Internal</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Internal\Serialization.h">
+      <Filter>Demonware\Internal</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Lsg\CryptoPrimitives.h">
+      <Filter>Demonware\Lsg</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Lsg\Diagnostics.h">
+      <Filter>Demonware\Lsg</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Lsg\LsgSessionHandler.h">
+      <Filter>Demonware\Lsg</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Lsg\TrafficSigningKeys.h">
+      <Filter>Demonware\Lsg</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Lsg\TransportPrimitives.h">
+      <Filter>Demonware\Lsg</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Public\TaskRouter.h">
+      <Filter>Demonware\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Services\Achievements.h">
+      <Filter>Demonware\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Services\LegacyBootstrap.h">
+      <Filter>Demonware\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Services\ObjectStore.h">
+      <Filter>Demonware\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Services\PublisherVariables.h">
+      <Filter>Demonware\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Services\RestBootstrap.h">
+      <Filter>Demonware\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Server\Core\Server.h">
+      <Filter>Server\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Server\Lifecycle\CloseClient.h">
+      <Filter>Server\Lifecycle</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Server\Lifecycle\Construction.h">
+      <Filter>Server\Lifecycle</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Server\Lifecycle\Run.h">
+      <Filter>Server\Lifecycle</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Server\Lifecycle\Start.h">
+      <Filter>Server\Lifecycle</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Server\Lifecycle\Stop.h">
+      <Filter>Server\Lifecycle</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Server\Networking\SocketHelpers.h">
+      <Filter>Server\Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Server\Networking\TcpAccept.h">
+      <Filter>Server\Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Server\Networking\TcpListener.h">
+      <Filter>Server\Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Server\Networking\TcpReceive.h">
+      <Filter>Server\Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Server\Networking\UdpListener.h">
+      <Filter>Server\Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Server\Networking\UdpReceive.h">
+      <Filter>Server\Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Tls\Certificates\CertificateAuthority.h">
+      <Filter>Tls\Certificates</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Tls\Certificates\LeafCertificate.h">
+      <Filter>Tls\Certificates</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Tls\Certificates\RevocationArtifacts.h">
+      <Filter>Tls\Certificates</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Tls\Credentials\CredentialPolicy.h">
+      <Filter>Tls\Credentials</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Tls\Handshake\ClientHello.h">
+      <Filter>Tls\Handshake</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Tls\TlsSessionState.h">
+      <Filter>Tls</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Tls\Transport\SocketIo.h">
+      <Filter>Tls\Transport</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Tls\Transport\TlsEngine.h">
+      <Filter>Tls\Transport</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Tls\Transport\TlsRecordIo.h">
+      <Filter>Tls\Transport</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Tls\Trust\BundleJson.h">
+      <Filter>Tls\Trust</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Tls\Trust\BundleSigner.h">
+      <Filter>Tls\Trust</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Tls\Trust\StockBundleDiscovery.h">
+      <Filter>Tls\Trust</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Tls\Trust\TrustManifest.h">
+      <Filter>Tls\Trust</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Tls\WebSocket\WebSocketProtocol.h">
+      <Filter>Tls\WebSocket</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Web\Internal\AuthPipelineState.h">
+      <Filter>Web\Internal</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Web\Internal\AuthResponseBuilders.h">
+      <Filter>Web\Internal</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Web\Internal\AuthSigner.h">
+      <Filter>Web\Internal</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Web\Internal\EncodingCrypto.h">
+      <Filter>Web\Internal</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Web\Internal\HttpFormParsing.h">
+      <Filter>Web\Internal</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Web\Internal\JsonParsing.h">
+      <Filter>Web\Internal</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Web\Internal\LsgKeyDecoding.h">
+      <Filter>Web\Internal</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Web\Public\HttpRouter.h">
+      <Filter>Web\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Web\Public\InitializeSigner.h">
+      <Filter>Web\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Web\Public\LsgKeyMaterial.h">
+      <Filter>Web\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Web\Public\PipelinePolling.h">
+      <Filter>Web\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Web\Public\PostLsgDiagnostics.h">
+      <Filter>Web\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Web\TlsWebRequest.h">
+      <Filter>Web</Filter>
     </ClInclude>
     <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Web\WebAuthService.h">
-      <Filter>src\backend\iw8\Web</Filter>
+      <Filter>Web</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
