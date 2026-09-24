@@ -11,10 +11,6 @@ CodRevamped works to restore as much of that functionality as possible through c
 ---
 
 # Games Support
-
-Support is handled per game and per build. A working client for one version of a game does not automatically mean other versions are compatible.
-Some builds may only boot or reach menus while others may support actual offline gameplay.
-
 ```text
 CodRevamped
 │
