@@ -62,7 +62,7 @@ CodRevamped would not be where it is without the research, documentation, testin
 
 Special thanks to:
 
-- **[Project BO4](https://github.com/project-bo4/shield-development)** and everyone who has contributed research, tools, documentation, and knowledge through the project.
+- **[Project BO4](https://github.com/project-bo4/shield-development)** — For their open-source work and research into newer Call of Duty Demonware systems.
 - **KingHunt** — [Discord Profile](https://discord.com/users/312449518635581442) — for helping provide and identify missing pieces needed for **Black Ops Cold War multiplayer** development.
 
 CodRevamped exists because people chose to share their knowledge rather than gatekeep it. Thank you to everyone helping preserve these games and make this work possible.
