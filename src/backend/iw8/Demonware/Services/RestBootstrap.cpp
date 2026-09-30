@@ -23,6 +23,7 @@ namespace revamped::iw8::demonware
             UserListsGetUserList,
             FriendsGetFriends,
             FriendsGetPending,
+            UserPresenceSet,
         };
 
         RestBootstrapKind ClassifyRestBootstrap(const std::uint8_t* payload, std::size_t payloadBytes)
@@ -32,12 +33,22 @@ namespace revamped::iw8::demonware
                 return RestBootstrapKind::UserListsGetUserList;
 
             if (ContainsAscii(payload, payloadBytes, "Friends") &&
-                ContainsAscii(payload, payloadBytes, "get_friends_v1"))
+                (ContainsAscii(payload, payloadBytes, "get_friends_v1") ||
+                 ContainsAscii(payload, payloadBytes, "get_friends")))
                 return RestBootstrapKind::FriendsGetFriends;
 
             if (ContainsAscii(payload, payloadBytes, "Friends") &&
-                ContainsAscii(payload, payloadBytes, "get_pending_friend_requests_v1"))
+                (ContainsAscii(payload, payloadBytes, "get_pending_friend_requests_v1") ||
+                 ContainsAscii(payload, payloadBytes, "get_pending_friend_requests")))
                 return RestBootstrapKind::FriendsGetPending;
+
+            // 1.20 emits the legacy operation name while later IW8 builds use
+            // set_user_presence_v3. bdSetUserPresenceResponse::handleReplySuccess
+            // does not require a response body beyond a successful REST reply.
+            if (ContainsAscii(payload, payloadBytes, "UserPresence") &&
+                (ContainsAscii(payload, payloadBytes, "set_user_presence_v3") ||
+                 ContainsAscii(payload, payloadBytes, "set_user_presence")))
+                return RestBootstrapKind::UserPresenceSet;
 
             return RestBootstrapKind::Unknown;
         }
@@ -86,6 +97,9 @@ namespace revamped::iw8::demonware
                     "context", "cod-shared");
                 return std::string("{\"context\":\"") + context + "\",\"page\":\"\",\"users\":[]}";
             }
+
+            case RestBootstrapKind::UserPresenceSet:
+                return "{}";
 
             default:
                 return {};

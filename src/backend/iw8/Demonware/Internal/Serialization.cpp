@@ -10,6 +10,7 @@ namespace revamped::iw8::demonware
         // bdByteBuffer legacy type tags used by the stock IW8 Demonware client.
         constexpr std::uint8_t kBbBool = 0x01;
         constexpr std::uint8_t kBbUnsignedChar8 = 0x03;
+        constexpr std::uint8_t kBbUnsignedInteger16 = 0x06;
         constexpr std::uint8_t kBbUnsignedInteger32 = 0x08;
         constexpr std::uint8_t kBbUnsignedInteger64 = 0x0A;
         constexpr std::uint8_t kBbFloat32 = 0x0D;
@@ -56,16 +57,33 @@ namespace revamped::iw8::demonware
             {3u, 46u, "bdService3", "observedTask46", ReplyPolicy::None},
             {67u, 5u, "bdEventLog", "observedTask5", ReplyPolicy::None},
             {80u, 125u, "bdMarketplace", "observedTask125", ReplyPolicy::None},
-            {95u, 1u, "bdPublisherVariables", "observedTask1", ReplyPolicy::None},
             {145u, 15u, "bdService145", "observedTask15", ReplyPolicy::None},
             {145u, 23u, "bdService145", "observedTask23", ReplyPolicy::None},
             {152u, 1u, "bdService152", "observedTask1", ReplyPolicy::None},
 
+            // IW8 1.20 uses legacy task 1. Its request carries an empty/context
+            // string followed by one namespace (max 31 chars). The result object
+            // reads UInt16 MajorVersion, UInt16 MinorVersion, namespace String,
+            // and JSON String. Later builds use task 3 with StructBuffer.
+            {95u, 1u, "bdPublisherVariables", "retrievePublisherVariablesLegacy", ReplyPolicy::LegacyPublisherVariables120},
             {95u, 3u, "bdPublisherVariables", "retrievePublisherVariables", ReplyPolicy::StructPublisherVariables},
             {104u, 6u, "bdMarketingComms", "getMessages", ReplyPolicy::StructMarketingMessagesEmpty},
 
+            // IW8 ObjectStore startup stats path. Native 1.44 builds submit service
+            // 0xC1/task 6 as ObjectsVectorizedResourceUsers/get_objects against
+            // /v2/core/users/objects/. A fresh account receives per-object
+            // Error:ClientError:NotFound entries; stock LiveStorage converts that
+            // into RESET_STATS_REASON_NOT_FOUND and creates the six DDL stats blobs
+            // locally before firing playerdata_available. Task 7 is the matching
+            // vectorized upload path used once local objects are available.
             {193u, 6u, "bdObjectStore", "getUserObjectsVectorized", ReplyPolicy::StructObjectStoreVectorized},
             {193u, 7u, "bdObjectStore", "uploadUserObjectsVectorized", ReplyPolicy::StructObjectStoreUploadVectorized},
+
+            // 1.20 sends AB testing enrollment as service 0xC2/task 1 using
+            // bdHTTPProxyRequest. Stock bdABTestingEnrollResponse requires a
+            // 200 status plus expiresIn, ABToken, and enrollments JSON fields.
+            {194u, 1u, "bdABTesting", "enroll", ReplyPolicy::StructABTestingEnrollEmpty},
+
             {197u, 0x15u, "bdMW4Service", "getGroupInfos", ReplyPolicy::StructClanGroupInfosEmpty},
             {197u, 0x1Cu, "bdMW4Service", "getMembershipProposalsByUser", ReplyPolicy::StructClanProposalsEmpty},
             {197u, 0x1Eu, "bdMW4Service", "getMembershipsByUsers", ReplyPolicy::StructClanMembershipsEmpty},
@@ -87,6 +105,12 @@ namespace revamped::iw8::demonware
                 (static_cast<std::uint32_t>(p[1]) << 8) |
                 (static_cast<std::uint32_t>(p[2]) << 16) |
                 (static_cast<std::uint32_t>(p[3]) << 24);
+        }
+
+        void AppendLe16(std::vector<std::uint8_t>& out, std::uint16_t value)
+        {
+            out.push_back(static_cast<std::uint8_t>(value));
+            out.push_back(static_cast<std::uint8_t>(value >> 8));
         }
 
         void AppendLe32(std::vector<std::uint8_t>& out, std::uint32_t value)
@@ -113,6 +137,12 @@ namespace revamped::iw8::demonware
         {
             out.push_back(kBbUnsignedChar8);
             out.push_back(value);
+        }
+
+        void AppendTypedU16(std::vector<std::uint8_t>& out, std::uint16_t value)
+        {
+            out.push_back(kBbUnsignedInteger16);
+            AppendLe16(out, value);
         }
 
         void AppendTypedU32(std::vector<std::uint8_t>& out, std::uint32_t value)

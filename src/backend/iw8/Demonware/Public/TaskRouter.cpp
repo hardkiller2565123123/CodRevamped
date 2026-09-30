@@ -125,6 +125,11 @@ namespace revamped::iw8::demonware
             AppendLegacyServerTime(serviceReply);
             break;
 
+        case ReplyPolicy::LegacyPublisherVariables120:
+            if (!AppendPublisherVariablesLegacy120(serviceReply, requestPayload, requestPayloadBytes))
+                return false;
+            break;
+
         case ReplyPolicy::LegacyProfileNotFound:
             // Legacy bdRemoteTask error envelope. Do not append a result count
             // or fake profile bytes; the stock 1.20 client handles 170 by
@@ -204,6 +209,20 @@ namespace revamped::iw8::demonware
             if (!AppendObjectStoreUploadVectorizedStruct(serviceReply, requestPayload, requestPayloadBytes))
                 return false;
             break;
+
+        case ReplyPolicy::StructABTestingEnrollEmpty:
+        {
+            // bdABTestingEnrollResponse::deserializeWithLobbyService reads
+            // bdHTTPProxyResponse statusCode from StructBuffer tag 2 (UInt32)
+            // and body from tag 3 (String), then requires these three JSON
+            // members. Empty enrollments is the canonical fresh-account state.
+            std::vector<std::uint8_t> body;
+            AppendPbU32(body, 2u, kHttpOk);
+            AppendPbString(body, 3u,
+                "{\"expiresIn\":86400,\"ABToken\":\"revamped-local\",\"enrollments\":[]}");
+            AppendTypedStruct(serviceReply, body);
+            break;
+        }
 
         case ReplyPolicy::StructAchievementsUserState:
             if (!AppendAchievementsUserStateStruct(serviceReply, requestPayload, requestPayloadBytes))

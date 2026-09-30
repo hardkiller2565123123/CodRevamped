@@ -18,6 +18,12 @@ namespace revamped::iw8::demonware
         LegacyDmlInfo,
         LegacyServerTime,
 
+        // IW8 1.20 bdPublisherVariables task 1. The request is legacy
+        // bdByteBuffer data (context string + namespace string), and the bound
+        // result deserializes UInt16/UInt16/String/String rather than the newer
+        // StructBuffer object used by later builds.
+        LegacyPublisherVariables120,
+
         // Protocol-native "no public profile yet" bootstrap used by IW8 1.20.
         // This is an error envelope (BD_NO_PROFILE_INFO_EXISTS = 170), not
         // a fabricated profile blob; the stock client creates its default DDL.
@@ -41,6 +47,9 @@ namespace revamped::iw8::demonware
         StructMarketplaceBalancesEmpty,
         StructObjectStoreVectorized,
         StructObjectStoreUploadVectorized,
+        // Legacy bdHTTPProxyResponse used by IW8 AB testing. The response
+        // contains HTTP status tag 2 and JSON body tag 3.
+        StructABTestingEnrollEmpty,
         StructAchievementsUserState,
 
         // Demonware REST carried by service 0xFF/task 0x0A.

@@ -12,6 +12,8 @@
 #include <cwchar>
 #include <cstdarg>
 #include <cstdio>
+#include <array>
+#include <vector>
 
 #pragma comment(lib, "Ws2_32.lib")
 #pragma intrinsic(_ReturnAddress)
@@ -73,10 +75,9 @@ namespace
 
     // Early IW8 startup fingerprints observed from the user's local builds.
     // The replay executable that is now booting to "Connecting to Online Services"
-    // is the 1.20 target.  The other observed May 2020 fingerprint is tracked as
-    // 1.28 for the same launcher/bootstrap compatibility path.  1.23 is the
-    // separately supplied retail executable.  Unknown builds (including 1.44)
-    // remain outside this startup shim.
+    // is the 1.20 target.  1.23 is the separately supplied retail executable.
+    // 1.28 is now keyed to its live 2020-10 fingerprint (0x5F8DEF10).
+    // Unknown builds (including 1.44) remain outside this startup shim.
     constexpr std::uint32_t kMW120Timestamp = 0x5E9BAF80u;
     constexpr std::uint32_t kMW120ImageSize = 0x1324B000u;
     constexpr std::uint32_t kMW120EntryPoint = 0x021CDC10u;
@@ -85,9 +86,12 @@ namespace
     constexpr std::uint32_t kMW123ImageSize = 0x19A42C00u;
     constexpr std::uint32_t kMW123EntryPoint = 0x0493E908u;
 
-    constexpr std::uint32_t kMW128Timestamp = 0x5EB05998u;
-    constexpr std::uint32_t kMW128ImageSize = 0x19465000u;
-    constexpr std::uint32_t kMW128EntryPoint = 0x03C6F110u;
+    // Exact 1.28 fingerprint from the user's live 1.28 run.  The older
+    // 0x5EB05998/0x19465000 observation was a different early executable and
+    // must not be mislabeled as 1.28.
+    constexpr std::uint32_t kMW128Timestamp = 0x5F8DEF10u;
+    constexpr std::uint32_t kMW128ImageSize = 0x1D02BC00u;
+    constexpr std::uint32_t kMW128EntryPoint = 0x048D8F78u;
 
     enum class StartupCompatBuild : LONG
     {
@@ -295,6 +299,207 @@ namespace
         return count > 0 && ShouldRedirectHost(utf8);
     }
 
+    volatile LONG g_auth3VerifierTrustPatched = 0;
+    volatile LONG g_auth3VerifierTrustAttempts = 0;
+
+    // Exact 294-byte RSA SubjectPublicKeyInfo consumed by the native 1.20
+    // Auth3 reply verifier at unk_1426A84F0.  This is public verification
+    // material only.  We use the complete blob as the scan fingerprint so an
+    // early-build trust write can never land on a merely similar DER object.
+    static constexpr unsigned char kStockAuth3VerifierDer[294] = {
+        0x30,0x82,0x01,0x22,0x30,0x0D,0x06,0x09,0x2A,0x86,0x48,0x86,0xF7,0x0D,0x01,0x01,
+        0x01,0x05,0x00,0x03,0x82,0x01,0x0F,0x00,0x30,0x82,0x01,0x0A,0x02,0x82,0x01,0x01,
+        0x00,0xC0,0xA2,0x0B,0x1F,0x6C,0xB8,0x1B,0x12,0x70,0xED,0x1A,0xEF,0x30,0x6C,0x75,
+        0x9D,0xC1,0x08,0x89,0x99,0xF0,0x2A,0xC8,0xAC,0x2F,0xC7,0xD5,0xD0,0x3B,0x61,0x29,
+        0x39,0xF3,0x8F,0x62,0x39,0xDA,0xF1,0x20,0x11,0xE7,0x92,0xE9,0x16,0x24,0x22,0x96,
+        0x09,0x9E,0xAC,0x19,0xCD,0x24,0x3E,0x58,0xC6,0x40,0x86,0x78,0xD7,0xDF,0x70,0x77,
+        0xCB,0xDE,0x80,0x42,0xB1,0x38,0xF3,0x1D,0x6A,0x3C,0x98,0xE4,0x85,0xDB,0xFB,0x53,
+        0x3A,0x86,0x47,0xCE,0x58,0xB1,0xD3,0xD7,0x0B,0x83,0x3D,0x14,0x6B,0xDA,0x40,0x24,
+        0x1F,0x16,0x2B,0x0E,0x49,0x22,0xE4,0xB7,0x63,0xFF,0xAA,0x40,0xC2,0x44,0xDF,0xDC,
+        0x3F,0x8C,0x1E,0x60,0xB4,0x6F,0x3E,0xDA,0xB2,0x4E,0x50,0xCA,0xFC,0x62,0x4B,0x62,
+        0xC7,0xE1,0x77,0x5E,0x83,0xCD,0xE0,0xB5,0xFC,0xC6,0xAA,0xA0,0xC2,0x6B,0x28,0xCC,
+        0x8A,0xA7,0x95,0x7B,0x1E,0x67,0xE0,0x5B,0xAF,0xC6,0x54,0x49,0xE6,0xAC,0x7A,0x8D,
+        0x1D,0xE6,0x7D,0x12,0x04,0x94,0xC3,0x23,0x4A,0x00,0x60,0x58,0x33,0x6F,0xE7,0x94,
+        0x19,0xFF,0xF6,0xE0,0xC6,0x40,0x50,0xB7,0x9D,0x0E,0xCD,0xDF,0xE7,0x92,0x5D,0x84,
+        0x94,0x13,0x06,0x61,0xBC,0x44,0x75,0x54,0x70,0x54,0x77,0x4C,0xC0,0x28,0x7D,0xFC,
+        0xC9,0x9A,0x92,0x38,0xD4,0xD5,0xEE,0xF3,0x27,0x44,0x66,0x13,0x2C,0x06,0xF0,0x64,
+        0xE7,0xEC,0xF8,0x75,0xFD,0x15,0xD4,0x1B,0x91,0x45,0x9D,0x4A,0x3F,0x40,0xE9,0x35,
+        0x53,0x7F,0xFC,0x96,0x61,0xE1,0x48,0x74,0x21,0xF0,0x04,0x20,0x41,0x30,0x02,0xD2,
+        0xF9,0x02,0x03,0x01,0x00,0x01
+    };
+
+    bool IsAuth3Host(const char* host) noexcept
+    {
+        return host && (EqualsNoCase(host, "iw8-bnet-auth3.prod.demonware.net") ||
+            EqualsNoCase(host, "auth3.prod.demonware.net") ||
+            EqualsNoCase(host, "auth3-login.prod.demonware.net"));
+    }
+
+    bool ReadGameSiblingAuth3PublicKey(unsigned char (&key)[294], wchar_t* resolvedPath,
+        std::size_t resolvedCount) noexcept
+    {
+        if (resolvedPath && resolvedCount)
+            resolvedPath[0] = L'\0';
+
+        wchar_t path[32768]{};
+        const DWORD length = GetModuleFileNameW(nullptr, path,
+            static_cast<DWORD>(sizeof(path) / sizeof(path[0])));
+        if (!length || length >= (sizeof(path) / sizeof(path[0])))
+            return false;
+        wchar_t* slash = wcsrchr(path, L'\\');
+        if (!slash)
+            return false;
+        slash[1] = L'\0';
+        if (wcscat_s(path, sizeof(path) / sizeof(path[0]), L"auth3-response-signing-public.der") != 0)
+            return false;
+
+        HANDLE file = CreateFileW(path, GENERIC_READ,
+            FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
+            nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+        if (file == INVALID_HANDLE_VALUE)
+            return false;
+
+        LARGE_INTEGER size{};
+        DWORD read = 0;
+        const BOOL sizeOk = GetFileSizeEx(file, &size) && size.QuadPart == static_cast<LONGLONG>(sizeof(key));
+        const BOOL readOk = sizeOk && ReadFile(file, key, static_cast<DWORD>(sizeof(key)), &read, nullptr);
+        CloseHandle(file);
+        if (!readOk || read != sizeof(key))
+            return false;
+
+        if (resolvedPath && resolvedCount)
+            wcsncpy_s(resolvedPath, resolvedCount, path, _TRUNCATE);
+        return true;
+    }
+
+    static constexpr std::uintptr_t kMW120Auth3VerifierRva = 0x026A84F0ull;
+
+    bool InstallEarlyAuth3LocalSigningTrust(const char* trigger) noexcept
+    {
+        if (InterlockedCompareExchange(&g_auth3VerifierTrustPatched, 0, 0) != 0)
+            return true;
+
+        const auto build = static_cast<StartupCompatBuild>(
+            InterlockedCompareExchange(&g_startupCompatBuild, 0, 0));
+        // The verifier address and embedded stock key are proven only for the
+        // exact 1.20 fingerprint.  Never reuse this RVA for another build.
+        if (build != StartupCompatBuild::MW120)
+            return false;
+
+        const LONG attempt = InterlockedIncrement(&g_auth3VerifierTrustAttempts);
+        unsigned char localKey[294]{};
+        wchar_t keyPath[32768]{};
+        if (!ReadGameSiblingAuth3PublicKey(localKey, keyPath, sizeof(keyPath) / sizeof(keyPath[0])))
+        {
+            if (attempt <= 3 || (attempt % 5) == 0)
+                ConsolePrint("[AUTH3-TRUST] build=1.20 attempt=%ld trigger=%s waiting for auth3-response-signing-public.der; start RevampedIW8Server.exe first\r\n",
+                    attempt, trigger ? trigger : "unknown");
+            return false;
+        }
+
+        // Refuse malformed or stock-key input. A locally generated signer must
+        // provide a different RSA-2048 SPKI while retaining the native 294-byte
+        // shape. The server owns the matching private key.
+        if (localKey[0] != 0x30 || localKey[1] != 0x82 ||
+            localKey[292] != 0x00 || localKey[293] != 0x01 ||
+            std::memcmp(localKey, kStockAuth3VerifierDer, sizeof(localKey)) == 0)
+        {
+            ConsolePrint("[AUTH3-TRUST] build=1.20 refused malformed/stock local signer DER trigger=%s\r\n",
+                trigger ? trigger : "unknown");
+            return false;
+        }
+
+        const auto base = reinterpret_cast<unsigned char*>(GetModuleHandleW(nullptr));
+        if (!base)
+        {
+            ConsolePrint("[AUTH3-TRUST] build=1.20 unable to resolve main module trigger=%s\r\n",
+                trigger ? trigger : "unknown");
+            return false;
+        }
+
+        // IDA confirmed the Auth3 parser at sub_14216C2A0 references the
+        // verifier at VA 0x1426A84F0 in the exact 1.20 image.  The image base
+        // is 0x140000000, therefore the ASLR-safe RVA is 0x026A84F0.
+        //
+        // The stock DER occurs five times in .rdata, so a uniqueness scan is
+        // intentionally wrong for this build.  Patch only the proven Auth3
+        // verifier location and validate the entire 294-byte blob before write.
+        unsigned char* target = base + kMW120Auth3VerifierRva;
+        bool alreadyPatched = false;
+        bool stockMatches = false;
+        __try
+        {
+            alreadyPatched = std::memcmp(target, localKey, sizeof(localKey)) == 0;
+            stockMatches = std::memcmp(target, kStockAuth3VerifierDer, sizeof(localKey)) == 0;
+        }
+        __except (EXCEPTION_EXECUTE_HANDLER)
+        {
+            ConsolePrint("[AUTH3-TRUST] build=1.20 exact verifier RVA unreadable rva=0x%llX trigger=%s\r\n",
+                static_cast<unsigned long long>(kMW120Auth3VerifierRva),
+                trigger ? trigger : "unknown");
+            return false;
+        }
+
+        if (alreadyPatched)
+        {
+            InterlockedExchange(&g_auth3VerifierTrustPatched, 1);
+            ConsolePrint("[AUTH3-TRUST] build=1.20 already patched exact verifier DER rva=0x%llX trigger=%s\r\n",
+                static_cast<unsigned long long>(kMW120Auth3VerifierRva),
+                trigger ? trigger : "unknown");
+            return true;
+        }
+
+        if (!stockMatches)
+        {
+            ConsolePrint("[AUTH3-TRUST] build=1.20 REFUSED exact verifier mismatch rva=0x%llX trigger=%s; no write performed\r\n",
+                static_cast<unsigned long long>(kMW120Auth3VerifierRva),
+                trigger ? trigger : "unknown");
+            return false;
+        }
+
+        DWORD oldProtect = 0;
+        if (!VirtualProtect(target, sizeof(localKey), PAGE_READWRITE, &oldProtect))
+        {
+            ConsolePrint("[AUTH3-TRUST] build=1.20 VirtualProtect failed rva=0x%llX win32=%lu trigger=%s\r\n",
+                static_cast<unsigned long long>(kMW120Auth3VerifierRva), GetLastError(),
+                trigger ? trigger : "unknown");
+            return false;
+        }
+
+        std::memcpy(target, localKey, sizeof(localKey));
+        DWORD ignored = 0;
+        VirtualProtect(target, sizeof(localKey), oldProtect, &ignored);
+        FlushInstructionCache(GetCurrentProcess(), target, sizeof(localKey));
+
+        bool writePersisted = false;
+        __try
+        {
+            writePersisted = std::memcmp(target, localKey, sizeof(localKey)) == 0;
+        }
+        __except (EXCEPTION_EXECUTE_HANDLER)
+        {
+            writePersisted = false;
+        }
+        if (!writePersisted)
+        {
+            ConsolePrint("[AUTH3-TRUST] build=1.20 exact verifier DER write did not persist rva=0x%llX trigger=%s\r\n",
+                static_cast<unsigned long long>(kMW120Auth3VerifierRva),
+                trigger ? trigger : "unknown");
+            return false;
+        }
+
+        char pathUtf8[32768]{};
+        if (keyPath[0])
+            WideCharToMultiByte(CP_UTF8, 0, keyPath, -1, pathUtf8, static_cast<int>(sizeof(pathUtf8)), nullptr, nullptr);
+
+        InterlockedExchange(&g_auth3VerifierTrustPatched, 1);
+        ConsolePrint("[AUTH3-TRUST] build=1.20 PATCHED exact native Auth3 response verifier DER rva=0x%llX bytes=294 source=%s trigger=%s\r\n",
+            static_cast<unsigned long long>(kMW120Auth3VerifierRva),
+            pathUtf8[0] ? pathUtf8 : "<game-root>", trigger ? trigger : "unknown");
+        ConsolePrint("[AUTH3-TRUST] scope=RSA-PSS/SHA-256 response authenticity only; no auth/login/fence state is modified\r\n");
+        return true;
+    }
+
     void ModuleNameFromAddress(void* address, char* output, std::size_t outputSize) noexcept
     {
         if (!output || !outputSize)
@@ -383,6 +588,8 @@ namespace
 
     INT WSAAPI RedirectGetAddrInfoA(PCSTR node, PCSTR service, const ADDRINFOA* hints, PADDRINFOA* result) noexcept
     {
+        if (IsAuth3Host(node))
+            InstallEarlyAuth3LocalSigningTrust("getaddrinfoA-auth3");
         void* caller = _ReturnAddress();
         char callerModule[260]{};
         ModuleNameFromAddress(caller, callerModule, sizeof(callerModule));
@@ -409,6 +616,8 @@ namespace
             WideCharToMultiByte(CP_UTF8, 0, node, -1, host, static_cast<int>(sizeof(host)), nullptr, nullptr);
         if (service)
             WideCharToMultiByte(CP_UTF8, 0, service, -1, serviceText, static_cast<int>(sizeof(serviceText)), nullptr, nullptr);
+        if (node && IsAuth3Host(host))
+            InstallEarlyAuth3LocalSigningTrust("GetAddrInfoW-auth3");
         TracePrint("DNS GetAddrInfoW module=%s host=%s service=%s redirect=%s target=%s",
             callerModule, host, serviceText, redirect ? "yes" : "no", redirect ? "127.0.0.1" : host);
         if (redirect)
@@ -418,6 +627,8 @@ namespace
 
     hostent* WSAAPI RedirectGetHostByName(const char* name) noexcept
     {
+        if (IsAuth3Host(name))
+            InstallEarlyAuth3LocalSigningTrust("gethostbyname-auth3");
         void* caller = _ReturnAddress();
         char callerModule[260]{};
         ModuleNameFromAddress(caller, callerModule, sizeof(callerModule));
@@ -2088,6 +2299,215 @@ namespace
             g_wsaSocketA && g_wsaSocketW && g_wsaIoctl && g_select;
     }
 
+    struct LsgKey3CandidateDiskV79
+    {
+        unsigned long long fileOffset = 0;
+        std::array<unsigned char, 294> der{};
+    };
+
+    bool LooksLikeRsaSpki294DiskV79(const unsigned char* p, std::size_t available) noexcept
+    {
+        if (!p || available < 294u)
+            return false;
+        static const unsigned char prefix[] =
+        {
+            0x30,0x82,0x01,0x22,0x30,0x0D,0x06,0x09,
+            0x2A,0x86,0x48,0x86,0xF7,0x0D,0x01,0x01,
+            0x01,0x05,0x00,0x03,0x82,0x01,0x0F,0x00,
+            0x30,0x82,0x01,0x0A,0x02,0x82,0x01,0x01
+        };
+        if (std::memcmp(p, prefix, sizeof(prefix)) != 0)
+            return false;
+        return p[32] == 0x00u &&
+            p[289] == 0x02u && p[290] == 0x03u &&
+            p[291] == 0x01u && p[292] == 0x00u && p[293] == 0x01u;
+    }
+
+    bool BuildSiblingPathV79(const wchar_t* fileName, wchar_t* out, std::size_t outCount) noexcept
+    {
+        if (!fileName || !*fileName || !out || outCount < 2u)
+            return false;
+        wchar_t exePath[32768]{};
+        const DWORD chars = GetModuleFileNameW(nullptr, exePath,
+            static_cast<DWORD>(sizeof(exePath) / sizeof(exePath[0])));
+        if (!chars || chars >= (sizeof(exePath) / sizeof(exePath[0])))
+            return false;
+        wchar_t* slash = std::wcsrchr(exePath, L'\\');
+        wchar_t* slash2 = std::wcsrchr(exePath, L'/');
+        if (!slash || (slash2 && slash2 > slash))
+            slash = slash2;
+        if (slash)
+            slash[1] = L'\0';
+        else
+            exePath[0] = L'\0';
+        return _snwprintf_s(out, outCount, _TRUNCATE, L"%s%s", exePath, fileName) > 0;
+    }
+
+    bool WriteLsgKey3CandidatePackV79(const wchar_t* path,
+        const std::vector<LsgKey3CandidateDiskV79>& candidates) noexcept
+    {
+        if (!path || !*path || candidates.empty() || candidates.size() > 128u)
+            return false;
+
+        std::vector<unsigned char> bytes;
+        bytes.reserve(16u + candidates.size() * (8u + 294u));
+        static const unsigned char magic[8] = {'I','W','8','K','3','V','7','8'};
+        bytes.insert(bytes.end(), magic, magic + sizeof(magic));
+        const auto append32 = [&bytes](unsigned long value)
+        {
+            bytes.push_back(static_cast<unsigned char>(value));
+            bytes.push_back(static_cast<unsigned char>(value >> 8));
+            bytes.push_back(static_cast<unsigned char>(value >> 16));
+            bytes.push_back(static_cast<unsigned char>(value >> 24));
+        };
+        const auto append64 = [&bytes](unsigned long long value)
+        {
+            for (unsigned shift = 0; shift < 64u; shift += 8u)
+                bytes.push_back(static_cast<unsigned char>(value >> shift));
+        };
+        append32(1u);
+        append32(static_cast<unsigned long>(candidates.size()));
+        for (const auto& candidate : candidates)
+        {
+            append64(candidate.fileOffset);
+            bytes.insert(bytes.end(), candidate.der.begin(), candidate.der.end());
+        }
+
+        HANDLE file = CreateFileW(path, GENERIC_WRITE,
+            FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
+            nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
+        if (file == INVALID_HANDLE_VALUE)
+            return false;
+        DWORD written = 0;
+        const BOOL ok = bytes.size() <= 0xFFFFFFFFu &&
+            WriteFile(file, bytes.data(), static_cast<DWORD>(bytes.size()), &written, nullptr);
+        CloseHandle(file);
+        return ok && written == static_cast<DWORD>(bytes.size());
+    }
+
+    DWORD WINAPI LsgKey3DiskScanWorkerV79(LPVOID) noexcept
+    {
+        // Research-only helper: scan the executable FILE on disk for structurally
+        // valid 294-byte RSA SPKI values.  No process memory/code pages or game
+        // state are read or modified.  The backend uses the resulting candidates
+        // as an oracle against the stock client's native 0x82 proof.
+        wchar_t exePath[32768]{};
+        const DWORD chars = GetModuleFileNameW(nullptr, exePath,
+            static_cast<DWORD>(sizeof(exePath) / sizeof(exePath[0])));
+        if (!chars || chars >= (sizeof(exePath) / sizeof(exePath[0])))
+        {
+            ConsolePrint("[LSG-KEY3] disk scan failed stage=module-path win32=%lu stateWrites=off\r\n", GetLastError());
+            return 0;
+        }
+
+        HANDLE file = CreateFileW(exePath, GENERIC_READ,
+            FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
+            nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL | FILE_FLAG_SEQUENTIAL_SCAN, nullptr);
+        if (file == INVALID_HANDLE_VALUE)
+        {
+            ConsolePrint("[LSG-KEY3] disk scan failed stage=open-exe win32=%lu stateWrites=off\r\n", GetLastError());
+            return 0;
+        }
+
+        LARGE_INTEGER fileSize{};
+        if (!GetFileSizeEx(file, &fileSize) || fileSize.QuadPart < 294)
+        {
+            const DWORD error = GetLastError();
+            CloseHandle(file);
+            ConsolePrint("[LSG-KEY3] disk scan failed stage=file-size win32=%lu stateWrites=off\r\n", error);
+            return 0;
+        }
+
+        HANDLE mapping = CreateFileMappingW(file, nullptr, PAGE_READONLY, 0, 0, nullptr);
+        if (!mapping)
+        {
+            const DWORD error = GetLastError();
+            CloseHandle(file);
+            ConsolePrint("[LSG-KEY3] disk scan failed stage=file-map win32=%lu stateWrites=off\r\n", error);
+            return 0;
+        }
+        const auto* view = static_cast<const unsigned char*>(MapViewOfFile(mapping, FILE_MAP_READ, 0, 0, 0));
+        if (!view)
+        {
+            const DWORD error = GetLastError();
+            CloseHandle(mapping);
+            CloseHandle(file);
+            ConsolePrint("[LSG-KEY3] disk scan failed stage=map-view win32=%lu stateWrites=off\r\n", error);
+            return 0;
+        }
+
+        const unsigned long long fileBytes64 = static_cast<unsigned long long>(fileSize.QuadPart);
+        if (fileBytes64 > static_cast<unsigned long long>(static_cast<std::size_t>(-1)))
+        {
+            UnmapViewOfFile(view);
+            CloseHandle(mapping);
+            CloseHandle(file);
+            ConsolePrint("[LSG-KEY3] disk scan failed stage=size-overflow stateWrites=off\r\n");
+            return 0;
+        }
+        const std::size_t fileBytes = static_cast<std::size_t>(fileBytes64);
+        std::vector<LsgKey3CandidateDiskV79> candidates;
+        candidates.reserve(16u);
+        std::size_t cursor = 0;
+        while (cursor + 294u <= fileBytes && candidates.size() < 128u)
+        {
+            const void* found = std::memchr(view + cursor, 0x30, fileBytes - cursor - 293u);
+            if (!found)
+                break;
+            const auto* p = static_cast<const unsigned char*>(found);
+            const std::size_t offset = static_cast<std::size_t>(p - view);
+            cursor = offset + 1u;
+            if (!LooksLikeRsaSpki294DiskV79(p, fileBytes - offset))
+                continue;
+
+            bool duplicate = false;
+            for (const auto& prior : candidates)
+            {
+                if (std::memcmp(prior.der.data(), p, prior.der.size()) == 0)
+                {
+                    duplicate = true;
+                    break;
+                }
+            }
+            if (duplicate)
+                continue;
+
+            LsgKey3CandidateDiskV79 candidate{};
+            candidate.fileOffset = static_cast<unsigned long long>(offset);
+            std::memcpy(candidate.der.data(), p, candidate.der.size());
+            candidates.push_back(candidate);
+        }
+
+        UnmapViewOfFile(view);
+        CloseHandle(mapping);
+        CloseHandle(file);
+
+        wchar_t outputPath[32768]{};
+        const bool pathReady = BuildSiblingPathV79(L"iw8-auth-traffic-signing-key3-candidates.bin",
+            outputPath, sizeof(outputPath) / sizeof(outputPath[0]));
+        const bool wrote = pathReady && WriteLsgKey3CandidatePackV79(outputPath, candidates);
+        ConsolePrint("[LSG-KEY3] disk scan complete build=%s candidates=%llu exeBytes=%llu pack=%s path=%ls runtimeMemoryScan=off codePagesTouched=none stateWrites=off\r\n",
+            StartupCompatBuildName(CurrentStartupCompatBuild()),
+            static_cast<unsigned long long>(candidates.size()),
+            fileBytes64, wrote ? "ready" : "FAILED", pathReady ? outputPath : L"<unresolved>");
+        return 0;
+    }
+
+    void QueueLsgKey3DiskScanV79() noexcept
+    {
+        static volatile LONG queued = 0;
+        if (InterlockedExchange(&queued, 1) != 0)
+            return;
+        HANDLE thread = CreateThread(nullptr, 0, &LsgKey3DiskScanWorkerV79, nullptr, 0, nullptr);
+        if (thread)
+            CloseHandle(thread);
+        else
+        {
+            InterlockedExchange(&queued, 0);
+            ConsolePrint("[LSG-KEY3] disk scan queue failed win32=%lu stateWrites=off\r\n", GetLastError());
+        }
+    }
+
     DWORD WINAPI RedirectWorker(LPVOID) noexcept
     {
         DeleteFileW(L"mw2019_redirect.log");
@@ -2139,6 +2559,17 @@ namespace
         // Let the loader/anti-tamper/bootstrap work finish before touching the
         // executable's IAT.  The keylist request happens much later than this.
         Sleep(1500);
+
+        // Early builds authenticate Auth3 replies with a 294-byte RSA public
+        // key embedded in .rdata.  The local server owns a separate persisted
+        // signing key, so adapt only that public verifier before Auth3 traffic.
+        // DNS hooks retry at the exact auth3 hostname if the server had not yet
+        // produced auth3-response-signing-public.der at this first attempt.
+        if (IsSupportedStartupCompatBuild())
+        {
+            InstallEarlyAuth3LocalSigningTrust("worker-pre-IAT");
+            QueueLsgKey3DiskScanV79();
+        }
 
         HMODULE mainModule = GetModuleHandleW(nullptr);
         const auto mainCounts = PatchNetworkImportsForModule(mainModule);

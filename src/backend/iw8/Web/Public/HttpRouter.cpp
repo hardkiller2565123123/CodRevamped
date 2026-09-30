@@ -449,8 +449,20 @@ namespace revamped::iw8::web
                 result.label = detail.str();
                 result.response = BuildDwAuthResponse(
                     BuildDwBnetAuthResponse(authTask, ivSeed, titleId, identity, serviceLevel, sessionToken));
-                AppendAuthPipelineV58("AUTH3_RESPONSE status=200 requestTask=%s responseTask=%lu titleId=%u clientId=iw-cod-iw8-bnet accountType=bnet serviceLevel=paid lsg_endpoint=mw-lobby-1.prod.demonware.net lsg_port=3074 forceLsgTest=%s signed=RSA_PSS_SHA256",
+                const LocalIw8Build localBuild = DetectLocalIw8Build();
+                const bool legacyUmbrellaHandoff = UsesLegacyUmbrellaHandoff(localBuild);
+                const bool crossplayEnabled = legacyUmbrellaHandoff || LsgForceTestEnabled();
+                const auto& localBuildProbe = LocalIw8BuildProbeState();
+                AppendAuthPipelineV58("AUTH3_RESPONSE status=200 requestTask=%s responseTask=%lu titleId=%u clientId=iw-cod-iw8-bnet accountType=bnet serviceLevel=paid localBuild=%s buildSource=%s buildFingerprint=%08X/%08X/%08X crossplay_enabled=%s loginqueue_enabled=false lsg_endpoint=%s lsg_port=3074 handoff=%s forceLsgTest=%s signed=RSA_PSS_SHA256",
                     authTask.c_str(), std::strtoul(authTask.c_str(), nullptr, 10) + 1u, static_cast<unsigned>(titleId),
+                    LocalIw8BuildName(localBuild),
+                    LocalIw8BuildSource(),
+                    static_cast<unsigned>(localBuildProbe.timestamp),
+                    static_cast<unsigned>(localBuildProbe.imageSize),
+                    static_cast<unsigned>(localBuildProbe.entryPoint),
+                    crossplayEnabled ? "true" : "false",
+                    legacyUmbrellaHandoff ? "null" : "mw-lobby-1.prod.demonware.net",
+                    legacyUmbrellaHandoff ? "AUTH3_THEN_UMBRELLA_CROSSPLATFORM" : "AUTH3_DIRECT_LSG_HOST",
                     LsgForceTestEnabled() ? "ENABLED" : "disabled");
             }
         }

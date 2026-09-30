@@ -4,6 +4,18 @@ namespace revamped::iw8::demonware
 {
     namespace
     {
+        constexpr const char* kObjectStoreNotFoundError = "Error:ClientError:NotFound";
+
+        bool IsIw8StartupStatsObjectName(const std::string& name)
+        {
+            return name == "commondata" ||
+                name == "mpdata" ||
+                name == "cpdata" ||
+                name == "rankedloadouts" ||
+                name == "privateloadouts" ||
+                name == "nongamedata";
+        }
+
         std::int64_t UnixTimeSeconds()
         {
             return static_cast<std::int64_t>(std::chrono::duration_cast<std::chrono::seconds>(
@@ -267,7 +279,9 @@ namespace revamped::iw8::demonware
             AppendPbString(contentTypeHeader, 2u, "application/json");
             AppendPbObject(responseBody, 1u, contentTypeHeader);
 
-            AppendPbU64(responseBody, 2u, kHttpOk);
+            // bdObjectStoreJSONResponseBase::getJSONObjectFromJSONResponse reads
+            // StructBuffer tag 2 with readUInt32. Use the exact native width.
+            AppendPbU32(responseBody, 2u, kHttpOk);
             AppendPbString(responseBody, 3u, json);
             AppendTypedStruct(serviceReply, responseBody);
         }
@@ -282,12 +296,18 @@ namespace revamped::iw8::demonware
             std::vector<std::string> objectReplies;
             std::vector<std::string> errorReplies;
             std::size_t persistedCount = 0;
+            std::size_t startupStatsRequested = 0;
+            std::size_t startupStatsMissing = 0;
             {
                 std::lock_guard<std::mutex> lock(g_objectStoreMutex);
                 objectReplies.reserve(objectIds.size());
                 errorReplies.reserve(objectIds.size());
                 for (std::size_t i = 0; i < objectIds.size(); ++i)
                 {
+                    const bool startupStatsObject = IsIw8StartupStatsObjectName(objectIds[i].second);
+                    if (startupStatsObject)
+                        ++startupStatsRequested;
+
                     const auto it = g_objectStoreObjects.find(ObjectStoreKey(objectIds[i].first, objectIds[i].second));
                     if (it != g_objectStoreObjects.end())
                     {
@@ -299,13 +319,19 @@ namespace revamped::iw8::demonware
                         }
                     }
 
-                    // Vectorized GET requires exactly one entry across objects+errors
-                    // for each requested slot, keyed by requestIndex.
+                    if (startupStatsObject)
+                        ++startupStatsMissing;
+
+                    // Stock bdObjectStoreGetUserObjectsVectorizedResponse requires exactly
+                    // one entry across objects[] + errors[] for every requested object.
+                    // For a fresh IW8 profile, ObjectStore NotFound is intentional: the
+                    // stats completion path maps it to RESET_STATS_REASON_NOT_FOUND, then
+                    // LiveStorage initializes all six DDL buffers locally.
                     errorReplies.emplace_back(
                         "{\"requestIndex\":" + std::to_string(i) +
                         ",\"owner\":\"" + JsonEscape(objectIds[i].first) +
                         "\",\"name\":\"" + JsonEscape(objectIds[i].second) +
-                        "\",\"error\":\"Error:ClientError:NotFound\"}");
+                        "\",\"error\":\"" + kObjectStoreNotFoundError + "\"}");
                 }
                 persistedCount = g_objectStoreObjects.size();
             }
@@ -326,8 +352,14 @@ namespace revamped::iw8::demonware
             }
             json += "]}";
 
-            std::printf("[DW-OBJECTSTORE] GET requested=%zu hit=%zu miss=%zu persisted=%zu canonicalMetadata=yes\n",
+            std::printf("[DW-OBJECTSTORE] GET service=0xC1 task=6 resource=ObjectsVectorizedResourceUsers/get_objects requested=%zu hit=%zu miss=%zu persisted=%zu canonicalMetadata=yes\n",
                 objectIds.size(), objectReplies.size(), errorReplies.size(), persistedCount);
+            if (startupStatsRequested)
+            {
+                std::printf("[DW-OBJECTSTORE] IW8 startup stats requested=%zu missing=%zu freshDefaultPath=%s\n",
+                    startupStatsRequested, startupStatsMissing,
+                    startupStatsRequested == 6u && startupStatsMissing == 6u ? "armed" : "partial");
+            }
             AppendRestProxyJsonStruct(serviceReply, json);
             return true;
         }
