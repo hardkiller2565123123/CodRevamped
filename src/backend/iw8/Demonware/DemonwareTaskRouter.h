@@ -18,6 +18,11 @@ namespace revamped::iw8::demonware
         LegacyDmlInfo,
         LegacyServerTime,
 
+        // Protocol-native "no public profile yet" bootstrap used by IW8 1.20.
+        // This is an error envelope (BD_NO_PROFILE_INFO_EXISTS = 170), not
+        // a fabricated profile blob; the stock client creates its default DDL.
+        LegacyProfileNotFound,
+
         // bdStructBufferTask responses. These serialize a typed StructBuffer directly
         // after the common transaction/error/task envelope.
         // Service-specific empty collections/acks. These are not catch-all
@@ -30,6 +35,10 @@ namespace revamped::iw8::demonware
         StructClanGroupInfosEmpty,
         StructClanProposalsEmpty,
         StructPublisherVariables,
+        // bdMarketplace::getBalancesV3 (service 80 / task 0xF5).  A fresh
+        // local account has no currency rows, whose canonical struct response
+        // is an empty StructBuffer.
+        StructMarketplaceBalancesEmpty,
         StructObjectStoreVectorized,
         StructObjectStoreUploadVectorized,
         StructAchievementsUserState,

@@ -5,6 +5,7 @@
 #include <Windows.h>
 #include <atomic>
 #include <cstdio>
+#include <cstring>
 #include <cstdlib>
 #include <string>
 #include <vector>
@@ -23,6 +24,56 @@ namespace
             return TRUE;
         }
         return FALSE;
+    }
+
+    void SetLsgTestMode(bool enabled)
+    {
+        SetEnvironmentVariableA("CODREVAMPED_FORCE_LSG_TEST", enabled ? "1" : "0");
+        _putenv_s("CODREVAMPED_FORCE_LSG_TEST", enabled ? "1" : "0");
+        if (enabled)
+        {
+            revamped::iw8::log::Print("[LSG-TEST] ENABLED by /LSG. TEST-ONLY handoff assists are active: next BGS request may queue OnGameAccountSelected, and Auth3 advertises crossplay plus snake/camel LSG endpoint fields. No client memory/state patch is used.");
+            revamped::iw8::log::Print("[LSG-TEST] Watch for [BGS-LSG-TEST], Umbrella traffic, DNS for mw-lobby-1.prod.demonware.net, and TCP localPort=3074.");
+        }
+        else
+        {
+            revamped::iw8::log::Print("[LSG-TEST] DISABLED. Normal semantic emulation behavior restored for subsequent requests.");
+        }
+    }
+
+    DWORD WINAPI CommandWorker(LPVOID)
+    {
+        char line[256]{};
+        while (!g_exitRequested && std::fgets(line, static_cast<int>(sizeof(line)), stdin))
+        {
+            std::size_t length = std::strlen(line);
+            while (length && (line[length - 1] == '\r' || line[length - 1] == '\n' || line[length - 1] == ' ' || line[length - 1] == '\t'))
+                line[--length] = '\0';
+            char* command = line;
+            while (*command == ' ' || *command == '\t')
+                ++command;
+
+            if (_stricmp(command, "/LSG") == 0 || _stricmp(command, "/LSG ON") == 0)
+            {
+                SetLsgTestMode(true);
+                continue;
+            }
+            if (_stricmp(command, "/LSG OFF") == 0)
+            {
+                SetLsgTestMode(false);
+                continue;
+            }
+            if (_stricmp(command, "/LSG STATUS") == 0)
+            {
+                char value[8]{};
+                const DWORD count = GetEnvironmentVariableA("CODREVAMPED_FORCE_LSG_TEST", value, static_cast<DWORD>(sizeof(value)));
+                revamped::iw8::log::Print("[LSG-TEST] status=%s", (count && value[0] == '1') ? "ENABLED" : "DISABLED");
+                continue;
+            }
+            if (*command == '/')
+                revamped::iw8::log::Print("[COMMAND] unknown command '%s'. Available: /LSG, /LSG OFF, /LSG STATUS", command);
+        }
+        return 0;
     }
 
     std::vector<std::uint16_t> ParsePorts(const char* text)
@@ -56,7 +107,7 @@ int main(int argc, char** argv)
         else if (arg == "--no-payloads") config.dumpPayloads = false;
     }
 
-    SetConsoleTitleW(L"Revamped IW8 Server - Pure Emulation Login Research");
+    SetConsoleTitleW(L"Revamped IW8 Server - xpak_ignore.keylist Research");
     SetConsoleCtrlHandler(ConsoleHandler, TRUE);
     revamped::iw8::Server server(config);
     g_server = &server;
@@ -67,6 +118,12 @@ int main(int argc, char** argv)
     }
 
     revamped::iw8::log::Print("Welcome to Revamped IW8 Server.");
+    revamped::iw8::log::Print("[KEYLIST] RESEARCH RESULT: /pc/0/xpak_ignore.keylist uses HTTP 200 with a single LF byte as the accepted empty list.");
+    revamped::iw8::log::Print("[KEYLIST] Auto-fuzz is disabled; response is now deterministic for 1.44/1.20 testing.");
+    SetLsgTestMode(false);
+    revamped::iw8::log::Print("[COMMAND] Type /LSG to enable the temporary LSG handoff test. Use /LSG OFF to disable it and /LSG STATUS to check it.");
+    if (HANDLE commandThread = CreateThread(nullptr, 0, CommandWorker, nullptr, 0, nullptr))
+        CloseHandle(commandThread);
     server.Run();
     g_server = nullptr;
     revamped::iw8::log::Print("Server stopped.");

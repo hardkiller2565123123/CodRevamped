@@ -1,5 +1,278 @@
 #include "TcpReceive.h"
 
+#include <Windows.h>
+#include <algorithm>
+#include <atomic>
+#include <cstdint>
+#include <cstdio>
+#include <cstdlib>
+#include <string>
+#include <vector>
+
+namespace
+{
+    std::wstring KeylistResearchDirectory()
+    {
+        wchar_t path[32768]{};
+        const DWORD length = GetModuleFileNameW(nullptr, path, static_cast<DWORD>(_countof(path)));
+        if (!length || length >= _countof(path))
+            return L"keylist_research";
+        wchar_t* slash = wcsrchr(path, L'\\');
+        if (slash)
+            slash[1] = L'\0';
+        std::wstring directory(path);
+        directory += L"keylist_research";
+        CreateDirectoryW(directory.c_str(), nullptr);
+        return directory;
+    }
+
+    std::wstring KeylistResearchPath(const wchar_t* name)
+    {
+        std::wstring path = KeylistResearchDirectory();
+        path += L"\\";
+        path += name;
+        return path;
+    }
+
+    struct KeylistFuzzCandidate
+    {
+        DWORD status;
+        const char* reason;
+        const char* contentType;
+        const unsigned char* body;
+        std::size_t bodySize;
+        const char* name;
+    };
+
+    constexpr unsigned char kKeylistLf[] = {'\n'};
+    constexpr unsigned char kKeylistCrlf[] = {'\r', '\n'};
+    constexpr unsigned char kKeylistAsciiZero[] = {'0'};
+    constexpr unsigned char kKeylistAsciiZeroLf[] = {'0', '\n'};
+    constexpr unsigned char kKeylistAsciiZeroCrlf[] = {'0', '\r', '\n'};
+    constexpr unsigned char kKeylistJsonArray[] = {'[', ']'};
+    constexpr unsigned char kKeylistJsonObject[] = {'{', '}'};
+    constexpr unsigned char kKeylistNul1[] = {0x00};
+    constexpr unsigned char kKeylistNul2[] = {0x00, 0x00};
+    constexpr unsigned char kKeylistNul4[] = {0x00, 0x00, 0x00, 0x00};
+    constexpr unsigned char kKeylistNul8[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+    constexpr unsigned char kKeylistNul16[] = {
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+    };
+    constexpr unsigned char kKeylistUtf8Bom[] = {0xEF, 0xBB, 0xBF};
+
+    const KeylistFuzzCandidate kKeylistFuzzCandidates[] = {
+        {204, "No Content", nullptr, nullptr, 0, "204-empty"},
+        {200, "OK", "text/plain", kKeylistLf, sizeof(kKeylistLf), "200-lf"},
+        {200, "OK", "text/plain", kKeylistCrlf, sizeof(kKeylistCrlf), "200-crlf"},
+        {200, "OK", "text/plain", kKeylistAsciiZero, sizeof(kKeylistAsciiZero), "200-ascii-zero"},
+        {200, "OK", "text/plain", kKeylistAsciiZeroLf, sizeof(kKeylistAsciiZeroLf), "200-ascii-zero-lf"},
+        {200, "OK", "text/plain", kKeylistAsciiZeroCrlf, sizeof(kKeylistAsciiZeroCrlf), "200-ascii-zero-crlf"},
+        {200, "OK", "application/json", kKeylistJsonArray, sizeof(kKeylistJsonArray), "200-json-empty-array"},
+        {200, "OK", "application/json", kKeylistJsonObject, sizeof(kKeylistJsonObject), "200-json-empty-object"},
+        {200, "OK", "application/octet-stream", kKeylistNul1, sizeof(kKeylistNul1), "200-nul-1"},
+        {200, "OK", "application/octet-stream", kKeylistNul2, sizeof(kKeylistNul2), "200-nul-2"},
+        {200, "OK", "application/octet-stream", kKeylistNul4, sizeof(kKeylistNul4), "200-le32-zero"},
+        {200, "OK", "application/octet-stream", kKeylistNul8, sizeof(kKeylistNul8), "200-le64-zero"},
+        {200, "OK", "application/octet-stream", kKeylistNul16, sizeof(kKeylistNul16), "200-zero-16"},
+        {200, "OK", "text/plain", kKeylistUtf8Bom, sizeof(kKeylistUtf8Bom), "200-utf8-bom-only"},
+    };
+
+    constexpr int kKeylistFuzzCandidateCount = static_cast<int>(sizeof(kKeylistFuzzCandidates) / sizeof(kKeylistFuzzCandidates[0]));
+    std::atomic<int> g_lastKeylistFuzzCandidate{0};
+    std::atomic<unsigned long long> g_lastKeylistFuzzSequence{0};
+    std::atomic_bool g_keylistFuzzProgressLogged{false};
+
+    bool WriteFileBytes(const std::wstring& path, const void* data, std::size_t size)
+    {
+        HANDLE file = CreateFileW(path.c_str(), GENERIC_WRITE, FILE_SHARE_READ, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
+        if (file == INVALID_HANDLE_VALUE)
+            return false;
+        bool ok = true;
+        const unsigned char* bytes = static_cast<const unsigned char*>(data);
+        std::size_t remaining = size;
+        while (remaining)
+        {
+            const DWORD chunk = static_cast<DWORD>((std::min<std::size_t>)(remaining, 1024u * 1024u));
+            DWORD written = 0;
+            if (!WriteFile(file, bytes, chunk, &written, nullptr) || written != chunk)
+            {
+                ok = false;
+                break;
+            }
+            bytes += written;
+            remaining -= written;
+        }
+        CloseHandle(file);
+        return ok;
+    }
+
+    bool ReadFileBytes(const std::wstring& path, std::vector<unsigned char>& out)
+    {
+        out.clear();
+        HANDLE file = CreateFileW(path.c_str(), GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+        if (file == INVALID_HANDLE_VALUE)
+            return false;
+        LARGE_INTEGER size{};
+        if (!GetFileSizeEx(file, &size) || size.QuadPart <= 0 || size.QuadPart > 8ll * 1024ll * 1024ll)
+        {
+            CloseHandle(file);
+            return false;
+        }
+        out.resize(static_cast<std::size_t>(size.QuadPart));
+        DWORD read = 0;
+        const bool ok = ReadFile(file, out.data(), static_cast<DWORD>(out.size()), &read, nullptr) && read == out.size();
+        CloseHandle(file);
+        if (!ok)
+            out.clear();
+        return ok;
+    }
+
+    std::string ReadSmallTextFile(const std::wstring& path)
+    {
+        std::vector<unsigned char> bytes;
+        if (!ReadFileBytes(path, bytes))
+            return {};
+        return std::string(bytes.begin(), bytes.end());
+    }
+
+    int ReadResearchInteger(const wchar_t* name, int fallback)
+    {
+        const std::string text = ReadSmallTextFile(KeylistResearchPath(name));
+        if (text.empty())
+            return fallback;
+        char* end = nullptr;
+        const long value = std::strtol(text.c_str(), &end, 10);
+        if (end == text.c_str())
+            return fallback;
+        return static_cast<int>(value);
+    }
+
+    void WriteResearchInteger(const wchar_t* name, int value)
+    {
+        char text[64]{};
+        const int length = _snprintf_s(text, sizeof(text), _TRUNCATE, "%d\r\n", value);
+        if (length > 0)
+            WriteFileBytes(KeylistResearchPath(name), text, static_cast<std::size_t>(length));
+    }
+
+    int SelectKeylistFuzzCandidate(bool& lockedToWinner, unsigned long long& sequence)
+    {
+        lockedToWinner = false;
+        const int winner = ReadResearchInteger(L"keylist_fuzz_winner.txt", 0);
+        if (winner >= 1 && winner <= kKeylistFuzzCandidateCount)
+        {
+            lockedToWinner = true;
+            sequence = g_lastKeylistFuzzSequence.fetch_add(1) + 1;
+            g_lastKeylistFuzzCandidate.store(winner);
+            return winner;
+        }
+
+        int next = ReadResearchInteger(L"keylist_fuzz_next.txt", 1);
+        if (next < 1 || next > kKeylistFuzzCandidateCount)
+            next = 1;
+
+        const int selected = next;
+        next = selected == kKeylistFuzzCandidateCount ? 1 : selected + 1;
+        WriteResearchInteger(L"keylist_fuzz_next.txt", next);
+        sequence = g_lastKeylistFuzzSequence.fetch_add(1) + 1;
+        g_lastKeylistFuzzCandidate.store(selected);
+        g_keylistFuzzProgressLogged.store(false);
+        return selected;
+    }
+
+    void SaveKeylistFuzzLast(unsigned long long sequence, int candidateNumber,
+        const KeylistFuzzCandidate& candidate, const std::string& request, bool lockedToWinner)
+    {
+        char summary[2048]{};
+        const int summaryLength = _snprintf_s(summary, sizeof(summary), _TRUNCATE,
+            "sequence=%llu\r\n"
+            "candidate=%d/%d\r\n"
+            "name=%s\r\n"
+            "status=%lu %s\r\n"
+            "content-type=%s\r\n"
+            "body-bytes=%llu\r\n"
+            "locked-winner=%s\r\n",
+            sequence,
+            candidateNumber,
+            kKeylistFuzzCandidateCount,
+            candidate.name,
+            static_cast<unsigned long>(candidate.status),
+            candidate.reason,
+            candidate.contentType ? candidate.contentType : "<none>",
+            static_cast<unsigned long long>(candidate.bodySize),
+            lockedToWinner ? "yes" : "no");
+        if (summaryLength > 0)
+            WriteFileBytes(KeylistResearchPath(L"keylist_fuzz_last.txt"), summary, static_cast<std::size_t>(summaryLength));
+        WriteFileBytes(KeylistResearchPath(L"keylist_fuzz_last_request.txt"), request.data(), request.size());
+        WriteFileBytes(KeylistResearchPath(L"keylist_fuzz_last_body.bin"), candidate.body, candidate.bodySize);
+    }
+
+    void NoteKeylistFuzzProgress(std::uint16_t port, std::uint64_t clientId)
+    {
+        if (port != 1119u && port != 443u)
+            return;
+
+        const int candidateNumber = g_lastKeylistFuzzCandidate.load();
+        if (candidateNumber < 1 || candidateNumber > kKeylistFuzzCandidateCount)
+            return;
+
+        bool expected = false;
+        if (!g_keylistFuzzProgressLogged.compare_exchange_strong(expected, true))
+            return;
+
+        const KeylistFuzzCandidate& candidate = kKeylistFuzzCandidates[candidateNumber - 1];
+        WriteResearchInteger(L"keylist_fuzz_winner.txt", candidateNumber);
+
+        char success[1024]{};
+        const int successLength = _snprintf_s(success, sizeof(success), _TRUNCATE,
+            "candidate=%d/%d\r\n"
+            "name=%s\r\n"
+            "progress-port=%u\r\n"
+            "client-id=%llu\r\n"
+            "result=client-progressed-beyond-keylist\r\n",
+            candidateNumber,
+            kKeylistFuzzCandidateCount,
+            candidate.name,
+            static_cast<unsigned>(port),
+            static_cast<unsigned long long>(clientId));
+        if (successLength > 0)
+            WriteFileBytes(KeylistResearchPath(L"keylist_fuzz_success.txt"), success, static_cast<std::size_t>(successLength));
+
+        revamped::iw8::log::Print(
+            "[KEYLIST-FUZZ] PASS candidate=%d/%d name=%s progression=tcp:%u winner locked; file=%ls",
+            candidateNumber, kKeylistFuzzCandidateCount, candidate.name, static_cast<unsigned>(port),
+            KeylistResearchPath(L"keylist_fuzz_success.txt").c_str());
+    }
+
+    std::string ExtractHttpHeader(const std::string& request, const char* name)
+    {
+        if (!name || !*name)
+            return {};
+        std::string needle(name);
+        needle += ':';
+        std::size_t line = 0;
+        while (line < request.size())
+        {
+            const std::size_t end = request.find("\r\n", line);
+            const std::size_t count = (end == std::string::npos ? request.size() : end) - line;
+            const std::string current = request.substr(line, count);
+            if (current.size() > needle.size() && _strnicmp(current.c_str(), needle.c_str(), needle.size()) == 0)
+            {
+                std::size_t value = needle.size();
+                while (value < current.size() && (current[value] == ' ' || current[value] == '\t'))
+                    ++value;
+                return current.substr(value);
+            }
+            if (end == std::string::npos)
+                break;
+            line = end + 2;
+        }
+        return {};
+    }
+
+}
+
 namespace revamped::iw8
 {
     void Server::ReadTcp(std::size_t index)
@@ -37,6 +310,7 @@ namespace revamped::iw8
         if (client.firstPacket)
         {
             client.firstPacket = false;
+            NoteKeylistFuzzProgress(client.localPort, client.id);
             if (client.localPort == 1119)
                 log::Print("[AUTH] id=%llu first Battle.net client payload captured bytes=%d; attempting real TLS transport only",
                     static_cast<unsigned long long>(client.id), result);
@@ -69,10 +343,11 @@ namespace revamped::iw8
             return;
         }
 
-        // We now have one decoded, non-auth bootstrap request from the 1.44 client:
+        // Research target from the stock client:
         //   GET /pc/0/xpak_ignore.keylist
-        // An empty ignore list is a valid local preservation fallback and lets the
-        // client continue without inventing any Battle.net/Demonware auth payload.
+        // The historical CDN object is gone, so this build cycles a small set
+        // of deterministic empty-list candidates and watches for native progress
+        // to :1119/:443. No game state is patched or forced.
         if (client.localPort == 80)
         {
             const std::string request(reinterpret_cast<const char*>(buffer), static_cast<std::size_t>(result));
@@ -144,25 +419,33 @@ namespace revamped::iw8
 
             if (request.rfind("GET /pc/0/xpak_ignore.keylist ", 0) == 0)
             {
-                static const char response[] =
+                const std::string host = ExtractHttpHeader(request, "Host");
+                log::Print("[HTTP80] id=%llu request=\"GET /pc/0/xpak_ignore.keylist HTTP/1.1\" host=%s",
+                    static_cast<unsigned long long>(client.id), host.empty() ? "<missing>" : host.c_str());
+
+                WriteFileBytes(KeylistResearchPath(L"xpak_ignore.client_request.txt"), request.data(), request.size());
+
+                // Black-box research result (MW2019 1.44): HTTP 200 with one LF byte
+                // is the minimal native empty keylist.  It advances the stock client
+                // immediately to Battle.net :1119.  Keep this deterministic now.
+                static constexpr unsigned char body[] = {'\n'};
+                static constexpr char header[] =
                     "HTTP/1.1 200 OK\r\n"
                     "Content-Type: text/plain\r\n"
-                    "Content-Length: 0\r\n"
+                    "Content-Length: 1\r\n"
+                    "Cache-Control: no-store\r\n"
                     "Connection: close\r\n"
                     "\r\n";
-                const int sent = send(client.socket, response, static_cast<int>(sizeof(response) - 1), 0);
-                if (sent > 0 && config_.dumpPayloads)
-                    log::Payload(client.id, "OUT", client.localPort, client.peer, response, static_cast<std::size_t>(sent));
-                if (sent == SOCKET_ERROR)
-                {
-                    char detail[64]{};
-                    _snprintf_s(detail, sizeof(detail), _TRUNCATE, "http-keylist-send-wsa=%d", WSAGetLastError());
-                    CloseClient(index, detail);
-                }
-                else
-                {
-                    CloseClient(index, "http-keylist-empty-200");
-                }
+
+                const bool headerOk = SendAllNonBlocking(client.socket, header, sizeof(header) - 1);
+                const bool bodyOk = headerOk && SendAllNonBlocking(client.socket, body, sizeof(body));
+                WriteFileBytes(KeylistResearchPath(L"xpak_ignore.accepted_body.bin"), body, sizeof(body));
+
+                log::Print(
+                    "[KEYLIST] id=%llu status=200 bytes=1 body=LF mode=proven-empty-list result=%s",
+                    static_cast<unsigned long long>(client.id), (headerOk && bodyOk) ? "sent" : "send-failed");
+
+                CloseClient(index, (headerOk && bodyOk) ? "http-keylist-200-lf" : "http-keylist-send-failed");
                 return;
             }
 

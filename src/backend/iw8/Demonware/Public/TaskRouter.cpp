@@ -102,8 +102,13 @@ namespace revamped::iw8::demonware
             route.replyPolicy == ReplyPolicy::StructObjectStoreVectorized ||
             route.replyPolicy == ReplyPolicy::StructObjectStoreUploadVectorized ? 1024u : 256u);
 
+        // IW8 1.20 maps BD_NO_PROFILE_INFO_EXISTS to 170. Legacy Demonware
+        // error replies repeat the transaction id after the common envelope.
+        const std::uint32_t errorCode =
+            route.replyPolicy == ReplyPolicy::LegacyProfileNotFound ? 170u : 0u;
+
         AppendTypedU64(serviceReply, transactionId);
-        AppendTypedU32(serviceReply, 0u); // BD_NO_ERROR
+        AppendTypedU32(serviceReply, errorCode);
         AppendTypedU8(serviceReply, request.taskId);
 
         switch (route.replyPolicy)
@@ -118,6 +123,13 @@ namespace revamped::iw8::demonware
 
         case ReplyPolicy::LegacyServerTime:
             AppendLegacyServerTime(serviceReply);
+            break;
+
+        case ReplyPolicy::LegacyProfileNotFound:
+            // Legacy bdRemoteTask error envelope. Do not append a result count
+            // or fake profile bytes; the stock 1.20 client handles 170 by
+            // constructing the default player-card/profile DDL locally.
+            AppendTypedU64(serviceReply, transactionId);
             break;
 
         case ReplyPolicy::StructMarketingMessagesEmpty:
@@ -172,6 +184,16 @@ namespace revamped::iw8::demonware
             if (!AppendPublisherVariablesStruct(serviceReply, requestPayload, requestPayloadBytes))
                 return false;
             break;
+
+        case ReplyPolicy::StructMarketplaceBalancesEmpty:
+        {
+            // bdMarketplace::getBalancesV3 uses a structured response. An
+            // account with no currency rows is represented by an empty body,
+            // not by a made-up balance object.
+            const std::vector<std::uint8_t> emptyBody;
+            AppendTypedStruct(serviceReply, emptyBody);
+            break;
+        }
 
         case ReplyPolicy::StructObjectStoreVectorized:
             if (!AppendObjectStoreVectorizedStruct(serviceReply, requestPayload, requestPayloadBytes))

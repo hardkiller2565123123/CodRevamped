@@ -224,22 +224,24 @@ namespace revamped::iw8::bgs
 
         if (method == 44u)
         {
-            // AccountService.GetSignedAccountState. IW8 1.44 sends
-            // GetSignedAccountStateRequest { account: AccountId } here after the
-            // initial online-services bootstrap. The response schema contains only
-            // field 1: token (string). This is a local/offline synthetic token; no
-            // production Blizzard signing material is used or required by the server.
+            // AccountService.GetSignedAccountState. IW8 consumes response field 1
+            // as the account-token JSON passed to its native BNet token parser.
+            // 1.20 explicitly reads the keys "country" and "license" and always
+            // completes content enumeration after parsing the license array, even
+            // when that array is empty. Keep the local preservation account empty
+            // rather than inventing DLC ownership.
             std::vector<Byte> account;
             const bool hasAccount = TryGetBytesField(context.rpc.body.data(), context.rpc.body.size(), 1u, account);
+            const std::string signedAccountToken = "{\"country\":\"US\",\"license\":[]}";
 
             std::vector<Byte> response;
-            AppendStringField(response, 1u, "revamped-iw8-local-signed-account-state");
+            AppendStringField(response, 1u, signedAccountToken);
             QueueResponse(context, response, "AccountService.GetSignedAccountState response");
-            log::Print("[BGS-ACCOUNT] id=%llu GetSignedAccountState token=%u accountBytes=%llu accountPresent=%s signedTokenBytes=%llu",
+            log::Print("[BGS-ACCOUNT] id=%llu GetSignedAccountState token=%u accountBytes=%llu accountPresent=%s signedTokenBytes=%llu schema=country+license licenses=0",
                 static_cast<unsigned long long>(context.connectionId), context.rpc.header.token,
                 static_cast<unsigned long long>(account.size()), hasAccount ? "yes" : "no",
-                static_cast<unsigned long long>(sizeof("revamped-iw8-local-signed-account-state") - 1));
-            MarkHandled(context, "local signed-account-state token queued");
+                static_cast<unsigned long long>(signedAccountToken.size()));
+            MarkHandled(context, "native IW8 account-token JSON queued (country + empty license array)");
             return true;
         }
 

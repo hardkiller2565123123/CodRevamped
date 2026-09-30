@@ -82,6 +82,13 @@ namespace revamped::iw8::web
         const std::string pathLower = Lower(result.path);
         const std::string query = question == std::string::npos ? std::string{} : target.substr(question + 1);
         const std::string body = contentLength ? all.substr(headerBytes, contentLength) : std::string{};
+        const bool umbrellaLegacyLsgPath = pathLower == "/v1.0/tokens/lsg/";
+        const bool umbrellaCrossplayPath = pathLower == "/v1.0/tokens/crossplatform/";
+        const char* umbrellaSuffix = ".umbrella.demonware.net";
+        const std::size_t umbrellaSuffixLength = std::strlen(umbrellaSuffix);
+        const bool umbrellaHost = hostLower == "umbrella.demonware.net" ||
+            (hostLower.size() > umbrellaSuffixLength &&
+             hostLower.compare(hostLower.size() - umbrellaSuffixLength, umbrellaSuffixLength, umbrellaSuffix) == 0);
 
         const std::string contentTypeLower = Lower(HeaderValue(headers, "Content-Type"));
         const bool bodyIsJson = contentTypeLower.find("application/json") != std::string::npos || LooksLikeJsonObject(body);
@@ -111,8 +118,8 @@ namespace revamped::iw8::web
             result.response = BuildResponse(200, "OK", "application/json; charset=utf-8", responseBody);
         }
         else if (result.method == "POST" &&
-            hostLower == "prod.umbrella.demonware.net" &&
-            pathLower == "/v1.0/tokens/lsg/")
+            umbrellaHost &&
+            (umbrellaLegacyLsgPath || umbrellaCrossplayPath))
         {
             // Stock IW8 reaches this exchange only after the signed Auth3 response
             // has been accepted far enough to request an LSG token.  Keep this
@@ -126,10 +133,12 @@ namespace revamped::iw8::web
             const bool queryHasTicket = HasFormKey(query, "ticket");
             const bool queryHasIvSeed = HasFormKey(query, "initialVectorSeed");
             const bool queryHasTitleId = HasFormKey(query, "titleID");
+            const bool queryHasAuthToken = HasFormKey(query, "authToken");
             const bool formHasClient = bodyIsForm && HasFormKey(body, "client");
             const bool formHasTicket = bodyIsForm && HasFormKey(body, "ticket");
             const bool formHasIvSeed = bodyIsForm && HasFormKey(body, "initialVectorSeed");
             const bool formHasTitleId = bodyIsForm && HasFormKey(body, "titleID");
+            const bool formHasAuthToken = bodyIsForm && HasFormKey(body, "authToken");
 
             // IW8 1.44 actually splits this POST across sources: `client` is
             // carried by the URL query while the ticket/IV/title fields are a
@@ -142,37 +151,46 @@ namespace revamped::iw8::web
             const bool jsonHasTicket = bodyIsJson && JsonValueType(body, "ticket") != '-';
             const bool jsonHasIvSeed = bodyIsJson && JsonValueType(body, "initialVectorSeed") != '-';
             const bool jsonHasTitleId = bodyIsJson && JsonValueType(body, "titleID") != '-';
+            const bool jsonHasAuthToken = bodyIsJson && JsonValueType(body, "authToken") != '-';
 
             const bool hasClient = queryHasClient || formHasClient || jsonHasClient;
             const bool hasTicket = queryHasTicket || formHasTicket || jsonHasTicket;
             const bool hasIvSeed = queryHasIvSeed || formHasIvSeed || jsonHasIvSeed;
             const bool hasTitleId = queryHasTitleId || formHasTitleId || jsonHasTitleId;
+            const bool hasAuthToken = queryHasAuthToken || formHasAuthToken || jsonHasAuthToken;
+            const bool requiresAuthToken = umbrellaCrossplayPath;
 
             const char* bodyStyle = bodyIsJson ? "json" : (bodyIsForm ? "form" : "none");
             const char* fieldSource = !query.empty() && bodyIsJson ? "query+json" :
                 (!query.empty() && bodyIsForm ? "query+form" :
                 (!query.empty() ? "query" : (bodyIsJson ? "json" : (bodyIsForm ? "form" : "none"))));
+            const char* umbrellaRoute = umbrellaCrossplayPath ? "crossplatform" : "lsg";
             std::ostringstream detail;
-            detail << "local Demonware Umbrella LSG token exchange"
+            detail << "local Demonware Umbrella " << umbrellaRoute << " token exchange"
                    << " fieldSource=" << fieldSource
                    << " bodyStyle=" << bodyStyle
                    << " client=" << (hasClient ? "present" : "missing")
                    << " ticket=" << (hasTicket ? "present" : "missing")
                    << " initialVectorSeed=" << (hasIvSeed ? "present" : "missing")
                    << " titleID=" << (hasTitleId ? "present" : "missing")
-                   << " values=REDACTED responseStyle=UMBRELLA_STOCK_NAMED_V15 stateWrites=off";
+                   << " authToken=" << (hasAuthToken ? "present" : "missing")
+                   << " values=REDACTED responseStyle=UMBRELLA_NATIVE_LSG_HANDOFF stateWrites=off";
 
             result.handled = true;
-            if (!hasClient || !hasTicket || !hasIvSeed || !hasTitleId)
+            if (!hasClient || !hasTicket || !hasIvSeed || !hasTitleId || (requiresAuthToken && !hasAuthToken))
             {
                 result.statusCode = 400;
                 result.label = detail.str();
-                AppendAuthPipelineV58("UMBRELLA_REJECT shape client=%s ticket=%s iv=%s title=%s source=%s",
+                AppendAuthPipelineV58("UMBRELLA_REJECT route=%s shape client=%s ticket=%s iv=%s title=%s authToken=%s source=%s",
+                    umbrellaRoute,
                     hasClient ? "present" : "missing", hasTicket ? "present" : "missing",
-                    hasIvSeed ? "present" : "missing", hasTitleId ? "present" : "missing", fieldSource);
+                    hasIvSeed ? "present" : "missing", hasTitleId ? "present" : "missing",
+                    hasAuthToken ? "present" : "missing", fieldSource);
                 result.response = BuildResponse(400, "Bad Request",
                     "application/json; charset=utf-8",
-                    "{\"error\":\"revamped_bad_umbrella_lsg_shape\"}");
+                    umbrellaCrossplayPath
+                        ? "{\"error\":\"revamped_bad_umbrella_crossplatform_shape\"}"
+                        : "{\"error\":\"revamped_bad_umbrella_lsg_shape\"}");
             }
             else
             {
@@ -216,9 +234,32 @@ namespace revamped::iw8::web
                     requestTicketExtracted &&
                     !requestTicket.empty() &&
                     ticketMatch.exactServerMatch;
-                const std::uint32_t lsgTitleId = ticketMatch.titleId != 0u
-                    ? ticketMatch.titleId
-                    : 5800u;
+
+                // 1.20's native crossplatform request explicitly carries titleID.
+                // Prefer that request value when it is a sane uint32, then fall
+                // back to the correlated Auth3 ticket and finally IW8's known
+                // title id. This keeps the handler semantic across build layouts.
+                std::uint32_t requestTitleId = 0u;
+                std::string requestTitleText;
+                if (bodyIsJson)
+                {
+                    const char titleType = JsonValueType(body, "titleID");
+                    if (titleType == 's')
+                        JsonStringValue(body, "titleID", requestTitleText);
+                    else if (titleType != '-')
+                        JsonUnsignedText(body, "titleID", requestTitleText);
+                }
+                if (!requestTitleText.empty())
+                {
+                    char* end = nullptr;
+                    const unsigned long parsed = std::strtoul(requestTitleText.c_str(), &end, 10);
+                    if (end && *end == '\0' && parsed <= 0xFFFFFFFFul)
+                        requestTitleId = static_cast<std::uint32_t>(parsed);
+                }
+
+                const std::uint32_t lsgTitleId = requestTitleId != 0u
+                    ? requestTitleId
+                    : (ticketMatch.titleId != 0u ? ticketMatch.titleId : 5800u);
                 std::string localLsgToken = BuildLocalLsgTokenV67(lsgTitleId);
                 if (localLsgToken.empty() && ticketMatch.haveAuth3ClientTicket)
                     localLsgToken = g_authPipeline.lastAuth3ClientTicket;
@@ -282,22 +323,12 @@ namespace revamped::iw8::web
                     responseTicketShape.sessionKeyNonZero,
                     Sha256Prefix(localLsgToken).c_str());
 
-                // V15 keeps only field names that are actually present in the
-                // stock 1.44 image: the proven legacy bdUmbrellaUserAccount names,
-                // generic `token`, and camel-case `lsgEndpoint`.  V14 proved that
-                // `expires_in` and snake-case `lsg_endpoint` are not present as exact
-                // stock strings, so do not keep emitting those speculative names.
-                // This remains a server-protocol compatibility probe only.
-                //
-                // Do not claim stock accepted this result until a lobby DNS/socket
-                // transition is actually observed.
-                // V61: V60 produced the first runtime LSG stream attempts, but the stock
-                // client resolved the host:port string "127.0.0.1:3075" to the invalid
-                // sentinel 0.255.0.255 and then used its own fixed TCP port 3074.  Test the
-                // stock-shaped endpoint as a host/IP only while preserving every proven
-                // stock field name. V67 keeps that endpoint fix and replaces only the
-                // response token material. This changes only the
-                // emulated server response; no client login/DW state is forced.
+                // Native 1.20 maps `lsgEndpoint` directly to the hostname buffer
+                // and hardcodes TCP 3074 in the LSG task constructor.  Keep the
+                // endpoint host-only.  The response also carries the account-token
+                // fields parsed by the stock Umbrella account object plus the
+                // crossPlatformProgressionEnabled flag observed in the native parser.
+                // No client login/fence state is forced here.
                 const LONG responseOrdinal = InterlockedIncrement(&g_authPipeline.umbrellaSweepCount);
                 const std::string responseToken = localLsgToken;
                 const std::string localLobbyEndpoint = "127.0.0.1";
@@ -305,18 +336,21 @@ namespace revamped::iw8::web
                     "{\"umbrellaID\":1,\"accessToken\":\"" + JsonEscape(responseToken) +
                     "\",\"expires\":86400,\"accounts\":[],"
                     "\"token\":\"" + JsonEscape(responseToken) +
-                    "\",\"lsgEndpoint\":\"" + JsonEscape(localLobbyEndpoint) + "\"}";
+                    "\",\"crossPlatformProgressionEnabled\":true,"
+                    "\"lsgEndpoint\":\"" + JsonEscape(localLobbyEndpoint) + "\"}";
                 result.statusCode = 200;
                 result.label = detail.str();
                 result.response = BuildResponse(200, "OK", "application/json; charset=utf-8", responseBody);
                 MarkUmbrellaLsgAccepted(ticketMatch.serial);
 
-                log::Print("[AUTH-V67] UMBRELLA_RESPONSE ordinal=%ld auth3Serial=%llu exactServer=%s schema=FULL_STOCK_NAMED tokenSource=%s tokenLen=%llu endpoint=%s endpointFormat=HOST_ONLY clientPortPolicy=FIXED_3074 deterministic=yes next=expect_TCP_LSG_HELLO",
+                log::Print("[AUTH-LSG] UMBRELLA_RESPONSE route=%s ordinal=%ld auth3Serial=%llu exactServer=%s schema=NATIVE_CROSSPLAY_LSG tokenSource=%s tokenLen=%llu endpoint=%s endpointFormat=HOST_ONLY clientPortPolicy=FIXED_3074 crossPlatformProgressionEnabled=true deterministic=yes next=expect_TCP_3074",
+                    umbrellaRoute,
                     static_cast<long>(responseOrdinal), static_cast<unsigned long long>(ticketMatch.serial),
                     ticketMatch.exactServerMatch ? "YES" : "NO",
                     "mintedDwAuthTicketV67",
                     static_cast<unsigned long long>(responseToken.size()), localLobbyEndpoint.c_str());
-                AppendAuthPipelineV58("AUTH_V67_UMBRELLA_RESPONSE ordinal=%ld auth3Serial=%llu exactServer=%s schema=FULL_STOCK_NAMED tokenSource=%s tokenLen=%llu endpoint=%s endpointFormat=HOST_ONLY clientPortPolicy=FIXED_3074 deterministic=yes next=expect_TCP_LSG_HELLO",
+                AppendAuthPipelineV58("AUTH_LSG_UMBRELLA_RESPONSE route=%s ordinal=%ld auth3Serial=%llu exactServer=%s schema=NATIVE_CROSSPLAY_LSG tokenSource=%s tokenLen=%llu endpoint=%s endpointFormat=HOST_ONLY clientPortPolicy=FIXED_3074 crossPlatformProgressionEnabled=true deterministic=yes next=expect_TCP_3074",
+                    umbrellaRoute,
                     static_cast<long>(responseOrdinal), static_cast<unsigned long long>(ticketMatch.serial),
                     ticketMatch.exactServerMatch ? "YES" : "NO",
                     "mintedDwAuthTicketV67",
@@ -415,8 +449,9 @@ namespace revamped::iw8::web
                 result.label = detail.str();
                 result.response = BuildDwAuthResponse(
                     BuildDwBnetAuthResponse(authTask, ivSeed, titleId, identity, serviceLevel, sessionToken));
-                AppendAuthPipelineV58("AUTH3_RESPONSE status=200 requestTask=%s responseTask=%lu titleId=%u clientId=iw-cod-iw8-bnet accountType=bnet serviceLevel=paid lsg_endpoint=null signed=RSA_PSS_SHA256",
-                    authTask.c_str(), std::strtoul(authTask.c_str(), nullptr, 10) + 1u, static_cast<unsigned>(titleId));
+                AppendAuthPipelineV58("AUTH3_RESPONSE status=200 requestTask=%s responseTask=%lu titleId=%u clientId=iw-cod-iw8-bnet accountType=bnet serviceLevel=paid lsg_endpoint=mw-lobby-1.prod.demonware.net lsg_port=3074 forceLsgTest=%s signed=RSA_PSS_SHA256",
+                    authTask.c_str(), std::strtoul(authTask.c_str(), nullptr, 10) + 1u, static_cast<unsigned>(titleId),
+                    LsgForceTestEnabled() ? "ENABLED" : "disabled");
             }
         }
         else if (pathLower == "/optinservice/v1/getaccountoptins")

@@ -24,6 +24,9 @@ namespace revamped::iw8
             client.acceptedAtMs = GetTickCount64();
             clients_.push_back(client);
             log::Connection(client.id, client.peer, client.localPort, "accepted");
+            if (client.localPort == 3074u)
+                log::Print("[LSG-NATIVE] id=%llu TCP 3074 accepted peer=%s; stock IW8 hardcodes this port after resolving Umbrella lsgEndpoint",
+                    static_cast<unsigned long long>(client.id), client.peer.c_str());
             if (client.localPort == 3074u || client.localPort == 3075u)
                 web::NotePostLsgTransport(client.localPort, "TCP_UNATTRIBUTED");
             if (client.localPort == 1119)

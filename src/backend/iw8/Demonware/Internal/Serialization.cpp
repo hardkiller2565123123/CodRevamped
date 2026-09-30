@@ -33,6 +33,34 @@ namespace revamped::iw8::demonware
             {67u, 6u, "bdEventLog", "initializeFiltering", ReplyPolicy::NoResultSuccess},
             {12u, 6u, "bdTitleUtilities", "getServerTime", ReplyPolicy::LegacyServerTime},
 
+            // IW8 1.20 profile bootstrap. Stock code treats a missing public
+            // profile as a normal first-run condition and creates its default
+            // 256-byte DDL locally. Upload then succeeds with no bound result.
+            {8u, 1u, "bdProfiles", "getPublicInfos", ReplyPolicy::LegacyProfileNotFound},
+            {8u, 3u, "bdProfiles", "setPublicInfo", ReplyPolicy::NoResultSuccess},
+
+            // IW8 1.20 marketplace fence calls. 0xF5 has a known empty struct
+            // shape for an account with no balances. 0xF3 and task 58 are
+            // deliberately registered as known-but-unimplemented until their
+            // exact native result structures are proven; never guess bytes.
+            {80u, 0xF3u, "bdMarketplace", "reconcileLicenses", ReplyPolicy::None},
+            {80u, 0xF5u, "bdMarketplace", "getBalancesV3", ReplyPolicy::StructMarketplaceBalancesEmpty},
+            {80u, 58u, "bdMarketplace", "validateInventoryItemsToken", ReplyPolicy::None},
+
+            // Observed IW8 1.20 calls whose exact reply contracts are not yet
+            // proven. Keeping them in the registry gives precise diagnostics
+            // while preserving the DO_NOT_GUESS_RESPONSE_BYTES policy.
+            {4u, 1u, "bdStorage", "observedTask1", ReplyPolicy::None},
+            {4u, 11u, "bdStorage", "observedTask11", ReplyPolicy::None},
+            {4u, 14u, "bdStorage", "serverValidatedStatsWrite", ReplyPolicy::None},
+            {3u, 46u, "bdService3", "observedTask46", ReplyPolicy::None},
+            {67u, 5u, "bdEventLog", "observedTask5", ReplyPolicy::None},
+            {80u, 125u, "bdMarketplace", "observedTask125", ReplyPolicy::None},
+            {95u, 1u, "bdPublisherVariables", "observedTask1", ReplyPolicy::None},
+            {145u, 15u, "bdService145", "observedTask15", ReplyPolicy::None},
+            {145u, 23u, "bdService145", "observedTask23", ReplyPolicy::None},
+            {152u, 1u, "bdService152", "observedTask1", ReplyPolicy::None},
+
             {95u, 3u, "bdPublisherVariables", "retrievePublisherVariables", ReplyPolicy::StructPublisherVariables},
             {104u, 6u, "bdMarketingComms", "getMessages", ReplyPolicy::StructMarketingMessagesEmpty},
 

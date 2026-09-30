@@ -45,6 +45,12 @@
     std::atomic_uint g_serverEmuWinHttpCalls{0};
     std::atomic_bool g_serverEmuHooksInstalled{false};
 
+    // Build-agnostic pure-emulation mode used by MW2019 1.20. It reuses only
+    // transport redirection and trust bootstrap. Exact 1.44 observer RVAs are
+    // never installed while this flag is set, and no login/fence/menu state is
+    // written.
+    std::atomic_bool g_serverEmuGenericPureMode{false};
+
     // V61: track the concrete stock LSG stream socket. V60 proved the client
     // attempts 0.255.0.255:3074 while DW is still CONNECTING. This is transport
     // attribution only: no login/source3/status value is modified.
@@ -751,7 +757,8 @@
 
     void EnsureBgsTrustBeforeBootstrapNetwork(unsigned short port) noexcept
     {
-        if (port != 80u && port != 1119u)
+        const bool genericTlsPreflight = g_serverEmuGenericPureMode.load() && port == 443u;
+        if (port != 80u && port != 1119u && !genericTlsPreflight)
             return;
 
         HMODULE game = GetModuleHandleW(nullptr);
@@ -2198,7 +2205,7 @@
             ServerEmuAppend(L"dw_lsg_v61.log","[DW-LSG-V61] CONNECT_CANDIDATE socket=%llu endpoint=%s port=%u socketType=%s caller=%s sentinel=%s routeRepair=%s stateWrites=off\r\n",static_cast<unsigned long long>(socket),endpoint,originalPort,socketTypeV60==SOCK_STREAM?"STREAM":(socketTypeV60==SOCK_DGRAM?"DGRAM":"OTHER"),where,lsgSentinelV61?"YES":"no",forcedLocal?"local":"none");
         char targetEndpoint[128]{};
         SockaddrToText(targetName, targetLen, targetEndpoint, ArrayCount(targetEndpoint));
-        CorrelateDemonwareTransport144("connect", socket, name, nameLen, caller);
+        if (!g_serverEmuGenericPureMode.load()) CorrelateDemonwareTransport144("connect", socket, name, nameLen, caller);
 
         if (bgs1119)
             InternalLog("[BGS1119] connect socket=%llu original=%s target=%s forcedLocal=%s caller=%s\r\n",
@@ -2264,7 +2271,7 @@
         const sockaddr* targetName = RedirectServerEmuSockaddr(name, nameLen, redirectStorage, targetLen, forcedLocal);
         char targetEndpoint[128]{};
         SockaddrToText(targetName, targetLen, targetEndpoint, ArrayCount(targetEndpoint));
-        CorrelateDemonwareTransport144("WSAConnect", socket, name, nameLen, caller);
+        if (!g_serverEmuGenericPureMode.load()) CorrelateDemonwareTransport144("WSAConnect", socket, name, nameLen, caller);
         if (bgs1119)
             InternalLog("[BGS1119] WSAConnect socket=%llu original=%s target=%s forcedLocal=%s caller=%s callerData=%s\r\n",
                 static_cast<unsigned long long>(socket), endpoint, targetEndpoint, forcedLocal ? "yes" : "no", where,
@@ -2321,7 +2328,7 @@
         const sockaddr* targetName = RedirectServerEmuSockaddr(name, nameLen, redirectStorage, targetLen, forcedLocal);
         char targetEndpoint[128]{};
         SockaddrToText(targetName, targetLen, targetEndpoint, ArrayCount(targetEndpoint));
-        CorrelateDemonwareTransport144("ConnectEx", socket, name, nameLen, caller);
+        if (!g_serverEmuGenericPureMode.load()) CorrelateDemonwareTransport144("ConnectEx", socket, name, nameLen, caller);
         if (bgs1119)
             InternalLog("[BGS1119] ConnectEx socket=%llu original=%s target=%s forcedLocal=%s initialBytes=%u ov=%p caller=%s\r\n",
                 static_cast<unsigned long long>(socket), endpoint, targetEndpoint, forcedLocal ? "yes" : "no",
@@ -3665,7 +3672,7 @@
         constexpr std::uintptr_t kBgsVerifierModulusRvaV91 = 0x70D7540u;
         const unsigned char* hit = nullptr;
         unsigned hits = 0;
-        if (kServerEmuProductionRuntimeV92)
+        if (kServerEmuProductionRuntimeV92 && !g_serverEmuGenericPureMode.load())
         {
             const std::uintptr_t rdataStart = rdata.rva;
             const std::uintptr_t rdataEnd = rdataStart + rdata.size;
@@ -3841,34 +3848,94 @@
             InternalLog("[AUTH3-TRUST] attempt=%u unable to locate .rdata\r\n", attempt);
             return false;
         }
-        const std::uintptr_t keyRva =
-            iw8_addresses::MW2019_1_44_AuthLandmarks.AuthTrafficSigningPublicKey;
-        const std::uintptr_t rdataStart = rdata.rva;
-        const std::uintptr_t rdataEnd = rdataStart + rdata.size;
-        if (keyRva < rdataStart || keyRva + sizeof(localKey) > rdataEnd)
-        {
-            InternalLog("[AUTH3-TRUST] exact key rva=0x%llX is outside .rdata; refusing write\r\n",
-                static_cast<unsigned long long>(keyRva));
-            return false;
-        }
-        auto* target = reinterpret_cast<unsigned char*>(module) + keyRva;
-        if (memcmp(target, localKey, sizeof(localKey)) == 0)
-        {
-            g_auth3SigningTrustPatched.store(true);
-            return true;
-        }
-
         static constexpr unsigned char stockSha256[32] = {
             0x35,0x6C,0x4B,0xC3,0x9A,0x66,0x4D,0xD9,
             0xA1,0x49,0x64,0xA3,0xA4,0x42,0x58,0xD8,
             0x98,0xA0,0xDB,0xF5,0x4C,0xFB,0x10,0x83,
             0x5C,0xBD,0xD6,0x30,0x00,0xC9,0xA6,0xB2
         };
+        static constexpr unsigned char rsaSpkiPrefix[] = {
+            0x30,0x82,0x01,0x22,0x30,0x0D,0x06,0x09,
+            0x2A,0x86,0x48,0x86,0xF7,0x0D,0x01,0x01,
+            0x01,0x05,0x00,0x03,0x82,0x01,0x0F,0x00,
+            0x30,0x82,0x01,0x0A,0x02,0x82,0x01,0x01,0x00
+        };
+
+        unsigned char* target = nullptr;
+        std::uintptr_t keyRva = 0;
+        const bool genericMode = g_serverEmuGenericPureMode.load();
+        if (!genericMode)
+        {
+            keyRva = iw8_addresses::MW2019_1_44_AuthLandmarks.AuthTrafficSigningPublicKey;
+            const std::uintptr_t rdataStart = rdata.rva;
+            const std::uintptr_t rdataEnd = rdataStart + rdata.size;
+            if (keyRva < rdataStart || keyRva + sizeof(localKey) > rdataEnd)
+            {
+                InternalLog("[AUTH3-TRUST] exact key rva=0x%llX is outside .rdata; refusing write\r\n",
+                    static_cast<unsigned long long>(keyRva));
+                return false;
+            }
+            target = reinterpret_cast<unsigned char*>(module) + keyRva;
+        }
+        else
+        {
+            // 1.20 uses the same 294-byte RSA SubjectPublicKeyInfo format, but
+            // addresses move between builds. Scan only DER-prefix candidates and
+            // validate the complete candidate by the proven stock SHA-256 before
+            // writing anything.
+            unsigned stockHits = 0;
+            unsigned localHits = 0;
+            unsigned char* stockTarget = nullptr;
+            unsigned char* localTarget = nullptr;
+            for (std::size_t i = 0; i + sizeof(localKey) <= rdata.size; ++i)
+            {
+                auto* candidate = const_cast<unsigned char*>(rdata.begin + i);
+                if (memcmp(candidate, rsaSpkiPrefix, sizeof(rsaSpkiPrefix)) != 0)
+                    continue;
+                if (memcmp(candidate, localKey, sizeof(localKey)) == 0)
+                {
+                    ++localHits;
+                    localTarget = candidate;
+                    continue;
+                }
+                unsigned char digest[32]{};
+                if (Sha256Buffer144(candidate, static_cast<DWORD>(sizeof(localKey)), digest) &&
+                    memcmp(digest, stockSha256, sizeof(stockSha256)) == 0)
+                {
+                    ++stockHits;
+                    stockTarget = candidate;
+                }
+            }
+            if (localHits == 1u && stockHits == 0u)
+            {
+                target = localTarget;
+            }
+            else if (stockHits == 1u && localHits == 0u)
+            {
+                target = stockTarget;
+            }
+            else
+            {
+                InternalLog("[AUTH3-TRUST-1.20] DER scan refused: stockHits=%u localHits=%u expected exactly one verified candidate\r\n",
+                    stockHits, localHits);
+                return false;
+            }
+            keyRva = reinterpret_cast<std::uintptr_t>(target) - reinterpret_cast<std::uintptr_t>(module);
+            InternalLog("[AUTH3-TRUST-1.20] resolved verifier DER by signature scan rva=0x%llX stockHits=%u localHits=%u\r\n",
+                static_cast<unsigned long long>(keyRva), stockHits, localHits);
+        }
+
+        if (memcmp(target, localKey, sizeof(localKey)) == 0)
+        {
+            g_auth3SigningTrustPatched.store(true);
+            return true;
+        }
+
         unsigned char observedSha256[32]{};
-        if (!Sha256Buffer144(target, sizeof(localKey), observedSha256) ||
+        if (!Sha256Buffer144(target, static_cast<DWORD>(sizeof(localKey)), observedSha256) ||
             memcmp(observedSha256, stockSha256, sizeof(stockSha256)) != 0)
         {
-            InternalLog("[AUTH3-TRUST] exact rva=0x%llX stock DER SHA-256 mismatch; refusing write\r\n",
+            InternalLog("[AUTH3-TRUST] resolved rva=0x%llX stock DER SHA-256 mismatch; refusing write\r\n",
                 static_cast<unsigned long long>(keyRva));
             return false;
         }
@@ -3904,6 +3971,108 @@
     std::atomic<bool> g_bgsStockBundleDumped{ false };
     std::atomic<unsigned> g_bgsStockBundleDumpAttempts{ 0 };
 
+    bool MeasureEmbeddedJsonObject(const char* json, std::size_t scanLimit, std::size_t& jsonSize) noexcept
+    {
+        jsonSize = 0;
+        if (!json || scanLimit < 2u || json[0] != '{')
+            return false;
+        unsigned depth = 0;
+        bool inString = false;
+        bool escaped = false;
+        for (std::size_t i = 0; i < scanLimit; ++i)
+        {
+            const char c = json[i];
+            if (inString)
+            {
+                if (escaped) { escaped = false; continue; }
+                if (c == '\\') { escaped = true; continue; }
+                if (c == '"') inString = false;
+                continue;
+            }
+            if (c == '"') { inString = true; continue; }
+            if (c == '{') { ++depth; continue; }
+            if (c == '}' && depth)
+            {
+                --depth;
+                if (depth == 0)
+                {
+                    jsonSize = i + 1u;
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    bool LocateEmbeddedBgsBundleJson(HMODULE module, char*& json, std::size_t& jsonSize,
+        std::uintptr_t& jsonRva) noexcept
+    {
+        json = nullptr;
+        jsonSize = 0;
+        jsonRva = 0;
+        ImageSectionView rdata{};
+        if (!module || !GetImageSection(module, ".rdata", rdata))
+            return false;
+
+        const auto base = reinterpret_cast<std::uintptr_t>(module);
+        if (!g_serverEmuGenericPureMode.load())
+        {
+            const std::uintptr_t rva = iw8_addresses::MW2019_1_44_AuthLandmarks.BgsEmbeddedCertificateBundleJson;
+            if (rva < rdata.rva || rva >= rdata.rva + rdata.size)
+                return false;
+            char* candidate = reinterpret_cast<char*>(base + rva);
+            const std::size_t available = rdata.rva + rdata.size - rva;
+            const std::size_t limit = (std::min)(available, static_cast<std::size_t>(512u * 1024u));
+            if (!MeasureEmbeddedJsonObject(candidate, limit, jsonSize) || jsonSize < 512u)
+                return false;
+            json = candidate;
+            jsonRva = rva;
+            return true;
+        }
+
+        // Build-independent 1.20 path. The certificate bundle is a standalone
+        // NUL-terminated JSON string in .rdata. Find a distinctive pin field,
+        // then walk to the beginning of that C string instead of assuming an RVA.
+        static constexpr char needle[] = "\"ShaHashPublicKeyInfo\":\"";
+        const char* begin = reinterpret_cast<const char*>(rdata.begin);
+        const char* end = begin + rdata.size;
+        const char* search = begin;
+        while (search < end)
+        {
+            const char* hit = std::search(search, end, needle, needle + sizeof(needle) - 1u);
+            if (hit == end)
+                break;
+
+            const char* candidate = hit;
+            const std::size_t maxBack = (std::min)(static_cast<std::size_t>(hit - begin), static_cast<std::size_t>(512u * 1024u));
+            std::size_t walked = 0;
+            while (candidate > begin && walked < maxBack && candidate[-1] != '\0')
+            {
+                --candidate;
+                ++walked;
+            }
+            if (*candidate == '{')
+            {
+                const std::size_t available = static_cast<std::size_t>(end - candidate);
+                const std::size_t limit = (std::min)(available, static_cast<std::size_t>(512u * 1024u));
+                std::size_t measured = 0;
+                if (MeasureEmbeddedJsonObject(candidate, limit, measured) && measured >= 512u &&
+                    hit >= candidate && hit < candidate + measured)
+                {
+                    json = const_cast<char*>(candidate);
+                    jsonSize = measured;
+                    jsonRva = reinterpret_cast<std::uintptr_t>(candidate) - base;
+                    InternalLog("[TRUST-443-1.20] resolved embedded BGS bundle by JSON signature rva=0x%llX bytes=%llu\r\n",
+                        static_cast<unsigned long long>(jsonRva), static_cast<unsigned long long>(jsonSize));
+                    return true;
+                }
+            }
+            search = hit + 1;
+        }
+        InternalLog("[TRUST-443-1.20] embedded BGS bundle signature scan found no unique usable JSON object\r\n");
+        return false;
+    }
+
     bool DumpEmbeddedBgsCertificateBundle(HMODULE module) noexcept
     {
         if (g_bgsStockBundleDumped.load())
@@ -3911,7 +4080,7 @@
         if (!module)
             return false;
 
-        if (kServerEmuProductionRuntimeV92)
+        if (kServerEmuProductionRuntimeV92 && !g_serverEmuGenericPureMode.load())
         {
             wchar_t cached[32768]{};
             if (BuildGameRootPath(L"bgs-key-fingerprint.stock", cached, ArrayCount(cached)) &&
@@ -3935,98 +4104,18 @@
             return false;
         }
 
-        // Exact IW8 1.44 location discovered by the read-only protocol scan:
-        //   http://nydus.battle.net/Bnet/zxx/client/bgs-key-fingerprint @ 0x70CF348
-        //   embedded stock bundle JSON begins                          @ 0x70CF390
-        //
-        // The previous extractor guessed the end from a later "NGIS" marker.
-        // That marker is separate data, not a reliable bundle terminator. Parse
-        // the stock JSON object itself so the local server replays exactly the
-        // bytes embedded in the client, without changing trust or auth state.
-        const std::uintptr_t kStockBundleRva = iw8_addresses::MW2019_1_44_AuthLandmarks.BgsEmbeddedCertificateBundleJson;
-        constexpr std::size_t kMaxBundleScan = 512u * 1024u;
-
-        const auto base = reinterpret_cast<std::uintptr_t>(module);
-        const auto startAddress = base + kStockBundleRva;
-        const auto rdataBegin = reinterpret_cast<std::uintptr_t>(rdata.begin);
-        const auto rdataEnd = rdataBegin + rdata.size;
-        if (startAddress < rdataBegin || startAddress >= rdataEnd)
-        {
-            if (attempt <= 3u)
-                InternalLog("[BGS-BUNDLE] attempt=%u stock bundle RVA 0x%llX is outside .rdata; will retry\r\n",
-                    attempt, static_cast<unsigned long long>(kStockBundleRva));
-            return false;
-        }
-
-        const auto* bytes = reinterpret_cast<const unsigned char*>(startAddress);
-        const std::size_t available = static_cast<std::size_t>(rdataEnd - startAddress);
-        const std::size_t scanLimit = (std::min)(available, kMaxBundleScan);
-        if (scanLimit < 512u || bytes[0] != '{')
-        {
-            if (attempt <= 3u || (attempt % 5u) == 0u)
-                InternalLog("[BGS-BUNDLE] attempt=%u stock JSON is not readable/ready at rva=0x%llX first=0x%02X; will retry\r\n",
-                    attempt,
-                    static_cast<unsigned long long>(kStockBundleRva),
-                    scanLimit ? static_cast<unsigned>(bytes[0]) : 0u);
-            return false;
-        }
-
+        // Exact 1.44 uses the proven RVA; generic 1.20 resolves the same
+        // standalone JSON object by its pin-field signature.
+        char* locatedJson = nullptr;
         std::size_t bundleSize = 0;
-        unsigned depth = 0;
-        bool inString = false;
-        bool escaped = false;
-        bool started = false;
-        for (std::size_t i = 0; i < scanLimit; ++i)
-        {
-            const unsigned char c = bytes[i];
-            if (inString)
-            {
-                if (escaped)
-                {
-                    escaped = false;
-                    continue;
-                }
-                if (c == '\\')
-                {
-                    escaped = true;
-                    continue;
-                }
-                if (c == '"')
-                    inString = false;
-                continue;
-            }
-
-            if (c == '"')
-            {
-                inString = true;
-                continue;
-            }
-            if (c == '{')
-            {
-                ++depth;
-                started = true;
-                continue;
-            }
-            if (c == '}')
-            {
-                if (!depth)
-                    break;
-                --depth;
-                if (started && depth == 0)
-                {
-                    bundleSize = i + 1u;
-                    break;
-                }
-            }
-        }
-
-        if (bundleSize < 512u)
+        std::uintptr_t stockBundleRva = 0;
+        if (!LocateEmbeddedBgsBundleJson(module, locatedJson, bundleSize, stockBundleRva))
         {
             if (attempt <= 3u || (attempt % 5u) == 0u)
-                InternalLog("[BGS-BUNDLE] attempt=%u stock JSON closing brace not available within 0x%llX bytes; will retry\r\n",
-                    attempt, static_cast<unsigned long long>(scanLimit));
+                InternalLog("[BGS-BUNDLE] attempt=%u embedded stock bundle not resolved; will retry\r\n", attempt);
             return false;
         }
+        const auto* bytes = reinterpret_cast<const unsigned char*>(locatedJson);
 
         // Cheap sanity checks on the exact JSON object before writing it out.
         const auto containsAscii = [bytes, bundleSize](const char* needle) noexcept -> bool
@@ -4109,7 +4198,7 @@
             WideToUtf8(rootMirrorPath, mirrorUtf8, static_cast<int>(ArrayCount(mirrorUtf8)));
         InternalLog("[BGS-BUNDLE] READY attempt=%u exact stock JSON rva=0x%llX bytes=%llu file=%s mirror=%s mirrorReady=%s\r\n",
             attempt,
-            static_cast<unsigned long long>(kStockBundleRva),
+            static_cast<unsigned long long>(stockBundleRva),
             static_cast<unsigned long long>(bundleSize),
             pathUtf8,
             mirrorUtf8[0] ? mirrorUtf8 : "<unavailable>",
@@ -4117,7 +4206,7 @@
         ServerEmuAppend(L"network_trace.log",
             "[BGS-BUNDLE] READY attempt=%u exact stock JSON rva=0x%llX bytes=%llu file=bgs-key-fingerprint.stock\r\n",
             attempt,
-            static_cast<unsigned long long>(kStockBundleRva),
+            static_cast<unsigned long long>(stockBundleRva),
             static_cast<unsigned long long>(bundleSize));
         return true;
     }
@@ -4310,51 +4399,13 @@
             return false;
         }
 
-        const std::uintptr_t base = reinterpret_cast<std::uintptr_t>(module);
-        const std::uintptr_t jsonAddress = base + iw8_addresses::MW2019_1_44_AuthLandmarks.BgsEmbeddedCertificateBundleJson;
-        const std::uintptr_t sectionBegin = reinterpret_cast<std::uintptr_t>(rdata.begin);
-        const std::uintptr_t sectionEnd = sectionBegin + rdata.size;
-        if (jsonAddress < sectionBegin || jsonAddress >= sectionEnd)
-        {
-            InternalLog("[TRUST-443] embedded bundle RVA is outside .rdata; no trust pins changed\r\n");
-            return false;
-        }
-
-        char* json = reinterpret_cast<char*>(jsonAddress);
-        const std::size_t available = static_cast<std::size_t>(sectionEnd - jsonAddress);
-        const std::size_t scanLimit = (std::min)(available, static_cast<std::size_t>(512u * 1024u));
-        if (scanLimit < 512u || json[0] != '{')
-        {
-            g_bgsEmbeddedWebTrustAttempted.store(false);
-            InternalLog("[TRUST-443] embedded bundle not materialized yet; will retry\r\n");
-            return false;
-        }
-
+        char* json = nullptr;
         std::size_t jsonSize = 0;
-        unsigned depth = 0;
-        bool inString = false;
-        bool escaped = false;
-        for (std::size_t i = 0; i < scanLimit; ++i)
-        {
-            const char c = json[i];
-            if (inString)
-            {
-                if (escaped) { escaped = false; continue; }
-                if (c == '\\') { escaped = true; continue; }
-                if (c == '"') inString = false;
-                continue;
-            }
-            if (c == '"') { inString = true; continue; }
-            if (c == '{') { ++depth; continue; }
-            if (c == '}' && depth)
-            {
-                --depth;
-                if (depth == 0) { jsonSize = i + 1u; break; }
-            }
-        }
-        if (jsonSize < 512u)
+        std::uintptr_t jsonRva = 0;
+        if (!LocateEmbeddedBgsBundleJson(module, json, jsonSize, jsonRva))
         {
             g_bgsEmbeddedWebTrustAttempted.store(false);
+            InternalLog("[TRUST-443] embedded bundle not resolved yet; will retry\r\n");
             return false;
         }
 
@@ -23533,6 +23584,63 @@
     static void ObserveSessionCompletion144() noexcept;
     static void ObserveSource3Dispatch112144() noexcept;
     static void ObserveSource3Dispatch113144() noexcept;
+
+    void InstallServerEmuNetworkHooksGeneric(HMODULE game) noexcept
+    {
+        if (g_serverEmuHooksInstalled.exchange(true))
+            return;
+
+        g_serverEmuGenericPureMode.store(true);
+        const auto& cfg = ServerEmuSettings();
+        InternalLog("[SERVER-EMU-GENERIC] pure transport/trust mode enabled build=MW2019-1.20 stateWrites=OFF exact144Observers=OFF server=%s\r\n", cfg.host);
+        ServerEmuAppend(L"network_trace.log",
+            "\r\n[SERVER-EMU-GENERIC] start profile=MW2019-1.20 host=%s redirectDW=%s redirectBNet=%s exact144Observers=OFF stateWrites=OFF\r\n",
+            cfg.host, cfg.redirectDemonware ? "on" : "off", cfg.redirectBattleNet ? "on" : "off");
+
+        // Resolve/dump the current build's trust material by signatures. The
+        // actual writes remain deferred to the first :80/:1119/:443 bootstrap preflight.
+        DumpEmbeddedBgsCertificateBundle(game);
+
+        unsigned iatInstalled = 0;
+        unsigned globalInstalled = 0;
+        HMODULE ws2 = GetModuleHandleW(L"WS2_32.dll");
+        if (!ws2) ws2 = LoadLibraryW(L"WS2_32.dll");
+
+        const auto installWs2 = [&](const char* name, void* detour, auto& original) noexcept
+        {
+            if (InstallProcessWideHook(ws2, name, detour, original))
+            {
+                ++globalInstalled;
+                InternalLog("[NET-HOOK-1.20] bootstrap-global %s active\r\n", name);
+                return true;
+            }
+            return false;
+        };
+        const auto installBootstrap = [&](const char* name, void* detour, auto& original) noexcept
+        {
+            if (!installWs2(name, detour, original))
+                iatInstalled += PatchImport(game, "WS2_32.dll", name, detour, original) ? 1u : 0u;
+        };
+
+        installBootstrap("getaddrinfo", reinterpret_cast<void*>(&ServerEmuGetAddrInfoA), g_getAddrInfoAOriginal);
+        installBootstrap("GetAddrInfoW", reinterpret_cast<void*>(&ServerEmuGetAddrInfoW), g_getAddrInfoWOriginal);
+        installBootstrap("gethostbyname", reinterpret_cast<void*>(&ServerEmuGetHostByName), g_getHostByNameOriginal);
+        installBootstrap("connect", reinterpret_cast<void*>(&ServerEmuConnect), g_connectOriginal);
+        installBootstrap("WSAConnect", reinterpret_cast<void*>(&ServerEmuWSAConnect), g_wsaConnectOriginal);
+        installBootstrap("WSAIoctl", reinterpret_cast<void*>(&ServerEmuWSAIoctl), g_wsaIoctlOriginal);
+
+        iatInstalled += PatchImport(game, "WINHTTP.dll", "WinHttpConnect", reinterpret_cast<void*>(&ServerEmuWinHttpConnect), g_winHttpConnectOriginal) ? 1u : 0u;
+        iatInstalled += PatchImport(game, "WINHTTP.dll", "WinHttpOpenRequest", reinterpret_cast<void*>(&ServerEmuWinHttpOpenRequest), g_winHttpOpenRequestOriginal) ? 1u : 0u;
+        iatInstalled += PatchImport(game, "WINHTTP.dll", "WinHttpSendRequest", reinterpret_cast<void*>(&ServerEmuWinHttpSendRequest), g_winHttpSendRequestOriginal) ? 1u : 0u;
+        iatInstalled += PatchImport(game, "WINHTTP.dll", "WinHttpReceiveResponse", reinterpret_cast<void*>(&ServerEmuWinHttpReceiveResponse), g_winHttpReceiveResponseOriginal) ? 1u : 0u;
+
+        const unsigned total = iatInstalled + globalInstalled;
+        InternalLog("[SERVER-EMU-1.20] minimal transport hooks active=%u process-wide=%u iat=%u server=%s stateWrites=OFF\r\n",
+            total, globalInstalled, iatInstalled, cfg.host);
+        ServerEmuAppend(L"network_trace.log",
+            "[SERVER-EMU-1.20] hooks=%u processWide=%u iat=%u trustMode=signature-scan exact144Observers=OFF stateWrites=OFF\r\n",
+            total, globalInstalled, iatInstalled);
+    }
 
     void InstallServerEmuNetworkHooks(HMODULE game) noexcept
     {

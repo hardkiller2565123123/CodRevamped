@@ -4,6 +4,13 @@ namespace revamped::iw8::web
 {
     namespace
     {
+        bool LsgForceTestEnabled()
+        {
+            char value[8]{};
+            const DWORD count = GetEnvironmentVariableA("CODREVAMPED_FORCE_LSG_TEST", value, static_cast<DWORD>(sizeof(value)));
+            return count != 0 && value[0] == '1';
+        }
+
         #pragma pack(push, 1)
         struct DwAuthTicket
 
@@ -115,7 +122,7 @@ namespace revamped::iw8::web
                   // the stock response validator before DW state can advance.
                   << "\",\"client_id\":\"iw-cod-iw8-bnet\""
                  << ",\"account_type\":\"bnet\""
-                 << ",\"crossplay_enabled\":false"
+                 << ",\"crossplay_enabled\":" << (LsgForceTestEnabled() ? "true" : "false")
                  << ",\"loginqueue_eanbled\":false"
                  << ",\"identity\":\"" << JsonEscape(identity) << "\""
                  << ",\"extra_data\":\"" << JsonEscape(nested.str()) << "\""
@@ -123,11 +130,26 @@ namespace revamped::iw8::web
                  // implementation returns "paid" even when the incoming request
                  // advertises "free"; IW8 is now probed with that exact behavior.
                  << ",\"service_level\":\"paid\""
-                 // The project's known T8 Demonware Auth3 implementation emits
-                 // this member as JSON null. IW8 also reaches Umbrella without
-                 // ever resolving the hostname we previously injected here, so
-                 // stop inventing a lobby route in the Auth3 contract.
-                 << ",\"lsg_endpoint\":null}";
+                 // Runtime 1.44 does not proceed to the Umbrella crossplatform
+                 // exchange after this Auth3 response when lsg_endpoint is null;
+                 // it simply retries /auth/.  Give that build the stock IW8 lobby
+                 // hostname already present in its string table.  The redirect DLL
+                 // resolves *.demonware.net to loopback and the native LSG socket
+                 // connects on TCP 3074.  This is transport routing only: no login
+                 // state/fence is forced.
+                 << ",\"lsg_endpoint\":\"mw-lobby-1.prod.demonware.net\"";
+            if (LsgForceTestEnabled())
+            {
+                // TEST-ONLY compatibility probe for encrypted 1.44: advertise both
+                // naming conventions and an explicit port while also enabling the
+                // crossplay branch. Unknown JSON fields are intentionally isolated
+                // behind /LSG and disappear again with /LSG OFF.
+                json << ",\"lsgEndpoint\":\"mw-lobby-1.prod.demonware.net\""
+                     << ",\"lsg_port\":3074"
+                     << ",\"lsgPort\":3074"
+                     << ",\"crossPlatformProgressionEnabled\":true";
+            }
+            json << "}";
             return json.str();
         }
 

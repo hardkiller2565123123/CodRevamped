@@ -28,6 +28,7 @@ namespace revamped::iw8
             return false;
         }
         log::Print("Revamped IW8 server phase 1 ready; listeners=%u", opened);
+        log::Print("[LSG-NATIVE] Umbrella handoff target=127.0.0.1 transport=TCP port=3074; UDP 3074 remains a separate socket/probe path");
         return true;
     }
 }

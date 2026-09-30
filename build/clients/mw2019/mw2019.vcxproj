@@ -59,28 +59,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\minhook\src\buffer.c" />
-    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\minhook\src\hook.c" />
-    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\minhook\src\trampoline.c" />
-    <ClCompile Include="$(CodRevampedRoot)third_party\bo4\minhook\src\hde\hde64.c" />
-    <ClCompile Include="$(CodRevampedRoot)src\clients\mw2019\diagnostics\MW2019Diag.cpp" />
-    <ClCompile Include="$(CodRevampedRoot)src\clients\mw2019\diagnostics\MW2019MemoryScanner.cpp" />
-    <ClCompile Include="$(CodRevampedRoot)src\clients\mw2019\diagnostics\MW2019NetworkBlocker.cpp" />
-    <ClCompile Include="$(CodRevampedRoot)src\clients\mw2019\diagnostics\MW2019LuaDump.cpp" />
-    <ClCompile Include="$(CodRevampedRoot)src\clients\mw2019\diagnostics\IW8SessionCompletionProbe.cpp" />
-    <ClCompile Include="$(CodRevampedRoot)src\clients\mw2019\game\MW2019Patches.cpp" />
-    <ClCompile Include="$(CodRevampedRoot)src\clients\mw2019\game\IW8144Compat.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="$(CodRevampedRoot)src\clients\mw2019\game\1.44addressess.h" />
-    <None Include="$(CodRevampedRoot)src\clients\mw2019\diagnostics\diagnostics\SessionCompletion144.inl" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="$(CodRevampedRoot)build\backend\IW8Server.vcxproj">
-      <Project>{1EAC151E-7BB8-4FA6-A0C7-9CB85619294B}</Project>
-      <LinkLibraryDependencies>false</LinkLibraryDependencies>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\mw2019\MW2019RedirectProxy.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

@@ -34,8 +34,9 @@
 #pragma comment(lib, "Ws2_32.lib")
 #pragma comment(lib, "Winhttp.lib")
 
-// Dedicated MW2019 1.44 VERSION proxy/profile entry.
-// This project is link-time isolated from 1.28 and 1.69 game runtimes.
+// MW2019 VERSION proxy. Exact 1.44 keeps its proven address profile; 1.20
+// uses only build-marker detection plus generic transport/trust hooks. Nearby
+// builds remain forwarding-only so version-specific addresses cannot bleed.
 
 #pragma comment(linker, "/export:GetFileVersionInfoA=Proxy_GetFileVersionInfoA,@1")
 #pragma comment(linker, "/export:GetFileVersionInfoByHandle=Proxy_GetFileVersionInfoByHandle,@2")
@@ -176,6 +177,101 @@ namespace
         return timestamp == kWarzoneBeta2019Timestamp &&
                imageSize == kWarzoneBeta2019ImageSize &&
                entryPoint == kWarzoneBeta2019EntryPoint;
+    }
+
+
+    bool MainImageSectionContainsAscii(HMODULE module, const char* sectionName, const char* needle) noexcept
+    {
+        if (!module || !sectionName || !*sectionName || !needle || !*needle)
+            return false;
+        const auto base = reinterpret_cast<std::uintptr_t>(module);
+        __try
+        {
+            const auto* dos = reinterpret_cast<const IMAGE_DOS_HEADER*>(base);
+            if (dos->e_magic != IMAGE_DOS_SIGNATURE || dos->e_lfanew <= 0)
+                return false;
+            const auto* nt = reinterpret_cast<const IMAGE_NT_HEADERS64*>(base + static_cast<std::uintptr_t>(dos->e_lfanew));
+            if (nt->Signature != IMAGE_NT_SIGNATURE || nt->OptionalHeader.Magic != IMAGE_NT_OPTIONAL_HDR64_MAGIC)
+                return false;
+            const auto* section = IMAGE_FIRST_SECTION(nt);
+            const std::size_t needleBytes = strlen(needle);
+            for (unsigned i = 0; i < nt->FileHeader.NumberOfSections; ++i, ++section)
+            {
+                char name[9]{};
+                memcpy(name, section->Name, 8u);
+                if (_stricmp(name, sectionName) != 0)
+                    continue;
+                const auto* begin = reinterpret_cast<const unsigned char*>(base + section->VirtualAddress);
+                const std::size_t bytes = static_cast<std::size_t>((std::max)(section->Misc.VirtualSize, section->SizeOfRawData));
+                if (needleBytes > bytes)
+                    return false;
+                const auto* found = std::search(begin, begin + bytes,
+                    reinterpret_cast<const unsigned char*>(needle),
+                    reinterpret_cast<const unsigned char*>(needle) + needleBytes);
+                return found != begin + bytes;
+            }
+        }
+        __except (EXCEPTION_EXECUTE_HANDLER)
+        {
+            return false;
+        }
+        return false;
+    }
+
+    bool IsLikelyMW2019_120(HMODULE module) noexcept
+    {
+        // The supplied 1.20 executable identifies itself as IW8 8.19 built
+        // Apr 18 2020. Pair the build stamp with a native online-fence string
+        // so VERSION.dll does not accidentally activate on another IW8 build.
+        return MainImageSectionContainsAscii(module, ".rdata", "Apr 18 2020") &&
+            MainImageSectionContainsAscii(module, ".rdata", "8.19") &&
+            MainImageSectionContainsAscii(module, ".rdata", "ODSF_PS_MANIFEST");
+    }
+
+
+    struct PsManifest120Snapshot
+    {
+        std::uint8_t active = 0;
+        std::uint8_t phase = 0;
+        std::uint8_t ready = 0;
+        std::uint16_t version = 0;
+        std::uint8_t status = 0;
+        std::uint8_t lifecycle = 0;
+        std::uint32_t detail = 0;
+    };
+
+    bool SamePsManifest120Snapshot(const PsManifest120Snapshot& a, const PsManifest120Snapshot& b) noexcept
+    {
+        return a.active == b.active && a.phase == b.phase && a.ready == b.ready &&
+            a.version == b.version && a.status == b.status && a.lifecycle == b.lifecycle &&
+            a.detail == b.detail;
+    }
+
+    bool ReadPsManifest120Snapshot(HMODULE module, PsManifest120Snapshot& out) noexcept
+    {
+        out = {};
+        if (!module)
+            return false;
+        // off_1441E3A70 in the supplied 1.20 image. This is observation only.
+        constexpr std::uintptr_t kPatchManagerRva120 = 0x41E3A70u;
+        const auto base = reinterpret_cast<std::uintptr_t>(module);
+        __try
+        {
+            const auto* slot = reinterpret_cast<const unsigned char*>(base + kPatchManagerRva120);
+            out.active = slot[77];
+            out.phase = slot[78];
+            out.ready = slot[79];
+            std::memcpy(&out.version, slot + 80, sizeof(out.version));
+            out.status = slot[165];
+            out.lifecycle = slot[166];
+            std::memcpy(&out.detail, slot + 168, sizeof(out.detail));
+            return true;
+        }
+        __except (EXCEPTION_EXECUTE_HANDLER)
+        {
+            out = {};
+            return false;
+        }
     }
 
     bool BuildLogPath() noexcept
@@ -1875,6 +1971,66 @@ namespace
             "unknown read-only command; use status/authscan/find_string/read/xref/readers/writers/inspect/frontend_backtrace/fence_event_path", uptimeMs);
     }
 
+    DWORD WINAPI Steam120Thread(LPVOID) noexcept
+    {
+        const HMODULE game = GetModuleHandleW(nullptr);
+        if (!IsLikelyMW2019_120(game))
+            return 1;
+
+        if (!GetConsoleWindow())
+            AllocConsole();
+        if (GetConsoleWindow())
+        {
+            SetConsoleTitleW(L"CodRevamped - MW2019 1.20 Server Emulation");
+            g_consoleOut = CreateFileW(
+                L"CONOUT$", GENERIC_WRITE | GENERIC_READ,
+                FILE_SHARE_WRITE | FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr);
+            if (g_consoleOut == INVALID_HANDLE_VALUE)
+                g_consoleOut = GetStdHandle(STD_OUTPUT_HANDLE);
+        }
+
+        AppendRaw("[1.20] CodRevamped MW2019 1.20 PURE SERVER-EMULATION profile started\r\n");
+        AppendRaw("[SERVER-EMU120] native state machine only: no sign-in/fence/content/PS_MANIFEST/menu truth patches\r\n");
+        AppendRaw("[SERVER-EMU120] build detected by .rdata markers: 8.19 / Apr 18 2020 / ODSF_PS_MANIFEST\r\n");
+        AppendRaw("[SERVER-EMU120] installing generic DNS/connect/WinHTTP redirect plus signature-scanned trust bootstrap\r\n");
+
+        // Set this before hooks are active so the first bootstrap socket cannot
+        // enter any exact-1.44 observer or RVA path.
+        g_serverEmuGenericPureMode.store(true);
+        InstallServerEmuNetworkHooksGeneric(game);
+
+        std::uint32_t timestamp = 0;
+        std::uint32_t imageSize = 0;
+        std::uint32_t entryPoint = 0;
+        std::uint64_t preferredBase = 0;
+        ReadMainImageFingerprint(game, timestamp, imageSize, entryPoint, preferredBase);
+        InternalLog("[1.20] generic pure profile ready timestamp=0x%08X imageSize=0x%08X entry=0x%08X preferredBase=0x%llX server=%s\r\n",
+            timestamp, imageSize, entryPoint, static_cast<unsigned long long>(preferredBase), ServerEmuSettings().host);
+        AppendRaw("[SERVER-EMU120] watch server console for [LSG-ROUTE], [LSG-KNOWN-UNIMPLEMENTED], and [LSG-UNSUPPORTED] task census\r\n");
+        AppendRaw("[ODSF120] normal required mask=0x71B30; PS_MANIFEST read-only watcher enabled (slot0 +79)\r\n");
+
+        PsManifest120Snapshot previous{};
+        bool havePrevious = false;
+        for (;;)
+        {
+            PsManifest120Snapshot current{};
+            if (ReadPsManifest120Snapshot(game, current))
+            {
+                if (!havePrevious || !SamePsManifest120Snapshot(current, previous))
+                {
+                    InternalLog("[ODSF120-PS_MANIFEST] active(+77)=%u phase(+78)=%u ready(+79)=%u version(+80)=%u status(+165)=%u lifecycle(+166)=%u detail(+168)=%u stateWrites=OFF\r\n",
+                        static_cast<unsigned>(current.active), static_cast<unsigned>(current.phase),
+                        static_cast<unsigned>(current.ready), static_cast<unsigned>(current.version),
+                        static_cast<unsigned>(current.status), static_cast<unsigned>(current.lifecycle),
+                        current.detail);
+                    previous = current;
+                    havePrevious = true;
+                }
+            }
+            Sleep(500);
+        }
+    }
+
     DWORD WINAPI Steam144Thread(LPVOID) noexcept
     {
         const HMODULE game = GetModuleHandleW(nullptr);
@@ -2286,16 +2442,23 @@ BOOL WINAPI DllMain(HMODULE module, DWORD reason, LPVOID)
             return TRUE;
         }
 
-        // Normal MW2019 research remains exact-1.44-only. Other builds are
-        // VERSION forwarding only so beta/1.28/1.69 addresses cannot bleed
-        // into this DLL.
-        if (!iw8_144::IsExactBuild(game))
-            return TRUE;
-
-        if (HANDLE thread = CreateThread(nullptr, 0, Steam144Thread, nullptr, 0, nullptr))
-            CloseHandle(thread);
+        // Exact 1.44 keeps its proven profile. Other executables are probed by
+        // the lightweight 1.20 thread; it exits immediately unless the 8.19 /
+        // Apr-18-2020 / ODSF marker set matches. No 1.44 RVA is used in 1.20.
+        if (iw8_144::IsExactBuild(game))
+        {
+            if (HANDLE thread = CreateThread(nullptr, 0, Steam144Thread, nullptr, 0, nullptr))
+                CloseHandle(thread);
+            else
+                AppendRaw("[1.44] CreateThread failed; exact 1.44 profile was not started\r\n");
+        }
         else
-            AppendRaw("[1.44] CreateThread failed; exact 1.44 profile was not started\r\n");
+        {
+            if (HANDLE thread = CreateThread(nullptr, 0, Steam120Thread, nullptr, 0, nullptr))
+                CloseHandle(thread);
+            else
+                AppendRaw("[1.20] CreateThread failed; generic build probe was not started\r\n");
+        }
     }
     else if (reason == DLL_PROCESS_DETACH)
     {

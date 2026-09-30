@@ -12,12 +12,44 @@
 #include "Services/SessionService.h"
 
 #include <utility>
+#define WIN32_LEAN_AND_MEAN
+#include <Windows.h>
 
 namespace revamped::iw8::bgs
 {
     namespace
     {
         using ServiceHandler = bool(*)(RequestContext&);
+
+        bool LsgForceTestEnabled()
+        {
+            char value[8]{};
+            const DWORD count = GetEnvironmentVariableA("CODREVAMPED_FORCE_LSG_TEST", value, static_cast<DWORD>(sizeof(value)));
+            return count != 0 && value[0] == '1';
+        }
+
+        void ApplyLsgForceTestIfNeeded(RequestContext& context)
+        {
+            if (!LsgForceTestEnabled() || !context.session.authenticated ||
+                !context.session.sessionCreatedNotificationSent || context.session.gameAccountSelected)
+                return;
+
+            // TEST-ONLY: emulate the BGS game-account-selection completion event
+            // without writing any client state. This lets us test whether 1.44 is
+            // waiting on that BGS gate before it begins the native DW/LSG handoff.
+            std::vector<Byte> body;
+            AppendVarintField(body, 1u, 0u);
+            AppendEntityIdField(body, 2u, context.session.gameAccountId);
+            QueueServerNotification(context, AuthenticationListenerHash, 14u, body,
+                "AuthenticationListener.OnGameAccountSelected [LSG TEST]");
+            context.session.gameAccountSelected = true;
+            log::Print("[BGS-LSG-TEST] id=%llu forced server-side OnGameAccountSelected notification high=0x%016llX low=0x%016llX appVersion=%s%llu clientMemoryWrites=off",
+                static_cast<unsigned long long>(context.connectionId),
+                static_cast<unsigned long long>(context.session.gameAccountId.high),
+                static_cast<unsigned long long>(context.session.gameAccountId.low),
+                context.session.hasApplicationVersion ? "" : "<unknown>/",
+                static_cast<unsigned long long>(context.session.applicationVersion));
+        }
 
         struct ServiceDefinition
         {
@@ -58,6 +90,24 @@ namespace revamped::iw8::bgs
             return true;
         }
 
+        bool HandleUserManagerService(RequestContext& context)
+        {
+            // bgs.protocol.user_manager.v1.UserManagerService method 1 is Subscribe.
+            // The canonical SubscribeResponse has only repeated blocked_players (1)
+            // and recent_players (2).  For a fresh local preservation account with
+            // neither collection reconstructed, the canonical protobuf body is empty.
+            // This is protocol semantics, not a guessed packet or a client-state patch.
+            if (context.rpc.header.methodId != 1u)
+            {
+                MarkMissing(context, "UserManagerService method is not implemented yet");
+                return true;
+            }
+
+            QueueResponse(context, {}, "UserManagerService.Subscribe response");
+            MarkHandled(context, "Subscribe response: empty blocked/recent-player state");
+            return true;
+        }
+
         // Protocol constants stay explicit, but packets do not.  Every normal
         // BGS request is decoded first and routed by semantic service/method
         // metadata.  A nearby IW8 build can add optional protobuf fields without
@@ -78,7 +128,7 @@ namespace revamped::iw8::bgs
             { WhisperServiceHash, "WhisperService", HandleWhisperService },
             { GameUtilitiesServiceHash, "GameUtilitiesService", nullptr },
             { ResourcesServiceHash, "ResourcesService", HandleResourcesService },
-            { UserManagerServiceHash, "UserManagerService", nullptr },
+            { UserManagerServiceHash, "UserManagerService", HandleUserManagerService },
             { ReportServiceHash, "ReportService", nullptr },
         };
 
@@ -237,6 +287,7 @@ namespace revamped::iw8::bgs
         }
 
         ObserveRequestShape(context);
+        ApplyLsgForceTestIfNeeded(context);
 
         const auto* service = FindService(context.rpc.header.serviceHash);
         if (!service)
