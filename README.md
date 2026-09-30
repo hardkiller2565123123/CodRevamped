@@ -29,9 +29,11 @@ CodRevamped
 │
 ├── Call of Duty: Modern Warfare (2019)
 │   ├── 🚧 Beta — In Development
-│   ├── 🚧 Version 1.28 — In Development / Windows 11 Patched
-│   ├── 🚧 Version 1.44 — In Development
-│   └── 🚧 Retail — In Development
+│   ├── 🚧 Version 1.20 — Launching
+│   ├── 🚧 Version 1.23 — Launching
+│   ├── 🚧 Version 1.28 — In Development 
+│   ├── 🚧 Version 1.44 — Launching
+│   └── 🚧 Retail — Launching
 │
 ├── Call of Duty: Vanguard
 │   ├── 🚧 Beta — In Development
