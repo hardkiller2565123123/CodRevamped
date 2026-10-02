@@ -60,6 +60,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="$(CodRevampedRoot)src\clients\mw2019\MW2019RedirectProxy.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\clients\mw2019\MW2019FrontendFenceTracer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

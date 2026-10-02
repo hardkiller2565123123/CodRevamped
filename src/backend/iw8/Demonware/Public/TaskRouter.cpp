@@ -5,9 +5,9 @@ namespace revamped::iw8::demonware
     TaskRequest DecodeTaskRequest(const std::vector<std::uint8_t>& plain)
     {
         TaskRequest request{};
-        if (plain.size() < 8u)
+        if (plain.size() < 7u)
         {
-            request.error = "plaintext shorter than Demonware typed task header";
+            request.error = "plaintext shorter than Demonware task header";
             return request;
         }
 
@@ -15,14 +15,58 @@ namespace revamped::iw8::demonware
         request.innerType = plain[4];
         request.serviceId = plain[5];
         request.taskTypeTag = plain[6];
-        request.taskId = plain[7];
-        request.payloadOffset = 8u;
 
         if (request.innerType != kTaskRequestType)
         {
             request.error = "inner message is not TASK_REQUEST (0x86)";
             return request;
         }
+
+        // bdRemoteTaskManager::startLSGTask is a separate legacy wire path.
+        // Unlike normal Demonware tasks, it writes service + task as two RAW
+        // bytes and then copies the raw query buffer; there is no typed-U8 tag
+        // before the task id. MW2019 uses this for the LSG bandwidth test
+        // (service 0x12/task 1). Treat only that proven service as raw so the
+        // generic typed-task decoder stays strict for every other service.
+        if (request.serviceId == 0x12u)
+        {
+            request.taskId = plain[6];
+            request.taskTypeTag = 0u; // raw startLSGTask task byte
+            request.payloadOffset = 7u;
+
+            if (request.declaredBytes < 2u)
+            {
+                request.error = "raw LSG task size is smaller than service/task header";
+                return request;
+            }
+
+            const std::size_t availableTaskBody = plain.size() - 5u;
+            if (request.declaredBytes > availableTaskBody)
+            {
+                request.error = "raw LSG task size exceeds decrypted plaintext";
+                return request;
+            }
+
+            request.payloadBytes = static_cast<std::size_t>(request.declaredBytes - 2u);
+            if (request.payloadBytes > plain.size() - request.payloadOffset)
+            {
+                request.error = "raw LSG parameter size exceeds decrypted plaintext";
+                return request;
+            }
+
+            request.valid = true;
+            return request;
+        }
+
+        if (plain.size() < 8u)
+        {
+            request.error = "plaintext shorter than Demonware typed task header";
+            return request;
+        }
+
+        request.taskId = plain[7];
+        request.payloadOffset = 8u;
+
         if (request.taskTypeTag != kBbUnsignedChar8)
         {
             request.error = "task id is not encoded as bdByteBuffer typed U8 (0x03)";
@@ -100,12 +144,16 @@ namespace revamped::iw8::demonware
         std::vector<std::uint8_t> serviceReply;
         serviceReply.reserve(route.replyPolicy == ReplyPolicy::StructPublisherVariables ||
             route.replyPolicy == ReplyPolicy::StructObjectStoreVectorized ||
-            route.replyPolicy == ReplyPolicy::StructObjectStoreUploadVectorized ? 1024u : 256u);
+            route.replyPolicy == ReplyPolicy::StructObjectStoreUploadVectorized ||
+            route.replyPolicy == ReplyPolicy::StructObjectStorePublisherVectorizedNotFound ? 1024u : 256u);
 
-        // IW8 1.20 maps BD_NO_PROFILE_INFO_EXISTS to 170. Legacy Demonware
-        // error replies repeat the transaction id after the common envelope.
+        // bdLobbyErrorCode::BD_NO_PROFILE_INFO_EXISTS is 0x320 (800).
+        // PlayercardCache_UpdateDownloads explicitly accepts this failure as the
+        // first-run/no-public-profile path and builds the local default card.
+        // Legacy Demonware error replies repeat the transaction id after the
+        // common envelope.
         const std::uint32_t errorCode =
-            route.replyPolicy == ReplyPolicy::LegacyProfileNotFound ? 170u : 0u;
+            route.replyPolicy == ReplyPolicy::LegacyProfileNotFound ? 0x320u : 0u;
 
         AppendTypedU64(serviceReply, transactionId);
         AppendTypedU32(serviceReply, errorCode);
@@ -123,6 +171,14 @@ namespace revamped::iw8::demonware
 
         case ReplyPolicy::LegacyServerTime:
             AppendLegacyServerTime(serviceReply);
+            break;
+
+        case ReplyPolicy::LegacyVerifyStringClean:
+            AppendLegacyVerifyStringClean(serviceReply);
+            break;
+
+        case ReplyPolicy::LegacyMailInfoEmpty:
+            AppendLegacyMailInfoEmpty(serviceReply);
             break;
 
         case ReplyPolicy::LegacyPublisherVariables120:
@@ -210,6 +266,11 @@ namespace revamped::iw8::demonware
                 return false;
             break;
 
+        case ReplyPolicy::StructObjectStorePublisherVectorizedNotFound:
+            if (!AppendObjectStorePublisherVectorizedNotFoundStruct(serviceReply, requestPayload, requestPayloadBytes))
+                return false;
+            break;
+
         case ReplyPolicy::StructABTestingEnrollEmpty:
         {
             // bdABTestingEnrollResponse::deserializeWithLobbyService reads
@@ -223,6 +284,11 @@ namespace revamped::iw8::demonware
             AppendTypedStruct(serviceReply, body);
             break;
         }
+
+        case ReplyPolicy::StructAchievementStatesEmpty:
+            if (!AppendAchievementStatesEmptyStruct(serviceReply))
+                return false;
+            break;
 
         case ReplyPolicy::StructAchievementsUserState:
             if (!AppendAchievementsUserStateStruct(serviceReply, requestPayload, requestPayloadBytes))

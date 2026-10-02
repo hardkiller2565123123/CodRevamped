@@ -364,6 +364,56 @@ namespace revamped::iw8::demonware
             return true;
         }
 
+        bool AppendObjectStorePublisherVectorizedNotFoundStruct(std::vector<std::uint8_t>& serviceReply,
+            const std::uint8_t* requestPayload, std::size_t requestPayloadBytes)
+        {
+            std::vector<std::pair<std::string, std::string>> objectIds;
+            if (!ExtractObjectStoreIds(requestPayload, requestPayloadBytes, objectIds) || objectIds.empty())
+            {
+                std::string method;
+                std::string url;
+                std::string requestJson;
+                const bool parsedHttp = ExtractHttpProxyJsonBody(
+                    requestPayload, requestPayloadBytes, method, url, requestJson);
+                std::printf(
+                    "[DW-OBJECTSTORE] PUBLISHER-BATCH task=16 parse=FAILED payloadBytes=%zu method=%s url=%s\n",
+                    requestPayloadBytes, parsedHttp ? method.c_str() : "<unparsed>",
+                    parsedHttp ? url.c_str() : "<unparsed>");
+                return false;
+            }
+
+            std::string method;
+            std::string url;
+            std::string requestJson;
+            ExtractHttpProxyJsonBody(requestPayload, requestPayloadBytes, method, url, requestJson);
+
+            std::string json = "{\"objects\":[],\"errors\":[";
+            for (std::size_t i = 0; i < objectIds.size(); ++i)
+            {
+                if (i)
+                    json.push_back(',');
+                json +=
+                    "{\"requestIndex\":" + std::to_string(i) +
+                    ",\"owner\":\"" + JsonEscape(objectIds[i].first) +
+                    "\",\"name\":\"" + JsonEscape(objectIds[i].second) +
+                    "\",\"error\":\"" + kObjectStoreNotFoundError + "\"}";
+            }
+            json += "]}";
+
+            std::printf(
+                "[DW-OBJECTSTORE] GET service=0xC1 task=16 resource=PublisherObjects requested=%zu response=not-found url=%s\n",
+                objectIds.size(), url.empty() ? "<unknown>" : url.c_str());
+            for (std::size_t i = 0; i < objectIds.size(); ++i)
+            {
+                std::printf(
+                    "[DW-OBJECTSTORE] PUBLISHER requested[%zu] owner=%s name=%s\n",
+                    i, objectIds[i].first.c_str(), objectIds[i].second.c_str());
+            }
+
+            AppendRestProxyJsonStruct(serviceReply, json);
+            return true;
+        }
+
         bool AppendObjectStoreUploadVectorizedStruct(std::vector<std::uint8_t>& serviceReply,
             const std::uint8_t* requestPayload, std::size_t requestPayloadBytes)
         {
@@ -403,12 +453,20 @@ namespace revamped::iw8::demonware
 
                     const auto key = ObjectStoreKey(owner, name);
                     const auto existingIt = g_objectStoreObjects.find(key);
-                    const StoredObjectStoreObject* existing = existingIt == g_objectStoreObjects.end()
-                        ? nullptr : &existingIt->second;
+                    const bool replacingExistingKey = existingIt != g_objectStoreObjects.end();
+                    const StoredObjectStoreObject* existing = replacingExistingKey
+                        ? &existingIt->second : nullptr;
 
                     StoredObjectStoreObject stored;
                     if (!ParseObjectStoreUploadObject(objectJson, url, existing, stored))
                         return false;
+
+                    std::printf(
+                        "[DW-OBJECTSTORE] PUT object[%zu] owner=%s name=%s contentLength=%llu replacing=%s\n",
+                        storedObjects.size(), stored.owner.c_str(), stored.name.c_str(),
+                        static_cast<unsigned long long>(stored.contentLength),
+                        replacingExistingKey ? "yes" : "no");
+
                     g_objectStoreObjects[key] = stored;
                     storedObjects.emplace_back(std::move(stored));
                 }

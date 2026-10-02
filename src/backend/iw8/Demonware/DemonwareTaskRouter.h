@@ -10,6 +10,7 @@ namespace revamped::iw8::demonware
     enum class ReplyPolicy : std::uint8_t
     {
         None = 0,
+        LegacyUnsupported,
 
         // Legacy bdRemoteTask completion for calls which do not bind a task result.
         NoResultSuccess,
@@ -18,6 +19,16 @@ namespace revamped::iw8::demonware
         LegacyDmlInfo,
         LegacyServerTime,
 
+        // bdTitleUtilities::verifyString (service 12 / task 1). The stock
+        // bdVerifyString result deserializes exactly one UInt32 where 0 means
+        // the supplied string passed verification.
+        LegacyVerifyStringClean,
+
+        // bdMail::getMailInfo (service 29 / task 10). The stock call binds an
+        // array of bdMailInfo results. A fresh local account has zero messages,
+        // represented by numResults=0 and totalNumResults=0.
+        LegacyMailInfoEmpty,
+
         // IW8 1.20 bdPublisherVariables task 1. The request is legacy
         // bdByteBuffer data (context string + namespace string), and the bound
         // result deserializes UInt16/UInt16/String/String rather than the newer
@@ -25,7 +36,7 @@ namespace revamped::iw8::demonware
         LegacyPublisherVariables120,
 
         // Protocol-native "no public profile yet" bootstrap used by IW8 1.20.
-        // This is an error envelope (BD_NO_PROFILE_INFO_EXISTS = 170), not
+        // This is an error envelope (BD_NO_PROFILE_INFO_EXISTS = 0x320), not
         // a fabricated profile blob; the stock client creates its default DDL.
         LegacyProfileNotFound,
 
@@ -47,9 +58,18 @@ namespace revamped::iw8::demonware
         StructMarketplaceBalancesEmpty,
         StructObjectStoreVectorized,
         StructObjectStoreUploadVectorized,
+        // Publisher-object batch metadata lookup (service 0xC1/task 0x10).
+        // For an unavailable local publisher object we return the stock
+        // vectorized ObjectStore NotFound shape rather than leaving the task
+        // pending forever.
+        StructObjectStorePublisherVectorizedNotFound,
         // Legacy bdHTTPProxyResponse used by IW8 AB testing. The response
         // contains HTTP status tag 2 and JSON body tag 3.
         StructABTestingEnrollEmpty,
+        // bdAchievementsEngineService::getAchievementStates (service 125 / task 3).
+        // A fresh account has no achievement-state rows; the response still
+        // carries the required terminal nextPageToken at StructBuffer tag 2.
+        StructAchievementStatesEmpty,
         StructAchievementsUserState,
 
         // Demonware REST carried by service 0xFF/task 0x0A.

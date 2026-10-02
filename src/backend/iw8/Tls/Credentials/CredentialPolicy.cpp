@@ -101,6 +101,8 @@ namespace revamped::iw8
                 g_tls443DemonwareCertificate ? g_tls443DemonwareCertificate : g_tlsCertificate);
             LogWindowsTlsPolicyForHost(L"prod.umbrella.demonware.net",
                 g_tls443DemonwareCertificate ? g_tls443DemonwareCertificate : g_tlsCertificate);
+            LogWindowsTlsPolicyForHost(L"pipes-prod-glutton.public.aws.demonware.net",
+                g_tls443DemonwareCertificate ? g_tls443DemonwareCertificate : g_tlsCertificate);
             return true;
         }
 

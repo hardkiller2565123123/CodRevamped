@@ -54,6 +54,21 @@ namespace revamped::iw8::demonware
             return "0";
         }
 
+        bool AppendAchievementStatesEmptyStruct(std::vector<std::uint8_t>& serviceReply)
+        {
+            // bdGetAchievementStatesResponse::deserialize reads repeated
+            // bdAchievementState objects at tag 1 followed by nextPageToken
+            // at tag 2. Omitting tag 1 and emitting an empty tag-2 string is
+            // the canonical final page for a fresh account.
+            std::vector<std::uint8_t> body;
+            AppendPbString(body, 2u, "");
+            AppendTypedStruct(serviceReply, body);
+
+            std::printf(
+                "[DW-ACHIEVEMENTS] getAchievementStates states=0 nextPage=empty response=fresh-account-terminal-page\n");
+            return true;
+        }
+
         bool AppendAchievementsUserStateStruct(std::vector<std::uint8_t>& serviceReply,
             const std::uint8_t* requestPayload, std::size_t requestPayloadBytes)
         {

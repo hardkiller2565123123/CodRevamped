@@ -448,7 +448,13 @@ namespace revamped::iw8
                             }
                             else
                             {
-                                const std::uint64_t transactionId = client.lsgTransactionId + 1u;
+                                // Stock IW8 assigns the legacy bdRemoteTask transaction id in
+                                // lockstep with the client's secure request counter.  Do not derive
+                                // it from the number of replies we happened to send: a deliberately
+                                // unimplemented/no-reply task would otherwise shift every later
+                                // response by one and leave unrelated remote tasks pending forever.
+                                const std::uint64_t transactionId = static_cast<std::uint64_t>(counter);
+                                client.lsgTransactionId = transactionId;
                                 std::vector<std::uint8_t> replyPlain;
                                 const std::uint8_t* requestPayload = taskRequest.payloadBytes
                                     ? plain.data() + taskRequest.payloadOffset : nullptr;
@@ -467,7 +473,6 @@ namespace revamped::iw8
                                 }
                                 else
                                 {
-                                    client.lsgTransactionId = transactionId;
                                     const std::array<std::uint8_t, 16> replySeed{
                                     0x5E,0xED,0x5E,0xED,0x5E,0xED,0x5E,0xED,
                                     0x5E,0xED,0x5E,0xED,0x5E,0xED,0x5E,0xED

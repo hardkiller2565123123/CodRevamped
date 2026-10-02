@@ -23,9 +23,25 @@
 #include "Internal/JsonParsing.cpp"
 #include "Internal/EncodingCrypto.cpp"
 #include "Internal/AuthSigner.cpp"
+
+// Keep the original builder intact, but expose it under a private name so the
+// local-preservation identity shim can repair the synthetic ticket before the
+// stock IW8 client consumes it.
+#define BuildDwBnetAuthResponse BuildDwBnetAuthResponse_UnpatchedIdentity
 #include "Internal/AuthResponseBuilders.cpp"
+#undef BuildDwBnetAuthResponse
+#include "Internal/AuthIdentityPatch.cpp"
+
 #include "Public/InitializeSigner.cpp"
+
+// Keep the stock/local HTTP router intact, but expose it under a private name so
+// the Umbrella crossplay response can be completed with the identity fields that
+// stock IW8 copies into bdLoginResult/bdAuthInfo before the LSG connection.
+#define TryHandleLocalWebRequest TryHandleLocalWebRequest_BaseUmbrellaIdentity
 #include "Public/HttpRouter.cpp"
+#undef TryHandleLocalWebRequest
+#include "Public/HttpRouterUmbrellaIdentityFix.cpp"
+
 #include "Public/PostLsgDiagnostics.cpp"
 #include "Internal/LsgKeyDecoding.cpp"
 #include "Public/LsgKeyMaterial.cpp"

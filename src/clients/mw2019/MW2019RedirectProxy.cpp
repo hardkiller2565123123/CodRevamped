@@ -14,6 +14,7 @@
 #include <cstdio>
 #include <array>
 #include <vector>
+#include "../../backend/iw8/LocalManifestData.h"
 
 #pragma comment(lib, "Ws2_32.lib")
 #pragma intrinsic(_ReturnAddress)
@@ -72,6 +73,8 @@ namespace
     using SetUnhandledExceptionFilterFn = LPTOP_LEVEL_EXCEPTION_FILTER (WINAPI*)(LPTOP_LEVEL_EXCEPTION_FILTER);
     using UnhandledExceptionFilterFn = LONG (WINAPI*)(PEXCEPTION_POINTERS);
     using CryptUnprotectDataFn = BOOL (WINAPI*)(DATA_BLOB*, LPWSTR*, DATA_BLOB*, PVOID, CRYPTPROTECT_PROMPTSTRUCT*, DWORD, DATA_BLOB*);
+    using MessageBoxAFn = int (WINAPI*)(HWND, LPCSTR, LPCSTR, UINT);
+    using MessageBoxWFn = int (WINAPI*)(HWND, LPCWSTR, LPCWSTR, UINT);
 
     // Early IW8 startup fingerprints observed from the user's local builds.
     // The replay executable that is now booting to "Connecting to Online Services"
@@ -135,6 +138,8 @@ namespace
     SetUnhandledExceptionFilterFn g_realSetUnhandledExceptionFilter = nullptr;
     UnhandledExceptionFilterFn g_realUnhandledExceptionFilter = nullptr;
     CryptUnprotectDataFn g_realCryptUnprotectData = nullptr;
+    MessageBoxAFn g_realMessageBoxA = nullptr;
+    MessageBoxWFn g_realMessageBoxW = nullptr;
 
     char g_compat123CommandLine[32768]{};
     wchar_t g_compat123CommandLineW[32768]{};
@@ -148,6 +153,7 @@ namespace
     volatile LONG g_liveFingerprintValid = 0;
     volatile LONG g_compat123LauncherPatched = 0;
     volatile LONG g_compat123ExitTracePatched = 0;
+    volatile LONG g_compat123SafeModePatched = 0;
     int g_fakeLaunchOptionsKeyTag = 0;
     int g_fakeOdinKeyTag = 0;
     HKEY g_fakeLaunchOptionsKey = reinterpret_cast<HKEY>(&g_fakeLaunchOptionsKeyTag);
@@ -370,6 +376,41 @@ namespace
         if (resolvedPath && resolvedCount)
             wcsncpy_s(resolvedPath, resolvedCount, path, _TRUNCATE);
         return true;
+    }
+
+    void InstallLocalManifestTrust() noexcept
+    {
+        // The local 8.19 manifests are part of the exact MW2019 1.20 compatibility
+        // path. Do not require an external environment variable: the function is
+        // already fingerprint/build scoped below and still verifies the stock key
+        // bytes before replacing the embedded public key.
+        if (static_cast<StartupCompatBuild>(InterlockedCompareExchange(&g_startupCompatBuild, 0, 0)) != StartupCompatBuild::MW120)
+            return;
+        wchar_t exe[MAX_PATH]{};
+        if (!GetModuleFileNameW(nullptr, exe, MAX_PATH))
+            return;
+        const wchar_t* name = wcsrchr(exe, L'\\');
+        if (!name || _wcsicmp(name + 1, L"game_dx12_ship_replay.exe") != 0)
+            return;
+        using namespace revamped::iw8::localmanifestdata;
+        auto* target = reinterpret_cast<unsigned char*>(GetModuleHandleW(nullptr)) + 0x02416200;
+        if (std::memcmp(target, LocalKey, sizeof(LocalKey)) == 0)
+            return;
+        if (std::memcmp(target, StockKey, sizeof(StockKey)) != 0)
+        {
+            ConsolePrint("[MANIFEST-TRUST] REFUSED stock key mismatch; no write\r\n");
+            return;
+        }
+        DWORD previous = 0;
+        if (!VirtualProtect(target, sizeof(LocalKey), PAGE_READWRITE, &previous))
+        {
+            ConsolePrint("[MANIFEST-TRUST] REFUSED protection change error=%lu\r\n", GetLastError());
+            return;
+        }
+        std::memcpy(target, LocalKey, sizeof(LocalKey));
+        DWORD ignored = 0;
+        const BOOL restored = VirtualProtect(target, sizeof(LocalKey), previous, &ignored);
+        ConsolePrint("[MANIFEST-TRUST] local RSA key installed rva=02416200 bytes=270 protectionRestored=%u; signature verification active; no code/state patches\r\n", restored);
     }
 
     static constexpr std::uintptr_t kMW120Auth3VerifierRva = 0x026A84F0ull;
@@ -1803,6 +1844,24 @@ namespace
 
         const LONG seen = InterlockedIncrement(&g_compat123VehCount);
         const DWORD code = info->ExceptionRecord->ExceptionCode;
+        // Preserve the stock diagnostic text as well as its exception envelope.
+        // Do not consume the exception or alter the game's result/state.
+        if (code == 0x40010006u && info->ExceptionRecord->NumberParameters >= 2 &&
+            InterlockedCompareExchange(&g_compat123VehGuard, 1, 0) == 0)
+        {
+            char debugText[2048]{};
+            __try
+            {
+                const auto length = info->ExceptionRecord->ExceptionInformation[0];
+                const auto source = reinterpret_cast<const char*>(info->ExceptionRecord->ExceptionInformation[1]);
+                const auto count = length < sizeof(debugText) ? length : sizeof(debugText) - 1;
+                if (source && count) std::memcpy(debugText, source, count);
+                debugText[sizeof(debugText) - 1] = '\0';
+                Write123StartupLog("[STOCK-DEBUG] %s\r\n", debugText);
+            }
+            __except (EXCEPTION_EXECUTE_HANDLER) {}
+            InterlockedExchange(&g_compat123VehGuard, 0);
+        }
         const bool important =
             code == EXCEPTION_ACCESS_VIOLATION ||
             code == EXCEPTION_ILLEGAL_INSTRUCTION ||
@@ -1854,6 +1913,60 @@ namespace
         return g_realUnhandledExceptionFilter ? g_realUnhandledExceptionFilter(info) : EXCEPTION_CONTINUE_SEARCH;
     }
 
+    bool IsStockSafeModePrompt(const char* text, const char* caption) noexcept
+    {
+        return text && caption &&
+            std::strstr(text, "did not quit properly") != nullptr &&
+            std::strstr(text, "safe mode") != nullptr &&
+            std::strstr(caption, "Safe Mode") != nullptr;
+    }
+
+    bool IsStockSafeModePrompt(const wchar_t* text, const wchar_t* caption) noexcept
+    {
+        return text && caption &&
+            std::wcsstr(text, L"did not quit properly") != nullptr &&
+            std::wcsstr(text, L"safe mode") != nullptr &&
+            std::wcsstr(caption, L"Safe Mode") != nullptr;
+    }
+
+    int WINAPI CompatMessageBoxA(HWND owner, LPCSTR text, LPCSTR caption, UINT type) noexcept
+    {
+        if ((type & MB_TYPEMASK) == MB_YESNO && text && caption &&
+            std::strcmp(caption, "Recommended Settings Updated") == 0 &&
+            std::strstr(text, "configure itself optimally with these new settings"))
+        {
+            Write123StartupLog("[SETTINGS-PROMPT] recommended-settings update declined result=IDNO settingsUntouched=yes\r\n");
+            return IDNO;
+        }
+        if (IsStockSafeModePrompt(text, caption))
+        {
+            Write123StartupLog("[SAFE-MODE] stock previous-run prompt auto-declined api=MessageBoxA result=IDNO settingsUntouched=yes\r\n");
+            return IDNO;
+        }
+        Write123StartupLog("[STOCK-DIALOG] api=MessageBoxA type=0x%X caption=%s text=%s action=unchanged\r\n",
+            type, caption ? caption : "", text ? text : "");
+        return g_realMessageBoxA ? g_realMessageBoxA(owner, text, caption, type) : 0;
+    }
+
+    int WINAPI CompatMessageBoxW(HWND owner, LPCWSTR text, LPCWSTR caption, UINT type) noexcept
+    {
+        if ((type & MB_TYPEMASK) == MB_YESNO && text && caption &&
+            std::wcscmp(caption, L"Recommended Settings Updated") == 0 &&
+            std::wcsstr(text, L"configure itself optimally with these new settings"))
+        {
+            Write123StartupLog("[SETTINGS-PROMPT] recommended-settings update declined result=IDNO settingsUntouched=yes\r\n");
+            return IDNO;
+        }
+        if (IsStockSafeModePrompt(text, caption))
+        {
+            Write123StartupLog("[SAFE-MODE] stock previous-run prompt auto-declined api=MessageBoxW result=IDNO settingsUntouched=yes\r\n");
+            return IDNO;
+        }
+        Write123StartupLog("[STOCK-DIALOG] api=MessageBoxW type=0x%X caption=%ls text=%ls action=unchanged\r\n",
+            type, caption ? caption : L"", text ? text : L"");
+        return g_realMessageBoxW ? g_realMessageBoxW(owner, text, caption, type) : 0;
+    }
+
     void Install123StartupCompatibility() noexcept
     {
         std::uint32_t timestamp = 0;
@@ -1883,6 +1996,9 @@ namespace
         HMODULE kernel32 = GetModuleHandleW(L"KERNEL32.dll");
         HMODULE advapi32 = GetModuleHandleW(L"ADVAPI32.dll");
         HMODULE crypt32 = GetModuleHandleW(L"CRYPT32.dll");
+        HMODULE user32 = GetModuleHandleW(L"USER32.dll");
+        if (!user32)
+            user32 = LoadLibraryW(L"USER32.dll");
         HMODULE mainModule = GetModuleHandleW(nullptr);
         if (!kernel32 || !advapi32 || !mainModule)
             return;
@@ -1909,6 +2025,11 @@ namespace
 
         if (crypt32)
             g_realCryptUnprotectData = reinterpret_cast<CryptUnprotectDataFn>(GetProcAddress(crypt32, "CryptUnprotectData"));
+        if (user32)
+        {
+            g_realMessageBoxA = reinterpret_cast<MessageBoxAFn>(GetProcAddress(user32, "MessageBoxA"));
+            g_realMessageBoxW = reinterpret_cast<MessageBoxWFn>(GetProcAddress(user32, "MessageBoxW"));
+        }
 
         if (g_realGetCommandLineA)
         {
@@ -1959,6 +2080,13 @@ namespace
             launcherPatched += PatchImport(mainModule, "CRYPT32.dll", "CryptUnprotectData", reinterpret_cast<void*>(&CompatCryptUnprotectData)) ? 1u : 0u;
         InterlockedExchange(&g_compat123LauncherPatched, static_cast<LONG>(launcherPatched));
 
+        unsigned safeModePatched = 0;
+        if (g_realMessageBoxA)
+            safeModePatched += PatchImport(mainModule, "USER32.dll", "MessageBoxA", reinterpret_cast<void*>(&CompatMessageBoxA)) ? 1u : 0u;
+        if (g_realMessageBoxW)
+            safeModePatched += PatchImport(mainModule, "USER32.dll", "MessageBoxW", reinterpret_cast<void*>(&CompatMessageBoxW)) ? 1u : 0u;
+        InterlockedExchange(&g_compat123SafeModePatched, static_cast<LONG>(safeModePatched));
+
         unsigned exitPatched = 0;
         exitPatched += PatchImport(mainModule, "KERNEL32.dll", "ExitProcess", reinterpret_cast<void*>(&Trace123ExitProcess)) ? 1u : 0u;
         exitPatched += PatchImport(mainModule, "KERNEL32.dll", "TerminateProcess", reinterpret_cast<void*>(&Trace123TerminateProcess)) ? 1u : 0u;
@@ -1969,8 +2097,8 @@ namespace
         exitPatched += PatchImport(mainModule, "KERNEL32.dll", "UnhandledExceptionFilter", reinterpret_cast<void*>(&Trace123UnhandledExceptionFilter)) ? 1u : 0u;
         InterlockedExchange(&g_compat123ExitTracePatched, static_cast<LONG>(exitPatched));
 
-        Write123StartupLog("[BOOT] startup compatibility build=%s hooks: version=%u/4 launcher=%u/8 exitTrace=%u/7 nullExecRecovery=armed(max=8,main-image-return-only)\r\n",
-            StartupCompatBuildName(build), versionPatched, launcherPatched, exitPatched);
+        Write123StartupLog("[BOOT] startup compatibility build=%s hooks: version=%u/4 launcher=%u/8 safeMode=%u/2 exitTrace=%u/7 nullExecRecovery=armed(max=8,main-image-return-only)\r\n",
+            StartupCompatBuildName(build), versionPatched, launcherPatched, safeModePatched, exitPatched);
     }
 
     struct ModulePatchCounts
@@ -2531,6 +2659,8 @@ namespace
                 InterlockedCompareExchange(&g_compat123Patched, 0, 0), static_cast<unsigned long>(kCompatBuild));
             ConsolePrint("[COMPAT-STARTUP] launcher shim hooks installed=%ld/8: -uid odin (A+W) + local ODIN launch-options + local WEB_TOKEN DPAPI shim\r\n",
                 InterlockedCompareExchange(&g_compat123LauncherPatched, 0, 0));
+            ConsolePrint("[COMPAT-STARTUP] previous-run Safe Mode prompt handler installed=%ld/2 exactTextMatch=yes result=IDNO\r\n",
+                InterlockedCompareExchange(&g_compat123SafeModePatched, 0, 0));
             ConsolePrint("[COMPAT-STARTUP] early exit/exception tracing installed=%ld/7 + VEH; details go to %s\r\n",
                 InterlockedCompareExchange(&g_compat123ExitTracePatched, 0, 0), startupLog);
             ConsolePrint("[COMPAT-STARTUP] compatibility is fingerprint-scoped; no login/fence/game-state patch is applied\r\n");
@@ -2568,6 +2698,7 @@ namespace
         if (IsSupportedStartupCompatBuild())
         {
             InstallEarlyAuth3LocalSigningTrust("worker-pre-IAT");
+            InstallLocalManifestTrust();
             QueueLsgKey3DiskScanV79();
         }
 

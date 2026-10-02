@@ -24,6 +24,7 @@ namespace revamped::iw8::demonware
             FriendsGetFriends,
             FriendsGetPending,
             UserPresenceSet,
+            UserEventsReportBatch,
         };
 
         RestBootstrapKind ClassifyRestBootstrap(const std::uint8_t* payload, std::size_t payloadBytes)
@@ -49,6 +50,16 @@ namespace revamped::iw8::demonware
                 (ContainsAscii(payload, payloadBytes, "set_user_presence_v3") ||
                  ContainsAscii(payload, payloadBytes, "set_user_presence")))
                 return RestBootstrapKind::UserPresenceSet;
+
+            // Achievement-engine login telemetry.  The stock
+            // bdReportUserEventsResponse::handleReplySuccess parser requires a
+            // JSON object containing the allSucceeded boolean.  Leaving this
+            // request unanswered also used to desynchronize the inferred legacy
+            // transaction ids for every task after it.
+            if ((ContainsAscii(payload, payloadBytes, "user_events") &&
+                 ContainsAscii(payload, payloadBytes, "report_user_events_batch")) ||
+                ContainsAscii(payload, payloadBytes, "/v2/user-events/$batch/"))
+                return RestBootstrapKind::UserEventsReportBatch;
 
             return RestBootstrapKind::Unknown;
         }
@@ -100,6 +111,9 @@ namespace revamped::iw8::demonware
 
             case RestBootstrapKind::UserPresenceSet:
                 return "{}";
+
+            case RestBootstrapKind::UserEventsReportBatch:
+                return "{\"allSucceeded\":true}";
 
             default:
                 return {};

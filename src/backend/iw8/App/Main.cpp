@@ -105,6 +105,19 @@ int main(int argc, char** argv)
         else if (arg == "--tcp" && i + 1 < argc) config.tcpPorts = ParsePorts(argv[++i]);
         else if (arg == "--udp" && i + 1 < argc) config.udpPorts = ParsePorts(argv[++i]);
         else if (arg == "--no-payloads") config.dumpPayloads = false;
+        else if (arg == "--console")
+        {
+            // A process launched by an IDE may inherit an invisible console.
+            // Explicit interactive mode owns a fresh, visible console instead.
+            FreeConsole();
+            if (AllocConsole())
+            {
+                FILE* stream = nullptr;
+                freopen_s(&stream, "CONOUT$", "w", stdout);
+                freopen_s(&stream, "CONOUT$", "w", stderr);
+                freopen_s(&stream, "CONIN$", "r", stdin);
+            }
+        }
     }
 
     SetConsoleTitleW(L"Revamped IW8 Server - xpak_ignore.keylist Research");

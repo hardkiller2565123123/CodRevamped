@@ -87,22 +87,38 @@ namespace revamped::iw8
             if (session.localPort != 443)
                 return &g_tlsCredential;
 
-            if (_stricmp(session.sni.c_str(), "us.battle.net") == 0 && g_tls443BattleNetCredentialValid)
+            const auto hostEquals = [&session](const char* host)
             {
-                identity = "us.battle.net";
+                return host && _stricmp(session.sni.c_str(), host) == 0;
+            };
+            const auto hostEndsWith = [&session](const char* suffix)
+            {
+                if (!suffix)
+                    return false;
+                const std::size_t suffixLength = std::strlen(suffix);
+                return session.sni.size() >= suffixLength &&
+                    _stricmp(session.sni.c_str() + session.sni.size() - suffixLength, suffix) == 0;
+            };
+
+            if ((hostEquals("us.battle.net") ||
+                 hostEquals("oauth-us.web.blizzard.net") ||
+                 hostEquals("us.api.blizzard.com") ||
+                 hostEquals("us-gateway.integration.blizzard.com")) &&
+                g_tls443BattleNetCredentialValid)
+            {
+                identity = session.sni.c_str();
                 return &g_tls443BattleNetCredential;
             }
             if (!session.sni.empty() &&
-                (_stricmp(session.sni.c_str(), "iw8-bnet-auth3.prod.demonware.net") == 0 ||
-                 _stricmp(session.sni.c_str(), "auth3.prod.demonware.net") == 0 ||
-                 _stricmp(session.sni.c_str(), "auth3-login.prod.demonware.net") == 0 ||
-                 _stricmp(session.sni.c_str(), "loginqueue.prod.demonware.net") == 0 ||
-                 _stricmp(session.sni.c_str(), "prod.umbrella.demonware.net") == 0 ||
-                 (session.sni.size() > 23 &&
-                    _stricmp(session.sni.c_str() + session.sni.size() - 23, ".umbrella.demonware.net") == 0)) &&
+                (hostEndsWith(".prod.demonware.net") ||
+                 hostEndsWith(".umbrella.demonware.net") ||
+                 hostEndsWith(".public.aws.demonware.net")) &&
                 g_tls443DemonwareCredentialValid)
             {
-                identity = "iw8-bnet-auth3.prod.demonware.net";
+                // The dedicated leaf has SAN coverage for these exact hosts or
+                // their observed Demonware wildcard suffix. Keep the requested
+                // SNI as the diagnostic identity.
+                identity = session.sni.c_str();
                 return &g_tls443DemonwareCredential;
             }
             return &g_tlsCredential;

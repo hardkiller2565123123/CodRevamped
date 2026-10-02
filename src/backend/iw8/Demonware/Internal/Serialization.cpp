@@ -32,7 +32,12 @@ namespace revamped::iw8::demonware
 
             {27u, 2u, "bdDML", "getUserData", ReplyPolicy::LegacyDmlInfo},
             {67u, 6u, "bdEventLog", "initializeFiltering", ReplyPolicy::NoResultSuccess},
+            {12u, 1u, "bdTitleUtilities", "verifyString", ReplyPolicy::LegacyVerifyStringClean},
             {12u, 6u, "bdTitleUtilities", "getServerTime", ReplyPolicy::LegacyServerTime},
+
+            // IW8 1.20 startup inbox poll. bdMail::getMailInfo binds an array
+            // result and asks for a small page; a new local account has no mail.
+            {29u, 10u, "bdMail", "getMailInfo", ReplyPolicy::LegacyMailInfoEmpty},
 
             // IW8 1.20 profile bootstrap. Stock code treats a missing public
             // profile as a normal first-run condition and creates its default
@@ -78,6 +83,18 @@ namespace revamped::iw8::demonware
             // vectorized upload path used once local objects are available.
             {193u, 6u, "bdObjectStore", "getUserObjectsVectorized", ReplyPolicy::StructObjectStoreVectorized},
             {193u, 7u, "bdObjectStore", "uploadUserObjectsVectorized", ReplyPolicy::StructObjectStoreUploadVectorized},
+            // Stock OpenIW8 maps service 0xC1/task 0x10 to the vectorized
+            // publisher-object metadata path.  The response parser explicitly
+            // supports per-object errors.  A local preservation server with no
+            // publisher cache therefore returns canonical ObjectStore NotFound
+            // entries instead of leaving the remote task pending.
+            {193u, 16u, "bdObjectStore", "getPublisherObjects", ReplyPolicy::StructObjectStorePublisherVectorizedNotFound},
+
+            // Stock OpenIW8 maps task 8 to the single publisher-object metadata
+            // + streaming path. Keep it named and diagnostic-only for now. The
+            // request URL identifies the exact publisher/object needed if 0x10
+            // still falls through to the single-object path.
+            {193u, 8u, "bdObjectStore", "getPublisherObject", ReplyPolicy::None},
 
             // 1.20 sends AB testing enrollment as service 0xC2/task 1 using
             // bdHTTPProxyRequest. Stock bdABTestingEnrollResponse requires a
@@ -88,8 +105,15 @@ namespace revamped::iw8::demonware
             {197u, 0x1Cu, "bdMW4Service", "getMembershipProposalsByUser", ReplyPolicy::StructClanProposalsEmpty},
             {197u, 0x1Eu, "bdMW4Service", "getMembershipsByUsers", ReplyPolicy::StructClanMembershipsEmpty},
 
-            // Achievement Engine user-state bootstrap used by OnlineProgression.
-            // Stock OpenIW8 maps service 0x7D/task 9 to getUserState.
+            // Achievement Engine progression bootstrap. Stock OpenIW8 maps
+            // service 0x7D/task 3 to getAchievementStates, task 5 to
+            // activateAchievement, and task 9 to getUserState. Fresh local
+            // accounts have no achievement-state rows, but task 3 still
+            // requires an empty terminal page token. activateAchievement binds
+            // no result object, so a normal no-result task success is its
+            // native reply contract.
+            {125u, 3u, "bdAchievementsEngineService", "getAchievementStates", ReplyPolicy::StructAchievementStatesEmpty},
+            {125u, 5u, "bdAchievementsEngineService", "activateAchievement", ReplyPolicy::NoResultSuccess},
             {125u, 9u, "bdAchievementsEngineService", "getUserState", ReplyPolicy::StructAchievementsUserState},
 
             {198u, 0x0Cu, "bdMessaging", "channelUnsubscribeFromCategory", ReplyPolicy::StructMessagingUnsubscribeAck},

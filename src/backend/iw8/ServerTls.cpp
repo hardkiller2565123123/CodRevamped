@@ -45,7 +45,14 @@
 #include "Bgs/Auth/ExternalChallenge.cpp"
 #include "Tls/WebSocket/WebSocketProtocol.cpp"
 #include "Bgs/Transport/BgsPlaintext.cpp"
+
+// Wrap the normal HTTPS router with one local publisher-content endpoint. This
+// keeps all existing auth/OAuth/Umbrella behavior untouched.
+#define HandleWebAuthPlaintext HandleWebAuthPlaintext_Base
 #include "Web/TlsWebRequest.cpp"
+#undef HandleWebAuthPlaintext
+#include "Web/ObjectStoreContent.cpp"
+
 #include "Tls/Transport/TlsEngine.cpp"
 #include "Server/Lifecycle/Start.cpp"
 #include "Server/Networking/TcpReceive.cpp"

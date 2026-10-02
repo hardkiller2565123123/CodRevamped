@@ -9,5 +9,8 @@
     <ClCompile Include="$(CodRevampedRoot)src\clients\mw2019\MW2019RedirectProxy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\mw2019\MW2019FrontendFenceTracer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

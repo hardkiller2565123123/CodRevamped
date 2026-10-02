@@ -20,6 +20,25 @@ namespace revamped::iw8::demonware
             AppendTypedString(serviceReply, "UTC");
         }
 
+
+        void AppendLegacyVerifyStringClean(std::vector<std::uint8_t>& serviceReply)
+        {
+            // bdTitleUtilities::verifyString binds one bdVerifyString result.
+            // bdVerifyString::deserialize reads a single UInt32 and accepts
+            // values 0..2. 0 is the clean/no-profanity result.
+            AppendTypedU32(serviceReply, 1u); // numResults
+            AppendTypedU32(serviceReply, 1u); // totalNumResults
+            AppendTypedU32(serviceReply, 0u); // BD_PF_NO_PROFANITY_FOUND
+        }
+
+        void AppendLegacyMailInfoEmpty(std::vector<std::uint8_t>& serviceReply)
+        {
+            // bdMail::getMailInfo binds an array of bdMailInfo objects. There
+            // are no result objects to deserialize for a fresh local account.
+            AppendTypedU32(serviceReply, 0u); // numResults
+            AppendTypedU32(serviceReply, 0u); // totalNumResults
+        }
+
         void AppendLegacyServerTime(std::vector<std::uint8_t>& serviceReply)
         {
             const auto now = std::chrono::system_clock::now().time_since_epoch();
