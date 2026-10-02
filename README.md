@@ -28,12 +28,39 @@ CodRevamped
 │   └── 🚧 Battle.net Retail — In Development
 │
 ├── Call of Duty: Modern Warfare (2019)
-│   ├── 🚧 Beta — In Development
-│   ├── 🚧 Version 1.20 — Launching
-│   ├── 🚧 Version 1.23 — Launching
-│   ├── 🚧 Version 1.28 — In Development 
-│   ├── 🚧 Version 1.44 — Launching
-│   └── 🚧 Retail — Launching
+│   ├── 🚧 Version Beta — Not Tested 
+│   ├── 🚧 Version 1.03 — Not Tested 
+│   ├── 🚧 Version 1.16 — Not Tested 
+│   ├── 🚧 Version 1.20 — Launching - Connecting To Server. [Almost Menu]
+│   ├── 🚧 Version 1.23 — Launching - Crashing
+│   ├── 🚧 Version 1.24 — Not Tested 
+│   ├── 🚧 Version 1.26 — Not Tested 
+│   ├── 🚧 Version 1.27 — Not Tested 
+│   ├── 🚧 Version 1.28 — Launching - Crashing
+│   ├── 🚧 Version 1.30 — Not Tested 
+│   ├── 🚧 Version 1.31 — Not Tested 
+│   ├── 🚧 Version 1.34 — Not Tested 
+│   ├── 🚧 Version 1.36 — Not Tested 
+│   ├── 🚧 Version 1.37 — Not Tested 
+│   ├── 🚧 Version 1.38 — Not Tested 
+│   ├── 🚧 Version 1.39 — Not Tested 
+│   ├── 🚧 Version 1.41 — Not Tested 
+│   ├── 🚧 Version 1.42 — Not Tested 
+│   ├── 🚧 Version 1.44 — Launching - Connecting To Server. [Almost Menu]
+│   ├── 🚧 Version 1.45 — Not Tested 
+│   ├── 🚧 Version 1.46 — Not Tested 
+│   ├── 🚧 Version 1.52 — Not Tested 
+│   ├── 🚧 Version 1.54 — Not Tested 
+│   ├── 🚧 Version 1.57 — Not Tested 
+│   ├── 🚧 Version 1.58 — Not Tested 
+│   ├── 🚧 Version 1.60 — Not Tested 
+│   ├── 🚧 Version 1.61 — Not Tested 
+│   ├── 🚧 Version 1.63 — Not Tested 
+│   ├── 🚧 Version 1.64 — Not Tested 
+│   ├── 🚧 Version 1.65 — Not Tested 
+│   ├── 🚧 Version 1.67 — Not Tested 
+│   └── 🚧 Retail / Steam Retail — Launching - Connects To Server - Crash.
+│
 │
 ├── Call of Duty: Vanguard
 │   ├── 🚧 Beta — In Development
