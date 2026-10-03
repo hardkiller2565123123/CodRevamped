@@ -31,7 +31,7 @@ CodRevamped
 │   ├── 🚧 Version Beta — Not Tested 
 │   ├── 🚧 Version 1.03 — Not Tested 
 │   ├── 🚧 Version 1.16 — Not Tested 
-│   ├── 🚧 Version 1.20 — Launching - Connecting To Server. [Almost Menu]
+│   ├── ✅ Version 1.20 — Playable - Mostly Playable Needs some Research and Fixing.
 │   ├── 🚧 Version 1.23 — Launching - Crashing
 │   ├── 🚧 Version 1.24 — Not Tested 
 │   ├── 🚧 Version 1.26 — Not Tested 
