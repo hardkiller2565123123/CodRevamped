@@ -6,29 +6,29 @@ namespace revamped::iw8::demonware
         // service for datacenter/relay discovery. The local preservation
         // backend deliberately advertises no physical Demonware relay: task 16
         // returns a valid empty datacenter preference array, task 24 returns a
-        // minimal local datacenter label, and tasks 25/26 use stock error/fallback
-        // paths instead of inventing unreachable relay/QoS credentials.
+        // minimal local datacenter label, task 25 completes DC-QoS with an empty
+        // host set, and task 26 uses the stock no-relay terminal fallback.
         constexpr TaskRoute kDataCenterPreferencesRoute = {
             145u, 16u, "bdAsyncMatchMaking", "getDataCenterPreferences",
-            ReplyPolicy::NoResultSuccess
+            ReplyPolicy::NoResultSuccess, TaskSemantic::DcQos
         };
         constexpr TaskRoute kPreferredServerDetailsRoute = {
             145u, 24u, "bdAsyncMatchMaking", "getPreferredServerDetails",
-            ReplyPolicy::NoResultSuccess
+            ReplyPolicy::NoResultSuccess, TaskSemantic::DcQos
         };
         constexpr TaskRoute kInitiateDcQosRoute = {
             145u, 25u, "bdAsyncMatchMaking", "initiateDCQoS",
-            ReplyPolicy::NoResultSuccess
+            ReplyPolicy::NoResultSuccess, TaskSemantic::DcQos
         };
         constexpr TaskRoute kRelayClientAuthTokenRoute = {
             145u, 26u, "bdAsyncMatchMaking", "getRelayClientAuthToken",
-            ReplyPolicy::NoResultSuccess
+            ReplyPolicy::NoResultSuccess, TaskSemantic::RelayAuth
         };
         // Stock qosHostsReply writes UInt64 transaction, UInt64 result count,
         // followed by probe records. Only the empty local inventory is supported.
         constexpr TaskRoute kEmptyDcQosReplyRoute = {
             145u, 4u, "bdAsyncMatchMaking", "qosHostsReply",
-            ReplyPolicy::NoResultSuccess
+            ReplyPolicy::NoResultSuccess, TaskSemantic::DcQos
         };
 
         // bdBandwidthTestClient::start uses bdRemoteTaskManager::startLSGTask,
@@ -43,12 +43,12 @@ namespace revamped::iw8::demonware
 
         constexpr TaskRoute kPublisherObjectRoute = {
             193u, 8u, "bdObjectStore", "getPublisherObject",
-            ReplyPolicy::StructObjectStoreVectorized
+            ReplyPolicy::StructObjectStoreVectorized, TaskSemantic::ObjectStorePublisherGet
         };
 
         constexpr TaskRoute kPublisherObjectsRoute = {
             193u, 16u, "bdObjectStore", "getPublisherObjects",
-            ReplyPolicy::StructObjectStoreVectorized
+            ReplyPolicy::StructObjectStoreVectorized, TaskSemantic::ObjectStorePublisherBatchGet
         };
 
         // OpenIW8's stock 1.20 client maps service 4/task 14 to
@@ -58,7 +58,7 @@ namespace revamped::iw8::demonware
         // completion rather than an invented payload.
         constexpr TaskRoute kServerValidatedStatsRoute = {
             4u, 14u, "bdStats", "writeServerValidatedStats",
-            ReplyPolicy::NoResultSuccess
+            ReplyPolicy::NoResultSuccess, TaskSemantic::PlayerStatsValidatedWrite
         };
 
 
@@ -69,7 +69,7 @@ namespace revamped::iw8::demonware
         // completion rather than an invented payload.
         constexpr TaskRoute kWriteStatsRoute = {
             4u, 1u, "bdStats", "writeStats",
-            ReplyPolicy::NoResultSuccess
+            ReplyPolicy::NoResultSuccess, TaskSemantic::PlayerStatsWrite
         };
 
         // The loadout-validation fence is service 80/task 58.  The stock
@@ -80,6 +80,45 @@ namespace revamped::iw8::demonware
         constexpr TaskRoute kValidateInventoryItemsTokenRoute = {
             80u, 58u, "bdMarketplace", "validateInventoryItemsToken",
             ReplyPolicy::NoResultSuccess
+        };
+
+        // Stock OpenIW8 1.20 maps service 80/task 243 (0xF3) to
+        // bdMarketplace::bnetReconciliation. The response is a StructBuffer
+        // containing granted FPSKU ids (tag 1), revoked FPSKU ids (tag 2),
+        // and moreAvailable (tag 3). A fresh local account has no deltas and
+        // moreAvailable=false. This completion is part of Battle.net/Demonware
+        // cross-auth and must not be answered with BD_SERVICE_NOT_AVAILABLE.
+        constexpr TaskRoute kBnetReconciliationRoute = {
+            80u, 0xF3u, "bdMarketplace", "bnetReconciliation",
+            ReplyPolicy::NoResultSuccess
+        };
+
+        // Stock OpenIW8 maps service 80/task 132 (0x84) to the legacy
+        // bdMarketplace::getBalanceV2 call. It binds an array of
+        // bdMarketplaceCurrency results; a fresh local account is therefore a
+        // normal successful task with zero result rows.
+        constexpr TaskRoute kMarketplaceBalanceV2Route = {
+            80u, 0x84u, "bdMarketplace", "getBalanceV2",
+            ReplyPolicy::NoResultSuccess
+        };
+
+        // Stock OpenIW8 maps service 145/task 2 to
+        // bdAsyncMatchMaking::setPlayerInfo. The call binds no result object;
+        // accepting the player-info document uses the normal zero-result
+        // success completion.
+        constexpr TaskRoute kSetPlayerInfoRoute = {
+            145u, 2u, "bdAsyncMatchMaking", "setPlayerInfo",
+            ReplyPolicy::NoResultSuccess
+        };
+
+        // Stock 1.20 maps service 145/task 20 to getTournamentState. The
+        // frontend explicitly recognizes BD_AMM_TOURNAMENT_PLAYER_NOT_IN_TOURNAMENT
+        // (0x38BE) as the terminal, non-fatal result for a player who has no
+        // active tournament. Returning that semantic error avoids fabricating a
+        // tournament JSON document and stops the generic error-108 retry path.
+        constexpr TaskRoute kTournamentStateRoute = {
+            145u, 20u, "bdAsyncMatchMaking", "getTournamentState",
+            ReplyPolicy::LegacyUnsupported
         };
 
 
@@ -139,6 +178,15 @@ namespace revamped::iw8::demonware
 
             if (serviceId == 80u && taskId == 58u)
                 return &kValidateInventoryItemsTokenRoute;
+            if (serviceId == 80u && taskId == 0xF3u)
+                return &kBnetReconciliationRoute;
+            if (serviceId == 80u && taskId == 0x84u)
+                return &kMarketplaceBalanceV2Route;
+
+            if (serviceId == 145u && taskId == 2u)
+                return &kSetPlayerInfoRoute;
+            if (serviceId == 145u && taskId == 20u)
+                return &kTournamentStateRoute;
 
             if (serviceId == 50u && taskId == 2u)
                 return &kContentStreamingListFilesByOwnerRoute;
@@ -317,6 +365,105 @@ namespace revamped::iw8::demonware
                 context.c_str(),
                 filename.c_str(),
                 validationToken.size());
+
+            return FinishLegacyTaskReply(serviceReply, replyPlain);
+        }
+
+        bool BuildBnetReconciliationReply(
+            const TaskRequest& request,
+            const std::uint8_t* requestPayload,
+            std::size_t requestPayloadBytes,
+            std::uint64_t transactionId,
+            std::vector<std::uint8_t>& replyPlain)
+        {
+            // bdBnetReconciliationRequest::serialize (stock OpenIW8 1.20):
+            //   1 = context string
+            //   2 = SSO token string
+            //   3 = Battle.net region string
+            //   4 = platform u8 (0x19 for BNet)
+            //   5 = signed BGS account token string
+            const std::uint8_t* body = nullptr;
+            std::size_t bodyBytes = 0u;
+            if (!ExtractTypedStructBody(
+                    requestPayload, requestPayloadBytes, body, bodyBytes))
+            {
+                return false;
+            }
+
+            std::string context;
+            std::string ssoToken;
+            std::string region;
+            std::string bgsAccountToken;
+            std::uint64_t platform = 0u;
+            bool havePlatform = false;
+
+            const std::uint8_t* cursor = body;
+            const std::uint8_t* end = body + bodyBytes;
+            while (cursor < end)
+            {
+                PbField field{};
+                if (!NextPbField(cursor, end, field))
+                    return false;
+
+                auto assignString = [&](std::string& out, std::size_t maxBytes) -> bool
+                {
+                    if (field.wireType != 2u || field.bytesSize > maxBytes)
+                        return false;
+                    out.assign(
+                        reinterpret_cast<const char*>(field.bytes),
+                        field.bytesSize);
+                    return true;
+                };
+
+                switch (field.tag)
+                {
+                case 1u:
+                    if (!assignString(context, 16u)) return false;
+                    break;
+                case 2u:
+                    if (!assignString(ssoToken, 112u)) return false;
+                    break;
+                case 3u:
+                    if (!assignString(region, 3u)) return false;
+                    break;
+                case 4u:
+                    if (field.wireType != 0u) return false;
+                    platform = field.varint;
+                    havePlatform = true;
+                    break;
+                case 5u:
+                    if (!assignString(bgsAccountToken, 0x4000u)) return false;
+                    break;
+                default:
+                    // Do not acknowledge a newer request shape until it is
+                    // understood; this keeps the emulator version-safe.
+                    return false;
+                }
+            }
+
+            if (context != "5800" || ssoToken.empty() ||
+                region.empty() || !havePlatform || platform != 0x19u ||
+                bgsAccountToken.empty())
+            {
+                return false;
+            }
+
+            // bdBnetReconciliationResponse::deserialize reads UInt32 arrays at
+            // tags 1/2 and a bool at tag 3. Omitting repeated tags 1/2 is the
+            // canonical zero-length array encoding; tag 3 explicitly terminates
+            // paging. No ownership is fabricated here.
+            std::vector<std::uint8_t> responseBody;
+            AppendPbU32(responseBody, 3u, 0u); // moreAvailable=false
+
+            std::vector<std::uint8_t> serviceReply;
+            BuildLegacyTaskEnvelope(
+                serviceReply, transactionId, request.taskId);
+            AppendTypedStruct(serviceReply, responseBody);
+
+            std::printf(
+                "[DW-MARKETPLACE] service=80 task=243 bnetReconciliation context=%s region=%s platform=%llu granted=0 revoked=0 moreAvailable=false response=struct-success\n",
+                context.c_str(), region.c_str(),
+                static_cast<unsigned long long>(platform));
 
             return FinishLegacyTaskReply(serviceReply, replyPlain);
         }
@@ -1132,6 +1279,49 @@ namespace revamped::iw8::demonware
             return FinishLegacyTaskReply(serviceReply, replyPlain);
         }
 
+        bool BuildLocalInitiateDcQosReply(
+            const TaskRequest& request,
+            const std::uint8_t* requestPayload,
+            std::size_t requestPayloadBytes,
+            std::uint64_t transactionId,
+            std::vector<std::uint8_t>& replyPlain)
+        {
+            // bdAsyncMatchMaking::initiateDCQoS takes one legacy string.  The
+            // stock completion callback parses the returned bdStringResult as
+            // JSON and requires num_probes, transaction_id and hosts.  An empty
+            // hosts array is a legitimate local/offline result: Qos::Pump has no
+            // destinations to launch and advances to qosHostsReply with zero
+            // probe records, allowing the stock DC-QoS state machine to finish.
+            std::size_t cursor = 0u;
+            std::string requestJson;
+            if (!ReadLegacyCString(
+                    requestPayload, requestPayloadBytes, cursor, requestJson) ||
+                requestJson.empty() ||
+                (cursor != requestPayloadBytes &&
+                 !(cursor + 1u == requestPayloadBytes && requestPayload[cursor] == 0u)))
+            {
+                return false;
+            }
+
+            const std::uint64_t qosTransaction = transactionId ? transactionId : 1u;
+            const std::string json =
+                "{\"num_probes\":1,\"transaction_id\":" +
+                std::to_string(qosTransaction) +
+                ",\"hosts\":[]}";
+
+            std::vector<std::uint8_t> serviceReply;
+            BuildLegacyTaskEnvelope(serviceReply, transactionId, request.taskId);
+            AppendTypedU32(serviceReply, 1u);
+            AppendTypedU32(serviceReply, 1u);
+            AppendTypedString(serviceReply, json);
+
+            std::printf(
+                "[DW-DCQOS] initiateDCQoS requestBytes=%zu qosTransaction=%llu numProbes=1 hosts=0 response=success\n",
+                requestJson.size(),
+                static_cast<unsigned long long>(qosTransaction));
+            return FinishLegacyTaskReply(serviceReply, replyPlain);
+        }
+
         bool BuildLocalPreferredServerDetailsReply(
             const TaskRequest& request,
             const std::uint8_t* requestPayload,
@@ -1187,9 +1377,134 @@ namespace revamped::iw8::demonware
         return &unsupported;
     }
 
+
+    const TaskRoute* ResolveTaskRoute(
+        const TaskRequest& request,
+        const std::uint8_t* requestPayload,
+        std::size_t requestPayloadBytes)
+    {
+        if (!request.valid || (requestPayloadBytes && !requestPayload))
+            return nullptr;
+
+        const TaskRoute* exact = FindTaskRoute(request.serviceId, request.taskId);
+        if (exact && exact->replyPolicy != ReplyPolicy::LegacyUnsupported)
+            return exact;
+
+        // High-confidence semantic inference. These classifiers inspect the
+        // serialized request itself, so task IDs may move between IW8 builds
+        // without duplicating service implementations or guessing response
+        // bytes. Unknown shapes still fall back to the explicit error route.
+        thread_local TaskRoute inferred;
+
+        if (request.serviceId == 95u)
+        {
+            PayloadSchema publisherSchema = PayloadSchema::Unknown;
+            if (IsPublisherVariablesPayload(
+                    requestPayload, requestPayloadBytes, &publisherSchema))
+            {
+                inferred = {
+                    request.serviceId,
+                    request.taskId,
+                    "bdPublisherVariables",
+                    "retrievePublisherVariables[semantic]",
+                    publisherSchema == PayloadSchema::StructBuffer
+                        ? ReplyPolicy::StructPublisherVariables
+                        : ReplyPolicy::LegacyPublisherVariables120,
+                    TaskSemantic::PublisherVariablesRetrieve
+                };
+                return &inferred;
+            }
+        }
+
+        if (request.serviceId == 255u &&
+            ClassifyRestBootstrap(requestPayload, requestPayloadBytes) !=
+                RestBootstrapKind::Unknown)
+        {
+            inferred = {
+                request.serviceId,
+                request.taskId,
+                "bdRESTLegacy",
+                "request[semantic]",
+                ReplyPolicy::RestJsonSuccess,
+                TaskSemantic::RestRequest
+            };
+            return &inferred;
+        }
+
+        if (request.serviceId == 193u)
+        {
+            std::string method;
+            std::string url;
+            std::string body;
+            if (ExtractHttpProxyJsonBody(
+                    requestPayload, requestPayloadBytes,
+                    method, url, body))
+            {
+                const bool publisherRequest =
+                    url.find("/publishers/") != std::string::npos ||
+                    url.find("/publisher/") != std::string::npos;
+
+                if (method == "PUT" && !publisherRequest)
+                {
+                    inferred = {
+                        request.serviceId,
+                        request.taskId,
+                        "bdObjectStore",
+                        "uploadUserObjectsVectorized[semantic]",
+                        ReplyPolicy::StructObjectStoreUploadVectorized,
+                        TaskSemantic::ObjectStoreUserUpload
+                    };
+                    return &inferred;
+                }
+
+                if (method == "GET" && publisherRequest)
+                {
+                    std::vector<std::pair<std::string, std::string>> objectIds;
+                    const bool hasIds = ExtractObjectStoreIds(
+                        requestPayload, requestPayloadBytes, objectIds);
+                    const bool batch = hasIds && objectIds.size() > 1u;
+                    inferred = {
+                        request.serviceId,
+                        request.taskId,
+                        "bdObjectStore",
+                        batch
+                            ? "getPublisherObjects[semantic]"
+                            : "getPublisherObject[semantic]",
+                        ReplyPolicy::StructObjectStoreVectorized,
+                        batch
+                            ? TaskSemantic::ObjectStorePublisherBatchGet
+                            : TaskSemantic::ObjectStorePublisherGet
+                    };
+                    return &inferred;
+                }
+
+                if (method == "GET")
+                {
+                    std::vector<std::pair<std::string, std::string>> objectIds;
+                    if (ExtractObjectStoreIds(
+                            requestPayload, requestPayloadBytes, objectIds) &&
+                        !objectIds.empty())
+                    {
+                        inferred = {
+                            request.serviceId,
+                            request.taskId,
+                            "bdObjectStore",
+                            "getUserObjectsVectorized[semantic]",
+                            ReplyPolicy::StructObjectStoreVectorized,
+                            TaskSemantic::ObjectStoreUserGet
+                        };
+                        return &inferred;
+                    }
+                }
+            }
+        }
+
+        return exact;
+    }
+
     std::string DescribeTaskRequest(const TaskRequest& request)
     {
-        char buffer[384]{};
+        char buffer[640]{};
         const TaskRoute* route =
             request.valid
                 ? FindTaskRoute(request.serviceId, request.taskId)
@@ -1200,12 +1515,15 @@ namespace revamped::iw8::demonware
             std::snprintf(
                 buffer,
                 sizeof(buffer),
-                "valid=0 innerType=0x%02X service=%u taskType=0x%02X task=%u declared=%u error=%s",
+                "valid=0 innerType=0x%02X service=%u taskType=0x%02X task=%u declared=%u wire=%s schema=%s shape=0x%016llX error=%s",
                 static_cast<unsigned>(request.innerType),
                 static_cast<unsigned>(request.serviceId),
                 static_cast<unsigned>(request.taskTypeTag),
                 static_cast<unsigned>(request.taskId),
                 request.declaredBytes,
+                TaskWireEncodingName(request.wireEncoding),
+                PayloadSchemaName(request.payloadSchema),
+                static_cast<unsigned long long>(request.shapeFingerprint),
                 request.error.empty()
                     ? "unknown"
                     : request.error.c_str());
@@ -1215,20 +1533,22 @@ namespace revamped::iw8::demonware
             std::snprintf(
                 buffer,
                 sizeof(buffer),
-                "valid=1 innerType=0x%02X service=%u(%s) taskType=0x%02X task=%u(%s) declared=%u payloadBytes=%llu",
+                "valid=1 innerType=0x%02X service=%u(%s) task=%u(%s) declared=%u payloadBytes=%llu wire=%s schema=%s shape=0x%016llX semantic=%s",
                 static_cast<unsigned>(request.innerType),
                 static_cast<unsigned>(request.serviceId),
                 route && route->serviceName
                     ? route->serviceName
                     : "unknown",
-                static_cast<unsigned>(request.taskTypeTag),
                 static_cast<unsigned>(request.taskId),
                 route && route->taskName
                     ? route->taskName
                     : "unknown",
                 request.declaredBytes,
-                static_cast<unsigned long long>(
-                    request.payloadBytes));
+                static_cast<unsigned long long>(request.payloadBytes),
+                TaskWireEncodingName(request.wireEncoding),
+                PayloadSchemaName(request.payloadSchema),
+                static_cast<unsigned long long>(request.shapeFingerprint),
+                route ? TaskSemanticName(route->semantic) : "generic");
         }
 
         return buffer;
@@ -1248,6 +1568,86 @@ namespace revamped::iw8::demonware
             (requestPayloadBytes && !requestPayload))
         {
             return false;
+        }
+
+        if (route.semantic == TaskSemantic::PublisherVariablesRetrieve)
+        {
+            std::vector<std::uint8_t> serviceReply;
+            BuildLegacyTaskEnvelope(serviceReply, transactionId, request.taskId);
+            PayloadSchema responseSchema = PayloadSchema::Unknown;
+            if (!AppendPublisherVariablesAdaptive(
+                    serviceReply, requestPayload, requestPayloadBytes,
+                    &responseSchema))
+            {
+                return false;
+            }
+
+            std::printf(
+                "[DW-SEMANTIC] service=%u task=%u op=%s requestSchema=%s responseSchema=%s shape=0x%016llX\n",
+                static_cast<unsigned>(request.serviceId),
+                static_cast<unsigned>(request.taskId),
+                TaskSemanticName(route.semantic),
+                PayloadSchemaName(request.payloadSchema),
+                PayloadSchemaName(responseSchema),
+                static_cast<unsigned long long>(request.shapeFingerprint));
+            return FinishLegacyTaskReply(serviceReply, replyPlain);
+        }
+
+        if (route.semantic == TaskSemantic::ObjectStoreUserGet ||
+            route.semantic == TaskSemantic::ObjectStoreUserUpload ||
+            route.semantic == TaskSemantic::ObjectStorePublisherGet ||
+            route.semantic == TaskSemantic::ObjectStorePublisherBatchGet)
+        {
+            std::vector<std::uint8_t> serviceReply;
+            BuildLegacyTaskEnvelope(serviceReply, transactionId, request.taskId);
+
+            bool handled = false;
+            switch (route.semantic)
+            {
+            case TaskSemantic::ObjectStoreUserGet:
+                handled = AppendCanonicalStartupStatsGetStruct(
+                    serviceReply, requestPayload, requestPayloadBytes);
+                if (!handled)
+                    handled = AppendObjectStoreVectorizedStruct(
+                        serviceReply, requestPayload, requestPayloadBytes);
+                break;
+
+            case TaskSemantic::ObjectStoreUserUpload:
+                handled = AppendCanonicalStartupStatsUploadStruct(
+                    serviceReply, requestPayload, requestPayloadBytes);
+                if (!handled)
+                    handled = AppendObjectStoreUploadVectorizedStruct(
+                        serviceReply, requestPayload, requestPayloadBytes);
+                break;
+
+            case TaskSemantic::ObjectStorePublisherGet:
+                handled = AppendPublisherObjectStruct(
+                    serviceReply, requestPayload, requestPayloadBytes);
+                break;
+
+            case TaskSemantic::ObjectStorePublisherBatchGet:
+                handled = AppendPublisherObjectMetadatasStruct(
+                    serviceReply, requestPayload, requestPayloadBytes);
+                if (!handled)
+                    handled = AppendObjectStorePublisherVectorizedNotFoundStruct(
+                        serviceReply, requestPayload, requestPayloadBytes);
+                break;
+
+            default:
+                break;
+            }
+
+            if (!handled)
+                return false;
+
+            std::printf(
+                "[DW-SEMANTIC] service=%u task=%u op=%s schema=%s shape=0x%016llX routeByMeaning=yes\n",
+                static_cast<unsigned>(request.serviceId),
+                static_cast<unsigned>(request.taskId),
+                TaskSemanticName(route.semantic),
+                PayloadSchemaName(request.payloadSchema),
+                static_cast<unsigned long long>(request.shapeFingerprint));
+            return FinishLegacyTaskReply(serviceReply, replyPlain);
         }
 
         if (route.serviceId == 80u && route.taskId == 69u)
@@ -1291,6 +1691,80 @@ namespace revamped::iw8::demonware
             return FinishLegacyTaskReply(reply, replyPlain);
         }
 
+        if (route.serviceId == 80u && route.taskId == 0xF3u)
+        {
+            return BuildBnetReconciliationReply(
+                request, requestPayload, requestPayloadBytes,
+                transactionId, replyPlain);
+        }
+
+        if (route.serviceId == 80u && route.taskId == 0x84u)
+        {
+            // getBalanceV2 request = context string + maxNumResults UInt32.
+            std::size_t cursor = 0u;
+            std::string context;
+            if (!ReadLegacyCString(
+                    requestPayload, requestPayloadBytes, cursor, context) ||
+                context != "5800" || cursor + 5u > requestPayloadBytes ||
+                requestPayload[cursor] != kBbUnsignedInteger32)
+            {
+                return false;
+            }
+
+            ++cursor;
+            const std::uint32_t maxResults = ReadLe32(requestPayload + cursor);
+            cursor += 4u;
+            if (maxResults == 0u || maxResults > 4096u ||
+                (cursor != requestPayloadBytes &&
+                 !(cursor + 1u == requestPayloadBytes &&
+                   requestPayload[cursor] == 0u)))
+            {
+                return false;
+            }
+
+            std::printf(
+                "[DW-MARKETPLACE] service=80 task=132 getBalanceV2 context=%s maxResults=%u currencies=0 response=empty-success\n",
+                context.c_str(), maxResults);
+            return BuildTaskReply_Base(
+                route, request, requestPayload, requestPayloadBytes,
+                transactionId, replyPlain);
+        }
+
+        if (route.serviceId == 145u && route.taskId == 2u)
+        {
+            // setPlayerInfo carries exactly one legacy string. Preserve its
+            // contents as opaque JSON; only validate the proven wire shape.
+            std::size_t cursor = 0u;
+            std::string playerInfo;
+            if (!ReadLegacyCString(
+                    requestPayload, requestPayloadBytes, cursor, playerInfo) ||
+                playerInfo.empty() ||
+                (cursor != requestPayloadBytes &&
+                 !(cursor + 1u == requestPayloadBytes &&
+                   requestPayload[cursor] == 0u)))
+            {
+                return false;
+            }
+
+            std::printf(
+                "[DW-MATCHMAKING] service=145 task=2 setPlayerInfo bytes=%zu accepted response=no-result-success\n",
+                playerInfo.size());
+            return BuildTaskReply_Base(
+                route, request, requestPayload, requestPayloadBytes,
+                transactionId, replyPlain);
+        }
+
+        if (route.serviceId == 145u && route.taskId == 20u)
+        {
+            // RequestTournamentStateComplete in stock 1.20 consumes 0x38BE as
+            // the ordinary "player not in tournament" outcome and does not
+            // retry or show an online error. This is the correct state for a
+            // fresh local account.
+            return BuildIntentionalTaskFailure(
+                request, transactionId, 0x38BEu,
+                "[DW-TOURNAMENT]", replyPlain);
+        }
+
         if (route.serviceId == 18u && route.taskId == 1u)
         {
             // Raw startLSGTask request. The first byte is request/finalize mode
@@ -1323,13 +1797,9 @@ namespace revamped::iw8::demonware
 
         if (route.serviceId == 145u && route.taskId == 25u)
         {
-            // A successful initiateDCQoS reply with an empty hosts array causes
-            // stock IW8 to enter Qos::Probe with no destinations. Returning a
-            // normal Demonware service-unavailable error instead exercises the
-            // client's existing Online_DcQos_Fail/finalization path, which marks
-            // the datacenter result final and lets the fence complete offline.
-            return BuildIntentionalTaskFailure(
-                request, transactionId, 108u, "[DW-DCQOS]", replyPlain);
+            return BuildLocalInitiateDcQosReply(
+                request, requestPayload, requestPayloadBytes,
+                transactionId, replyPlain);
         }
 
         if (route.serviceId == 145u && route.taskId == 26u)

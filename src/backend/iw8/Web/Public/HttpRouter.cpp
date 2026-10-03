@@ -357,6 +357,179 @@ namespace revamped::iw8::web
                     static_cast<unsigned long long>(responseToken.size()), localLobbyEndpoint.c_str());
             }
         }
+        else if (result.method == "POST" && pathLower == "/v1/login/" &&
+            hostLower.find("-steam-loginservice.prod.demonware.net") != std::string::npos)
+        {
+            // Current Steam Retail no longer starts with the older /auth/ Auth3
+            // transaction.  It first exchanges the Steam platform token at
+            // <game>-steam-loginservice.prod.demonware.net/v1/login/.  Returning
+            // 404 here makes stock IW8 close the TLS connection and retry forever,
+            // which looks like a frontend freeze after accepting the EULA.
+            //
+            // Keep this local/offline: consume only the request shape, never send
+            // the supplied Steam token anywhere, and mint the same deterministic
+            // local DW ticket/session material used by the existing Auth3 path.
+            const auto readField = [&](const char* name, std::string& value) -> bool
+            {
+                if (FormValue(query, name, value)) return true;
+                if (bodyIsForm && FormValue(body, name, value)) return true;
+                if (bodyIsJson && JsonStringValue(body, name, value)) return true;
+                if (bodyIsJson && JsonUnsignedText(body, name, value)) return true;
+                return false;
+            };
+
+            std::string titleIdText;
+            std::string locale;
+            std::string version;
+            std::string platform;
+            std::string logExtras;
+            std::string serviceLevel;
+            std::string ivSeed;
+            std::string machineId;
+            std::string platformToken;
+            const bool titleOk = readField("titleID", titleIdText);
+            readField("locale", locale);
+            readField("version", version);
+            const bool platformOk = readField("platform", platform);
+            readField("logExtras", logExtras);
+            const bool serviceLevelOk = readField("serviceLevel", serviceLevel);
+            const bool ivOk = readField("ivSeed", ivSeed);
+            const bool machineOk = readField("machineID", machineId);
+            const bool tokenOk = readField("token", platformToken);
+
+            std::uint32_t titleId = 0;
+            if (titleOk)
+            {
+                char* end = nullptr;
+                const unsigned long parsed = std::strtoul(titleIdText.c_str(), &end, 10);
+                if (end && end != titleIdText.c_str() && *end == '\0')
+                    titleId = static_cast<std::uint32_t>(parsed & 0xFFFFFFFFu);
+            }
+
+            const bool requestShapeOk = titleId != 0 && ivOk && machineOk && tokenOk;
+            std::ostringstream detail;
+            detail << "Steam loginservice local bridge"
+                   << " title=" << (titleId ? std::to_string(titleId) : "?")
+                   << " platform=" << (platformOk ? platform : "?")
+                   << " serviceLevel=" << (serviceLevelOk ? serviceLevel : "?")
+                   << " versionLen=" << version.size()
+                   << " locale=" << (locale.empty() ? "?" : locale)
+                   << " logExtras=" << (logExtras.empty() ? "?" : logExtras)
+                   << " ivSeed=" << (ivOk ? "present" : "missing")
+                   << " machineIdLen=" << machineId.size()
+                   << " platformTokenLen=" << platformToken.size()
+                   << " tokenForwarded=no"
+                   << " responseSchema=STEAM_LOGIN_COMPAT_SUPERSET";
+
+            result.handled = true;
+            result.label = detail.str();
+            if (!requestShapeOk)
+            {
+                result.statusCode = 400;
+                result.response = BuildResponse(400, "Bad Request", "application/json; charset=utf-8",
+                    "{\"error\":\"revamped_bad_steam_login_shape\"}");
+                log::Print("[STEAM-LOGIN] reject host=%s title=%s iv=%s machineIdLen=%llu tokenLen=%llu keys=%s",
+                    result.host.c_str(), titleId ? std::to_string(titleId).c_str() : "?",
+                    ivOk ? "present" : "missing",
+                    static_cast<unsigned long long>(machineId.size()),
+                    static_cast<unsigned long long>(platformToken.size()), result.formKeys.c_str());
+            }
+            else
+            {
+                if (serviceLevel.empty()) serviceLevel = "paid";
+                if (platform.empty()) platform = "steam";
+
+                // Reuse the proven local ticket/session generator.  The synthetic
+                // request task value is only an internal compatibility seed; the
+                // Steam response below also publishes the modern camelCase fields.
+                std::string responseBody = BuildDwBnetAuthResponse(
+                    "84", ivSeed, titleId, machineId, serviceLevel,
+                    "revamped", std::string{}, machineId);
+
+                ReplaceJsonStringValue(responseBody, "client_id", "iw-cod-iw8-steam");
+                ReplaceJsonStringValue(responseBody, "account_type", "steam");
+                const std::string crossplayFalse = "\"crossplay_enabled\":false";
+                const std::size_t crossplayPos = responseBody.find(crossplayFalse);
+                if (crossplayPos != std::string::npos)
+                    responseBody.replace(crossplayPos, crossplayFalse.size(), "\"crossplay_enabled\":true");
+
+                std::string clientTicket;
+                std::string serverTicket;
+                JsonStringValue(responseBody, "client_ticket", clientTicket);
+                JsonStringValue(responseBody, "server_ticket", serverTicket);
+
+                const std::uint64_t localUserId = StableLocalAuthUserId(machineId, titleId);
+                const std::string clientId = "iw-cod-iw8-steam";
+                const std::string localLsg = "mw-lobby-1.prod.demonware.net";
+
+                // Compatibility superset: old Auth3 snake_case fields remain in
+                // place for shared login code, while current Steam loginservice
+                // consumers can use camelCase and the title/umbrella/uno objects.
+                if (!responseBody.empty() && responseBody.back() == '}')
+                    responseBody.pop_back();
+                std::ostringstream extra;
+                extra << ",\"success\":true"
+                      << ",\"titleID\":" << titleId
+                      << ",\"clientID\":\"" << JsonEscape(clientId) << "\""
+                      << ",\"userID\":" << localUserId
+                      << ",\"accountType\":\"steam\""
+                      << ",\"username\":\"revamped\""
+                      << ",\"ivSeed\":\"" << JsonEscape(ivSeed) << "\""
+                      << ",\"clientTicket\":\"" << JsonEscape(clientTicket) << "\""
+                      << ",\"serverTicket\":\"" << JsonEscape(serverTicket) << "\""
+                      << ",\"serviceLevel\":\"paid\""
+                      << ",\"crossplayEnabled\":true"
+                      << ",\"loginqueueEnabled\":false"
+                      << ",\"lsgEndpoint\":\"" << JsonEscape(localLsg) << "\""
+                      << ",\"ticket\":\"" << JsonEscape(clientTicket) << "\""
+                      << ",\"token\":\"" << JsonEscape(clientTicket) << "\""
+                      << ",\"title\":{\"titleID\":" << titleId
+                      << ",\"clientID\":\"" << JsonEscape(clientId) << "\""
+                      << ",\"userID\":" << localUserId
+                      << ",\"accountType\":\"steam\""
+                      << ",\"username\":\"revamped\""
+                      << ",\"serviceLevel\":\"paid\""
+                      << ",\"ivSeed\":\"" << JsonEscape(ivSeed) << "\""
+                      << ",\"clientTicket\":\"" << JsonEscape(clientTicket) << "\""
+                      << ",\"serverTicket\":\"" << JsonEscape(serverTicket) << "\""
+                      << ",\"lsgEndpoint\":\"" << JsonEscape(localLsg) << "\"}"
+                      << ",\"umbrella\":{\"umbrellaID\":" << localUserId
+                      << ",\"userID\":" << localUserId
+                      << ",\"accountType\":\"steam\""
+                      << ",\"username\":\"revamped\""
+                      << ",\"accessToken\":\"" << JsonEscape(clientTicket) << "\""
+                      << ",\"accounts\":[]"
+                      << ",\"crossPlatformProgressionEnabled\":true"
+                      << ",\"lsgEndpoint\":\"" << JsonEscape(localLsg) << "\"}"
+                      << ",\"uno\":{\"userID\":" << localUserId
+                      << ",\"accountType\":\"steam\""
+                      << ",\"username\":\"revamped\"}"
+                      << "}";
+                responseBody += extra.str();
+
+                result.statusCode = 200;
+                // Sign the body too.  Clients that do not require X-Signature
+                // simply ignore the extra header; clients sharing Auth3 trust code
+                // can validate it with the already-installed local verifier.
+                result.response = BuildDwAuthResponse(responseBody);
+
+                AppendAuthPipelineV58(
+                    "STEAM_LOGIN_RESPONSE status=200 host=%s titleId=%u platform=%s userId=%llu clientId=%s serviceLevel=paid ivSeedLen=%llu machineIdLen=%llu platformTokenLen=%llu tokenForwarded=no clientTicketLen=%llu serverTicketLen=%llu lsgEndpoint=%s schema=STEAM_LOGIN_COMPAT_SUPERSET",
+                    result.host.c_str(), static_cast<unsigned>(titleId), platform.c_str(),
+                    static_cast<unsigned long long>(localUserId), clientId.c_str(),
+                    static_cast<unsigned long long>(ivSeed.size()),
+                    static_cast<unsigned long long>(machineId.size()),
+                    static_cast<unsigned long long>(platformToken.size()),
+                    static_cast<unsigned long long>(clientTicket.size()),
+                    static_cast<unsigned long long>(serverTicket.size()), localLsg.c_str());
+                log::Print(
+                    "[STEAM-LOGIN] status=200 host=%s titleId=%u platform=%s userId=%llu ticketLens=%llu/%llu tokenForwarded=no schema=STEAM_LOGIN_COMPAT_SUPERSET next=observe_client",
+                    result.host.c_str(), static_cast<unsigned>(titleId), platform.c_str(),
+                    static_cast<unsigned long long>(localUserId),
+                    static_cast<unsigned long long>(clientTicket.size()),
+                    static_cast<unsigned long long>(serverTicket.size()));
+            }
+        }
         else if (result.method == "POST" && pathLower == "/auth/" &&
             hostLower.find("demonware.net") != std::string::npos)
         {
@@ -428,6 +601,7 @@ namespace revamped::iw8::web
                    << " accept=" << (acceptType.empty() ? "missing" : acceptType)
                    << " userAgentLen=" << userAgent.size()
                    << " ticketMode=BNET_RAW_128 responseStyle=TASK_PLUS_ONE clientIdOut=iw-cod-iw8-bnet serviceLevelOut=paid"
+                   << " responsePlatformData=session+account+machine"
                    << " responseSignature=RSA_PSS_SHA256"
                    << " httpStyle=TornadoServer/4.5.3 stateWrites=off";
 
@@ -448,7 +622,8 @@ namespace revamped::iw8::web
                 result.statusCode = 200;
                 result.label = detail.str();
                 result.response = BuildDwAuthResponse(
-                    BuildDwBnetAuthResponse(authTask, ivSeed, titleId, identity, serviceLevel, sessionToken));
+                    BuildDwBnetAuthResponse(authTask, ivSeed, titleId, identity, serviceLevel,
+                        sessionToken, accountToken, machineId));
                 const LocalIw8Build localBuild = DetectLocalIw8Build();
                 const bool legacyUmbrellaHandoff = UsesLegacyUmbrellaHandoff(localBuild);
                 const bool crossplayEnabled = legacyUmbrellaHandoff || LsgForceTestEnabled();

@@ -306,7 +306,8 @@ namespace revamped::iw8::web
 
         std::string BuildDwBnetAuthResponse(const std::string& requestTask, const std::string& ivSeed,
             std::uint32_t titleId, const std::string& identity, const std::string& serviceLevel,
-            const std::string& sessionToken)
+            const std::string& sessionToken, const std::string& accountToken,
+            const std::string& machineId)
         {
             // V72: remember the exact Auth3 IV-seed representation supplied by
             // stock IW8.  It is only used as a bounded candidate source later.
@@ -348,9 +349,17 @@ namespace revamped::iw8::web
             }
             const std::string responseTask = std::to_string(taskValue + 1u);
 
+            // Preserve the stock BNet platform fields from the Auth3 request.
+            // IW8 consumes these from the completed login result; dropping
+            // account_token left BattleNetAuth with an empty token even though
+            // AccountService had already returned the correct license data.
             std::ostringstream nested;
             nested << "{\"username\":\"" << JsonEscape(ticketUsername)
-                   << "\",\"time_to_live\":9999,\"extended_data\":\"" << extendedB64 << "\"}";
+                   << "\",\"time_to_live\":9999"
+                   << ",\"session_token\":\"" << JsonEscape(sessionToken) << "\""
+                   << ",\"account_token\":\"" << JsonEscape(accountToken) << "\""
+                   << ",\"extended_data\":\"" << extendedB64 << "\""
+                   << ",\"machine_id\":\"" << JsonEscape(machineId) << "\"}";
 
             const LocalIw8Build localBuild = DetectLocalIw8Build();
             const bool legacyUmbrellaHandoff = UsesLegacyUmbrellaHandoff(localBuild);

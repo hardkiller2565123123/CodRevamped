@@ -156,6 +156,9 @@
     <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Internal\Serialization.cpp">
       <Filter>Demonware\Internal</Filter>
     </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Internal\SemanticProtocol.cpp">
+      <Filter>Demonware\Internal</Filter>
+    </ClCompile>
     <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Lsg\CryptoPrimitives.cpp">
       <Filter>Demonware\Lsg</Filter>
     </ClCompile>

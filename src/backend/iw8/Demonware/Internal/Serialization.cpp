@@ -42,23 +42,23 @@ namespace revamped::iw8::demonware
             // IW8 1.20 profile bootstrap. Stock code treats a missing public
             // profile as a normal first-run condition and creates its default
             // 256-byte DDL locally. Upload then succeeds with no bound result.
-            {8u, 1u, "bdProfiles", "getPublicInfos", ReplyPolicy::LegacyProfileNotFound},
-            {8u, 3u, "bdProfiles", "setPublicInfo", ReplyPolicy::NoResultSuccess},
+            {8u, 1u, "bdProfiles", "getPublicInfos", ReplyPolicy::LegacyProfileNotFound, TaskSemantic::ProfilesGetPublic},
+            {8u, 3u, "bdProfiles", "setPublicInfo", ReplyPolicy::NoResultSuccess, TaskSemantic::ProfilesSetPublic},
 
             // IW8 1.20 marketplace fence calls. 0xF5 has a known empty struct
             // shape for an account with no balances. 0xF3 and task 58 are
             // deliberately registered as known-but-unimplemented until their
             // exact native result structures are proven; never guess bytes.
-            {80u, 0xF3u, "bdMarketplace", "reconcileLicenses", ReplyPolicy::None},
+            {80u, 0xF3u, "bdMarketplace", "bnetReconciliation", ReplyPolicy::None},
             {80u, 0xF5u, "bdMarketplace", "getBalancesV3", ReplyPolicy::StructMarketplaceBalancesEmpty},
             {80u, 58u, "bdMarketplace", "validateInventoryItemsToken", ReplyPolicy::None},
 
             // Observed IW8 1.20 calls whose exact reply contracts are not yet
             // proven. Keeping them in the registry gives precise diagnostics
             // while preserving the DO_NOT_GUESS_RESPONSE_BYTES policy.
-            {4u, 1u, "bdStorage", "observedTask1", ReplyPolicy::None},
+            {4u, 1u, "bdStorage", "writeStats", ReplyPolicy::None, TaskSemantic::PlayerStatsWrite},
             {4u, 11u, "bdStorage", "observedTask11", ReplyPolicy::None},
-            {4u, 14u, "bdStorage", "serverValidatedStatsWrite", ReplyPolicy::None},
+            {4u, 14u, "bdStorage", "serverValidatedStatsWrite", ReplyPolicy::None, TaskSemantic::PlayerStatsValidatedWrite},
             {3u, 46u, "bdService3", "observedTask46", ReplyPolicy::None},
             {67u, 5u, "bdEventLog", "observedTask5", ReplyPolicy::None},
             {80u, 125u, "bdMarketplace", "observedTask125", ReplyPolicy::None},
@@ -70,8 +70,8 @@ namespace revamped::iw8::demonware
             // string followed by one namespace (max 31 chars). The result object
             // reads UInt16 MajorVersion, UInt16 MinorVersion, namespace String,
             // and JSON String. Later builds use task 3 with StructBuffer.
-            {95u, 1u, "bdPublisherVariables", "retrievePublisherVariablesLegacy", ReplyPolicy::LegacyPublisherVariables120},
-            {95u, 3u, "bdPublisherVariables", "retrievePublisherVariables", ReplyPolicy::StructPublisherVariables},
+            {95u, 1u, "bdPublisherVariables", "retrievePublisherVariables", ReplyPolicy::LegacyPublisherVariables120, TaskSemantic::PublisherVariablesRetrieve},
+            {95u, 3u, "bdPublisherVariables", "retrievePublisherVariables", ReplyPolicy::StructPublisherVariables, TaskSemantic::PublisherVariablesRetrieve},
             {104u, 6u, "bdMarketingComms", "getMessages", ReplyPolicy::StructMarketingMessagesEmpty},
 
             // IW8 ObjectStore startup stats path. Native 1.44 builds submit service
@@ -81,20 +81,20 @@ namespace revamped::iw8::demonware
             // into RESET_STATS_REASON_NOT_FOUND and creates the six DDL stats blobs
             // locally before firing playerdata_available. Task 7 is the matching
             // vectorized upload path used once local objects are available.
-            {193u, 6u, "bdObjectStore", "getUserObjectsVectorized", ReplyPolicy::StructObjectStoreVectorized},
-            {193u, 7u, "bdObjectStore", "uploadUserObjectsVectorized", ReplyPolicy::StructObjectStoreUploadVectorized},
+            {193u, 6u, "bdObjectStore", "getUserObjectsVectorized", ReplyPolicy::StructObjectStoreVectorized, TaskSemantic::ObjectStoreUserGet},
+            {193u, 7u, "bdObjectStore", "uploadUserObjectsVectorized", ReplyPolicy::StructObjectStoreUploadVectorized, TaskSemantic::ObjectStoreUserUpload},
             // Stock OpenIW8 maps service 0xC1/task 0x10 to the vectorized
             // publisher-object metadata path.  The response parser explicitly
             // supports per-object errors.  A local preservation server with no
             // publisher cache therefore returns canonical ObjectStore NotFound
             // entries instead of leaving the remote task pending.
-            {193u, 16u, "bdObjectStore", "getPublisherObjects", ReplyPolicy::StructObjectStorePublisherVectorizedNotFound},
+            {193u, 16u, "bdObjectStore", "getPublisherObjects", ReplyPolicy::StructObjectStorePublisherVectorizedNotFound, TaskSemantic::ObjectStorePublisherBatchGet},
 
             // Stock OpenIW8 maps task 8 to the single publisher-object metadata
             // + streaming path. Keep it named and diagnostic-only for now. The
             // request URL identifies the exact publisher/object needed if 0x10
             // still falls through to the single-object path.
-            {193u, 8u, "bdObjectStore", "getPublisherObject", ReplyPolicy::None},
+            {193u, 8u, "bdObjectStore", "getPublisherObject", ReplyPolicy::None, TaskSemantic::ObjectStorePublisherGet},
 
             // 1.20 sends AB testing enrollment as service 0xC2/task 1 using
             // bdHTTPProxyRequest. Stock bdABTestingEnrollResponse requires a
@@ -120,7 +120,7 @@ namespace revamped::iw8::demonware
 
             // Stock bdRESTTaskManager uses service 0xFF / task 0x0A.
             // Only the reconstructed startup social reads below get replies.
-            {255u, 0x0Au, "bdRESTLegacy", "request", ReplyPolicy::RestJsonSuccess},
+            {255u, 0x0Au, "bdRESTLegacy", "request", ReplyPolicy::RestJsonSuccess, TaskSemantic::RestRequest},
         };
 
         std::uint32_t ReadLe32(const std::uint8_t* p)

@@ -7,6 +7,39 @@
 
 namespace revamped::iw8::demonware
 {
+
+    enum class TaskWireEncoding : std::uint8_t
+    {
+        Unknown = 0,
+        TypedU8,
+        RawServiceTask,
+    };
+
+    enum class PayloadSchema : std::uint8_t
+    {
+        Unknown = 0,
+        Empty,
+        LegacyByteBuffer,
+        StructBuffer,
+        Opaque,
+    };
+
+    enum class TaskSemantic : std::uint8_t
+    {
+        Generic = 0,
+        PublisherVariablesRetrieve,
+        RestRequest,
+        ProfilesGetPublic,
+        ProfilesSetPublic,
+        ObjectStoreUserGet,
+        ObjectStoreUserUpload,
+        ObjectStorePublisherGet,
+        ObjectStorePublisherBatchGet,
+        PlayerStatsWrite,
+        PlayerStatsValidatedWrite,
+        DcQos,
+        RelayAuth,
+    };
     enum class ReplyPolicy : std::uint8_t
     {
         None = 0,
@@ -86,6 +119,9 @@ namespace revamped::iw8::demonware
         std::uint8_t taskId = 0;
         std::size_t payloadOffset = 0;
         std::size_t payloadBytes = 0;
+        TaskWireEncoding wireEncoding = TaskWireEncoding::Unknown;
+        PayloadSchema payloadSchema = PayloadSchema::Unknown;
+        std::uint64_t shapeFingerprint = 0;
         std::string error;
     };
 
@@ -96,10 +132,18 @@ namespace revamped::iw8::demonware
         const char* serviceName = nullptr;
         const char* taskName = nullptr;
         ReplyPolicy replyPolicy = ReplyPolicy::None;
+        TaskSemantic semantic = TaskSemantic::Generic;
     };
+
+    const char* TaskWireEncodingName(TaskWireEncoding encoding);
+    const char* PayloadSchemaName(PayloadSchema schema);
+    const char* TaskSemanticName(TaskSemantic semantic);
+    void AnalyzeTaskPayload(TaskRequest& request, const std::uint8_t* payload, std::size_t payloadBytes);
 
     TaskRequest DecodeTaskRequest(const std::vector<std::uint8_t>& plain);
     const TaskRoute* FindTaskRoute(std::uint8_t serviceId, std::uint8_t taskId);
+    const TaskRoute* ResolveTaskRoute(const TaskRequest& request,
+        const std::uint8_t* requestPayload, std::size_t requestPayloadBytes);
     std::string DescribeTaskRequest(const TaskRequest& request);
 
     // Builds the unencrypted Demonware task body carried by the secure 0x85 frame.

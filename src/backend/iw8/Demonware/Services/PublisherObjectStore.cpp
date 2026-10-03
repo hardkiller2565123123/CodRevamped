@@ -7,24 +7,72 @@ namespace revamped::iw8::demonware
         constexpr const char* kIw8StorePublisher = "infinityward";
 
         constexpr const char* kIw8StoreLayoutName = "store_v2_warzone.json";
-        constexpr const char* kIw8StoreLayoutJson = "{\"categories\":[]}";
+        constexpr const char* kIw8StoreCategoryName = "revamped_store_category.json";
+        constexpr const char* kIw8StoreLayoutJson =
+            "{\"categories\":[\"revamped_store_category.json\"]}";
+        constexpr const char* kIw8StoreCategoryJson = "{\"layoutType\":0}";
         constexpr const char* kIw8StoreLayoutContentUrl =
             "https://objectstore.prod.demonware.net/__revamped/objectstore/publisher/infinityward/store_v2_warzone.json";
 
-        // IW8 1.20 InGameStore_CoFetchObjectStoreConfig constructs
-        // "ingamestore_xb3_%s.json". This build reports enUS during BGS startup,
-        // so task 0xC1/8 resolves to the hashed ObjectStore id seen in the log.
-        constexpr const char* kIw8InGameStoreName = "ingamestore_xb3_enUS.json";
-        constexpr const char* kIw8InGameStoreJson = "{\"categories\":[]}";
-        constexpr const char* kIw8InGameStoreContentUrl =
-            "https://objectstore.prod.demonware.net/__revamped/objectstore/publisher/infinityward/ingamestore_xb3_enUS.json";
+        // Task 0xC1/8 is used for both the older numeric ObjectStore key and
+        // the later explicit BNet filename. Build 1.20's Battle.net path must
+        // stay on the BNet object instead of being rewritten to the Xbox file.
+        constexpr const char* kIw8InGameStoreFallbackName = "ingamestore_bnet_en.json";
+        constexpr const char* kIw8InGameStoreJson =
+            "{\"products\":{},\"categories\":{\"revamped\":{\"title\":\"Revamped Store\",\"layout\":\"normal\",\"image\":\"\",\"products\":[]}},\"store\":[\"revamped\"]}";
 
         constexpr const char* kIw8StoreAuthorization = "Bearer revamped-local-objectstore";
+        constexpr const char* kPublisherContentUrlPrefix =
+            "https://objectstore.prod.demonware.net/__revamped/objectstore/publisher/infinityward/";
+        constexpr const char* kPublisherMetadataRoutePrefix =
+            "/v1/core/publishers/infinityward/objects/";
+
+        bool IsSafePublisherObjectName(const std::string& name)
+        {
+            return !name.empty() &&
+                name.find('/') == std::string::npos &&
+                name.find('\\') == std::string::npos &&
+                name.find("..") == std::string::npos;
+        }
+
+        bool IsInGameStoreName(const std::string& name)
+        {
+            static constexpr const char* prefix = "ingamestore_";
+            static constexpr const char* suffix = ".json";
+            const std::size_t prefixLength = std::char_traits<char>::length(prefix);
+            const std::size_t suffixLength = std::char_traits<char>::length(suffix);
+            return IsSafePublisherObjectName(name) &&
+                name.size() > prefixLength + suffixLength &&
+                name.compare(0, prefixLength, prefix) == 0 &&
+                name.compare(name.size() - suffixLength, suffixLength, suffix) == 0;
+        }
+
+        std::string BuildPublisherContentUrl(const std::string& name)
+        {
+            return std::string(kPublisherContentUrlPrefix) + name;
+        }
+
+        std::string ExtractPublisherObjectNameFromMetadataUrl(const std::string& url)
+        {
+            const std::string prefix = kPublisherMetadataRoutePrefix;
+            const std::size_t start = url.find(prefix);
+            if (start == std::string::npos)
+                return {};
+            const std::size_t nameStart = start + prefix.size();
+            const std::size_t metadata = url.find("/metadata/", nameStart);
+            if (metadata == std::string::npos || metadata <= nameStart)
+                return {};
+            const std::string name = url.substr(nameStart, metadata - nameStart);
+            return IsSafePublisherObjectName(name) ? name : std::string{};
+        }
 
         bool IsLocalIw8PublisherObject(const std::string& owner, const std::string& name)
         {
             return owner == kIw8StorePublisher &&
                 (name == kIw8StoreLayoutName ||
+                 name == kIw8StoreCategoryName ||
+                 IsInGameStoreName(name) ||
+                 localpublisher::IsContentCreatorList(name) ||
                  localpublisher::IsPlaylist(name) ||
                  (localpublisher::LocalManifestEnabled() && localpublisher::IsManifest(name)));
         }
@@ -78,19 +126,21 @@ namespace revamped::iw8::demonware
         {
             if (localpublisher::IsManifest(name))
                 return BuildLocalPublisherMetadataJsonForContent(owner, name, context,
-                    localpublisher::ManifestBody(),
-                    std::string("https://objectstore.prod.demonware.net") + localpublisher::PathPrefix + name);
+                    localpublisher::ManifestBody(), BuildPublisherContentUrl(name));
             if (localpublisher::IsPlaylist(name))
                 return BuildLocalPublisherMetadataJsonForContent(owner, name, context,
-                    localpublisher::PlaylistBody(),
-                    std::string("https://objectstore.prod.demonware.net") +
-                        localpublisher::PathPrefix + name);
+                    localpublisher::PlaylistBody(), BuildPublisherContentUrl(name));
+            if (localpublisher::IsContentCreatorList(name))
+                return BuildLocalPublisherMetadataJsonForContent(owner, name, context,
+                    localpublisher::ContentCreatorListBody(), BuildPublisherContentUrl(name));
+            if (IsInGameStoreName(name))
+                return BuildLocalPublisherMetadataJsonForContent(owner, name, context,
+                    kIw8InGameStoreJson, BuildPublisherContentUrl(name));
+            if (name == kIw8StoreCategoryName)
+                return BuildLocalPublisherMetadataJsonForContent(owner, name, context,
+                    kIw8StoreCategoryJson, BuildPublisherContentUrl(name));
             return BuildLocalPublisherMetadataJsonForContent(
-                owner,
-                name,
-                context,
-                kIw8StoreLayoutJson,
-                kIw8StoreLayoutContentUrl);
+                owner, name, context, kIw8StoreLayoutJson, kIw8StoreLayoutContentUrl);
         }
 
         void AppendObjectStoreJsonStructWithAuthorization(
@@ -148,8 +198,15 @@ namespace revamped::iw8::demonware
             {
                 const std::string& owner = objectIds[i].first;
                 const std::string& name = objectIds[i].second;
-                std::printf("[DW-PUBLISHER-LOOKUP] index=%zu owner=%s name=%s available=%s\n",
-                    i, owner.c_str(), name.c_str(), IsLocalIw8PublisherObject(owner, name) ? "yes" : "no");
+                std::size_t localBytes = 0;
+                if (localpublisher::IsPlaylist(name)) localBytes = localpublisher::PlaylistBody().size();
+                else if (localpublisher::IsManifest(name)) localBytes = localpublisher::ManifestBody().size();
+                else if (localpublisher::IsContentCreatorList(name)) localBytes = localpublisher::ContentCreatorListBody().size();
+                else if (name == kIw8StoreLayoutName) localBytes = std::char_traits<char>::length(kIw8StoreLayoutJson);
+                else if (name == kIw8StoreCategoryName) localBytes = std::char_traits<char>::length(kIw8StoreCategoryJson);
+                else if (IsInGameStoreName(name)) localBytes = std::char_traits<char>::length(kIw8InGameStoreJson);
+                std::printf("[DW-PUBLISHER-LOOKUP] index=%zu owner=%s name=%s available=%s contentLength=%zu\n",
+                    i, owner.c_str(), name.c_str(), IsLocalIw8PublisherObject(owner, name) ? "yes" : "no", localBytes);
                 std::fflush(stdout);
                 if (IsLocalIw8PublisherObject(owner, name))
                 {
@@ -205,15 +262,8 @@ namespace revamped::iw8::demonware
                 return false;
             }
 
-            // The single publisher-object REST route uses the hashed numeric
-            // object id in the URL, not the original object name. OpenIW8 shows
-            // the caller constructed that id from:
-            //   infinityward / ingamestore_xb3_<language>.json
-            // For 1.20 this client advertises enUS.
-            const bool publisherObjectRoute =
-                url.find("/v1/core/publishers/infinityward/objects/") != std::string::npos &&
-                url.find("/metadata/") != std::string::npos;
-            if (!publisherObjectRoute)
+            const std::string requestedName = ExtractPublisherObjectNameFromMetadataUrl(url);
+            if (requestedName.empty())
             {
                 std::printf(
                     "[DW-OBJECTSTORE] GET service=0xC1 task=8 resource=PublisherObject response=unsupported url=%s\n",
@@ -221,20 +271,24 @@ namespace revamped::iw8::demonware
                 return false;
             }
 
+            // Numeric keys are the legacy hashed ObjectStore form observed at
+            // startup. Explicit names (for example ingamestore_bnet_en.json)
+            // must round-trip unchanged or the later Store fetch is redirected
+            // to the wrong platform/language object.
+            const bool symbolicInGameStore = IsInGameStoreName(requestedName);
+            const std::string objectName = symbolicInGameStore
+                ? requestedName : std::string(kIw8InGameStoreFallbackName);
+            const std::string contentUrl = BuildPublisherContentUrl(objectName);
             const std::string context = PublisherContextFromUrl(url);
             const std::string metadata = BuildLocalPublisherMetadataJsonForContent(
-                kIw8StorePublisher,
-                kIw8InGameStoreName,
-                context,
-                kIw8InGameStoreJson,
-                kIw8InGameStoreContentUrl);
+                kIw8StorePublisher, objectName, context, kIw8InGameStoreJson, contentUrl);
 
             std::printf(
-                "[DW-OBJECTSTORE] GET service=0xC1 task=8 resource=PublisherObject owner=%s name=%s response=local-success authHeader=yes contentURL=%s requestedUrl=%s\n",
-                kIw8StorePublisher,
-                kIw8InGameStoreName,
-                kIw8InGameStoreContentUrl,
-                url.c_str());
+                "[DW-OBJECTSTORE] GET service=0xC1 task=8 resource=PublisherObject owner=%s requestedObject=%s name=%s source=%s response=local-success authHeader=yes contentLength=%zu contentURL=%s requestedUrl=%s\n",
+                kIw8StorePublisher, requestedName.c_str(), objectName.c_str(),
+                symbolicInGameStore ? "symbolic" : "numeric-fallback",
+                std::char_traits<char>::length(kIw8InGameStoreJson),
+                contentUrl.c_str(), url.c_str());
 
             AppendObjectStoreJsonStructWithAuthorization(serviceReply, metadata);
             return true;

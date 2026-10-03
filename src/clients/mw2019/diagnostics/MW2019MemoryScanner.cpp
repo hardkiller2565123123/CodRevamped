@@ -116,6 +116,7 @@ namespace
     unsigned g_dvarPasses = 0;
     unsigned long long g_firstOfflineDvarPassAt = 0;
     bool g_luaMenuHookInstalled = false;
+    bool g_premiumOwnershipOnly = false;
     void* g_luaOpenLibTrampoline = nullptr;
     PVOID g_crashVeh = nullptr;
     volatile LONG g_crashLogCount = 0;
@@ -545,6 +546,15 @@ namespace
     {
         if (!libName || !fnName || _stricmp(libName, "Engine") != 0)
             return false;
+
+        // The exact 1.20 server-emulation profile only needs to synthesize the
+        // local first-party ownership result. Do not turn this into an auth or
+        // fence bypass: every other Lua predicate stays on its stock wrapper.
+        if (g_premiumOwnershipOnly)
+        {
+            return _stricmp(fnName, "CFHBIHABCB") == 0 || // IsPremiumPlayer
+                   _stricmp(fnName, "ECFHDAEIDA") == 0;   // IsPremiumPlayerReady
+        }
 
         static const char* const kNames[] = {
             "BGAAHHAGAC", // IsDemoBuild
@@ -5911,6 +5921,41 @@ copy[i].func = &LuaReturnTrue;
 
 namespace mw2019_scanner
 {
+    bool EnablePremiumOwnershipOverride() noexcept
+    {
+        // Resolve only the two generic Lua primitives required by the
+        // registration-time override. Both are signature-scanned so no 1.20
+        // function RVA is introduced here and startup does not pay for the
+        // broader research scanner.
+        static const char* const required[] = { "luaL_openlib", "lua_pushboolean" };
+        for (const char* name : required)
+        {
+            Signature* sig = FindSignature(name);
+            if (!sig || sig->address || !sig->pattern || !*sig->pattern)
+                continue;
+
+            const auto match = ScanOne(sig->pattern);
+            if (match)
+                sig->address = Resolve(match, sig->resolve);
+        }
+
+        g_premiumOwnershipOnly = true;
+        const bool installed = InstallLuaMenuHook();
+        if (installed)
+        {
+            mw2019_diag::Log(
+                "[OWNERSHIP120] premium Lua compatibility active predicates={IsPremiumPlayer,IsPremiumPlayerReady} auth/fence/content stateWrites=OFF\r\n");
+        }
+        else
+        {
+            mw2019_diag::Log(
+                "[OWNERSHIP120] premium Lua compatibility FAILED luaL_openlib=%p lua_pushboolean=%p; backend ownership flow remains active\r\n",
+                reinterpret_cast<void*>(GetAddress("luaL_openlib")),
+                reinterpret_cast<void*>(GetAddress("lua_pushboolean")));
+        }
+        return installed;
+    }
+
     void Initialize() noexcept
     {
         // V106: auto-arm the lightweight frontend/read-only slot50 timeline immediately. This is

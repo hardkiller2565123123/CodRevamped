@@ -235,7 +235,7 @@ namespace
             SetStdHandle(STD_ERROR_HANDLE, output);
         }
         ConsolePrint("============================================================\r\n");
-        ConsolePrint(" CodRevamped MW2019 - safe DNS redirect + global Winsock trace\r\n");
+        ConsolePrint(" CodRevamped MW2019 - safe DNS redirect + adaptive Winsock trace\r\n");
         ConsolePrint(" DNS redirect stays unchanged; Winsock transport hooks are LOGGING-ONLY\r\n");
         ConsolePrint(" Traces dynamic WS2_32 exports plus static IAT calls; no destination/result changes\r\n");
         ConsolePrint(" ConnectEx is LOGGING-ONLY via WSAIoctl extension capture; no sendto/WSASendTo hooks or game-state hooks\r\n");
@@ -1262,6 +1262,23 @@ namespace
         return CurrentStartupCompatBuild() != StartupCompatBuild::None;
     }
 
+    bool FullNetworkTraceRequested() noexcept
+    {
+        // Transport hooks are diagnostics only.  New/unknown retail builds can
+        // resolve Winsock through provider-specific paths that are sensitive to
+        // IAT/EAT wrapping, so make the invasive trace opt-in for those builds.
+        char value[8]{};
+        const DWORD count = GetEnvironmentVariableA(
+            "CODREVAMPED_FULL_NET_TRACE", value, static_cast<DWORD>(sizeof(value)));
+        return count != 0 && value[0] == '1';
+    }
+
+    bool UseDnsOnlyNetworkHooks() noexcept
+    {
+        return CurrentStartupCompatBuild() == StartupCompatBuild::None &&
+            !FullNetworkTraceRequested();
+    }
+
     DWORD WINAPI CompatGetVersion() noexcept
     {
         // GetVersion encodes major/minor in LOWORD and the NT build in HIWORD.
@@ -2140,9 +2157,21 @@ namespace
         if (!module || module == g_self || IsUnsafeSystemNetworkModule(module))
             return counts;
 
+        // DNS redirection is the only behavior required by the local backend.
+        // Keep it enabled on every build.
         counts.dns += PatchImport(module, "WS2_32.dll", "getaddrinfo", reinterpret_cast<void*>(&RedirectGetAddrInfoA)) ? 1u : 0u;
         counts.dns += PatchImport(module, "WS2_32.dll", "GetAddrInfoW", reinterpret_cast<void*>(&RedirectGetAddrInfoW)) ? 1u : 0u;
         counts.dns += PatchImport(module, "WS2_32.dll", "gethostbyname", reinterpret_cast<void*>(&RedirectGetHostByName)) ? 1u : 0u;
+        counts.dns += PatchImport(module, "api-ms-win-downlevel-winsock-l1-1-0.dll", "getaddrinfo", reinterpret_cast<void*>(&RedirectGetAddrInfoA)) ? 1u : 0u;
+        counts.dns += PatchImport(module, "api-ms-win-downlevel-winsock-l1-1-0.dll", "GetAddrInfoW", reinterpret_cast<void*>(&RedirectGetAddrInfoW)) ? 1u : 0u;
+        counts.dns += PatchImport(module, "api-ms-win-downlevel-winsock-l1-1-0.dll", "gethostbyname", reinterpret_cast<void*>(&RedirectGetHostByName)) ? 1u : 0u;
+
+        // Unknown/current retail defaults to DNS-only.  These hooks are purely
+        // observational and are not required for local routing; avoiding them
+        // removes a provider-call compatibility variable from new Steam builds.
+        if (UseDnsOnlyNetworkHooks())
+            return counts;
+
         counts.connect += PatchImport(module, "WS2_32.dll", "connect", reinterpret_cast<void*>(&TraceConnect)) ? 1u : 0u;
         counts.connect += PatchImport(module, "WS2_32.dll", "WSAConnect", reinterpret_cast<void*>(&TraceWSAConnect)) ? 1u : 0u;
         counts.socket += PatchImport(module, "WS2_32.dll", "socket", reinterpret_cast<void*>(&TraceSocket)) ? 1u : 0u;
@@ -2152,9 +2181,6 @@ namespace
         counts.select += PatchImport(module, "WS2_32.dll", "select", reinterpret_cast<void*>(&TraceSelect)) ? 1u : 0u;
 
         // Some older game/runtime DLLs import Winsock through the downlevel API set.
-        counts.dns += PatchImport(module, "api-ms-win-downlevel-winsock-l1-1-0.dll", "getaddrinfo", reinterpret_cast<void*>(&RedirectGetAddrInfoA)) ? 1u : 0u;
-        counts.dns += PatchImport(module, "api-ms-win-downlevel-winsock-l1-1-0.dll", "GetAddrInfoW", reinterpret_cast<void*>(&RedirectGetAddrInfoW)) ? 1u : 0u;
-        counts.dns += PatchImport(module, "api-ms-win-downlevel-winsock-l1-1-0.dll", "gethostbyname", reinterpret_cast<void*>(&RedirectGetHostByName)) ? 1u : 0u;
         counts.connect += PatchImport(module, "api-ms-win-downlevel-winsock-l1-1-0.dll", "connect", reinterpret_cast<void*>(&TraceConnect)) ? 1u : 0u;
         counts.connect += PatchImport(module, "api-ms-win-downlevel-winsock-l1-1-0.dll", "WSAConnect", reinterpret_cast<void*>(&TraceWSAConnect)) ? 1u : 0u;
         counts.socket += PatchImport(module, "api-ms-win-downlevel-winsock-l1-1-0.dll", "socket", reinterpret_cast<void*>(&TraceSocket)) ? 1u : 0u;
@@ -2389,18 +2415,25 @@ namespace
             { "select", reinterpret_cast<void*>(&TraceSelect) },
         };
 
+        const bool dnsOnly = UseDnsOnlyNetworkHooks();
         unsigned installed = 0;
+        unsigned selected = 0;
         for (const auto& hook : hooks)
         {
+            const bool isDns = EqualsNoCase(hook.name, "getaddrinfo") ||
+                EqualsNoCase(hook.name, "GetAddrInfoW") || EqualsNoCase(hook.name, "gethostbyname");
+            if (dnsOnly && !isDns)
+                continue;
+            ++selected;
             const bool ok = PatchWs2Export(hook.name, hook.replacement);
             ConsolePrint("[WS2-EXPORT] export=%s hook=%s mode=EAT-future-GetProcAddress passthrough=%s\r\n",
-                hook.name, ok ? "installed" : "failed",
-                (EqualsNoCase(hook.name, "getaddrinfo") || EqualsNoCase(hook.name, "GetAddrInfoW") || EqualsNoCase(hook.name, "gethostbyname"))
-                    ? "dns-redirect-only" : "yes");
+                hook.name, ok ? "installed" : "failed", isDns ? "dns-redirect-only" : "yes");
             installed += ok ? 1u : 0u;
         }
+        if (dnsOnly)
+            ConsolePrint("[WS2-EXPORT] safe retail mode: DNS-only; transport trace hooks disabled (set CODREVAMPED_FULL_NET_TRACE=1 to opt in)\r\n");
         ConsolePrint("[WS2-EXPORT] global dynamic-resolution trace ready installed=%u/%u relay=%p; existing static imports are covered separately by IAT hooks\r\n",
-            installed, static_cast<unsigned>(sizeof(hooks) / sizeof(hooks[0])), g_ws2RelayPage);
+            installed, selected, g_ws2RelayPage);
     }
 
     bool ResolveWinsock() noexcept
@@ -2641,7 +2674,7 @@ namespace
         DeleteFileW(L"mw2019_redirect.log");
         g_traceStartTick = GetTickCount64();
         OpenResearchConsole();
-        ConsolePrint("[REDIRECT] version.dll loaded; safe DNS redirect + global WS2_32 logging trace\r\n");
+        ConsolePrint("[REDIRECT] version.dll loaded; safe DNS redirect + adaptive WS2_32 logging trace\r\n");
         if (InterlockedCompareExchange(&g_liveFingerprintValid, 0, 0) != 0)
         {
             ConsolePrint("[STARTUP] live exe fingerprint timestamp=0x%08X imageSize=0x%08X entryPoint=0x%08X startupCompat=%s\r\n",
@@ -2707,10 +2740,20 @@ namespace
 
         ConsolePrint("[REDIRECT] one-time main-EXE hook pass complete dns=%u connectTrace=%u socketTrace=%u wsaSocketTrace=%u ioctlTrace=%u selectTrace=%u\r\n",
             mainCounts.dns, mainCounts.connect, mainCounts.socket, mainCounts.extendedSocket, mainCounts.ioctl, mainCounts.select);
-        ConsolePrint("[REDIRECT] socket/WSASocket/connect/WSAConnect/WSAIoctl/select tracing is passthrough-only; destination, sockaddr, return value, and WSA error are not modified\r\n");
-        ConsolePrint("[REDIRECT] WSAID_CONNECTEX results are wrapped only for logging, then forwarded to the real provider ConnectEx pointer\r\n");
+        if (UseDnsOnlyNetworkHooks())
+        {
+            ConsolePrint("[REDIRECT] safe retail mode: DNS redirection only; socket/connect/WSAIoctl/select trace hooks are disabled\r\n");
+            ConsolePrint("[REDIRECT] set CODREVAMPED_FULL_NET_TRACE=1 only when invasive transport diagnostics are needed\r\n");
+        }
+        else
+        {
+            ConsolePrint("[REDIRECT] socket/WSASocket/connect/WSAConnect/WSAIoctl/select tracing is passthrough-only; destination, sockaddr, return value, and WSA error are not modified\r\n");
+            ConsolePrint("[REDIRECT] WSAID_CONNECTEX results are wrapped only for logging, then forwarded to the real provider ConnectEx pointer\r\n");
+        }
         if (IsSupportedStartupCompatBuild())
             ConsolePrint("[REDIRECT] early-build stability mode: WS2_32 EAT hooks disabled; one delayed app-module IAT pass will run once\r\n");
+        else if (UseDnsOnlyNetworkHooks())
+            ConsolePrint("[REDIRECT] current/unknown retail stability mode: WS2_32 EAT is DNS-only; one delayed DNS-only app-module IAT pass will run once\r\n");
         else
             ConsolePrint("[REDIRECT] WS2_32 EAT hooks cover future dynamic resolutions; no permanent module scanner; one delayed loaded-module IAT pass will run once\r\n");
         ConsolePrint("[REDIRECT] no sendto/WSASendTo hooks; no game-state hooks\r\n");

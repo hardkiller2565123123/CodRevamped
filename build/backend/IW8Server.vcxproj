@@ -115,6 +115,9 @@
     <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Internal\Serialization.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Internal\SemanticProtocol.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Lsg\CryptoPrimitives.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>

@@ -14,67 +14,10 @@ namespace revamped::iw8::demonware
         request.declaredBytes = ReadLe32(plain.data());
         request.innerType = plain[4];
         request.serviceId = plain[5];
-        request.taskTypeTag = plain[6];
 
         if (request.innerType != kTaskRequestType)
         {
             request.error = "inner message is not TASK_REQUEST (0x86)";
-            return request;
-        }
-
-        // bdRemoteTaskManager::startLSGTask is a separate legacy wire path.
-        // Unlike normal Demonware tasks, it writes service + task as two RAW
-        // bytes and then copies the raw query buffer; there is no typed-U8 tag
-        // before the task id. MW2019 uses this for the LSG bandwidth test
-        // (service 0x12/task 1). Treat only that proven service as raw so the
-        // generic typed-task decoder stays strict for every other service.
-        if (request.serviceId == 0x12u)
-        {
-            request.taskId = plain[6];
-            request.taskTypeTag = 0u; // raw startLSGTask task byte
-            request.payloadOffset = 7u;
-
-            if (request.declaredBytes < 2u)
-            {
-                request.error = "raw LSG task size is smaller than service/task header";
-                return request;
-            }
-
-            const std::size_t availableTaskBody = plain.size() - 5u;
-            if (request.declaredBytes > availableTaskBody)
-            {
-                request.error = "raw LSG task size exceeds decrypted plaintext";
-                return request;
-            }
-
-            request.payloadBytes = static_cast<std::size_t>(request.declaredBytes - 2u);
-            if (request.payloadBytes > plain.size() - request.payloadOffset)
-            {
-                request.error = "raw LSG parameter size exceeds decrypted plaintext";
-                return request;
-            }
-
-            request.valid = true;
-            return request;
-        }
-
-        if (plain.size() < 8u)
-        {
-            request.error = "plaintext shorter than Demonware typed task header";
-            return request;
-        }
-
-        request.taskId = plain[7];
-        request.payloadOffset = 8u;
-
-        if (request.taskTypeTag != kBbUnsignedChar8)
-        {
-            request.error = "task id is not encoded as bdByteBuffer typed U8 (0x03)";
-            return request;
-        }
-        if (request.declaredBytes < 3u)
-        {
-            request.error = "declared task size is smaller than service/type/task header";
             return request;
         }
 
@@ -85,13 +28,49 @@ namespace revamped::iw8::demonware
             return request;
         }
 
-        request.payloadBytes = static_cast<std::size_t>(request.declaredBytes - 3u);
-        if (request.payloadBytes > plain.size() - request.payloadOffset)
+        // Normal bdRemoteTaskManager traffic serializes task id as a typed U8:
+        //   service, 0x03, task, payload...
+        // startLSGTask-style calls serialize service/task as two raw bytes:
+        //   service, task, payload...
+        //
+        // Older code special-cased service 0x12. That made framing knowledge
+        // build/service-specific. Detect the actual wire shape instead so a
+        // future IW8 build can move a semantic operation without requiring a
+        // new service exception in the decoder.
+        if (plain.size() >= 8u && plain[6] == kBbUnsignedChar8 && request.declaredBytes >= 3u)
+        {
+            request.taskTypeTag = plain[6];
+            request.taskId = plain[7];
+            request.payloadOffset = 8u;
+            request.payloadBytes = static_cast<std::size_t>(request.declaredBytes - 3u);
+            request.wireEncoding = TaskWireEncoding::TypedU8;
+        }
+        else
+        {
+            if (request.declaredBytes < 2u)
+            {
+                request.error = "declared task size is smaller than raw service/task header";
+                return request;
+            }
+
+            request.taskTypeTag = 0u;
+            request.taskId = plain[6];
+            request.payloadOffset = 7u;
+            request.payloadBytes = static_cast<std::size_t>(request.declaredBytes - 2u);
+            request.wireEncoding = TaskWireEncoding::RawServiceTask;
+        }
+
+        if (request.payloadOffset > plain.size() ||
+            request.payloadBytes > plain.size() - request.payloadOffset)
         {
             request.error = "decoded parameter size exceeds decrypted plaintext";
             return request;
         }
 
+        const std::uint8_t* payload = request.payloadBytes
+            ? plain.data() + request.payloadOffset
+            : nullptr;
+        AnalyzeTaskPayload(request, payload, request.payloadBytes);
         request.valid = true;
         return request;
     }

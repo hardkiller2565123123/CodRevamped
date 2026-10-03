@@ -35,7 +35,8 @@
 #pragma comment(lib, "Winhttp.lib")
 
 // MW2019 VERSION proxy. Exact 1.44 keeps its proven address profile; 1.20
-// uses only build-marker detection plus generic transport/trust hooks. Nearby
+// uses build-marker detection, generic transport/trust hooks, and a narrowly
+// scoped signature-resolved premium-ownership Lua compatibility shim. Nearby
 // builds remain forwarding-only so version-specific addresses cannot bleed.
 
 #pragma comment(linker, "/export:GetFileVersionInfoA=Proxy_GetFileVersionInfoA,@1")
@@ -1990,7 +1991,7 @@ namespace
         }
 
         AppendRaw("[1.20] CodRevamped MW2019 1.20 PURE SERVER-EMULATION profile started\r\n");
-        AppendRaw("[SERVER-EMU120] native state machine only: no sign-in/fence/content/PS_MANIFEST/menu truth patches\r\n");
+        AppendRaw("[SERVER-EMU120] native state machine: no sign-in/fence/content/PS_MANIFEST patches; premium ownership Lua compatibility enabled separately\r\n");
         AppendRaw("[SERVER-EMU120] build detected by .rdata markers: 8.19 / Apr 18 2020 / ODSF_PS_MANIFEST\r\n");
         AppendRaw("[SERVER-EMU120] installing generic DNS/connect/WinHTTP redirect plus signature-scanned trust bootstrap\r\n");
 
@@ -1998,6 +1999,16 @@ namespace
         // enter any exact-1.44 observer or RVA path.
         g_serverEmuGenericPureMode.store(true);
         InstallServerEmuNetworkHooksGeneric(game);
+
+        // 1.20's free/paid frontend split is exposed through these two Engine
+        // Lua predicates. Keep the native online state machine and backend
+        // reconciliation intact, but advertise the locally emulated account as
+        // premium so Multiplayer does not collapse into PurchaseFullGameButton.
+        // Resolution is signature-based; no new 1.20 RVA is hardcoded here.
+        if (mw2019_scanner::EnablePremiumOwnershipOverride())
+            AppendRaw("[OWNERSHIP120] Multiplayer premium ownership compatibility enabled\r\n");
+        else
+            AppendRaw("[OWNERSHIP120] premium ownership compatibility not installed; check diagnostic log\r\n");
 
         std::uint32_t timestamp = 0;
         std::uint32_t imageSize = 0;

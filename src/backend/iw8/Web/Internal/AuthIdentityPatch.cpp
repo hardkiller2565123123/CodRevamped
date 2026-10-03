@@ -65,10 +65,12 @@ namespace revamped::iw8::web
 
         std::string BuildDwBnetAuthResponse(const std::string& requestTask, const std::string& ivSeed,
             std::uint32_t titleId, const std::string& identity, const std::string& serviceLevel,
-            const std::string& sessionToken)
+            const std::string& sessionToken, const std::string& accountToken,
+            const std::string& machineId)
         {
             std::string response = BuildDwBnetAuthResponse_UnpatchedIdentity(
-                requestTask, ivSeed, titleId, identity, serviceLevel, sessionToken);
+                requestTask, ivSeed, titleId, identity, serviceLevel,
+                sessionToken, accountToken, machineId);
 
             std::vector<std::uint8_t> ticket;
             if (g_authPipeline.lastAuth3ClientTicket.empty() ||

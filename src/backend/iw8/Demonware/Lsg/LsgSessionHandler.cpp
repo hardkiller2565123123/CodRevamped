@@ -426,8 +426,14 @@ namespace revamped::iw8
                             static_cast<unsigned long long>(client.id), counter, taskDescription.c_str(),
                             static_cast<unsigned long long>(encryptedBytes));
 
+                        const std::uint8_t* requestPayload =
+                            taskRequest.valid && taskRequest.payloadBytes
+                                ? plain.data() + taskRequest.payloadOffset
+                                : nullptr;
                         const demonware::TaskRoute* censusRoute = taskRequest.valid
-                            ? demonware::FindTaskRoute(taskRequest.serviceId, taskRequest.taskId) : nullptr;
+                            ? demonware::ResolveTaskRoute(
+                                taskRequest, requestPayload, taskRequest.payloadBytes)
+                            : nullptr;
                         RecordPostLoginTaskCensus(client.id, counter, plain, taskRequest, censusRoute);
 
                         if (!taskRequest.valid)
@@ -436,8 +442,19 @@ namespace revamped::iw8
                                 static_cast<unsigned long long>(client.id),
                                 taskRequest.error.empty() ? "unknown" : taskRequest.error.c_str());
                         }
-                        else if (const demonware::TaskRoute* route = demonware::FindTaskRoute(taskRequest.serviceId, taskRequest.taskId))
+                        else if (const demonware::TaskRoute* route = demonware::ResolveTaskRoute(
+                                     taskRequest, requestPayload, taskRequest.payloadBytes))
                         {
+                            log::Print("[LSG-SEMANTIC] id=%llu service=%u task=%u wire=%s schema=%s shape=0x%016llX semantic=%s route=%s/%s",
+                                static_cast<unsigned long long>(client.id),
+                                static_cast<unsigned>(taskRequest.serviceId),
+                                static_cast<unsigned>(taskRequest.taskId),
+                                demonware::TaskWireEncodingName(taskRequest.wireEncoding),
+                                demonware::PayloadSchemaName(taskRequest.payloadSchema),
+                                static_cast<unsigned long long>(taskRequest.shapeFingerprint),
+                                demonware::TaskSemanticName(route->semantic),
+                                route->serviceName ? route->serviceName : "?",
+                                route->taskName ? route->taskName : "?");
                             if (route->replyPolicy == demonware::ReplyPolicy::None)
                             {
                                 log::Print("[LSG-KNOWN-UNIMPLEMENTED] id=%llu service=%u(%s) task=%u(%s) payloadBytes=%llu policy=DO_NOT_GUESS_RESPONSE_BYTES",
@@ -456,8 +473,6 @@ namespace revamped::iw8
                                 const std::uint64_t transactionId = static_cast<std::uint64_t>(counter);
                                 client.lsgTransactionId = transactionId;
                                 std::vector<std::uint8_t> replyPlain;
-                                const std::uint8_t* requestPayload = taskRequest.payloadBytes
-                                    ? plain.data() + taskRequest.payloadOffset : nullptr;
                                 if (!demonware::BuildTaskReply(*route, taskRequest, requestPayload, taskRequest.payloadBytes,
                                     transactionId, replyPlain))
                                 {

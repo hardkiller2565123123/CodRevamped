@@ -11,6 +11,7 @@
 #include <utility>
 
 #include "Internal/Serialization.cpp"
+#include "Internal/SemanticProtocol.cpp"
 #include "Services/RestBootstrap.cpp"
 #include "Services/LegacyBootstrap.cpp"
 #include "Services/PublisherVariables.cpp"

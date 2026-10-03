@@ -168,7 +168,7 @@ namespace revamped::iw8
             const std::uint64_t fingerprint = Fnv1a64(payload, request.payloadBytes);
             const std::string preview = HexPreview(payload, request.payloadBytes);
 
-            if (request.serviceId == 255u && request.taskId == 0x0Au)
+            if (route && route->semantic == demonware::TaskSemantic::RestRequest)
                 RecordRest255Candidate(clientId, counter, payload, request.payloadBytes, fingerprint);
 
             const std::uint64_t now = GetTickCount64();
@@ -180,7 +180,7 @@ namespace revamped::iw8
                 g_postLoginCensusStartMs = now;
                 AppendPostLoginCensusLine("CENSUS_BEGIN mode=PASSIVE_SEMANTIC packetMatching=off guessedReplies=off clientId=%llu",
                     static_cast<unsigned long long>(clientId));
-                AppendPostLoginCensusLine("COLUMNS seq elapsedMs clientId counter service task serviceName taskName known replyPolicy observation uniqueRoute payloadBytes minPayload maxPayload fingerprint changed preview");
+                AppendPostLoginCensusLine("COLUMNS seq elapsedMs clientId counter service task serviceName taskName semantic wire schema shape known replyPolicy observation uniqueRoute payloadBytes minPayload maxPayload fingerprint changed preview");
             }
 
             auto& entry = g_postLoginTaskCensus[key];
@@ -206,17 +206,28 @@ namespace revamped::iw8
 
             const char* policy = "UNMAPPED";
             if (route)
-                policy = route->replyPolicy == demonware::ReplyPolicy::None ? "KNOWN_UNIMPLEMENTED" : "SEMANTIC_REPLY";
+            {
+                if (route->replyPolicy == demonware::ReplyPolicy::None)
+                    policy = "KNOWN_UNIMPLEMENTED";
+                else if (route->replyPolicy == demonware::ReplyPolicy::LegacyUnsupported)
+                    policy = "EXPLICIT_FAILURE";
+                else
+                    policy = "SEMANTIC_REPLY";
+            }
 
             const std::uint32_t seq = ++g_postLoginCensusSequence;
             AppendPostLoginCensusLine(
-                "TASK seq=%u elapsedMs=%llu clientId=%llu counter=%u service=%u task=%u serviceName=%s taskName=%s known=%s replyPolicy=%s observation=%u uniqueRoute=%s payloadBytes=%llu minPayload=%u maxPayload=%u fingerprint=%016llX changed=%s preview={%s}",
+                "TASK seq=%u elapsedMs=%llu clientId=%llu counter=%u service=%u task=%u serviceName=%s taskName=%s semantic=%s wire=%s schema=%s shape=%016llX known=%s replyPolicy=%s observation=%u uniqueRoute=%s payloadBytes=%llu minPayload=%u maxPayload=%u fingerprint=%016llX changed=%s preview={%s}",
                 seq,
                 static_cast<unsigned long long>(now - g_postLoginCensusStartMs),
                 static_cast<unsigned long long>(clientId), counter,
                 static_cast<unsigned>(request.serviceId), static_cast<unsigned>(request.taskId),
                 route && route->serviceName ? route->serviceName : "unknown",
                 route && route->taskName ? route->taskName : "unknown",
+                route ? demonware::TaskSemanticName(route->semantic) : "generic",
+                demonware::TaskWireEncodingName(request.wireEncoding),
+                demonware::PayloadSchemaName(request.payloadSchema),
+                static_cast<unsigned long long>(request.shapeFingerprint),
                 route ? "yes" : "no", policy, entry.observations,
                 newRoute ? "YES" : "no",
                 static_cast<unsigned long long>(request.payloadBytes),

@@ -85,6 +85,75 @@ namespace revamped::iw8::demonware
             return !namespaces.empty();
         }
 
+
+        bool IsPublisherVariablesPayload(const std::uint8_t* requestPayload,
+            std::size_t requestPayloadBytes, PayloadSchema* detectedSchema = nullptr)
+        {
+            std::vector<std::string> structNamespaces;
+            if (CollectPublisherNamespaces(requestPayload, requestPayloadBytes, structNamespaces))
+            {
+                if (detectedSchema)
+                    *detectedSchema = PayloadSchema::StructBuffer;
+                return true;
+            }
+
+            std::string legacyNamespace;
+            if (CollectLegacyPublisherNamespace(requestPayload, requestPayloadBytes, legacyNamespace))
+            {
+                if (detectedSchema)
+                    *detectedSchema = PayloadSchema::LegacyByteBuffer;
+                return true;
+            }
+
+            if (detectedSchema)
+                *detectedSchema = PayloadSchema::Unknown;
+            return false;
+        }
+
+        bool AppendPublisherVariablesAdaptive(std::vector<std::uint8_t>& serviceReply,
+            const std::uint8_t* requestPayload, std::size_t requestPayloadBytes,
+            PayloadSchema* detectedSchema = nullptr)
+        {
+            std::vector<std::string> namespaces;
+            if (CollectPublisherNamespaces(requestPayload, requestPayloadBytes, namespaces))
+            {
+                std::vector<std::uint8_t> responseBody;
+                responseBody.reserve(namespaces.size() * 32u);
+                for (const auto& nameSpace : namespaces)
+                {
+                    std::vector<std::uint8_t> info;
+                    info.reserve(nameSpace.size() + 16u);
+                    AppendPbU32(info, 1u, kPublisherMajorVersion);
+                    AppendPbU32(info, 2u, kPublisherMinorVersion);
+                    AppendPbString(info, 3u, nameSpace);
+                    AppendPbString(info, 4u, kEmptyPublisherVariablesJson);
+                    AppendPbObject(responseBody, 1u, info);
+                }
+
+                AppendTypedStruct(serviceReply, responseBody);
+                if (detectedSchema)
+                    *detectedSchema = PayloadSchema::StructBuffer;
+                return true;
+            }
+
+            std::string nameSpace;
+            if (CollectLegacyPublisherNamespace(requestPayload, requestPayloadBytes, nameSpace))
+            {
+                AppendTypedU32(serviceReply, 1u);
+                AppendTypedU32(serviceReply, 1u);
+                AppendTypedU16(serviceReply, kPublisherMajorVersion);
+                AppendTypedU16(serviceReply, kPublisherMinorVersion);
+                AppendTypedString(serviceReply, nameSpace);
+                AppendTypedString(serviceReply, kEmptyPublisherVariablesJson);
+                if (detectedSchema)
+                    *detectedSchema = PayloadSchema::LegacyByteBuffer;
+                return true;
+            }
+
+            if (detectedSchema)
+                *detectedSchema = PayloadSchema::Unknown;
+            return false;
+        }
         bool AppendPublisherVariablesLegacy120(std::vector<std::uint8_t>& serviceReply,
             const std::uint8_t* requestPayload, std::size_t requestPayloadBytes)
         {

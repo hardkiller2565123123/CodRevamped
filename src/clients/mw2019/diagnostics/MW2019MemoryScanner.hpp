@@ -8,6 +8,11 @@ namespace mw2019_scanner
     void ScanNow(const char* reason) noexcept;
     void ScanAllNow(const char* reason) noexcept;
 
+    // Exact MW2019 1.20 ownership compatibility. This only overrides the two
+    // Lua-facing premium predicates (IsPremiumPlayer/IsPremiumPlayerReady);
+    // sign-in, Demonware, BNet, content, and fence state remain server-driven.
+    bool EnablePremiumOwnershipOverride() noexcept;
+
     // Shared MW2019 command registry / Engine.ExecNow console.
     void StartConsole() noexcept;
     void ScanCommands() noexcept;

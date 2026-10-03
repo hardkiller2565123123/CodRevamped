@@ -45,7 +45,9 @@ namespace revamped::iw8
                                      << "Content-Type: application/json; charset=utf-8\r\n"
                                      << "Content-Length: " << body.size() << "\r\n"
                                      << "Cache-Control: no-store\r\n"
-                                     << "Connection: close\r\n"
+                                     << "Accept-Ranges: bytes\r\n"
+                                     << "Connection: keep-alive\r\n"
+                                     << "Keep-Alive: timeout=5, max=8\r\n"
                                      << "\r\n"
                                      << body;
                             const std::string wire = response.str();
@@ -65,7 +67,12 @@ namespace revamped::iw8
                                 static_cast<unsigned long long>(id),
                                 path.c_str(),
                                 static_cast<unsigned long long>(body.size()));
-                            shutdown(socket, SD_SEND);
+                            // Do not raw-half-close the TCP socket here. bdHTTP's ObjectStore
+                            // streaming path is stricter than the other one-shot web calls and
+                            // can classify a TLS EOF without close_notify as a failed download
+                            // even after receiving the advertised body. Keep the TLS session
+                            // alive; Content-Length cleanly delimits the object and the client
+                            // may close or reuse the connection normally.
                             return true;
                         }
                     }
