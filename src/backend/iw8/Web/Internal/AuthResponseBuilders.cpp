@@ -17,7 +17,8 @@ namespace revamped::iw8::web
             MW120,
             MW123,
             MW128,
-            MW144
+            MW144,
+            SteamRetail22824864
         };
 
         struct LocalIw8BuildProbe
@@ -39,6 +40,8 @@ namespace revamped::iw8::web
                 return LocalIw8Build::MW128;
             if (ts == 0x61671CE8u && image == 0x22C1BA00u)
                 return LocalIw8Build::MW144;
+            if (ts == 0x69DD404Eu && image == 0x21679200u && ep == 0x06E4931Cu)
+                return LocalIw8Build::SteamRetail22824864;
             return LocalIw8Build::Unknown;
         }
 
@@ -240,6 +243,7 @@ namespace revamped::iw8::web
             case LocalIw8Build::MW123: return "1.23";
             case LocalIw8Build::MW128: return "1.28";
             case LocalIw8Build::MW144: return "1.44";
+            case LocalIw8Build::SteamRetail22824864: return "Steam-retail-22824864";
             default: return "unknown";
             }
         }

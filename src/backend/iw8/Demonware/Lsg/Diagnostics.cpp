@@ -57,6 +57,49 @@ namespace revamped::iw8
             return out;
         }
 
+        bool ContainsRestDiagnosticAscii(const std::uint8_t* data, std::size_t size,
+            const char* needle)
+        {
+            if (!data || !size || !needle || !*needle)
+                return false;
+
+            const std::size_t needleSize = std::strlen(needle);
+            if (needleSize > size)
+                return false;
+
+            const auto* match = std::search(
+                data, data + size,
+                reinterpret_cast<const std::uint8_t*>(needle),
+                reinterpret_cast<const std::uint8_t*>(needle) + needleSize);
+            return match != data + size;
+        }
+
+        bool IsSensitiveRestDiagnosticPayload(const std::uint8_t* data, std::size_t size)
+        {
+            // Never print credentials, personally identifying login fields, or
+            // local authorization tokens from decrypted REST request bodies.
+            static constexpr const char* kSensitiveMarkers[] = {
+                "\"password\"",
+                "\"email\"",
+                "authenticateUser",
+                "/v1.0/auth/",
+                "linkUser",
+                "\"unoIDToken\"",
+                "\"accessToken\"",
+                "\"refreshToken\"",
+                "\"IDToken\"",
+                "createUser",
+                "createAccount",
+            };
+
+            for (const char* marker : kSensitiveMarkers)
+            {
+                if (ContainsRestDiagnosticAscii(data, size, marker))
+                    return true;
+            }
+            return false;
+        }
+
         std::string PrintableRuns(const std::uint8_t* data, std::size_t size,
             std::size_t minimumRun = 4u, std::size_t maxOutput = 1800u)
         {
@@ -129,16 +172,29 @@ namespace revamped::iw8
             // decryption. The V86 client-side native task-manager detours were
             // removed after they triggered STATUS_ILLEGAL_INSTRUCTION in stock
             // IW8 1.44. No client executable code is patched by this logger.
+            const bool sensitive = IsSensitiveRestDiagnosticPayload(payload, payloadBytes);
+            if (sensitive)
+            {
+                AppendRest255Line(
+                    "REST_REQUEST clientId=%llu counter=%u service=255 task=10 payloadBytes=%llu fingerprint=REDACTED mode=SERVER_DECRYPTED_READ_ONLY sensitive=yes fullHex={<redacted>}",
+                    static_cast<unsigned long long>(clientId), counter,
+                    static_cast<unsigned long long>(payloadBytes));
+                AppendRest255Line(
+                    "REST_STRINGS clientId=%llu counter=%u sensitive=yes printableRuns={<redacted>}",
+                    static_cast<unsigned long long>(clientId), counter);
+                return;
+            }
+
             const std::string hex = HexPreview(payload, payloadBytes, payloadBytes);
             const std::string strings = PrintableRuns(payload, payloadBytes);
 
             AppendRest255Line(
-                "REST_REQUEST clientId=%llu counter=%u service=255 task=10 payloadBytes=%llu fingerprint=%016llX mode=SERVER_DECRYPTED_READ_ONLY fullHex={%s}",
+                "REST_REQUEST clientId=%llu counter=%u service=255 task=10 payloadBytes=%llu fingerprint=%016llX mode=SERVER_DECRYPTED_READ_ONLY sensitive=no fullHex={%s}",
                 static_cast<unsigned long long>(clientId), counter,
                 static_cast<unsigned long long>(payloadBytes),
                 static_cast<unsigned long long>(fingerprint), hex.c_str());
             AppendRest255Line(
-                "REST_STRINGS clientId=%llu counter=%u printableRuns={%s}",
+                "REST_STRINGS clientId=%llu counter=%u sensitive=no printableRuns={%s}",
                 static_cast<unsigned long long>(clientId), counter, strings.c_str());
         }
 
@@ -166,7 +222,13 @@ namespace revamped::iw8
 
             const std::uint8_t* payload = request.payloadBytes ? plain.data() + request.payloadOffset : nullptr;
             const std::uint64_t fingerprint = Fnv1a64(payload, request.payloadBytes);
-            const std::string preview = HexPreview(payload, request.payloadBytes);
+            const bool sensitiveRest =
+                route &&
+                route->semantic == demonware::TaskSemantic::RestRequest &&
+                IsSensitiveRestDiagnosticPayload(payload, request.payloadBytes);
+            const std::string preview = sensitiveRest
+                ? "<redacted-sensitive-rest>"
+                : HexPreview(payload, request.payloadBytes);
 
             if (route && route->semantic == demonware::TaskSemantic::RestRequest)
                 RecordRest255Candidate(clientId, counter, payload, request.payloadBytes, fingerprint);
@@ -216,23 +278,46 @@ namespace revamped::iw8
             }
 
             const std::uint32_t seq = ++g_postLoginCensusSequence;
-            AppendPostLoginCensusLine(
-                "TASK seq=%u elapsedMs=%llu clientId=%llu counter=%u service=%u task=%u serviceName=%s taskName=%s semantic=%s wire=%s schema=%s shape=%016llX known=%s replyPolicy=%s observation=%u uniqueRoute=%s payloadBytes=%llu minPayload=%u maxPayload=%u fingerprint=%016llX changed=%s preview={%s}",
-                seq,
-                static_cast<unsigned long long>(now - g_postLoginCensusStartMs),
-                static_cast<unsigned long long>(clientId), counter,
-                static_cast<unsigned>(request.serviceId), static_cast<unsigned>(request.taskId),
-                route && route->serviceName ? route->serviceName : "unknown",
-                route && route->taskName ? route->taskName : "unknown",
-                route ? demonware::TaskSemanticName(route->semantic) : "generic",
-                demonware::TaskWireEncodingName(request.wireEncoding),
-                demonware::PayloadSchemaName(request.payloadSchema),
-                static_cast<unsigned long long>(request.shapeFingerprint),
-                route ? "yes" : "no", policy, entry.observations,
-                newRoute ? "YES" : "no",
-                static_cast<unsigned long long>(request.payloadBytes),
-                entry.minPayloadBytes, entry.maxPayloadBytes,
-                static_cast<unsigned long long>(fingerprint), payloadChanged ? "YES" : "no", preview.c_str());
+            if (sensitiveRest)
+            {
+                AppendPostLoginCensusLine(
+                    "TASK seq=%u elapsedMs=%llu clientId=%llu counter=%u service=%u task=%u serviceName=%s taskName=%s semantic=%s wire=%s schema=%s shape=%016llX known=%s replyPolicy=%s observation=%u uniqueRoute=%s payloadBytes=%llu minPayload=%u maxPayload=%u fingerprint=REDACTED changed=%s preview={<redacted-sensitive-rest>}",
+                    seq,
+                    static_cast<unsigned long long>(now - g_postLoginCensusStartMs),
+                    static_cast<unsigned long long>(clientId), counter,
+                    static_cast<unsigned>(request.serviceId), static_cast<unsigned>(request.taskId),
+                    route && route->serviceName ? route->serviceName : "unknown",
+                    route && route->taskName ? route->taskName : "unknown",
+                    route ? demonware::TaskSemanticName(route->semantic) : "generic",
+                    demonware::TaskWireEncodingName(request.wireEncoding),
+                    demonware::PayloadSchemaName(request.payloadSchema),
+                    static_cast<unsigned long long>(request.shapeFingerprint),
+                    route ? "yes" : "no", policy, entry.observations,
+                    newRoute ? "YES" : "no",
+                    static_cast<unsigned long long>(request.payloadBytes),
+                    entry.minPayloadBytes, entry.maxPayloadBytes,
+                    payloadChanged ? "YES" : "no");
+            }
+            else
+            {
+                AppendPostLoginCensusLine(
+                    "TASK seq=%u elapsedMs=%llu clientId=%llu counter=%u service=%u task=%u serviceName=%s taskName=%s semantic=%s wire=%s schema=%s shape=%016llX known=%s replyPolicy=%s observation=%u uniqueRoute=%s payloadBytes=%llu minPayload=%u maxPayload=%u fingerprint=%016llX changed=%s preview={%s}",
+                    seq,
+                    static_cast<unsigned long long>(now - g_postLoginCensusStartMs),
+                    static_cast<unsigned long long>(clientId), counter,
+                    static_cast<unsigned>(request.serviceId), static_cast<unsigned>(request.taskId),
+                    route && route->serviceName ? route->serviceName : "unknown",
+                    route && route->taskName ? route->taskName : "unknown",
+                    route ? demonware::TaskSemanticName(route->semantic) : "generic",
+                    demonware::TaskWireEncodingName(request.wireEncoding),
+                    demonware::PayloadSchemaName(request.payloadSchema),
+                    static_cast<unsigned long long>(request.shapeFingerprint),
+                    route ? "yes" : "no", policy, entry.observations,
+                    newRoute ? "YES" : "no",
+                    static_cast<unsigned long long>(request.payloadBytes),
+                    entry.minPayloadBytes, entry.maxPayloadBytes,
+                    static_cast<unsigned long long>(fingerprint), payloadChanged ? "YES" : "no", preview.c_str());
+            }
 
             if (newRoute || entry.observations == 2u || (entry.observations % 5u) == 0u)
             {

@@ -104,7 +104,7 @@ namespace revamped::iw8::demonware
             std::string json = "{";
             if (localpublisher::IsManifest(name))
                 json += std::string("\"objectID\":") +
-                    (name == "1_manifest_patch_pc_8.19.txt" ? "120001," : "120002,");
+                    (name.find("_manifest_patch_") != std::string::npos ? "120001," : "120002,");
             json += "\"name\":\"" + JsonEscape(name) + "\",";
             json += "\"owner\":\"" + JsonEscape(owner) + "\",";
             json += "\"checksum\":\"" + JsonEscape(checksum) + "\",";

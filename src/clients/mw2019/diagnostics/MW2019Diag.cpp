@@ -77,6 +77,16 @@ namespace
     constexpr std::uint32_t kWarzoneBeta2019ImageSize = 0x16801800u;
     constexpr std::uint32_t kWarzoneBeta2019EntryPoint = 0x02752D50u;
 
+    // Exact Replay 1.20.4.7623265 image used by the native ownership path.
+    // Hardcoded game-state RVAs below are never touched unless all three PE
+    // fingerprint fields match this build.
+    constexpr std::uint32_t kMW120Timestamp = 0x5E9BAF80u;
+    constexpr std::uint32_t kMW120ImageSize = 0x1324B000u;
+    constexpr std::uint32_t kMW120EntryPoint = 0x021CDC10u;
+    constexpr std::uintptr_t kMW120AuthRva = 0x04622910u;
+    constexpr std::uintptr_t kMW120OwnershipFieldRva = kMW120AuthRva + 0x2F4u;
+    constexpr std::uintptr_t kMW120AuthReadyByteRva = kMW120AuthRva + 0x2D0u;
+
 
     using BetaCreateFileWFn = HANDLE (WINAPI*)(LPCWSTR, DWORD, DWORD, LPSECURITY_ATTRIBUTES, DWORD, DWORD, HANDLE);
     using BetaCreateFileAFn = HANDLE (WINAPI*)(LPCSTR, DWORD, DWORD, LPSECURITY_ATTRIBUTES, DWORD, DWORD, HANDLE);
@@ -88,6 +98,16 @@ namespace
     volatile LONG g_betaRemappedAssetOpenCount = 0;
     volatile LONG g_beta6036BranchPatched = 0;
     volatile LONG g_betaRecursiveFallbackLogged = 0;
+
+    // Unsupported/early IW8 builds (notably MW2019 1.16) can hit the same
+    // DEV ERROR 6036 fastfile gate as the 2019 beta, but at different RVAs.
+    // Keep the recovery state separate so no beta address ever leaks into
+    // another build.  The early-build patch is resolved and verified entirely
+    // from the live executable before a byte is changed.
+    volatile LONG g_early6036BranchPatched = 0;
+    volatile LONG g_early6036CodePreGfxSeen = 0;
+    volatile LONG g_early6036CodePreGfxLogged = 0;
+    volatile LONG g_early6036CodePreGfxOnDisk = 0;
 
     constexpr std::uintptr_t kWarzoneBetaDevErrorFormatRva = 0x029387F8u; // "DEV ERROR %u"
     constexpr std::uintptr_t kWarzoneBeta6036FatalBranchRva = 0x005E28ECu;
@@ -227,6 +247,114 @@ namespace
         return MainImageSectionContainsAscii(module, ".rdata", "Apr 18 2020") &&
             MainImageSectionContainsAscii(module, ".rdata", "8.19") &&
             MainImageSectionContainsAscii(module, ".rdata", "ODSF_PS_MANIFEST");
+    }
+
+    bool IsExactMW2019_120(HMODULE module) noexcept
+    {
+        std::uint32_t timestamp = 0;
+        std::uint32_t imageSize = 0;
+        std::uint32_t entryPoint = 0;
+        std::uint64_t preferredBase = 0;
+        return ReadMainImageFingerprint(module, timestamp, imageSize, entryPoint, preferredBase) &&
+            timestamp == kMW120Timestamp && imageSize == kMW120ImageSize &&
+            entryPoint == kMW120EntryPoint;
+    }
+
+    bool IsWritableDataRange(const void* address, std::size_t bytes) noexcept
+    {
+        if (!address || bytes == 0)
+            return false;
+        MEMORY_BASIC_INFORMATION mbi{};
+        if (VirtualQuery(address, &mbi, sizeof(mbi)) != sizeof(mbi) || mbi.State != MEM_COMMIT)
+            return false;
+        const DWORD protect = mbi.Protect & 0xFFu;
+        const bool writable = protect == PAGE_READWRITE || protect == PAGE_WRITECOPY ||
+            protect == PAGE_EXECUTE_READWRITE || protect == PAGE_EXECUTE_WRITECOPY;
+        if (!writable || (mbi.Protect & (PAGE_GUARD | PAGE_NOACCESS)))
+            return false;
+        const auto begin = reinterpret_cast<std::uintptr_t>(address);
+        const auto end = reinterpret_cast<std::uintptr_t>(mbi.BaseAddress) + mbi.RegionSize;
+        return begin <= end && bytes <= end - begin;
+    }
+
+    // Replay 1.20 stores OwnsBaseGame in an encoded DWORD. The transform is
+    // symmetric (XOR), so the same operation decodes the current value and
+    // encodes a new one. The per-field key and bit shift are preserved.
+    std::uint32_t TransformOwnership120(
+        std::uint32_t value, std::uintptr_t address, std::uint32_t key) noexcept
+    {
+        std::uint32_t result = 0;
+        for (unsigned i = 0; i < 4; ++i)
+        {
+            const std::uint32_t x = static_cast<std::uint32_t>(address + i) ^ key;
+            const std::uint32_t product = x * (x + 2u);
+            const std::uint32_t byte =
+                ((value >> (8u * i)) ^ product ^ (product >> 8u)) & 0xFFu;
+            result |= byte << (8u * i);
+        }
+        return result;
+    }
+
+    enum class Ownership120PinResult
+    {
+        NotExactBuild,
+        NotReady,
+        AlreadyOwned,
+        Pinned,
+        Failed
+    };
+
+    Ownership120PinResult PinNativeOwnership120(
+        HMODULE module, int& authStateOut, unsigned& readyByteOut, bool& ownedOut) noexcept
+    {
+        authStateOut = 0;
+        readyByteOut = 0;
+        ownedOut = false;
+        if (!module || !IsExactMW2019_120(module))
+            return Ownership120PinResult::NotExactBuild;
+
+        const auto base = reinterpret_cast<std::uintptr_t>(module);
+        const auto auth = base + kMW120AuthRva;
+        const auto field = base + kMW120OwnershipFieldRva;
+        if (!IsWritableDataRange(reinterpret_cast<const void*>(auth), 0x318u) ||
+            !IsWritableDataRange(reinterpret_cast<const void*>(field), 12u))
+        {
+            return Ownership120PinResult::Failed;
+        }
+
+        __try
+        {
+            authStateOut = *reinterpret_cast<volatile int*>(auth);
+            readyByteOut = *reinterpret_cast<volatile std::uint8_t*>(base + kMW120AuthReadyByteRva);
+
+            // State 2 is the completed local/BNet-auth state on this exact build.
+            // Wait for the stock/backend flow to initialize the key/shift before
+            // touching ownership; this does not manufacture sign-in/fence state.
+            if (authStateOut != 2)
+                return Ownership120PinResult::NotReady;
+
+            const std::uint32_t key = *reinterpret_cast<volatile std::uint32_t*>(field + 8u);
+            const std::uint8_t shift =
+                static_cast<std::uint8_t>(*reinterpret_cast<volatile std::uint8_t*>(field + 4u) & 31u);
+            const std::uint32_t encoded = *reinterpret_cast<volatile std::uint32_t*>(field);
+            const std::uint32_t decoded = TransformOwnership120(encoded, field, key);
+            ownedOut = ((decoded >> shift) & 1u) != 0;
+            if (ownedOut)
+                return Ownership120PinResult::AlreadyOwned;
+
+            const std::uint32_t wantedDecoded = std::uint32_t{1} << shift;
+            const std::uint32_t wantedEncoded = TransformOwnership120(wantedDecoded, field, key);
+            *reinterpret_cast<volatile std::uint32_t*>(field) = wantedEncoded;
+
+            const std::uint32_t verifyEncoded = *reinterpret_cast<volatile std::uint32_t*>(field);
+            const std::uint32_t verifyDecoded = TransformOwnership120(verifyEncoded, field, key);
+            ownedOut = ((verifyDecoded >> shift) & 1u) != 0;
+            return ownedOut ? Ownership120PinResult::Pinned : Ownership120PinResult::Failed;
+        }
+        __except (EXCEPTION_EXECUTE_HANDLER)
+        {
+            return Ownership120PinResult::Failed;
+        }
     }
 
 
@@ -599,6 +727,51 @@ namespace
         if (!slash || (slashB && slashB > slash))
             slash = slashB;
         return slash ? slash + 1 : path;
+    }
+
+    bool IsCodePreGfxFastfileW(const wchar_t* path) noexcept
+    {
+        const wchar_t* baseName = BaseNameW(path);
+        return baseName && _wcsicmp(baseName, L"ww_code_pre_gfx.ff") == 0;
+    }
+
+    bool IsCodePreGfxFastfileA(const char* path) noexcept
+    {
+        if (!path || !*path)
+            return false;
+        const char* slashA = strrchr(path, '\\');
+        const char* slashB = strrchr(path, '/');
+        const char* slash = slashA;
+        if (!slash || (slashB && slashB > slash))
+            slash = slashB;
+        const char* baseName = slash ? slash + 1 : path;
+        return _stricmp(baseName, "ww_code_pre_gfx.ff") == 0;
+    }
+
+    void NoteCodePreGfxOpenedW(const wchar_t* path) noexcept
+    {
+        if (!IsCodePreGfxFastfileW(path))
+            return;
+        InterlockedExchange(&g_early6036CodePreGfxSeen, 1);
+        if (InterlockedCompareExchange(&g_early6036CodePreGfxLogged, 1, 0) == 0)
+        {
+            char utf8[32768]{};
+            WideToUtf8(path, utf8, static_cast<int>(ArrayCount(utf8)));
+            InternalLog("[IW8-EARLY][6036][CODE-PRE-GFX] OPEN OK path=%s\r\n",
+                utf8[0] ? utf8 : "ww_code_pre_gfx.ff");
+        }
+    }
+
+    void NoteCodePreGfxOpenedA(const char* path) noexcept
+    {
+        if (!IsCodePreGfxFastfileA(path))
+            return;
+        InterlockedExchange(&g_early6036CodePreGfxSeen, 1);
+        if (InterlockedCompareExchange(&g_early6036CodePreGfxLogged, 1, 0) == 0)
+        {
+            InternalLog("[IW8-EARLY][6036][CODE-PRE-GFX] OPEN OK path=%s\r\n",
+                path && *path ? path : "ww_code_pre_gfx.ff");
+        }
     }
 
     bool GetWarzoneBetaGameDir(wchar_t* out, size_t outCount) noexcept
@@ -1104,7 +1277,12 @@ namespace
             creationDisposition,
             flagsAndAttributes,
             templateFile);
-        if (handle != INVALID_HANDLE_VALUE || !IsBetaAssetPathW(fileName))
+        if (handle != INVALID_HANDLE_VALUE)
+        {
+            NoteCodePreGfxOpenedW(fileName);
+            return handle;
+        }
+        if (!IsBetaAssetPathW(fileName))
             return handle;
 
         const DWORD originalError = GetLastError();
@@ -1146,6 +1324,7 @@ namespace
                         remapNumber,
                         requestedUtf8,
                         fallbackUtf8);
+                    NoteCodePreGfxOpenedW(fallback);
                     return retry;
                 }
             }
@@ -1176,7 +1355,12 @@ namespace
             creationDisposition,
             flagsAndAttributes,
             templateFile);
-        if (handle != INVALID_HANDLE_VALUE || !fileName || !*fileName)
+        if (handle != INVALID_HANDLE_VALUE)
+        {
+            NoteCodePreGfxOpenedA(fileName);
+            return handle;
+        }
+        if (!fileName || !*fileName)
             return handle;
 
         wchar_t widePath[32768]{};
@@ -1232,6 +1416,7 @@ namespace
                         remapNumber,
                         fileName,
                         fallbackA);
+                    NoteCodePreGfxOpenedA(fallbackA);
                     return retry;
                 }
             }
@@ -1314,6 +1499,339 @@ namespace
             static_cast<unsigned long long>(kWarzoneBeta6036PrecheckCallTargetRva));
         InternalLog(
             "[IW8-BETA][6036][BYPASS] scope=beta-only; only the verified DEV ERROR 6036 branch is skipped; other errors remain stock\r\n");
+        return true;
+    }
+
+    struct Early6036Candidate
+    {
+        std::uintptr_t branch = 0;
+        std::uintptr_t successTarget = 0;
+        std::uintptr_t mov6036 = 0;
+        std::uintptr_t formatString = 0;
+    };
+
+    bool FindEarlyCodePreGfxOnDisk(wchar_t* out, size_t outCount) noexcept
+    {
+        if (out && outCount)
+            out[0] = L'\0';
+
+        wchar_t gameDir[32768]{};
+        if (!GetWarzoneBetaGameDir(gameDir, ArrayCount(gameDir)))
+            return false;
+
+        static const wchar_t* const subdirs[] = {
+            L"", L"main", L"zone", L"Data", L"Data\\data",
+            L"patch", L"patch_cache", L"patch_result"
+        };
+
+        for (const wchar_t* subdir : subdirs)
+        {
+            wchar_t candidate[32768]{};
+            if (subdir && *subdir)
+                _snwprintf_s(candidate, ArrayCount(candidate), _TRUNCATE,
+                    L"%s\\%s\\ww_code_pre_gfx.ff", gameDir, subdir);
+            else
+                _snwprintf_s(candidate, ArrayCount(candidate), _TRUNCATE,
+                    L"%s\\ww_code_pre_gfx.ff", gameDir);
+
+            if (IsExistingRegularFileW(candidate))
+            {
+                if (out && outCount)
+                    wcsncpy_s(out, outCount, candidate, _TRUNCATE);
+                return true;
+            }
+        }
+
+        unsigned visitedDirectories = 0;
+        wchar_t recursive[32768]{};
+        if (FindBetaAssetFallbackRecursive(
+                gameDir,
+                L"ww_code_pre_gfx.ff",
+                0,
+                visitedDirectories,
+                recursive,
+                ArrayCount(recursive)))
+        {
+            if (out && outCount)
+                wcsncpy_s(out, outCount, recursive, _TRUNCATE);
+            return true;
+        }
+        return false;
+    }
+
+    bool AddressMatchesAny(
+        std::uintptr_t address,
+        const std::vector<std::uintptr_t>& values) noexcept
+    {
+        for (const auto value : values)
+        {
+            if (value == address)
+                return true;
+        }
+        return false;
+    }
+
+    void FindDevErrorFormatStrings(
+        HMODULE game,
+        std::vector<std::uintptr_t>& results) noexcept
+    {
+        results.clear();
+        if (!game)
+            return;
+
+        std::uint32_t timestamp = 0;
+        std::uint32_t imageSize = 0;
+        std::uint32_t entryPoint = 0;
+        std::uint64_t preferredBase = 0;
+        if (!ReadMainImageFingerprint(game, timestamp, imageSize, entryPoint, preferredBase) || !imageSize)
+            return;
+
+        const std::uintptr_t base = reinterpret_cast<std::uintptr_t>(game);
+        const std::uintptr_t end = base + imageSize;
+        static constexpr char needle[] = "DEV ERROR %u";
+        static constexpr std::size_t needleBytes = sizeof(needle) - 1;
+
+        MEMORY_BASIC_INFORMATION mbi{};
+        for (std::uintptr_t p = base; p < end && results.size() < 16;)
+        {
+            if (!VirtualQuery(reinterpret_cast<void*>(p), &mbi, sizeof(mbi)))
+                break;
+
+            const auto regionStart = reinterpret_cast<std::uintptr_t>(mbi.BaseAddress);
+            const auto regionEnd = regionStart + mbi.RegionSize;
+            const auto scanStart = regionStart < base ? base : regionStart;
+            const auto scanEnd = regionEnd > end ? end : regionEnd;
+            const bool readable =
+                mbi.State == MEM_COMMIT &&
+                (mbi.Protect & (PAGE_NOACCESS | PAGE_GUARD)) == 0;
+
+            if (readable && scanEnd > scanStart && scanEnd - scanStart >= needleBytes)
+            {
+                __try
+                {
+                    const auto* begin = reinterpret_cast<const unsigned char*>(scanStart);
+                    const auto* finish = reinterpret_cast<const unsigned char*>(scanEnd);
+                    const auto* nbegin = reinterpret_cast<const unsigned char*>(needle);
+                    const auto* nend = nbegin + needleBytes;
+                    const auto* cursor = begin;
+                    while (cursor + needleBytes <= finish && results.size() < 16)
+                    {
+                        const auto* found = std::search(cursor, finish, nbegin, nend);
+                        if (found == finish)
+                            break;
+                        results.push_back(scanStart + static_cast<std::uintptr_t>(found - begin));
+                        cursor = found + 1;
+                    }
+                }
+                __except (EXCEPTION_EXECUTE_HANDLER)
+                {
+                }
+            }
+
+            p = regionEnd > p ? regionEnd : p + 0x1000;
+        }
+    }
+
+    void FindEarly6036Candidates(
+        HMODULE game,
+        const std::vector<std::uintptr_t>& formatStrings,
+        std::vector<Early6036Candidate>& results) noexcept
+    {
+        results.clear();
+        if (!game || formatStrings.empty())
+            return;
+
+        std::uint32_t timestamp = 0;
+        std::uint32_t imageSize = 0;
+        std::uint32_t entryPoint = 0;
+        std::uint64_t preferredBase = 0;
+        if (!ReadMainImageFingerprint(game, timestamp, imageSize, entryPoint, preferredBase) || !imageSize)
+            return;
+
+        const std::uintptr_t base = reinterpret_cast<std::uintptr_t>(game);
+        const std::uintptr_t end = base + imageSize;
+        MEMORY_BASIC_INFORMATION mbi{};
+
+        for (std::uintptr_t p = base; p < end && results.size() < 16;)
+        {
+            if (!VirtualQuery(reinterpret_cast<void*>(p), &mbi, sizeof(mbi)))
+                break;
+
+            const auto regionStart = reinterpret_cast<std::uintptr_t>(mbi.BaseAddress);
+            const auto regionEnd = regionStart + mbi.RegionSize;
+            const auto scanStart = regionStart < base ? base : regionStart;
+            const auto scanEnd = regionEnd > end ? end : regionEnd;
+            const bool executable =
+                (mbi.Protect & (PAGE_EXECUTE | PAGE_EXECUTE_READ |
+                    PAGE_EXECUTE_READWRITE | PAGE_EXECUTE_WRITECOPY)) != 0;
+            const bool readable =
+                mbi.State == MEM_COMMIT &&
+                (mbi.Protect & (PAGE_NOACCESS | PAGE_GUARD)) == 0;
+
+            if (readable && executable && scanEnd > scanStart)
+            {
+                __try
+                {
+                    const auto* bytes = reinterpret_cast<const unsigned char*>(scanStart);
+                    const std::size_t size = static_cast<std::size_t>(scanEnd - scanStart);
+                    for (std::size_t i = 0; i + 10 < size && results.size() < 16; ++i)
+                    {
+                        // mov r8d,6036
+                        if (bytes[i + 0] != 0x41 || bytes[i + 1] != 0xB8 ||
+                            bytes[i + 2] != 0x94 || bytes[i + 3] != 0x17 ||
+                            bytes[i + 4] != 0x00 || bytes[i + 5] != 0x00)
+                        {
+                            continue;
+                        }
+
+                        const std::uintptr_t mov6036 = scanStart + i;
+
+                        // The known IW8 path uses: test al,al ; jne success ; mov r8d,6036.
+                        // Permit a few bytes of build-specific scheduling between JNE and MOV,
+                        // but never infer JE/JZ semantics or patch an unverified branch form.
+                        std::uintptr_t branch = 0;
+                        std::uintptr_t successTarget = 0;
+                        const std::size_t back = (std::min)(i, static_cast<std::size_t>(20));
+                        for (std::size_t delta = 4; delta <= back; ++delta)
+                        {
+                            const std::size_t at = i - delta;
+                            if (at + 4 > size)
+                                continue;
+                            if (bytes[at] == 0x84 && bytes[at + 1] == 0xC0 && bytes[at + 2] == 0x75)
+                            {
+                                const std::int8_t rel = static_cast<std::int8_t>(bytes[at + 3]);
+                                const std::uintptr_t candidateBranch = scanStart + at + 2;
+                                const std::uintptr_t target = candidateBranch + 2 + rel;
+                                if (target > mov6036 && target <= mov6036 + 0x200)
+                                {
+                                    branch = candidateBranch;
+                                    successTarget = target;
+                                    break;
+                                }
+                            }
+                        }
+                        if (!branch)
+                            continue;
+
+                        std::uintptr_t formatString = 0;
+                        const std::size_t forwardLimit = (std::min)(size, i + static_cast<std::size_t>(96));
+                        for (std::size_t j = i + 6; j + 7 <= forwardLimit; ++j)
+                        {
+                            // lea rdx,[rip+disp32]
+                            if (bytes[j] != 0x48 || bytes[j + 1] != 0x8D || bytes[j + 2] != 0x15)
+                                continue;
+                            std::int32_t rel = 0;
+                            memcpy(&rel, bytes + j + 3, sizeof(rel));
+                            const std::uintptr_t target = scanStart + j + 7 + static_cast<std::intptr_t>(rel);
+                            if (AddressMatchesAny(target, formatStrings))
+                            {
+                                formatString = target;
+                                break;
+                            }
+                        }
+                        if (!formatString)
+                            continue;
+
+                        bool duplicate = false;
+                        for (const auto& existing : results)
+                        {
+                            if (existing.branch == branch)
+                            {
+                                duplicate = true;
+                                break;
+                            }
+                        }
+                        if (!duplicate)
+                            results.push_back({branch, successTarget, mov6036, formatString});
+                    }
+                }
+                __except (EXCEPTION_EXECUTE_HANDLER)
+                {
+                }
+            }
+
+            p = regionEnd > p ? regionEnd : p + 0x1000;
+        }
+    }
+
+    bool TryPatchEarlyIW86036FatalBranch(HMODULE game) noexcept
+    {
+        if (!game)
+            return false;
+        if (InterlockedCompareExchange(&g_early6036BranchPatched, 0, 0) != 0)
+            return true;
+
+        // Never hide a genuinely missing ww_code_pre_gfx.ff.  We only bypass
+        // the validation/fatal branch once the file is known to exist on disk
+        // or has actually been opened by the client/remap hook.
+        if (InterlockedCompareExchange(&g_early6036CodePreGfxOnDisk, 0, 0) == 0 &&
+            InterlockedCompareExchange(&g_early6036CodePreGfxSeen, 0, 0) == 0)
+        {
+            return false;
+        }
+
+        // The format string lives in static image data, so resolve it once.
+        // The executable body may materialize/decrypt later, therefore only the
+        // much narrower code-candidate pass is repeated during early startup.
+        static HMODULE cachedGame = nullptr;
+        static std::vector<std::uintptr_t> cachedFormatStrings;
+        if (cachedGame != game)
+        {
+            cachedGame = game;
+            cachedFormatStrings.clear();
+        }
+        if (cachedFormatStrings.empty())
+            FindDevErrorFormatStrings(game, cachedFormatStrings);
+        if (cachedFormatStrings.empty())
+            return false;
+
+        std::vector<Early6036Candidate> candidates;
+        FindEarly6036Candidates(game, cachedFormatStrings, candidates);
+        if (candidates.size() != 1)
+        {
+            static LONG lastCount = -1;
+            const LONG count = static_cast<LONG>(candidates.size());
+            if (InterlockedExchange(&lastCount, count) != count)
+            {
+                InternalLog(
+                    "[IW8-EARLY][6036][SCAN] verified_candidates=%ld format_strings=%llu patch=NO reason=%s\r\n",
+                    count,
+                    static_cast<unsigned long long>(cachedFormatStrings.size()),
+                    candidates.empty() ? "not-yet-decoded-or-pattern-different" : "ambiguous");
+            }
+            return false;
+        }
+
+        const auto& candidate = candidates.front();
+        unsigned char current[4]{};
+        __try
+        {
+            memcpy(current, reinterpret_cast<const void*>(candidate.branch - 2), sizeof(current));
+        }
+        __except (EXCEPTION_EXECUTE_HANDLER)
+        {
+            return false;
+        }
+        if (current[0] != 0x84 || current[1] != 0xC0 || current[2] != 0x75)
+            return false;
+
+        DWORD oldProtect = 0;
+        if (!VirtualProtect(reinterpret_cast<void*>(candidate.branch), 1, PAGE_EXECUTE_READWRITE, &oldProtect))
+            return false;
+
+        *reinterpret_cast<unsigned char*>(candidate.branch) = 0xEB; // JNE stock-success -> JMP stock-success
+        FlushInstructionCache(GetCurrentProcess(), reinterpret_cast<void*>(candidate.branch), 1);
+        DWORD ignored = 0;
+        VirtualProtect(reinterpret_cast<void*>(candidate.branch), 1, oldProtect, &ignored);
+
+        InterlockedExchange(&g_early6036BranchPatched, 1);
+        const auto base = reinterpret_cast<std::uintptr_t>(game);
+        InternalLog(
+            "[IW8-EARLY][6036][BYPASS] PATCHED branch_rva=0x%llX success_rva=0x%llX mov6036_rva=0x%llX format_rva=0x%llX old=75 new=EB code_pre_gfx_present=yes\r\n",
+            static_cast<unsigned long long>(candidate.branch - base),
+            static_cast<unsigned long long>(candidate.successTarget - base),
+            static_cast<unsigned long long>(candidate.mov6036 - base),
+            static_cast<unsigned long long>(candidate.formatString - base));
         return true;
     }
 
@@ -1667,6 +2185,99 @@ namespace
 
     #include "IW8ServerEmuBridge.inl"
 
+    DWORD WINAPI EarlyIW86036RecoveryThread(LPVOID) noexcept
+    {
+        const HMODULE game = GetModuleHandleW(nullptr);
+        if (!game || IsExactWarzoneBeta2019(game) || iw8_144::IsExactBuild(game) || IsLikelyMW2019_120(game))
+            return 1;
+
+        OpenProfileConsole(L"CodRevamped - MW2019 Early IW8 6036 Recovery");
+        AppendRaw(
+            "[IW8-EARLY] unsupported/early MW2019 recovery profile started (target: 1.16)\r\n"
+            "[IW8-EARLY] no beta/1.20/1.44 RVAs will be used; 6036 is runtime-resolved only\r\n");
+
+        std::uint32_t timestamp = 0;
+        std::uint32_t imageSize = 0;
+        std::uint32_t entryPoint = 0;
+        std::uint64_t preferredBase = 0;
+        ReadMainImageFingerprint(game, timestamp, imageSize, entryPoint, preferredBase);
+        InternalLog(
+            "[IW8-EARLY] fingerprint timestamp=0x%08lX imageSize=0x%08lX entryPointRva=0x%08lX preferredBase=0x%llX runtimeBase=%p\r\n",
+            timestamp,
+            imageSize,
+            entryPoint,
+            static_cast<unsigned long long>(preferredBase),
+            game);
+
+        InstallWarzoneBetaFileHooks(game);
+
+        wchar_t codePreGfxPath[32768]{};
+        if (FindEarlyCodePreGfxOnDisk(codePreGfxPath, ArrayCount(codePreGfxPath)))
+        {
+            InterlockedExchange(&g_early6036CodePreGfxOnDisk, 1);
+            WIN32_FILE_ATTRIBUTE_DATA attributes{};
+            unsigned long long bytes = 0;
+            if (GetFileAttributesExW(codePreGfxPath, GetFileExInfoStandard, &attributes))
+            {
+                bytes = (static_cast<unsigned long long>(attributes.nFileSizeHigh) << 32) |
+                    static_cast<unsigned long long>(attributes.nFileSizeLow);
+            }
+            char pathUtf8[32768]{};
+            WideToUtf8(codePreGfxPath, pathUtf8, static_cast<int>(ArrayCount(pathUtf8)));
+            InternalLog(
+                "[IW8-EARLY][6036][CODE-PRE-GFX] FOUND path=%s size=%llu\r\n",
+                pathUtf8[0] ? pathUtf8 : "ww_code_pre_gfx.ff",
+                bytes);
+        }
+        else
+        {
+            AppendRaw(
+                "[IW8-EARLY][6036][CODE-PRE-GFX] NOT FOUND - fatal bypass is DISABLED until a successful remap/open is observed\r\n");
+        }
+
+        // Redirect only the transport layer.  This is the same address-free
+        // backend path used by 1.20 and gives 1.16 somewhere local to connect
+        // once fastfile startup succeeds.  No native 1.20/1.44 state writes.
+        g_serverEmuGenericPureMode.store(true);
+        InstallServerEmuNetworkHooksGeneric(game);
+
+        const ULONGLONG start = GetTickCount64();
+        ULONGLONG lastHeartbeat = 0;
+        unsigned scanPass = 0;
+
+        while (GetTickCount64() - start < 120000ull)
+        {
+            const ULONGLONG uptime = GetTickCount64() - start;
+
+            if (InterlockedCompareExchange(&g_early6036BranchPatched, 0, 0) == 0)
+            {
+                // Startup reaches this gate very early.  Scan aggressively for
+                // the first two seconds while the protected code is materialized,
+                // then fall back to a light polling cadence.
+                TryPatchEarlyIW86036FatalBranch(game);
+                ++scanPass;
+            }
+
+
+            if (uptime - lastHeartbeat >= 2000ull)
+            {
+                InternalLog(
+                    "[IW8-EARLY] startup_alive uptime_ms=%llu scan_pass=%u code_pre_gfx_disk=%s opened=%s 6036_patched=%s\r\n",
+                    static_cast<unsigned long long>(uptime),
+                    scanPass,
+                    InterlockedCompareExchange(&g_early6036CodePreGfxOnDisk, 0, 0) ? "yes" : "no",
+                    InterlockedCompareExchange(&g_early6036CodePreGfxSeen, 0, 0) ? "yes" : "no",
+                    InterlockedCompareExchange(&g_early6036BranchPatched, 0, 0) ? "yes" : "no");
+                lastHeartbeat = uptime;
+            }
+
+            Sleep(uptime < 2000ull ? 50u : 250u);
+        }
+
+        AppendRaw("[IW8-EARLY] 120 second recovery observation finished\r\n");
+        return 0;
+    }
+
     char* TrimAiBridgeText144(char* text) noexcept
     {
         if (!text) return nullptr;
@@ -1976,7 +2587,7 @@ namespace
     {
         const HMODULE game = GetModuleHandleW(nullptr);
         if (!IsLikelyMW2019_120(game))
-            return 1;
+            return EarlyIW86036RecoveryThread(nullptr);
 
         if (!GetConsoleWindow())
             AllocConsole();
@@ -1990,9 +2601,11 @@ namespace
                 g_consoleOut = GetStdHandle(STD_OUTPUT_HANDLE);
         }
 
-        AppendRaw("[1.20] CodRevamped MW2019 1.20 PURE SERVER-EMULATION profile started\r\n");
-        AppendRaw("[SERVER-EMU120] native state machine: no sign-in/fence/content/PS_MANIFEST patches; premium ownership Lua compatibility enabled separately\r\n");
-        AppendRaw("[SERVER-EMU120] build detected by .rdata markers: 8.19 / Apr 18 2020 / ODSF_PS_MANIFEST\r\n");
+        AppendRaw("[1.20] CodRevamped MW2019 1.20 SERVER-EMULATION + OWNERSHIP compatibility profile started\r\n");
+        AppendRaw("[SERVER-EMU120] sign-in/fence/content/PS_MANIFEST remain server-driven; exact-build OwnsBaseGame + premium/menu presentation compatibility enabled\r\n");
+        AppendRaw(IsExactMW2019_120(game) ?
+            "[SERVER-EMU120] exact Replay 1.20 fingerprint matched; native OwnsBaseGame pin armed\r\n" :
+            "[SERVER-EMU120] 1.20 markers matched but exact Replay fingerprint did not; native ownership RVAs disabled\r\n");
         AppendRaw("[SERVER-EMU120] installing generic DNS/connect/WinHTTP redirect plus signature-scanned trust bootstrap\r\n");
 
         // Set this before hooks are active so the first bootstrap socket cannot
@@ -2020,10 +2633,111 @@ namespace
         AppendRaw("[SERVER-EMU120] watch server console for [LSG-ROUTE], [LSG-KNOWN-UNIMPLEMENTED], and [LSG-UNSUPPORTED] task census\r\n");
         AppendRaw("[ODSF120] normal required mask=0x71B30; PS_MANIFEST read-only watcher enabled (slot0 +79)\r\n");
 
+        // The Lua ownership predicates above cover the logic-facing premium check,
+        // but 1.20 also drives the visible MW/WZ blades from publisher-controlled
+        // frontend dvars.  Keep only the proven premium/no-trial presentation
+        // values pinned so a generic/local Publisher Vars payload cannot turn the
+        // UI back into the F2P/trial/upsell presentation after login.
+        const ULONGLONG premiumStart = GetTickCount64();
+        ULONGLONG lastPremiumApply = 0;
+        ULONGLONG lastPremiumScan = 0;
+        unsigned lastPremiumMatched = 0xFFFFFFFFu;
+        bool premiumAllAnnounced = false;
+        Ownership120PinResult lastOwnershipResult = Ownership120PinResult::NotExactBuild;
+        int lastOwnershipAuthState = -1;
+        unsigned lastOwnershipReadyByte = 0xFFFFFFFFu;
+        bool nativeOwnershipAnnounced = false;
+
         PsManifest120Snapshot previous{};
         bool havePrevious = false;
         for (;;)
         {
+            const ULONGLONG premiumUptime = GetTickCount64() - premiumStart;
+            if (premiumUptime >= 3000 && premiumUptime - lastPremiumApply >= 2000)
+            {
+                lastPremiumApply = premiumUptime;
+
+                int ownershipAuthState = 0;
+                unsigned ownershipReadyByte = 0;
+                bool ownsBaseGame = false;
+                const auto ownershipResult = PinNativeOwnership120(
+                    game, ownershipAuthState, ownershipReadyByte, ownsBaseGame);
+                if (ownershipResult != lastOwnershipResult ||
+                    ownershipAuthState != lastOwnershipAuthState ||
+                    ownershipReadyByte != lastOwnershipReadyByte ||
+                    ((ownershipResult == Ownership120PinResult::Pinned ||
+                      ownershipResult == Ownership120PinResult::AlreadyOwned) &&
+                     !nativeOwnershipAnnounced))
+                {
+                    const char* resultText = "unknown";
+                    switch (ownershipResult)
+                    {
+                    case Ownership120PinResult::NotExactBuild: resultText = "disabled-nonexact-build"; break;
+                    case Ownership120PinResult::NotReady: resultText = "waiting-auth-state"; break;
+                    case Ownership120PinResult::AlreadyOwned: resultText = "already-owned"; break;
+                    case Ownership120PinResult::Pinned: resultText = "pinned-owned"; break;
+                    case Ownership120PinResult::Failed: resultText = "failed"; break;
+                    }
+                    InternalLog(
+                        "[OWNERSHIP120-NATIVE] result=%s authState=%d authReady=%u ownsBaseGame=%u fieldRva=0x%llX stateWrites=OWNERSHIP_ONLY\r\n",
+                        resultText, ownershipAuthState, ownershipReadyByte, ownsBaseGame ? 1u : 0u,
+                        static_cast<unsigned long long>(kMW120OwnershipFieldRva));
+                    lastOwnershipResult = ownershipResult;
+                    lastOwnershipAuthState = ownershipAuthState;
+                    lastOwnershipReadyByte = ownershipReadyByte;
+                    if (ownershipResult == Ownership120PinResult::Pinned ||
+                        ownershipResult == Ownership120PinResult::AlreadyOwned)
+                    {
+                        nativeOwnershipAnnounced = true;
+                    }
+                }
+
+                if (!mw2019_scanner::GetAddress("Dvar_FindVarByName") &&
+                    (lastPremiumScan == 0 || premiumUptime - lastPremiumScan >= 10000))
+                {
+                    lastPremiumScan = premiumUptime;
+                    mw2019_scanner::ScanNow("1.20 premium frontend presentation");
+                }
+
+                if (mw2019_scanner::GetAddress("Dvar_FindVarByName"))
+                {
+                    unsigned matched = 0;
+                    // LiveStorage_IsPaidUser checks com_force_free_to_play first.
+                    // If it is enabled, IW8 returns false immediately and never
+                    // reaches com_force_premium or the paid-entitlement result.
+                    // Pin both sides of that priority gate for the local 1.20
+                    // preservation profile.
+                    matched += mw2019_scanner::SetBool("NPSSNLOLPS", "com_force_free_to_play", false) ? 1u : 0u;
+                    matched += mw2019_scanner::SetBool("MROLPRPTPO", "com_force_premium", true) ? 1u : 0u;
+                    matched += mw2019_scanner::SetBool("MNTMKQRSTQ", "hide_select_buy_mw_prompt", true) ? 1u : 0u;
+                    matched += mw2019_scanner::SetBool("MQRQOLKOTK", "premium_sale_ui_for_f2p", false) ? 1u : 0u;
+                    matched += mw2019_scanner::SetBool("LNRQKOQLNN", "promoted_mp_trial_buttons", false) ? 1u : 0u;
+                    matched += mw2019_scanner::SetBool("LNSMSSTTSK", "trial_ending", false) ? 1u : 0u;
+                    matched += mw2019_scanner::SetBool("NORMPNKNKQ", "warzone_trial_access", false) ? 1u : 0u;
+
+                    // Exact 1.20 frontend selectors: do not hide core modes because
+                    // platform DLC/install enumeration is incomplete in the local
+                    // preservation environment, use the normal (non-Magma) owned
+                    // menu presentation, and keep Private Match visible.
+                    matched += mw2019_scanner::SetBool("RLSPOOTTT", "com_checkIfGameModeInstalled", false) ? 1u : 0u;
+                    matched += mw2019_scanner::SetBool("LRKPTLNQTT", "lui_enable_magma_blade_layout", false) ? 1u : 0u;
+                    matched += mw2019_scanner::SetBool("MTSTMKPMRM", "ui_onlineRequired", false) ? 1u : 0u;
+                    matched += mw2019_scanner::SetBool("LQKTNLONLP", "ui_mp_private_match_enabled", true) ? 1u : 0u;
+
+                    constexpr unsigned kPremiumMenuDvarCount = 11u;
+                    if (matched != lastPremiumMatched ||
+                        (matched == kPremiumMenuDvarCount && !premiumAllAnnounced))
+                    {
+                        InternalLog(
+                            "[PREMIUM120] ownership/menu presentation pinned matched=%u/%u forceF2P=0 forcePremium=1 hideBuyMW=1 f2pSale=0 mpTrialPromoted=0 trialEnding=0 wzTrialAccess=0 checkInstalled=0 magmaLayout=0 onlineRequired=0 privateMatch=1\r\n",
+                            matched, kPremiumMenuDvarCount);
+                        lastPremiumMatched = matched;
+                        if (matched == kPremiumMenuDvarCount)
+                            premiumAllAnnounced = true;
+                    }
+                }
+            }
+
             PsManifest120Snapshot current{};
             if (ReadPsManifest120Snapshot(game, current))
             {
@@ -2453,9 +3167,10 @@ BOOL WINAPI DllMain(HMODULE module, DWORD reason, LPVOID)
             return TRUE;
         }
 
-        // Exact 1.44 keeps its proven profile. Other executables are probed by
-        // the lightweight 1.20 thread; it exits immediately unless the 8.19 /
-        // Apr-18-2020 / ODSF marker set matches. No 1.44 RVA is used in 1.20.
+        // Exact 1.44 keeps its proven profile. Other executables enter the
+        // lightweight dispatcher: exact 1.20 uses its known marker set, while
+        // unsupported/early IW8 builds (including 1.16) get only the dynamic
+        // 6036 fastfile recovery path. No beta/1.20/1.44 RVA is reused there.
         if (iw8_144::IsExactBuild(game))
         {
             if (HANDLE thread = CreateThread(nullptr, 0, Steam144Thread, nullptr, 0, nullptr))
@@ -2468,7 +3183,7 @@ BOOL WINAPI DllMain(HMODULE module, DWORD reason, LPVOID)
             if (HANDLE thread = CreateThread(nullptr, 0, Steam120Thread, nullptr, 0, nullptr))
                 CloseHandle(thread);
             else
-                AppendRaw("[1.20] CreateThread failed; generic build probe was not started\r\n");
+                AppendRaw("[MW2019] CreateThread failed; 1.20/early-IW8 dispatcher was not started\r\n");
         }
     }
     else if (reason == DLL_PROCESS_DETACH)

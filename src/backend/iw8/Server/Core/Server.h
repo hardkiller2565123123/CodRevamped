@@ -13,7 +13,7 @@ namespace revamped::iw8
     {
         std::string bindAddress = "0.0.0.0";
         std::vector<std::uint16_t> tcpPorts{80, 443, 1119, 3074, 3075};
-        std::vector<std::uint16_t> udpPorts{3074};
+        std::vector<std::uint16_t> udpPorts{3074, 3075};
         bool dumpPayloads = true;
     };
 
@@ -51,6 +51,7 @@ namespace revamped::iw8
             std::vector<std::uint8_t> lsgInput;
             std::uint32_t lsgStage = 0;
             std::uint32_t lsgMaxPacket = 0;
+            std::uint8_t lsgHelloTranscript[20]{};
             std::uint32_t lsgSelectedVersion = 0;
             std::uint8_t lsgClientNonce[8]{};
             std::uint8_t lsgServerNonce[8]{};

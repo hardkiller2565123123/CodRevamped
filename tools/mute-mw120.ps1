@@ -1,9 +1,11 @@
 [CmdletBinding()]
-param([switch]$Unmute)
+param(
+    [switch]$Unmute,
+    [string]$GamePath = 'D:\unlock\Modern Warfare\Call of Duty Modern Warfare (1.20)\game_dx12_ship_replay.exe'
+)
 $ErrorActionPreference = 'Stop'
-$gamePath = 'D:\unlock\Modern Warfare\Call of Duty Modern Warfare (1.20)\game_dx12_ship_replay.exe'
 $gameIds = @(Get-CimInstance Win32_Process | Where-Object { $_.ExecutablePath -eq $gamePath } | ForEach-Object { [uint32]$_.ProcessId })
-if (!$gameIds.Count) { throw 'The exact MW2019 1.20 DX12 executable is not running.' }
+if (!$gameIds.Count) { throw "The exact game executable is not running: $GamePath" }
 
 if (-not ('Mw120SessionAudio' -as [type])) {
     Add-Type -TypeDefinition @'

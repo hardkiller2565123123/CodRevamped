@@ -10,6 +10,12 @@
 #include <cstdio>
 #include <cstring>
 #include <array>
+#include <algorithm>
+#include <mmdeviceapi.h>
+#include <audiopolicy.h>
+#include <wrl/client.h>
+#pragma comment(lib, "ole32.lib")
+#include "SteamRetailParserProbe.inl"
 
 namespace
 {
@@ -401,27 +407,76 @@ namespace
         return TRUE;
     }
 
-    DWORD WINAPI HideOwnWindowsWorker(LPVOID) noexcept
+    // Create/mute the default process audio session before the game initializes
+    // audio. Also cover explicitly named sessions on every active render device.
+    // This never changes the endpoint/master volume or another process's session.
+    void MuteOwnAudioSessions() noexcept
+    {
+        using Microsoft::WRL::ComPtr;
+        ComPtr<IMMDeviceEnumerator> enumerator;
+        if (FAILED(CoCreateInstance(__uuidof(MMDeviceEnumerator), nullptr,
+            CLSCTX_ALL, IID_PPV_ARGS(enumerator.GetAddressOf())))) return;
+        ComPtr<IMMDeviceCollection> devices;
+        if (FAILED(enumerator->EnumAudioEndpoints(eRender, DEVICE_STATE_ACTIVE,
+            devices.GetAddressOf()))) return;
+        UINT count = 0;
+        if (FAILED(devices->GetCount(&count))) return;
+        for (UINT i = 0; i < count; ++i)
+        {
+            ComPtr<IMMDevice> device;
+            ComPtr<IAudioSessionManager2> manager;
+            if (FAILED(devices->Item(i, device.GetAddressOf())) ||
+                FAILED(device->Activate(__uuidof(IAudioSessionManager2), CLSCTX_ALL,
+                    nullptr, reinterpret_cast<void**>(manager.GetAddressOf())))) continue;
+            ComPtr<ISimpleAudioVolume> defaultVolume;
+            if (SUCCEEDED(manager->GetSimpleAudioVolume(nullptr, 0,
+                defaultVolume.GetAddressOf()))) defaultVolume->SetMute(TRUE, nullptr);
+            ComPtr<IAudioSessionEnumerator> sessions;
+            if (FAILED(manager->GetSessionEnumerator(sessions.GetAddressOf()))) continue;
+            int sessionCount = 0;
+            if (FAILED(sessions->GetCount(&sessionCount))) continue;
+            for (int j = 0; j < sessionCount; ++j)
+            {
+                ComPtr<IAudioSessionControl> control;
+                ComPtr<IAudioSessionControl2> control2;
+                ComPtr<ISimpleAudioVolume> volume;
+                DWORD owner = 0;
+                if (SUCCEEDED(sessions->GetSession(j, control.GetAddressOf())) &&
+                    SUCCEEDED(control.As(&control2)) &&
+                    SUCCEEDED(control2->GetProcessId(&owner)) && owner == GetCurrentProcessId() &&
+                    SUCCEEDED(control.As(&volume))) volume->SetMute(TRUE, nullptr);
+            }
+        }
+    }
+
+    DWORD WINAPI HideOwnWindowsWorker(LPVOID muteRequested) noexcept
     {
         std::uint32_t timestamp = 0;
         std::uint32_t imageSize = 0;
         std::uint32_t entryPoint = 0;
-        if (!ReadLiveFingerprint(timestamp, imageSize, entryPoint) ||
-            timestamp != kMW120Timestamp ||
-            imageSize != kMW120ImageSize ||
-            entryPoint != kMW120EntryPoint)
+        if (!ReadLiveFingerprint(timestamp, imageSize, entryPoint)) return 0;
+        const bool is120 = timestamp == kMW120Timestamp && imageSize == kMW120ImageSize &&
+            entryPoint == kMW120EntryPoint;
+        const bool is144 = timestamp == 0x61671CE8u && imageSize == 0x22C1BA00u &&
+            entryPoint == 0x06D429F8u;
+        const bool isSteamRetail = timestamp == 0x69DD404Eu && imageSize == 0x21679200u &&
+            entryPoint == 0x06E4931Cu;
+        if (!is120 && !is144 && !isSteamRetail)
         {
             return 0;
         }
 
         const DWORD processId = GetCurrentProcessId();
+        const HRESULT comResult = muteRequested ? CoInitializeEx(nullptr, COINIT_MULTITHREADED) : E_FAIL;
         while (InterlockedCompareExchange(&g_stop, 0, 0) == 0)
         {
+            if (SUCCEEDED(comResult)) MuteOwnAudioSessions();
             EnumWindows(HideOwnWindowCallback, static_cast<LPARAM>(processId));
             if (HWND console = GetConsoleWindow(); console && IsWindowVisible(console))
                 ShowWindow(console, SW_HIDE);
             Sleep(250);
         }
+        if (SUCCEEDED(comResult)) CoUninitialize();
         return 0;
     }
 
@@ -803,18 +858,29 @@ namespace
     {
         FrontendFenceAutoStart() noexcept
         {
+            wchar_t parserProbe[8]{};
+            if (GetEnvironmentVariableW(L"CODREVAMPED_RETAIL_PARSER_PROBE", parserProbe, 8) && parserProbe[0]==L'1')
+            {
+                HANDLE probe = CreateThread(nullptr, 0, steam_retail_probe::Worker, nullptr, 0, nullptr);
+                if (probe) CloseHandle(probe);
+            }
             HANDLE thread = CreateThread(nullptr, 0, FrontendFenceWorker, nullptr, 0, nullptr);
             if (thread)
                 CloseHandle(thread);
 
             wchar_t hideRequested[8]{};
-            if (GetEnvironmentVariableW(
+            wchar_t backgroundRequested[8]{};
+            const bool background = GetEnvironmentVariableW(L"CODREVAMPED_BACKGROUND_TEST",
+                backgroundRequested, static_cast<DWORD>(std::size(backgroundRequested))) &&
+                backgroundRequested[0] == L'1';
+            if (background || (GetEnvironmentVariableW(
                     L"CODREVAMPED_MW120_HIDE_WINDOW",
                     hideRequested,
                     static_cast<DWORD>(std::size(hideRequested))) &&
-                hideRequested[0] == L'1')
+                hideRequested[0] == L'1'))
             {
-                HANDLE hideThread = CreateThread(nullptr, 0, HideOwnWindowsWorker, nullptr, 0, nullptr);
+                HANDLE hideThread = CreateThread(nullptr, 0, HideOwnWindowsWorker,
+                    background ? reinterpret_cast<LPVOID>(1) : nullptr, 0, nullptr);
                 if (hideThread)
                     CloseHandle(hideThread);
             }

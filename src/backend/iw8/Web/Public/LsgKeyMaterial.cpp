@@ -2,6 +2,10 @@
 
 namespace revamped::iw8::web
 {
+    bool UsesNativeSteamLoginKey()
+    {
+        return DetectLocalIw8Build() == LocalIw8Build::SteamRetail22824864;
+    }
     // V72 source IDs are intentionally numeric so ServerLsg.cpp can consume this
     // diagnostic API without changing the user's existing WebAuthService.h.
     // 1=local constant, 2=Auth3 client ticket sessionKey, 3=Auth3 server-ticket

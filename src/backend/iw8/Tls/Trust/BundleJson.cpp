@@ -272,6 +272,8 @@ namespace revamped::iw8
                 "loginqueue.prod.demonware.net",
                 "prod.umbrella.demonware.net",
                 "*.umbrella.demonware.net",
+                "prod.uno.demonware.net",
+                "*.uno.demonware.net",
                 "*.prod.demonware.net"
             };
             std::vector<std::string> allWebTrustHosts = battleNetWebTrustHosts;

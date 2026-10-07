@@ -48,6 +48,11 @@ namespace revamped::iw8::web
         }
     }
 
+    std::uint64_t GetCurrentLocalUserId()
+    {
+        return CurrentLocalCrossplayUserId();
+    }
+
     HttpResult TryHandleLocalWebRequest(std::vector<std::uint8_t>& buffer)
     {
         HttpResult result = TryHandleLocalWebRequest_BaseUmbrellaIdentity(buffer);
@@ -90,23 +95,24 @@ namespace revamped::iw8::web
             ",\"ticket\":\"" + JsonEscape(ticket) + "\"" +
             ",\"refreshToken\":\"revamped-local-refresh\"" +
             ",\"refreshTokenExpires\":" + std::to_string(refreshExpires) +
-            ",\"accounts\":[]" +
+            ",\"accounts\":[{\"provider\":\"uno\",\"username\":\"revamped\",\"accountID\":" +
+                std::to_string(userId) + ",\"authorized\":true}]" +
             ",\"token\":\"" + JsonEscape(ticket) + "\"" +
             ",\"crossPlatformProgressionEnabled\":true" +
             ",\"lsgEndpoint\":\"127.0.0.1\"}";
 
         result.response = BuildResponse(
             200, "OK", "application/json; charset=utf-8", responseBody);
-        result.label += " umbrellaIdentity=nonzero schema=bdUmbrellaCrossplayInfo";
+        result.label += " umbrellaIdentity=nonzero linkedUno=1 schema=bdUmbrellaCrossplayInfo";
 
         AppendAuthPipelineV58(
-            "UMBRELLA_LOCAL_IDENTITY userId=%llu accountType=bnet username=revamped ticketLen=%llu ivSeedPresent=%s schema=bdUmbrellaCrossplayInfo stateWrites=off",
+            "UMBRELLA_LOCAL_IDENTITY userId=%llu accountType=bnet username=revamped linkedUno=1 ticketLen=%llu ivSeedPresent=%s schema=bdUmbrellaCrossplayInfo stateWrites=off",
             static_cast<unsigned long long>(userId),
             static_cast<unsigned long long>(ticket.size()),
             ivSeedB64.empty() ? "no" : "yes");
 
         log::Print(
-            "[AUTH-LSG] UMBRELLA_LOCAL_IDENTITY userId=%llu accountType=bnet ticketLen=%llu ivSeedPresent=%s schema=bdUmbrellaCrossplayInfo",
+            "[AUTH-LSG] UMBRELLA_LOCAL_IDENTITY userId=%llu accountType=bnet linkedUno=1 ticketLen=%llu ivSeedPresent=%s schema=bdUmbrellaCrossplayInfo",
             static_cast<unsigned long long>(userId),
             static_cast<unsigned long long>(ticket.size()),
             ivSeedB64.empty() ? "no" : "yes");

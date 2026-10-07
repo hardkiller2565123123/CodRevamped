@@ -241,6 +241,8 @@ namespace revamped::iw8
                 L"loginqueue.prod.demonware.net",
                 L"prod.umbrella.demonware.net",
                 L"*.umbrella.demonware.net",
+                L"prod.uno.demonware.net",
+                L"*.uno.demonware.net",
                 L"*.prod.demonware.net",
                 L"pipes-prod-glutton.public.aws.demonware.net",
                 L"*.public.aws.demonware.net",
@@ -412,7 +414,7 @@ namespace revamped::iw8
             else
                 log::Print("[TLS1119] WARNING: could not compute local leaf SPKI SHA256 error=%lu", GetLastError());
 
-            log::Print("[TLS443] local leaf SAN coverage ready dnsNames=%llu includes={us.battle.net,iw8-bnet-auth3.prod.demonware.net,prod.umbrella.demonware.net,*.umbrella.demonware.net,*.prod.demonware.net,pipes-prod-glutton.public.aws.demonware.net,*.public.aws.demonware.net} loopback=yes",
+            log::Print("[TLS443] local leaf SAN coverage ready dnsNames=%llu includes={us.battle.net,iw8-bnet-auth3.prod.demonware.net,prod.umbrella.demonware.net,*.umbrella.demonware.net,prod.uno.demonware.net,*.uno.demonware.net,*.prod.demonware.net,pipes-prod-glutton.public.aws.demonware.net,*.public.aws.demonware.net} loopback=yes",
                 static_cast<unsigned long long>(_countof(dnsNames)));
             log::Print("[TLS443] SOURCE-MARKER glutton-direct-san-v2 active");
 
@@ -436,6 +438,7 @@ namespace revamped::iw8
                 L"iw8-bnet-auth3.prod.demonware.net", L"auth3.prod.demonware.net",
                 L"auth3-login.prod.demonware.net", L"loginqueue.prod.demonware.net",
                 L"prod.umbrella.demonware.net", L"*.umbrella.demonware.net",
+                L"prod.uno.demonware.net", L"*.uno.demonware.net",
                 L"*.prod.demonware.net",
                 L"pipes-prod-glutton.public.aws.demonware.net",
                 L"*.public.aws.demonware.net"
@@ -444,7 +447,7 @@ namespace revamped::iw8
                     g_tls443DemonwareCertificate, "demonware-auth3"))
                 log::Print("[TLS443] WARNING: could not create exact-CN Demonware leaf; :443 will fall back to the broad BGS leaf");
             else
-                log::Print("[TLS443] demonware SNI leaf SAN coverage includes pipes-prod-glutton.public.aws.demonware.net=yes wildcard=*.public.aws.demonware.net");
+                log::Print("[TLS443] demonware SNI leaf SAN coverage includes prod.uno.demonware.net=yes wildcard=*.uno.demonware.net pipes-prod-glutton.public.aws.demonware.net=yes wildcard=*.public.aws.demonware.net");
             g_tls443DemonwareSpkiSha256.clear();
             if (g_tls443DemonwareCertificate &&
                 ComputeCertificateSpkiSha256(g_tls443DemonwareCertificate, g_tls443DemonwareSpkiSha256))

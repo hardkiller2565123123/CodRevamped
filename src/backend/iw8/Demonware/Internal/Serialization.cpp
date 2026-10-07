@@ -29,6 +29,7 @@ namespace revamped::iw8::demonware
         constexpr TaskRoute kRoutes[] = {
             {38u, 6u, "bdAntiCheat", "reportExtendedAuthInfo", ReplyPolicy::NoResultSuccess},
             {38u, 7u, "bdAntiCheat", "reportBNetSessionToken", ReplyPolicy::NoResultSuccess},
+            {38u, 8u, "bdAntiCheat", "reportExtendedAuthInfoTrialStatus", ReplyPolicy::NoResultSuccess},
 
             {27u, 2u, "bdDML", "getUserData", ReplyPolicy::LegacyDmlInfo},
             {67u, 6u, "bdEventLog", "initializeFiltering", ReplyPolicy::NoResultSuccess},

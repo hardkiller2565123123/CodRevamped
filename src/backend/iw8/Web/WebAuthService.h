@@ -9,6 +9,7 @@ namespace revamped::iw8::web
 {
     // Sets up the local Auth3 signer.
     bool InitializeLocalAuthSigner();
+    bool UsesNativeSteamLoginKey();
 
     // HTTP request result.
     struct HttpResult
@@ -27,6 +28,10 @@ namespace revamped::iw8::web
 
     // Handles one local web request.
     HttpResult TryHandleLocalWebRequest(std::vector<std::uint8_t>& buffer);
+
+    // Returns the same non-zero local identity currently embedded in the
+    // Auth3/Umbrella ticket used by the stock client.
+    std::uint64_t GetCurrentLocalUserId();
 
     // Tracks the LSG connection.
     void NotePostLsgTransport(std::uint16_t port, const char* transport);

@@ -76,6 +76,9 @@ namespace revamped::iw8
                     ? kIw8ReferenceProtocol
                     : supportedMin;
                 client.lsgMaxPacket = maxPacket;
+                // Hash the peer's actual advertised range, packet bound, nonce.
+                // Retail advertises 220..231; older captures used 210..220.
+                std::memcpy(client.lsgHelloTranscript, hello + 8, sizeof(client.lsgHelloTranscript));
                 std::memcpy(client.lsgClientNonce, hello + 20, 8);
                 for (unsigned i = 0; i < 8; ++i)
                     client.lsgServerNonce[i] = static_cast<std::uint8_t>(kIw8ReferenceServerNonce >> (i * 8));
@@ -153,14 +156,12 @@ namespace revamped::iw8
                     static_cast<unsigned long long>(frameBytes));
 
                 // Stock sub_14232D1B0 hashes the exact connection transcript:
-                // 210, 220, maxPacket, client nonce, complete server 0x81 frame,
+                // advertised min/max, maxPacket, nonce, complete server 0x81 frame,
                 // then the client 0x82 frame excluding its final 8-byte proof.
                 std::vector<std::uint8_t> transcript;
                 transcript.reserve(64u + frameBytes);
-                AppendLe32(transcript, 210u);
-                AppendLe32(transcript, 220u);
-                AppendLe32(transcript, client.lsgMaxPacket);
-                transcript.insert(transcript.end(), client.lsgClientNonce, client.lsgClientNonce + 8);
+                transcript.insert(transcript.end(), client.lsgHelloTranscript,
+                    client.lsgHelloTranscript + sizeof(client.lsgHelloTranscript));
                 // Hash the complete V69 server header ACK exactly as it was sent.
                 // This mirrors the IW8 reference transcript: 20-byte hello remainder,
                 // complete 26-byte server 0x81 frame, then client 0x82 without its
@@ -219,7 +220,8 @@ namespace revamped::iw8
 
                 std::vector<AuthTrafficSigningKeyCandidateV78> key3Candidates;
                 std::wstring key3PackPath;
-                if (!LoadAuthTrafficSigningKeyCandidatesV78(key3Candidates, &key3PackPath) || key3Candidates.empty())
+                const bool haveKey3Candidates = LoadAuthTrafficSigningKeyCandidatesV78(key3Candidates, &key3PackPath) && !key3Candidates.empty();
+                if (!haveKey3Candidates && !web::UsesNativeSteamLoginKey())
                 {
                     log::Print("[LSG-V78] IW8_KDF_KEY3_CANDIDATES_MISSING id=%llu auth3Serial=%llu expectedFile=iw8-auth-traffic-signing-key3-candidates.bin action=NO_0x83",
                         static_cast<unsigned long long>(client.id),
@@ -237,6 +239,21 @@ namespace revamped::iw8
                 std::uint8_t chosenPrk[20]{};
                 std::uint8_t chosenChallenge[16]{};
                 std::size_t matchedCandidate = static_cast<std::size_t>(-1);
+                bool nativeSteamKeyMatched = false;
+                if (web::UsesNativeSteamLoginKey())
+                {
+                    // Steam login explicitly supplies a 24-byte sessionKey.
+                    // Test it directly; only the client's exact proof can
+                    // select this path, never the build classification alone.
+                    nativeSteamKeyMatched = BCryptHmacSha1(transcriptHash, sizeof(transcriptHash),
+                        auth3ClientTicketSessionKey, 24u, chosenPrk) &&
+                        HkdfExpandSha1(chosenPrk,
+                            reinterpret_cast<const std::uint8_t*>(clientChalLabel), 10u,
+                            chosenChallenge, sizeof(chosenChallenge)) &&
+                        EqualBytes(chosenChallenge, clientProof, 8u);
+                    log::Print("[STEAM-LSG] directLoginSessionKey proofMatch=%s validation=required",
+                        nativeSteamKeyMatched ? "YES" : "no");
+                }
 
                 log::Print("[LSG-V78] KEY3_ORACLE_BEGIN id=%llu auth3Serial=%llu candidates=%llu source=ON_DISK_EXE_DER transcriptBytes=%llu clientProof=%02X%02X%02X%02X%02X%02X%02X%02X",
                     static_cast<unsigned long long>(client.id),
@@ -246,7 +263,7 @@ namespace revamped::iw8
                     clientProof[0], clientProof[1], clientProof[2], clientProof[3],
                     clientProof[4], clientProof[5], clientProof[6], clientProof[7]);
 
-                for (std::size_t candidateIndex = 0; candidateIndex < key3Candidates.size(); ++candidateIndex)
+                for (std::size_t candidateIndex = 0; !nativeSteamKeyMatched && candidateIndex < key3Candidates.size(); ++candidateIndex)
                 {
                     const auto& candidate = key3Candidates[candidateIndex];
                     std::array<std::uint8_t, 24> trafficSessionKey{};
@@ -280,7 +297,7 @@ namespace revamped::iw8
                     break;
                 }
 
-                if (matchedCandidate == static_cast<std::size_t>(-1))
+                if (!nativeSteamKeyMatched && matchedCandidate == static_cast<std::size_t>(-1))
                 {
                     log::Print("[LSG-V78] KEY3_ORACLE_NO_MATCH id=%llu auth3Serial=%llu candidates=%llu clientProof=%02X%02X%02X%02X%02X%02X%02X%02X action=NO_0x83 next=VERIFY_OTHER_KDF_INPUTS",
                         static_cast<unsigned long long>(client.id),
@@ -307,10 +324,17 @@ namespace revamped::iw8
                     return true;
                 }
 
-                client.lsgCryptoVariant = "IW8_AUTHSESSIONKEYKDF_SHA1_V78";
+                client.lsgCryptoVariant = nativeSteamKeyMatched ? "STEAM_LOGIN_SESSIONKEY_SHA1" : "IW8_AUTHSESSIONKEYKDF_SHA1_V78";
                 std::memcpy(client.lsgPrk, chosenPrk, sizeof(client.lsgPrk));
                 std::memcpy(client.lsgBdData, chosenBdData, sizeof(client.lsgBdData));
 
+                if (nativeSteamKeyMatched)
+                {
+                    log::Print("[STEAM-LSG] NATIVE_PROOF_MATCH id=%llu action=SEND_NATIVE_0x83 stateWrites=off",
+                        static_cast<unsigned long long>(client.id));
+                }
+                else
+                {
                 const auto& matchedKey = key3Candidates[matchedCandidate];
                 log::Print("[LSG-V78] IW8_KDF_PROOF_MATCH id=%llu auth3Serial=%llu source=AUTH3_CLIENT_TICKET_SESSIONKEY key3Source=ON_DISK_EXE_DER candidate=%llu fileOffset=0x%llX transcriptBytes=%llu responseId=%02X%02X%02X%02X%02X%02X%02X%02X action=SEND_NATIVE_0x83",
                     static_cast<unsigned long long>(client.id),
@@ -325,6 +349,7 @@ namespace revamped::iw8
                     static_cast<unsigned long long>(auth3Serial),
                     static_cast<unsigned long long>(matchedCandidate),
                     static_cast<unsigned long long>(matchedKey.fileOffset));
+                }
 
                 std::vector<std::uint8_t> response;
                 response.reserve(14);
@@ -339,10 +364,11 @@ namespace revamped::iw8
 
                 client.lsgInput.erase(client.lsgInput.begin(), client.lsgInput.begin() + static_cast<std::ptrdiff_t>(frameBytes));
                 client.lsgStage = 2;
-                log::Print("[LSG-V78] SERVER_AUTH_DONE id=%llu auth3Serial=%llu sentBytes=%llu opcode=0x83 proofSource=IW8_AUTHSESSIONKEYKDF next=EXPECT_SECURE_0x85",
+                log::Print("[LSG-V78] SERVER_AUTH_DONE id=%llu auth3Serial=%llu sentBytes=%llu opcode=0x83 proofSource=%s next=EXPECT_SECURE_0x85",
                     static_cast<unsigned long long>(client.id),
                     static_cast<unsigned long long>(auth3Serial),
-                    static_cast<unsigned long long>(response.size()));
+                    static_cast<unsigned long long>(response.size()),
+                    nativeSteamKeyMatched ? "STEAM_LOGIN_SESSIONKEY" : "IW8_AUTHSESSIONKEYKDF");
                 AppendLsgPipelineV63("V78_SERVER_AUTH_DONE id=%llu auth3Serial=%llu sentBytes=%llu next=EXPECT_SECURE_0x85",
                     static_cast<unsigned long long>(client.id),
                     static_cast<unsigned long long>(auth3Serial),

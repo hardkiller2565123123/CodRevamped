@@ -32,6 +32,8 @@ namespace revamped::iw8
                     "/__revamped/objectstore/publisher/infinityward/store_v2_warzone.json";
                 static constexpr const char* kStoreCategoryPath =
                     "/__revamped/objectstore/publisher/infinityward/revamped_store_category.json";
+                static constexpr const char* kRavenPublisherPrefix =
+                    "/__revamped/objectstore/publisher/raven/";
                 static constexpr const char* kStoreLayoutBody =
                     "{\"categories\":[\"revamped_store_category.json\"]}";
                 static constexpr const char* kStoreCategoryBody = "{\"layoutType\":0}";
@@ -75,16 +77,33 @@ namespace revamped::iw8
                 bool hasLocalBody = false;
                 if (result.method == "GET" && objectStoreHost)
                 {
-                    const std::string manifestPrefix = localpublisher::PathPrefix;
-                    if (localpublisher::LocalManifestEnabled() &&
-                        result.path.rfind(manifestPrefix, 0) == 0 &&
-                        localpublisher::IsManifest(result.path.substr(manifestPrefix.size())))
+                    std::string objectName;
+                    const std::string infinityWardPrefix = localpublisher::PathPrefix;
+                    if (result.path.rfind(infinityWardPrefix, 0) == 0)
+                        objectName = result.path.substr(infinityWardPrefix.size());
+                    else if (result.path.rfind(kRavenPublisherPrefix, 0) == 0)
+                        objectName = result.path.substr(
+                            std::char_traits<char>::length(kRavenPublisherPrefix));
+
+                    if (!objectName.empty() &&
+                        localpublisher::LocalManifestEnabled() &&
+                        localpublisher::IsManifest(objectName))
                     {
                         localBody = localpublisher::ManifestBody();
                         localLabel = "local signed manifest (RSA-PSS; native validation active)";
+                        localContentType = "application/json; charset=utf-8";
+                        localBodyKind = "local-publisher-manifest";
                         hasLocalBody = true;
                     }
-                    if (result.path == kStoreLayoutPath)
+                    else if (objectName == "store_v2.json")
+                    {
+                        localBody = "{\"categories\":[]}";
+                        localLabel = "local ObjectStore publisher store_v2.json";
+                        localContentType = "application/json; charset=utf-8";
+                        localBodyKind = "local-publisher-json";
+                        hasLocalBody = true;
+                    }
+                    else if (result.path == kStoreLayoutPath)
                     {
                         localBody = kStoreLayoutBody;
                         localLabel = "local ObjectStore publisher store_v2_warzone.json";
@@ -96,10 +115,8 @@ namespace revamped::iw8
                         localLabel = "local ObjectStore publisher revamped_store_category.json";
                         hasLocalBody = true;
                     }
-                    else if (result.path.rfind(localpublisher::PathPrefix, 0) == 0)
+                    else if (!objectName.empty())
                     {
-                        const std::string objectName =
-                            result.path.substr(std::string(localpublisher::PathPrefix).size());
                         if (isInGameStoreName(objectName))
                         {
                             localBody = kInGameStoreBody;

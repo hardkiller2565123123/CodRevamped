@@ -112,6 +112,7 @@ namespace revamped::iw8
             if (!session.sni.empty() &&
                 (hostEndsWith(".prod.demonware.net") ||
                  hostEndsWith(".umbrella.demonware.net") ||
+                 hostEndsWith(".uno.demonware.net") ||
                  hostEndsWith(".public.aws.demonware.net")) &&
                 g_tls443DemonwareCredentialValid)
             {

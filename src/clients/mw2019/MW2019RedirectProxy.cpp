@@ -15,6 +15,7 @@
 #include <array>
 #include <vector>
 #include "../../backend/iw8/LocalManifestData.h"
+#include "../../shared/common/utils/MinHook.hpp"
 
 #pragma comment(lib, "Ws2_32.lib")
 #pragma intrinsic(_ReturnAddress)
@@ -54,8 +55,22 @@ namespace
     using WSASocketWFn = SOCKET (WSAAPI*)(int, int, int, LPWSAPROTOCOL_INFOW, GROUP, DWORD);
     using WSAIoctlFn = int (WSAAPI*)(SOCKET, DWORD, LPVOID, DWORD, LPVOID, DWORD, LPDWORD, LPWSAOVERLAPPED, LPWSAOVERLAPPED_COMPLETION_ROUTINE);
     using ConnectExFn = BOOL (PASCAL*)(SOCKET, const sockaddr*, int, PVOID, DWORD, LPDWORD, LPOVERLAPPED);
+    using GetProcAddressFn = FARPROC (WINAPI*)(HMODULE, LPCSTR);
     using GetVersionFn = DWORD (WINAPI*)();
     using GetVersionExAFn = BOOL (WINAPI*)(LPOSVERSIONINFOA);
+    using GetVersionExWFn = BOOL (WINAPI*)(LPOSVERSIONINFOW);
+
+    struct CompatRtlOsVersionInfoW
+    {
+        ULONG dwOSVersionInfoSize;
+        ULONG dwMajorVersion;
+        ULONG dwMinorVersion;
+        ULONG dwBuildNumber;
+        ULONG dwPlatformId;
+        WCHAR szCSDVersion[128];
+    };
+    using RtlGetVersionFn = LONG (WINAPI*)(CompatRtlOsVersionInfoW*);
+    using RtlGetNtVersionNumbersFn = VOID (WINAPI*)(LPDWORD, LPDWORD, LPDWORD);
     using VerifyVersionInfoAFn = BOOL (WINAPI*)(LPOSVERSIONINFOEXA, DWORD, DWORDLONG);
     using VerifyVersionInfoWFn = BOOL (WINAPI*)(LPOSVERSIONINFOEXW, DWORD, DWORDLONG);
     using GetCommandLineAFn = LPSTR (WINAPI*)();
@@ -72,15 +87,26 @@ namespace
     using FreeLibraryAndExitThreadFn = VOID (WINAPI*)(HMODULE, DWORD);
     using SetUnhandledExceptionFilterFn = LPTOP_LEVEL_EXCEPTION_FILTER (WINAPI*)(LPTOP_LEVEL_EXCEPTION_FILTER);
     using UnhandledExceptionFilterFn = LONG (WINAPI*)(PEXCEPTION_POINTERS);
+    using RtlExitUserProcessFn = VOID (WINAPI*)(LONG);
+    using RtlExitUserThreadFn = VOID (WINAPI*)(LONG);
+    using NtTerminateProcessFn = LONG (WINAPI*)(HANDLE, LONG);
+    using NtRaiseHardErrorFn = LONG (WINAPI*)(LONG, ULONG, ULONG, PULONG_PTR, ULONG, PULONG);
+    using RaiseFailFastExceptionFn = VOID (WINAPI*)(PEXCEPTION_RECORD, PCONTEXT, DWORD);
     using CryptUnprotectDataFn = BOOL (WINAPI*)(DATA_BLOB*, LPWSTR*, DATA_BLOB*, PVOID, CRYPTPROTECT_PROMPTSTRUCT*, DWORD, DATA_BLOB*);
     using MessageBoxAFn = int (WINAPI*)(HWND, LPCSTR, LPCSTR, UINT);
     using MessageBoxWFn = int (WINAPI*)(HWND, LPCWSTR, LPCWSTR, UINT);
 
     // Early IW8 startup fingerprints observed from the user's local builds.
-    // The replay executable that is now booting to "Connecting to Online Services"
-    // is the 1.20 target.  1.23 is the separately supplied retail executable.
-    // 1.28 is now keyed to its live 2020-10 fingerprint (0x5F8DEF10).
-    // Unknown builds (including 1.44) remain outside this startup shim.
+    // 1.16 is the 2019-10 retail image that was previously falling through the
+    // unknown-retail path and crashing before useful startup diagnostics.  Keep
+    // it on the same conservative pre-entry compatibility path as 1.20/1.23:
+    // Windows-version + launcher shims, ordinary IAT network hooks, and no WS2
+    // export-table rewriting.  Build-specific Auth3/manifest RVAs remain scoped
+    // to the exact builds where they were proven.
+    constexpr std::uint32_t kMW116Timestamp = 0x5DAF7AF7u;
+    constexpr std::uint32_t kMW116ImageSize = 0x168C6E00u;
+    constexpr std::uint32_t kMW116EntryPoint = 0x02B53550u;
+
     constexpr std::uint32_t kMW120Timestamp = 0x5E9BAF80u;
     constexpr std::uint32_t kMW120ImageSize = 0x1324B000u;
     constexpr std::uint32_t kMW120EntryPoint = 0x021CDC10u;
@@ -99,6 +125,7 @@ namespace
     enum class StartupCompatBuild : LONG
     {
         None = 0,
+        MW116 = 116,
         MW120 = 120,
         MW123 = 123,
         MW128 = 128
@@ -119,8 +146,12 @@ namespace
     WSASocketWFn g_wsaSocketW = nullptr;
     WSAIoctlFn g_wsaIoctl = nullptr;
     ConnectExFn g_connectEx = nullptr;
+    GetProcAddressFn g_realGetProcAddress = nullptr;
     GetVersionFn g_realGetVersion = nullptr;
     GetVersionExAFn g_realGetVersionExA = nullptr;
+    GetVersionExWFn g_realGetVersionExW = nullptr;
+    RtlGetVersionFn g_realRtlGetVersion = nullptr;
+    RtlGetNtVersionNumbersFn g_realRtlGetNtVersionNumbers = nullptr;
     VerifyVersionInfoAFn g_realVerifyVersionInfoA = nullptr;
     VerifyVersionInfoWFn g_realVerifyVersionInfoW = nullptr;
     GetCommandLineAFn g_realGetCommandLineA = nullptr;
@@ -137,6 +168,11 @@ namespace
     FreeLibraryAndExitThreadFn g_realFreeLibraryAndExitThread = nullptr;
     SetUnhandledExceptionFilterFn g_realSetUnhandledExceptionFilter = nullptr;
     UnhandledExceptionFilterFn g_realUnhandledExceptionFilter = nullptr;
+    RtlExitUserProcessFn g_realRtlExitUserProcess = nullptr;
+    RtlExitUserThreadFn g_realRtlExitUserThread = nullptr;
+    NtTerminateProcessFn g_realNtTerminateProcess = nullptr;
+    NtRaiseHardErrorFn g_realNtRaiseHardError = nullptr;
+    RaiseFailFastExceptionFn g_realRaiseFailFastException = nullptr;
     CryptUnprotectDataFn g_realCryptUnprotectData = nullptr;
     MessageBoxAFn g_realMessageBoxA = nullptr;
     MessageBoxWFn g_realMessageBoxW = nullptr;
@@ -162,17 +198,25 @@ namespace
     volatile LONG g_compat123Detected = 0; // nonzero for any supported early startup build
     volatile LONG g_startupCompatBuild = static_cast<LONG>(StartupCompatBuild::None);
     volatile LONG g_compat123Patched = 0;
+    volatile LONG g_compat116DynamicVersionPatched = 0;
+    volatile LONG g_mw116ExternalMonitorStarted = 0;
+    volatile LONG g_mw116MonitorHost = 0;
+    DWORD g_processAttachThreadId = 0;
     HMODULE g_ws2 = nullptr;
     void* g_ws2RelayPage = nullptr;
     std::size_t g_ws2RelayOffset = 0;
 
     ULONGLONG g_traceStartTick = 0;
+    PVOID g_retailCrashVeh = nullptr;
+    volatile LONG g_retailCrashSeen = 0;
+    volatile LONG g_retailCrashGuard = 0;
 
     constexpr const char* kLoopbackA = "127.0.0.1";
     constexpr const wchar_t* kLoopbackW = L"127.0.0.1";
     const GUID kConnectExGuid = WSAID_CONNECTEX;
 
     void WriteRedirectLog(const char* text) noexcept;
+    void Write123StartupLog(const char* format, ...) noexcept;
 
     ULONGLONG TraceElapsedMs() noexcept
     {
@@ -261,6 +305,1658 @@ namespace
         DWORD written = 0;
         WriteFile(file, text, static_cast<DWORD>(std::strlen(text)), &written, nullptr);
         CloseHandle(file);
+    }
+
+    void WriteRetailCrashLog(const char* format, ...) noexcept
+    {
+        if (!format)
+            return;
+
+        char text[4096]{};
+        va_list args;
+        va_start(args, format);
+        _vsnprintf_s(text, sizeof(text), _TRUNCATE, format, args);
+        va_end(args);
+
+        wchar_t exePath[32768]{};
+        constexpr size_t exePathCount = sizeof(exePath) / sizeof(exePath[0]);
+        if (!GetModuleFileNameW(nullptr, exePath, static_cast<DWORD>(exePathCount)))
+            return;
+        wchar_t* slash = wcsrchr(exePath, L'\\');
+        if (!slash)
+            return;
+        slash[1] = L'\0';
+        wcscat_s(exePath, exePathCount, L"mw2019_retail_crash.log");
+
+        HANDLE file = CreateFileW(exePath, FILE_APPEND_DATA, FILE_SHARE_READ | FILE_SHARE_WRITE,
+            nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
+        if (file == INVALID_HANDLE_VALUE)
+            return;
+        DWORD written = 0;
+        WriteFile(file, text, static_cast<DWORD>(std::strlen(text)), &written, nullptr);
+        FlushFileBuffers(file);
+        CloseHandle(file);
+    }
+
+    std::uintptr_t ModuleRvaFromAddress(void* address, char* moduleName, std::size_t moduleNameSize) noexcept
+    {
+        if (moduleName && moduleNameSize)
+            strcpy_s(moduleName, moduleNameSize, "<unknown>");
+        if (!address)
+            return 0;
+
+        HMODULE module = nullptr;
+        if (!GetModuleHandleExA(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
+            reinterpret_cast<LPCSTR>(address), &module) || !module)
+            return 0;
+
+        if (moduleName && moduleNameSize)
+        {
+            char path[MAX_PATH * 4]{};
+            if (GetModuleFileNameA(module, path, static_cast<DWORD>(sizeof(path))))
+            {
+                const char* slash = std::strrchr(path, '\\');
+                strcpy_s(moduleName, moduleNameSize, slash ? slash + 1 : path);
+            }
+        }
+        return reinterpret_cast<std::uintptr_t>(address) - reinterpret_cast<std::uintptr_t>(module);
+    }
+
+    bool IsExactRetailSteamImage() noexcept
+    {
+        return InterlockedCompareExchange(&g_liveFingerprintValid, 0, 0) != 0 &&
+            g_liveTimestamp == 0x69DD404Eu && g_liveImageSize == 0x21679200u &&
+            g_liveEntryPoint == 0x06E4931Cu;
+    }
+
+    bool RetailProbeReadableProtection(DWORD protection) noexcept
+    {
+        if (protection & (PAGE_GUARD | PAGE_NOACCESS))
+            return false;
+        switch (protection & 0xFFu)
+        {
+        case PAGE_READONLY:
+        case PAGE_READWRITE:
+        case PAGE_WRITECOPY:
+        case PAGE_EXECUTE_READ:
+        case PAGE_EXECUTE_READWRITE:
+        case PAGE_EXECUTE_WRITECOPY:
+            return true;
+        default:
+            return false;
+        }
+    }
+
+    bool RetailProbeExecutableProtection(DWORD protection) noexcept
+    {
+        if (protection & (PAGE_GUARD | PAGE_NOACCESS))
+            return false;
+        switch (protection & 0xFFu)
+        {
+        case PAGE_EXECUTE_READ:
+        case PAGE_EXECUTE_READWRITE:
+        case PAGE_EXECUTE_WRITECOPY:
+            return true;
+        default:
+            return false;
+        }
+    }
+
+    constexpr DWORD kRetailRuntimeDumpDelayMs = 50000u;
+
+    bool RetailDumpWriteAt(HANDLE file, const std::uint64_t offset, const void* data,
+        const std::size_t size) noexcept
+    {
+        if (!file || file == INVALID_HANDLE_VALUE || (!data && size))
+            return false;
+
+        LARGE_INTEGER position{};
+        position.QuadPart = static_cast<LONGLONG>(offset);
+        if (!SetFilePointerEx(file, position, nullptr, FILE_BEGIN))
+            return false;
+
+        const auto* bytes = static_cast<const unsigned char*>(data);
+        std::size_t writtenTotal = 0;
+        while (writtenTotal < size)
+        {
+            const std::size_t remaining = size - writtenTotal;
+            const DWORD chunk = static_cast<DWORD>(remaining > (16u * 1024u * 1024u) ?
+                (16u * 1024u * 1024u) : remaining);
+            DWORD written = 0;
+            if (!WriteFile(file, bytes + writtenTotal, chunk, &written, nullptr) || written != chunk)
+                return false;
+            writtenTotal += written;
+        }
+        return true;
+    }
+
+    bool RetailDumpWriteText(HANDLE file, const char* format, ...) noexcept
+    {
+        if (!file || file == INVALID_HANDLE_VALUE || !format)
+            return false;
+        char text[2048]{};
+        va_list args;
+        va_start(args, format);
+        _vsnprintf_s(text, sizeof(text), _TRUNCATE, format, args);
+        va_end(args);
+        const DWORD bytes = static_cast<DWORD>(std::strlen(text));
+        DWORD written = 0;
+        return WriteFile(file, text, bytes, &written, nullptr) && written == bytes;
+    }
+
+    bool RetailRuntimeDumpBuildPaths(wchar_t* dumpDirectory, const std::size_t dumpDirectoryCount,
+        wchar_t* pePath, const std::size_t pePathCount,
+        wchar_t* metadataPath, const std::size_t metadataPathCount) noexcept
+    {
+        if (!dumpDirectory || !dumpDirectoryCount || !pePath || !pePathCount ||
+            !metadataPath || !metadataPathCount)
+            return false;
+
+        wchar_t modulePath[32768]{};
+        const DWORD moduleLength = GetModuleFileNameW(nullptr, modulePath,
+            static_cast<DWORD>(std::size(modulePath)));
+        if (!moduleLength || moduleLength >= std::size(modulePath))
+            return false;
+        wchar_t* slash = std::wcsrchr(modulePath, L'\\');
+        if (!slash)
+            return false;
+        *slash = L'\0';
+
+        if (_snwprintf_s(dumpDirectory, dumpDirectoryCount, _TRUNCATE,
+            L"%ls\\CodRevampedRuntimeDump", modulePath) < 0)
+            return false;
+        if (!CreateDirectoryW(dumpDirectory, nullptr) && GetLastError() != ERROR_ALREADY_EXISTS)
+            return false;
+
+        if (_snwprintf_s(pePath, pePathCount, _TRUNCATE,
+            L"%ls\\ModernWarfare_runtime_dump.exe", dumpDirectory) < 0)
+            return false;
+        if (_snwprintf_s(metadataPath, metadataPathCount, _TRUNCATE,
+            L"%ls\\runtime_sections.txt", dumpDirectory) < 0)
+            return false;
+        return true;
+    }
+
+    DWORD RetailAlignUp(const DWORD value, const DWORD alignment) noexcept
+    {
+        if (!alignment)
+            return value;
+        const DWORD remainder = value % alignment;
+        return remainder ? value + (alignment - remainder) : value;
+    }
+
+    bool RetailRuntimeDumpMainImage() noexcept
+    {
+        if (!IsExactRetailSteamImage())
+            return false;
+
+        const std::uintptr_t imageBase = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+        const std::size_t imageSize = static_cast<std::size_t>(g_liveImageSize);
+        if (!imageBase || imageSize < sizeof(IMAGE_DOS_HEADER))
+            return false;
+
+        const auto* dos = reinterpret_cast<const IMAGE_DOS_HEADER*>(imageBase);
+        if (dos->e_magic != IMAGE_DOS_SIGNATURE || dos->e_lfanew <= 0 ||
+            static_cast<std::size_t>(dos->e_lfanew) + sizeof(IMAGE_NT_HEADERS64) > imageSize)
+        {
+            ConsolePrint("[RETAIL-RUNTIME-DUMP] failed stage=headers reason=invalid-dos-or-nt\r\n");
+            return false;
+        }
+
+        const auto* nt = reinterpret_cast<const IMAGE_NT_HEADERS64*>(imageBase +
+            static_cast<std::uintptr_t>(dos->e_lfanew));
+        if (nt->Signature != IMAGE_NT_SIGNATURE || nt->OptionalHeader.Magic != IMAGE_NT_OPTIONAL_HDR64_MAGIC)
+        {
+            ConsolePrint("[RETAIL-RUNTIME-DUMP] failed stage=headers reason=invalid-pe64\r\n");
+            return false;
+        }
+
+        const DWORD sizeOfImage = nt->OptionalHeader.SizeOfImage;
+        const DWORD sizeOfHeaders = nt->OptionalHeader.SizeOfHeaders;
+        if (!sizeOfImage || sizeOfImage > g_liveImageSize || !sizeOfHeaders || sizeOfHeaders > sizeOfImage)
+        {
+            ConsolePrint("[RETAIL-RUNTIME-DUMP] failed stage=headers reason=invalid-image-sizing sizeOfImage=0x%08X sizeOfHeaders=0x%08X\r\n",
+                sizeOfImage, sizeOfHeaders);
+            return false;
+        }
+
+        wchar_t dumpDirectory[32768]{};
+        wchar_t pePath[32768]{};
+        wchar_t metadataPath[32768]{};
+        if (!RetailRuntimeDumpBuildPaths(dumpDirectory, std::size(dumpDirectory),
+            pePath, std::size(pePath), metadataPath, std::size(metadataPath)))
+        {
+            ConsolePrint("[RETAIL-RUNTIME-DUMP] failed stage=paths win32=%lu\r\n",
+                static_cast<unsigned long>(GetLastError()));
+            return false;
+        }
+
+        HANDLE peFile = CreateFileW(pePath, GENERIC_WRITE | GENERIC_READ, FILE_SHARE_READ,
+            nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
+        if (peFile == INVALID_HANDLE_VALUE)
+        {
+            ConsolePrint("[RETAIL-RUNTIME-DUMP] failed stage=create-pe win32=%lu\r\n",
+                static_cast<unsigned long>(GetLastError()));
+            return false;
+        }
+
+        HANDLE metadataFile = CreateFileW(metadataPath, GENERIC_WRITE, FILE_SHARE_READ,
+            nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
+        if (metadataFile == INVALID_HANDLE_VALUE)
+        {
+            ConsolePrint("[RETAIL-RUNTIME-DUMP] failed stage=create-metadata win32=%lu\r\n",
+                static_cast<unsigned long>(GetLastError()));
+            CloseHandle(peFile);
+            return false;
+        }
+
+        LARGE_INTEGER end{};
+        end.QuadPart = sizeOfImage;
+        if (!SetFilePointerEx(peFile, end, nullptr, FILE_BEGIN) || !SetEndOfFile(peFile))
+        {
+            ConsolePrint("[RETAIL-RUNTIME-DUMP] failed stage=resize-pe win32=%lu\r\n",
+                static_cast<unsigned long>(GetLastError()));
+            CloseHandle(metadataFile);
+            CloseHandle(peFile);
+            return false;
+        }
+
+        RetailDumpWriteText(metadataFile,
+            "CodRevamped MW2019 Steam Retail runtime image dump\r\n"
+            "imageBase=0x%016llX\r\nimageSize=0x%08X\r\n"
+            "timestamp=0x%08X\r\nentryPointRva=0x%08X\r\n"
+            "dumpLayout=memory-layout PE; section PointerToRawData rewritten to RVA\r\n"
+            "processWrites=none; imagePagesReadOnlyCopied=yes\r\n\r\n",
+            static_cast<unsigned long long>(imageBase), sizeOfImage,
+            g_liveTimestamp, g_liveEntryPoint);
+
+        std::uint64_t copiedBytes = 0;
+        std::uint64_t skippedBytes = 0;
+        unsigned copiedRegions = 0;
+        unsigned skippedRegions = 0;
+        const std::uintptr_t imageEnd = imageBase + sizeOfImage;
+        std::uintptr_t cursor = imageBase;
+        while (cursor < imageEnd)
+        {
+            MEMORY_BASIC_INFORMATION mbi{};
+            if (!VirtualQuery(reinterpret_cast<LPCVOID>(cursor), &mbi, sizeof(mbi)))
+                break;
+
+            const std::uintptr_t regionBase = reinterpret_cast<std::uintptr_t>(mbi.BaseAddress);
+            const std::uintptr_t rawRegionEnd = regionBase + mbi.RegionSize;
+            const std::uintptr_t regionStart = cursor > regionBase ? cursor : regionBase;
+            const std::uintptr_t regionEnd = rawRegionEnd < imageEnd ? rawRegionEnd : imageEnd;
+            if (regionEnd <= regionStart)
+                break;
+
+            const std::size_t regionSize = static_cast<std::size_t>(regionEnd - regionStart);
+            const bool readable = mbi.State == MEM_COMMIT && RetailProbeReadableProtection(mbi.Protect);
+            RetailDumpWriteText(metadataFile,
+                "region rva=0x%08llX bytes=0x%llX state=0x%08lX protect=0x%08lX copied=%s\r\n",
+                static_cast<unsigned long long>(regionStart - imageBase),
+                static_cast<unsigned long long>(regionSize),
+                static_cast<unsigned long>(mbi.State),
+                static_cast<unsigned long>(mbi.Protect), readable ? "yes" : "no");
+            if (readable)
+            {
+                if (!RetailDumpWriteAt(peFile, static_cast<std::uint64_t>(regionStart - imageBase),
+                    reinterpret_cast<const void*>(regionStart), regionSize))
+                {
+                    ConsolePrint("[RETAIL-RUNTIME-DUMP] failed stage=copy-region rva=0x%08llX bytes=%llu win32=%lu\r\n",
+                        static_cast<unsigned long long>(regionStart - imageBase),
+                        static_cast<unsigned long long>(regionSize),
+                        static_cast<unsigned long>(GetLastError()));
+                    CloseHandle(metadataFile);
+                    CloseHandle(peFile);
+                    return false;
+                }
+                copiedBytes += regionSize;
+                ++copiedRegions;
+            }
+            else
+            {
+                skippedBytes += regionSize;
+                ++skippedRegions;
+            }
+
+            if (rawRegionEnd <= cursor)
+                break;
+            cursor = rawRegionEnd;
+        }
+
+        std::vector<unsigned char> headers(sizeOfHeaders);
+        std::memcpy(headers.data(), reinterpret_cast<const void*>(imageBase), sizeOfHeaders);
+        auto* dumpDos = reinterpret_cast<IMAGE_DOS_HEADER*>(headers.data());
+        auto* dumpNt = reinterpret_cast<IMAGE_NT_HEADERS64*>(headers.data() + dumpDos->e_lfanew);
+        auto* sections = IMAGE_FIRST_SECTION(dumpNt);
+        const std::size_t sectionTableOffset = reinterpret_cast<unsigned char*>(sections) - headers.data();
+        const std::size_t sectionTableBytes = static_cast<std::size_t>(dumpNt->FileHeader.NumberOfSections) * sizeof(IMAGE_SECTION_HEADER);
+        if (sectionTableOffset > headers.size() || sectionTableBytes > headers.size() - sectionTableOffset)
+        {
+            ConsolePrint("[RETAIL-RUNTIME-DUMP] failed stage=patch-headers reason=section-table-out-of-range\r\n");
+            CloseHandle(metadataFile);
+            CloseHandle(peFile);
+            return false;
+        }
+        const DWORD fileAlignment = dumpNt->OptionalHeader.FileAlignment ? dumpNt->OptionalHeader.FileAlignment : 0x200u;
+
+        RetailDumpWriteText(metadataFile,
+            "sections=%u fileAlignment=0x%X sectionAlignment=0x%X\r\n",
+            static_cast<unsigned>(dumpNt->FileHeader.NumberOfSections), fileAlignment,
+            dumpNt->OptionalHeader.SectionAlignment);
+        for (unsigned index = 0; index < dumpNt->FileHeader.NumberOfSections; ++index)
+        {
+            auto& section = sections[index];
+            char name[9]{};
+            std::memcpy(name, section.Name, 8);
+            const DWORD oldRawPointer = section.PointerToRawData;
+            const DWORD oldRawSize = section.SizeOfRawData;
+            DWORD memoryBytes = section.Misc.VirtualSize > oldRawSize ? section.Misc.VirtualSize : oldRawSize;
+            if (section.VirtualAddress >= sizeOfImage)
+                memoryBytes = 0;
+            else if (memoryBytes > sizeOfImage - section.VirtualAddress)
+                memoryBytes = sizeOfImage - section.VirtualAddress;
+            DWORD newRawSize = RetailAlignUp(memoryBytes, fileAlignment);
+            if (section.VirtualAddress < sizeOfImage && newRawSize > sizeOfImage - section.VirtualAddress)
+                newRawSize = sizeOfImage - section.VirtualAddress;
+            section.PointerToRawData = section.VirtualAddress;
+            section.SizeOfRawData = newRawSize;
+
+            RetailDumpWriteText(metadataFile,
+                "section[%u] name=%s va=0x%08X virtualSize=0x%08X oldRaw=0x%08X/0x%08X newRaw=0x%08X/0x%08X characteristics=0x%08X\r\n",
+                index, name, section.VirtualAddress, section.Misc.VirtualSize,
+                oldRawPointer, oldRawSize, section.PointerToRawData, section.SizeOfRawData,
+                section.Characteristics);
+        }
+        dumpNt->OptionalHeader.CheckSum = 0;
+
+        if (!RetailDumpWriteAt(peFile, 0, headers.data(), headers.size()))
+        {
+            ConsolePrint("[RETAIL-RUNTIME-DUMP] failed stage=patch-headers win32=%lu\r\n",
+                static_cast<unsigned long>(GetLastError()));
+            CloseHandle(metadataFile);
+            CloseHandle(peFile);
+            return false;
+        }
+
+        RetailDumpWriteText(metadataFile,
+            "\r\ncopySummary readableRegions=%u copiedBytes=%llu skippedRegions=%u skippedBytes=%llu\r\n",
+            copiedRegions, static_cast<unsigned long long>(copiedBytes),
+            skippedRegions, static_cast<unsigned long long>(skippedBytes));
+        FlushFileBuffers(peFile);
+        FlushFileBuffers(metadataFile);
+        CloseHandle(metadataFile);
+        CloseHandle(peFile);
+
+        char dumpDirectoryA[32768]{};
+        WideCharToMultiByte(CP_UTF8, 0, dumpDirectory, -1, dumpDirectoryA,
+            static_cast<int>(sizeof(dumpDirectoryA)), nullptr, nullptr);
+        ConsolePrint("[RETAIL-RUNTIME-DUMP] complete directory=%s file=ModernWarfare_runtime_dump.exe metadata=runtime_sections.txt imageBase=%p size=0x%08X copiedBytes=%llu skippedBytes=%llu\r\n",
+            dumpDirectoryA[0] ? dumpDirectoryA : "<conversion-failed>",
+            reinterpret_cast<void*>(imageBase), sizeOfImage,
+            static_cast<unsigned long long>(copiedBytes),
+            static_cast<unsigned long long>(skippedBytes));
+        return true;
+    }
+
+    DWORD WINAPI RetailRuntimeDumpWorker(LPVOID) noexcept
+    {
+        Sleep(kRetailRuntimeDumpDelayMs);
+        if (!IsExactRetailSteamImage())
+            return 0;
+
+        wchar_t disabled[8]{};
+        if (GetEnvironmentVariableW(L"CODREVAMPED_RETAIL_NO_RUNTIME_DUMP", disabled,
+            static_cast<DWORD>(std::size(disabled))) && disabled[0] == L'1')
+        {
+            ConsolePrint("[RETAIL-RUNTIME-DUMP] disabled by CODREVAMPED_RETAIL_NO_RUNTIME_DUMP=1\r\n");
+            return 0;
+        }
+
+        ConsolePrint("[RETAIL-RUNTIME-DUMP] begin delayMs=%lu mode=READ_ONLY processWrites=0 outputLayout=memory-pe\r\n",
+            static_cast<unsigned long>(kRetailRuntimeDumpDelayMs));
+        RetailRuntimeDumpMainImage();
+        return 0;
+    }
+
+    void QueueRetailRuntimeDump() noexcept
+    {
+        if (!IsExactRetailSteamImage())
+            return;
+        HANDLE thread = CreateThread(nullptr, 0, RetailRuntimeDumpWorker, nullptr, 0, nullptr);
+        if (thread)
+        {
+            CloseHandle(thread);
+            ConsolePrint("[RETAIL-RUNTIME-DUMP] scheduled delayMs=%lu output=CodRevampedRuntimeDump\\ModernWarfare_runtime_dump.exe mode=READ_ONLY\r\n",
+                static_cast<unsigned long>(kRetailRuntimeDumpDelayMs));
+        }
+        else
+        {
+            ConsolePrint("[RETAIL-RUNTIME-DUMP] schedule failed win32=%lu\r\n",
+                static_cast<unsigned long>(GetLastError()));
+        }
+    }
+
+
+    bool RetailProbeRangeReadable(const std::uintptr_t address, const std::size_t size) noexcept;
+
+    // -------------------------------------------------------------------------
+    // Steam Retail ONLINE "general" live diagnostic.
+    // Logging-only: does not alter return values, callback arguments, records,
+    // or any game state.
+    // -------------------------------------------------------------------------
+    constexpr std::uintptr_t kRetailOnlineRecordsRva = 0x12A75330ull;
+    constexpr std::uintptr_t kRetailStorageRawStateRva = 0x06D12E90ull;      // F3562E90
+    constexpr std::uintptr_t kRetailStorageMappedStateRva = 0x02CBF790ull;   // EF50F790
+    constexpr std::uintptr_t kRetailStorageLookupRva = 0x02CBD770ull;        // EF50D770
+    constexpr std::uintptr_t kRetailStorageReadRva = 0x02CBD800ull;          // EF50D800
+    constexpr std::uintptr_t kRetailOnlineFailCallbackRva = 0x02E8C540ull;   // DC540
+    constexpr std::uintptr_t kRetailOnlineMainTickRva = 0x02E8A2A0ull;        // DA2A0
+    constexpr std::uintptr_t kRetailOnlineSlotStartRva = 0x02E8D380ull;       // DD380
+
+    using RetailStorageRawStateFn = int (__fastcall*)(void*);
+    using RetailStorageMappedStateFn = int (__fastcall*)(void*);
+    using RetailStorageLookupFn = bool (__fastcall*)(void*, const char*, void*);
+    using RetailStorageReadFn = bool (__fastcall*)(void*, const void*, void*, std::uint32_t, std::uintptr_t, std::uint32_t);
+    using RetailOnlineFailCallbackFn = void (__fastcall*)(void*, std::uint32_t, std::uintptr_t, std::uintptr_t);
+    using RetailOnlineMainTickFn = void (__fastcall*)();
+    using RetailOnlineSlotStartFn = bool (__fastcall*)(int);
+
+    RetailStorageRawStateFn g_retailStorageRawStateOriginal = nullptr;
+    RetailStorageMappedStateFn g_retailStorageMappedStateOriginal = nullptr;
+    RetailStorageLookupFn g_retailStorageLookupOriginal = nullptr;
+    RetailStorageReadFn g_retailStorageReadOriginal = nullptr;
+    RetailOnlineFailCallbackFn g_retailOnlineFailCallbackOriginal = nullptr;
+    RetailOnlineMainTickFn g_retailOnlineMainTickOriginal = nullptr;
+    RetailOnlineSlotStartFn g_retailOnlineSlotStartOriginal = nullptr;
+
+    volatile LONG g_retailOnlineLiveTraceInstalled = 0;
+    volatile LONG g_retailLastRawStorageState = LONG_MIN;
+    volatile LONG g_retailLastMappedStorageState = LONG_MIN;
+    volatile LONG g_retailOnlinePollStarted = 0;
+
+    bool RetailLiveCopyAscii(const char* source, char* out, const std::size_t outSize) noexcept
+    {
+        if (!out || !outSize)
+            return false;
+        out[0] = '\0';
+        if (!source)
+            return false;
+
+        __try
+        {
+            MEMORY_BASIC_INFORMATION mbi{};
+            if (!VirtualQuery(source, &mbi, sizeof(mbi)) ||
+                mbi.State != MEM_COMMIT || !RetailProbeReadableProtection(mbi.Protect))
+                return false;
+
+            const auto regionEnd = reinterpret_cast<std::uintptr_t>(mbi.BaseAddress) + mbi.RegionSize;
+            const auto sourceAddress = reinterpret_cast<std::uintptr_t>(source);
+            if (sourceAddress >= regionEnd)
+                return false;
+
+            const std::size_t available = static_cast<std::size_t>(regionEnd - sourceAddress);
+            const std::size_t limit = (outSize - 1 < available) ? outSize - 1 : available;
+            std::size_t index = 0;
+            for (; index < limit; ++index)
+            {
+                const unsigned char ch = static_cast<unsigned char>(source[index]);
+                if (!ch)
+                    break;
+                if (ch < 0x20 || ch > 0x7E)
+                    return false;
+                out[index] = static_cast<char>(ch);
+            }
+            out[index] = '\0';
+            return index != 0;
+        }
+        __except (EXCEPTION_EXECUTE_HANDLER)
+        {
+            out[0] = '\0';
+            return false;
+        }
+    }
+
+    void RetailLiveDumpOnlineRecords(const char* reason) noexcept
+    {
+        if (!IsExactRetailSteamImage())
+            return;
+
+        const std::uintptr_t base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+        const std::uintptr_t records = base + kRetailOnlineRecordsRva;
+        if (!RetailProbeRangeReadable(records, 7u * 0x10u))
+        {
+            ConsolePrint("[RETAIL-ONLINE-LIVE] records-unreadable reason=%s address=%p\r\n",
+                reason ? reason : "<none>", reinterpret_cast<void*>(records));
+            return;
+        }
+
+        ConsolePrint("[RETAIL-ONLINE-LIVE] records reason=%s", reason ? reason : "<none>");
+        for (unsigned index = 0; index < 7; ++index)
+        {
+            const std::uintptr_t rec = records + static_cast<std::uintptr_t>(index) * 0x10u;
+            std::uint32_t state = 0, dword4 = 0;
+            std::uint16_t word8 = 0, wordA = 0;
+            unsigned char b0C = 0, b0D = 0;
+            std::memcpy(&state, reinterpret_cast<const void*>(rec + 0x00), sizeof(state));
+            std::memcpy(&dword4, reinterpret_cast<const void*>(rec + 0x04), sizeof(dword4));
+            std::memcpy(&word8, reinterpret_cast<const void*>(rec + 0x08), sizeof(word8));
+            std::memcpy(&wordA, reinterpret_cast<const void*>(rec + 0x0A), sizeof(wordA));
+            std::memcpy(&b0C, reinterpret_cast<const void*>(rec + 0x0C), sizeof(b0C));
+            std::memcpy(&b0D, reinterpret_cast<const void*>(rec + 0x0D), sizeof(b0D));
+
+            ConsolePrint(" s%u={state=%u,v4=%u,v8=%u,vA=%u,c=%u,d=%u}",
+                index, state, dword4, static_cast<unsigned>(word8),
+                static_cast<unsigned>(wordA), static_cast<unsigned>(b0C),
+                static_cast<unsigned>(b0D));
+        }
+        ConsolePrint("\r\n");
+    }
+
+
+    bool RetailLiveReadRecordSnapshot(unsigned char* out, const std::size_t size) noexcept
+    {
+        if (!out || size < 7u * 0x10u || !IsExactRetailSteamImage())
+            return false;
+
+        const std::uintptr_t base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+        const std::uintptr_t records = base + kRetailOnlineRecordsRva;
+        if (!RetailProbeRangeReadable(records, 7u * 0x10u))
+            return false;
+
+        __try
+        {
+            std::memcpy(out, reinterpret_cast<const void*>(records), 7u * 0x10u);
+            return true;
+        }
+        __except (EXCEPTION_EXECUTE_HANDLER)
+        {
+            return false;
+        }
+    }
+
+    DWORD WINAPI RetailOnlinePollWorker(LPVOID) noexcept
+    {
+        if (InterlockedCompareExchange(&g_retailOnlinePollStarted, 1, 0) != 0)
+            return 0;
+
+        unsigned char previous[7u * 0x10u]{};
+        bool havePrevious = RetailLiveReadRecordSnapshot(previous, sizeof(previous));
+
+        ConsolePrint("[RETAIL-ONLINE-POLL] begin intervalMs=500 durationMs=120000 changeOnly=1\r\n");
+
+        for (unsigned tick = 0; tick < 240; ++tick)
+        {
+            Sleep(500);
+
+            unsigned char current[7u * 0x10u]{};
+            if (!RetailLiveReadRecordSnapshot(current, sizeof(current)))
+                continue;
+
+            if (!havePrevious || std::memcmp(previous, current, sizeof(current)) != 0)
+            {
+                ConsolePrint("[RETAIL-ONLINE-POLL] change tick=%u elapsedMs=%u\r\n",
+                    tick + 1u, (tick + 1u) * 500u);
+                RetailLiveDumpOnlineRecords("poll-change");
+                std::memcpy(previous, current, sizeof(previous));
+                havePrevious = true;
+            }
+        }
+
+        ConsolePrint("[RETAIL-ONLINE-POLL] end\r\n");
+        return 0;
+    }
+
+    void __fastcall RetailOnlineMainTickDetour()
+    {
+        static volatile LONG calls = 0;
+        const LONG callNumber = InterlockedIncrement(&calls);
+
+        if (callNumber <= 8 || (callNumber % 120) == 0)
+        {
+            ConsolePrint("[RETAIL-ONLINE-LIVE] main-tick call=%ld returnAddress=%p\r\n",
+                static_cast<long>(callNumber), _ReturnAddress());
+            RetailLiveDumpOnlineRecords("main-tick");
+        }
+
+        if (g_retailOnlineMainTickOriginal)
+            g_retailOnlineMainTickOriginal();
+    }
+
+    bool __fastcall RetailOnlineSlotStartDetour(int slot)
+    {
+        ConsolePrint("[RETAIL-ONLINE-LIVE] slot-start-enter slot=%d returnAddress=%p\r\n",
+            slot, _ReturnAddress());
+        RetailLiveDumpOnlineRecords("slot-start-before");
+
+        const bool result = g_retailOnlineSlotStartOriginal ?
+            g_retailOnlineSlotStartOriginal(slot) : false;
+
+        ConsolePrint("[RETAIL-ONLINE-LIVE] slot-start-exit slot=%d result=%u\r\n",
+            slot, result ? 1u : 0u);
+        RetailLiveDumpOnlineRecords("slot-start-after");
+        return result;
+    }
+
+    int __fastcall RetailStorageRawStateDetour(void* object)
+    {
+        const int result = g_retailStorageRawStateOriginal ?
+            g_retailStorageRawStateOriginal(object) : 0;
+        const LONG previous = InterlockedExchange(
+            &g_retailLastRawStorageState, static_cast<LONG>(result));
+
+        if (previous != result)
+            ConsolePrint("[RETAIL-ONLINE-LIVE] storage-raw-state object=%p previous=%ld current=%d expectedReadyRaw=2\r\n",
+                object, static_cast<long>(previous), result);
+        return result;
+    }
+
+    int __fastcall RetailStorageMappedStateDetour(void* object)
+    {
+        const int result = g_retailStorageMappedStateOriginal ?
+            g_retailStorageMappedStateOriginal(object) : 0;
+        const LONG previous = InterlockedExchange(
+            &g_retailLastMappedStorageState, static_cast<LONG>(result));
+
+        if (previous != result)
+        {
+            ConsolePrint("[RETAIL-ONLINE-LIVE] storage-mapped-state object=%p previous=%ld current=%d expectedReadyMapped=4\r\n",
+                object, static_cast<long>(previous), result);
+            RetailLiveDumpOnlineRecords("mapped-state-change");
+        }
+        return result;
+    }
+
+    bool __fastcall RetailStorageLookupDetour(void* object, const char* name, void* output)
+    {
+        char safeName[128]{};
+        const bool hasName = RetailLiveCopyAscii(name, safeName, sizeof(safeName));
+
+        ConsolePrint("[RETAIL-ONLINE-LIVE] lookup-enter object=%p namePtr=%p name=%s output=%p mappedState=%ld\r\n",
+            object, name, hasName ? safeName : "<non-ascii/unreadable>", output,
+            static_cast<long>(InterlockedCompareExchange(&g_retailLastMappedStorageState, 0, 0)));
+        RetailLiveDumpOnlineRecords("lookup-enter");
+
+        const bool result = g_retailStorageLookupOriginal ?
+            g_retailStorageLookupOriginal(object, name, output) : false;
+
+        ConsolePrint("[RETAIL-ONLINE-LIVE] lookup-exit name=%s result=%u\r\n",
+            hasName ? safeName : "<non-ascii/unreadable>", result ? 1u : 0u);
+        RetailLiveDumpOnlineRecords("lookup-exit");
+        return result;
+    }
+
+    bool __fastcall RetailStorageReadDetour(
+        void* object, const void* descriptor, void* buffer, std::uint32_t bufferSize,
+        std::uintptr_t arg5, std::uint32_t arg6)
+    {
+        ConsolePrint("[RETAIL-ONLINE-LIVE] read-enter object=%p descriptor=%p buffer=%p bufferSize=%u arg5=0x%llX arg6=%u mappedState=%ld\r\n",
+            object, descriptor, buffer, bufferSize,
+            static_cast<unsigned long long>(arg5), arg6,
+            static_cast<long>(InterlockedCompareExchange(&g_retailLastMappedStorageState, 0, 0)));
+        RetailLiveDumpOnlineRecords("read-enter");
+
+        const bool result = g_retailStorageReadOriginal ?
+            g_retailStorageReadOriginal(object, descriptor, buffer, bufferSize, arg5, arg6) : false;
+
+        ConsolePrint("[RETAIL-ONLINE-LIVE] read-exit result=%u descriptor=%p buffer=%p bufferSize=%u\r\n",
+            result ? 1u : 0u, descriptor, buffer, bufferSize);
+        RetailLiveDumpOnlineRecords("read-exit");
+        return result;
+    }
+
+    void __fastcall RetailOnlineFailCallbackDetour(
+        void* context, std::uint32_t status, std::uintptr_t arg3, std::uintptr_t arg4)
+    {
+        ConsolePrint("[RETAIL-ONLINE-LIVE] callback-enter context=%p status=%u arg3=0x%llX arg4=0x%llX returnAddress=%p\r\n",
+            context, status,
+            static_cast<unsigned long long>(arg3),
+            static_cast<unsigned long long>(arg4),
+            _ReturnAddress());
+        RetailLiveDumpOnlineRecords("callback-before");
+
+        if (g_retailOnlineFailCallbackOriginal)
+            g_retailOnlineFailCallbackOriginal(context, status, arg3, arg4);
+
+        ConsolePrint("[RETAIL-ONLINE-LIVE] callback-exit status=%u\r\n", status);
+        RetailLiveDumpOnlineRecords("callback-after");
+    }
+
+    bool RetailInstallOneLiveHook(
+        const char* label, const std::uintptr_t target, void* detour, void** original) noexcept
+    {
+        const MH_STATUS create = MH_CreateHook(reinterpret_cast<void*>(target), detour, original);
+        if (create != MH_OK && create != MH_ERROR_ALREADY_CREATED)
+        {
+            ConsolePrint("[RETAIL-ONLINE-LIVE] hook-create-failed label=%s target=%p status=%d\r\n",
+                label, reinterpret_cast<void*>(target), static_cast<int>(create));
+            return false;
+        }
+
+        const MH_STATUS enable = MH_EnableHook(reinterpret_cast<void*>(target));
+        if (enable != MH_OK && enable != MH_ERROR_ENABLED)
+        {
+            ConsolePrint("[RETAIL-ONLINE-LIVE] hook-enable-failed label=%s target=%p status=%d\r\n",
+                label, reinterpret_cast<void*>(target), static_cast<int>(enable));
+            return false;
+        }
+
+        ConsolePrint("[RETAIL-ONLINE-LIVE] hook-installed label=%s target=%p\r\n",
+            label, reinterpret_cast<void*>(target));
+        return true;
+    }
+
+    DWORD WINAPI RetailOnlineLiveTraceWorker(LPVOID) noexcept
+    {
+        Sleep(2500);
+        if (!IsExactRetailSteamImage())
+            return 0;
+        if (InterlockedCompareExchange(&g_retailOnlineLiveTraceInstalled, 1, 0) != 0)
+            return 0;
+
+        const std::uintptr_t base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+        if (!base)
+            return 0;
+
+        ConsolePrint("[RETAIL-ONLINE-LIVE] begin mode=LOGGING_ONLY stateWrites=off resultOverrides=off "
+            "rawStateRva=0x%llX mappedStateRva=0x%llX lookupRva=0x%llX readRva=0x%llX callbackRva=0x%llX mainTickRva=0x%llX slotStartRva=0x%llX earlyManagerHooks=disabled\r\n",
+            static_cast<unsigned long long>(kRetailStorageRawStateRva),
+            static_cast<unsigned long long>(kRetailStorageMappedStateRva),
+            static_cast<unsigned long long>(kRetailStorageLookupRva),
+            static_cast<unsigned long long>(kRetailStorageReadRva),
+            static_cast<unsigned long long>(kRetailOnlineFailCallbackRva),
+            static_cast<unsigned long long>(kRetailOnlineMainTickRva),
+            static_cast<unsigned long long>(kRetailOnlineSlotStartRva));
+
+        const MH_STATUS init = MH_Initialize();
+        if (init != MH_OK && init != MH_ERROR_ALREADY_INITIALIZED)
+        {
+            ConsolePrint("[RETAIL-ONLINE-LIVE] MH_Initialize failed status=%d\r\n",
+                static_cast<int>(init));
+            return 0;
+        }
+
+        unsigned installed = 0;
+        installed += RetailInstallOneLiveHook("raw-state", base + kRetailStorageRawStateRva,
+            reinterpret_cast<void*>(&RetailStorageRawStateDetour),
+            reinterpret_cast<void**>(&g_retailStorageRawStateOriginal)) ? 1u : 0u;
+        installed += RetailInstallOneLiveHook("mapped-state", base + kRetailStorageMappedStateRva,
+            reinterpret_cast<void*>(&RetailStorageMappedStateDetour),
+            reinterpret_cast<void**>(&g_retailStorageMappedStateOriginal)) ? 1u : 0u;
+        installed += RetailInstallOneLiveHook("lookup", base + kRetailStorageLookupRva,
+            reinterpret_cast<void*>(&RetailStorageLookupDetour),
+            reinterpret_cast<void**>(&g_retailStorageLookupOriginal)) ? 1u : 0u;
+        installed += RetailInstallOneLiveHook("read", base + kRetailStorageReadRva,
+            reinterpret_cast<void*>(&RetailStorageReadDetour),
+            reinterpret_cast<void**>(&g_retailStorageReadOriginal)) ? 1u : 0u;
+        installed += RetailInstallOneLiveHook("callback", base + kRetailOnlineFailCallbackRva,
+            reinterpret_cast<void*>(&RetailOnlineFailCallbackDetour),
+            reinterpret_cast<void**>(&g_retailOnlineFailCallbackOriginal)) ? 1u : 0u;
+
+        ConsolePrint("[RETAIL-ONLINE-LIVE] armed installed=%u/5 earlyManagerHooks=disabled\r\n", installed);
+        RetailLiveDumpOnlineRecords("initial");
+
+        HANDLE pollThread = CreateThread(nullptr, 0, RetailOnlinePollWorker, nullptr, 0, nullptr);
+        if (pollThread)
+            CloseHandle(pollThread);
+        else
+            ConsolePrint("[RETAIL-ONLINE-POLL] create-failed win32=%lu\r\n",
+                static_cast<unsigned long>(GetLastError()));
+
+        return 0;
+    }
+
+    void QueueRetailOnlineLiveTrace() noexcept
+    {
+        if (!IsExactRetailSteamImage())
+            return;
+
+        HANDLE thread = CreateThread(nullptr, 0, RetailOnlineLiveTraceWorker, nullptr, 0, nullptr);
+        if (thread)
+        {
+            CloseHandle(thread);
+            ConsolePrint("[RETAIL-ONLINE-LIVE] scheduled delayMs=2500 mode=LOGGING_ONLY\r\n");
+        }
+        else
+        {
+            ConsolePrint("[RETAIL-ONLINE-LIVE] schedule-failed win32=%lu\r\n",
+                static_cast<unsigned long>(GetLastError()));
+        }
+    }
+
+    struct RetailProbeAnchor
+    {
+        const char* label;
+        const char* text;
+    };
+
+    constexpr RetailProbeAnchor kRetailProbeAnchors[] = {
+        { "root-fence-status", "USAGE: Fences.GetStatusStringForRootFenceNotPassingForOnlineData( <controllerIndex>, <gamemode> )" },
+        { "all-fence-status", "USAGE: Fences.PrintStatusStringForAllFences( <controllerIndex> )" },
+        { "root-fence-dvar", "online_fences_should_show_root_fence_not_passing_in_popups" },
+        { "resolve-universal-ids", "Starting DW Resolve Universal Id's task with %u ids." },
+        { "resolve-platform-ids", "Starting DW Resolve Platform Id's task with %u ids." },
+        { "extended-auth-ok", "Successfully reported ExtendedAuthInfo" },
+        { "extended-auth-fail", "Error encountered while reporting extended auth info" },
+        { "online-fence-reset", "Live_OnlineServicesFence_ResetState" },
+        // Retail strips many debug/USAGE strings, but these short names are part of
+        // the Lua registration surface and are therefore much more likely to remain
+        // in the live decrypted image.  A luaL_Reg entry is { name*, function* }, so
+        // a data-pointer reference to one of these strings can recover the wrapper
+        // function without any patching or build-specific RVA.
+        { "lua-root-fence-name", "GetStatusStringForRootFenceNotPassingForOnlineData" },
+        { "lua-all-fences-name", "GetStatusStringForAllFences" },
+        { "lua-print-fences-name", "PrintStatusStringForAllFences" },
+    };
+
+    using RetailProbeAnchorHits = std::array<std::uintptr_t, std::size(kRetailProbeAnchors)>;
+    using RetailProbeXrefHits = std::array<std::array<std::uintptr_t, 3>, std::size(kRetailProbeAnchors)>;
+    using RetailProbeXrefCounts = std::array<unsigned, std::size(kRetailProbeAnchors)>;
+    using RetailProbeDataRefHits = std::array<std::array<std::uintptr_t, 8>, std::size(kRetailProbeAnchors)>;
+    using RetailProbeDataRefCounts = std::array<unsigned, std::size(kRetailProbeAnchors)>;
+
+    void RetailProbeFindAnchors(const std::uintptr_t imageBase, const std::size_t imageSize,
+        RetailProbeAnchorHits& hits) noexcept
+    {
+        const std::uintptr_t imageEnd = imageBase + imageSize;
+        std::uintptr_t cursor = imageBase;
+        while (cursor < imageEnd)
+        {
+            MEMORY_BASIC_INFORMATION mbi{};
+            if (!VirtualQuery(reinterpret_cast<LPCVOID>(cursor), &mbi, sizeof(mbi)))
+                break;
+
+            const std::uintptr_t regionBase = reinterpret_cast<std::uintptr_t>(mbi.BaseAddress);
+            const std::uintptr_t regionEndRaw = regionBase + mbi.RegionSize;
+            const std::uintptr_t regionStart = cursor > regionBase ? cursor : regionBase;
+            const std::uintptr_t regionEnd = regionEndRaw < imageEnd ? regionEndRaw : imageEnd;
+            if (mbi.State == MEM_COMMIT && RetailProbeReadableProtection(mbi.Protect) && regionEnd > regionStart)
+            {
+                const auto* bytes = reinterpret_cast<const unsigned char*>(regionStart);
+                const std::size_t size = static_cast<std::size_t>(regionEnd - regionStart);
+                for (std::size_t i = 0; i < size; ++i)
+                {
+                    const char first = static_cast<char>(bytes[i]);
+                    const auto checkAnchor = [&](const std::size_t index) noexcept
+                    {
+                        if (hits[index])
+                            return;
+                        const char* text = kRetailProbeAnchors[index].text;
+                        const std::size_t length = std::strlen(text);
+                        if (i + length <= size && std::memcmp(bytes + i, text, length) == 0)
+                            hits[index] = regionStart + i;
+                    };
+
+                    switch (first)
+                    {
+                    case 'U':
+                        checkAnchor(0);
+                        checkAnchor(1);
+                        break;
+                    case 'o':
+                        checkAnchor(2);
+                        break;
+                    case 'S':
+                        checkAnchor(3);
+                        checkAnchor(4);
+                        checkAnchor(5);
+                        break;
+                    case 'E':
+                        checkAnchor(6);
+                        break;
+                    case 'L':
+                        checkAnchor(7);
+                        break;
+                    case 'G':
+                        checkAnchor(8);
+                        checkAnchor(9);
+                        break;
+                    case 'P':
+                        checkAnchor(10);
+                        break;
+                    default:
+                        break;
+                    }
+                }
+            }
+
+            if (regionEndRaw <= cursor)
+                break;
+            cursor = regionEndRaw;
+        }
+    }
+
+    void RetailProbeFindRipXrefs(const std::uintptr_t imageBase, const std::size_t imageSize,
+        const RetailProbeAnchorHits& anchors, RetailProbeXrefHits& xrefs,
+        RetailProbeXrefCounts& xrefCounts) noexcept
+    {
+        const std::uintptr_t imageEnd = imageBase + imageSize;
+        std::uintptr_t cursor = imageBase;
+        while (cursor < imageEnd)
+        {
+            MEMORY_BASIC_INFORMATION mbi{};
+            if (!VirtualQuery(reinterpret_cast<LPCVOID>(cursor), &mbi, sizeof(mbi)))
+                break;
+
+            const std::uintptr_t regionBase = reinterpret_cast<std::uintptr_t>(mbi.BaseAddress);
+            const std::uintptr_t regionEndRaw = regionBase + mbi.RegionSize;
+            const std::uintptr_t regionStart = cursor > regionBase ? cursor : regionBase;
+            const std::uintptr_t regionEnd = regionEndRaw < imageEnd ? regionEndRaw : imageEnd;
+            if (mbi.State == MEM_COMMIT && RetailProbeExecutableProtection(mbi.Protect) && regionEnd > regionStart)
+            {
+                const auto* code = reinterpret_cast<const unsigned char*>(regionStart);
+                const std::size_t size = static_cast<std::size_t>(regionEnd - regionStart);
+                for (std::size_t i = 0; i + 7 <= size; ++i)
+                {
+                    std::size_t displacementOffset = 0;
+                    std::size_t instructionLength = 0;
+                    if ((code[i] & 0xF0u) == 0x40u &&
+                        (code[i + 1] == 0x8Du || code[i + 1] == 0x8Bu) &&
+                        (code[i + 2] & 0xC7u) == 0x05u)
+                    {
+                        displacementOffset = 3;
+                        instructionLength = 7;
+                    }
+                    else if ((code[i] == 0x8Du || code[i] == 0x8Bu) &&
+                        (code[i + 1] & 0xC7u) == 0x05u)
+                    {
+                        displacementOffset = 2;
+                        instructionLength = 6;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+
+                    std::int32_t displacement = 0;
+                    std::memcpy(&displacement, code + i + displacementOffset, sizeof(displacement));
+                    const std::uintptr_t instruction = regionStart + i;
+                    const std::uintptr_t resolved = instruction + instructionLength +
+                        static_cast<std::intptr_t>(displacement);
+                    for (std::size_t anchorIndex = 0; anchorIndex < anchors.size(); ++anchorIndex)
+                    {
+                        if (!anchors[anchorIndex] || anchors[anchorIndex] != resolved || xrefCounts[anchorIndex] >= 3)
+                            continue;
+                        xrefs[anchorIndex][xrefCounts[anchorIndex]++] = instruction;
+                    }
+                }
+            }
+
+            if (regionEndRaw <= cursor)
+                break;
+            cursor = regionEndRaw;
+        }
+    }
+
+    void RetailProbeDumpFunction(const char* label, const std::uintptr_t xref) noexcept;
+
+    void RetailProbeFindDataPointerRefs(const std::uintptr_t imageBase, const std::size_t imageSize,
+        const RetailProbeAnchorHits& anchors, RetailProbeDataRefHits& refs,
+        RetailProbeDataRefCounts& refCounts) noexcept
+    {
+        const std::uintptr_t imageEnd = imageBase + imageSize;
+        std::uintptr_t cursor = imageBase;
+        while (cursor < imageEnd)
+        {
+            MEMORY_BASIC_INFORMATION mbi{};
+            if (!VirtualQuery(reinterpret_cast<LPCVOID>(cursor), &mbi, sizeof(mbi)))
+                break;
+
+            const std::uintptr_t regionBase = reinterpret_cast<std::uintptr_t>(mbi.BaseAddress);
+            const std::uintptr_t regionEndRaw = regionBase + mbi.RegionSize;
+            const std::uintptr_t regionStart = cursor > regionBase ? cursor : regionBase;
+            const std::uintptr_t regionEnd = regionEndRaw < imageEnd ? regionEndRaw : imageEnd;
+            if (mbi.State == MEM_COMMIT && RetailProbeReadableProtection(mbi.Protect) && regionEnd > regionStart)
+            {
+                const auto* bytes = reinterpret_cast<const unsigned char*>(regionStart);
+                const std::size_t size = static_cast<std::size_t>(regionEnd - regionStart);
+                for (std::size_t i = 0; i + sizeof(std::uintptr_t) <= size; i += sizeof(std::uintptr_t))
+                {
+                    std::uintptr_t value = 0;
+                    std::memcpy(&value, bytes + i, sizeof(value));
+                    for (std::size_t anchorIndex = 0; anchorIndex < anchors.size(); ++anchorIndex)
+                    {
+                        if (!anchors[anchorIndex] || value != anchors[anchorIndex] || refCounts[anchorIndex] >= 8)
+                            continue;
+                        refs[anchorIndex][refCounts[anchorIndex]++] = regionStart + i;
+                    }
+                }
+            }
+
+            if (regionEndRaw <= cursor)
+                break;
+            cursor = regionEndRaw;
+        }
+    }
+
+    bool RetailProbeAddressIsExecutable(const std::uintptr_t address) noexcept
+    {
+        MEMORY_BASIC_INFORMATION mbi{};
+        if (!address || !VirtualQuery(reinterpret_cast<LPCVOID>(address), &mbi, sizeof(mbi)))
+            return false;
+        return mbi.State == MEM_COMMIT && RetailProbeExecutableProtection(mbi.Protect);
+    }
+
+    bool RetailProbeWritableProtection(DWORD protection) noexcept
+    {
+        if (protection & (PAGE_GUARD | PAGE_NOACCESS))
+            return false;
+        switch (protection & 0xFFu)
+        {
+        case PAGE_READWRITE:
+        case PAGE_WRITECOPY:
+        case PAGE_EXECUTE_READWRITE:
+        case PAGE_EXECUTE_WRITECOPY:
+            return true;
+        default:
+            return false;
+        }
+    }
+
+    bool RetailProbeRangeReadable(const std::uintptr_t address, const std::size_t size) noexcept
+    {
+        if (!address || !size || address + size < address)
+            return false;
+        MEMORY_BASIC_INFORMATION mbi{};
+        if (!VirtualQuery(reinterpret_cast<LPCVOID>(address), &mbi, sizeof(mbi)) ||
+            mbi.State != MEM_COMMIT || !RetailProbeReadableProtection(mbi.Protect))
+            return false;
+        const std::uintptr_t regionBase = reinterpret_cast<std::uintptr_t>(mbi.BaseAddress);
+        const std::uintptr_t regionEnd = regionBase + mbi.RegionSize;
+        return address >= regionBase && address + size <= regionEnd;
+    }
+
+    constexpr std::size_t kRetailFenceCount = 31;
+    constexpr std::size_t kRetailFenceControllerCount = 8;
+    constexpr std::size_t kRetailFenceRowBytes = kRetailFenceCount * sizeof(std::uintptr_t);
+    constexpr const char* kRetailFenceNames[kRetailFenceCount] = {
+        "SIGNED_IN_TO_LIVE", "DEMONWARE", "NETWORKING", "ONLINE", "PUBLISHER_VARS",
+        "DW_TIME", "ACHIEVEMENTENGINE", "PLAYLISTS", "PATCH", "ONLINE_DAILY_LOGIN",
+        "ONLINE_LOOT", "DEDICATED", "PLAYERSTATS", "BLUEPRINTS", "FILTERED_PLAYLISTS",
+        "PRIVATE_PARTY_PLATFORM_SESSION", "GAME_LOBBY_PLATFORM_SESSION", "PLAYTOGETHER_HOST",
+        "GUNSMITH", "DCQOS", "DW_RECONCILIATION", "RELAY", "BANDWIDTH_TEST",
+        "ONLINE_PERMISSIONS", "STORE", "AB_TESTING", "CLOUD_FILES_SYNC",
+        "MAIN_ONLINE_DATA", "MP_ONLINE_DATA", "CP_ONLINE_DATA", "SP_ONLINE_DATA"
+    };
+
+    struct RetailFenceSnapshot
+    {
+        std::uintptr_t object = 0;
+        std::uintptr_t vtable = 0;
+        std::uint32_t controller = 0xFFFFFFFFu;
+        std::uint8_t dependenciesMet = 0;
+        std::uint8_t isPassing = 0;
+        std::uint8_t failed = 0;
+        std::uint8_t ignoreIfGuest = 0;
+        std::uint64_t dependencies = 0;
+        std::uint32_t inferredErrorCode = 0;
+    };
+
+    bool RetailProbeReadFenceObject(const std::uintptr_t object, const unsigned expectedController,
+        RetailFenceSnapshot& snapshot) noexcept
+    {
+        if (!RetailProbeRangeReadable(object, 32))
+            return false;
+
+        std::memcpy(&snapshot.vtable, reinterpret_cast<const void*>(object + 0), sizeof(snapshot.vtable));
+        std::memcpy(&snapshot.controller, reinterpret_cast<const void*>(object + 8), sizeof(snapshot.controller));
+        std::memcpy(&snapshot.dependenciesMet, reinterpret_cast<const void*>(object + 12), sizeof(snapshot.dependenciesMet));
+        std::memcpy(&snapshot.isPassing, reinterpret_cast<const void*>(object + 13), sizeof(snapshot.isPassing));
+        std::memcpy(&snapshot.failed, reinterpret_cast<const void*>(object + 14), sizeof(snapshot.failed));
+        std::memcpy(&snapshot.ignoreIfGuest, reinterpret_cast<const void*>(object + 15), sizeof(snapshot.ignoreIfGuest));
+        std::memcpy(&snapshot.dependencies, reinterpret_cast<const void*>(object + 16), sizeof(snapshot.dependencies));
+        std::memcpy(&snapshot.inferredErrorCode, reinterpret_cast<const void*>(object + 24), sizeof(snapshot.inferredErrorCode));
+        snapshot.object = object;
+
+        if (snapshot.controller != expectedController || snapshot.dependenciesMet > 1 ||
+            snapshot.isPassing > 1 || snapshot.failed > 1 || snapshot.ignoreIfGuest > 1)
+            return false;
+        if (!RetailProbeRangeReadable(snapshot.vtable, sizeof(std::uintptr_t)))
+            return false;
+        std::uintptr_t firstVirtual = 0;
+        std::memcpy(&firstVirtual, reinterpret_cast<const void*>(snapshot.vtable), sizeof(firstVirtual));
+        return RetailProbeAddressIsExecutable(firstVirtual);
+    }
+
+    bool RetailProbeValidateFenceTable(const std::uintptr_t table,
+        std::array<std::array<RetailFenceSnapshot, kRetailFenceCount>, kRetailFenceControllerCount>& snapshots) noexcept
+    {
+        if (!RetailProbeRangeReadable(table, kRetailFenceRowBytes * kRetailFenceControllerCount))
+            return false;
+
+        for (unsigned controller = 0; controller < kRetailFenceControllerCount; ++controller)
+        {
+            for (unsigned index = 0; index < kRetailFenceCount; ++index)
+            {
+                std::uintptr_t object = 0;
+                const std::uintptr_t slot = table +
+                    (static_cast<std::uintptr_t>(controller) * kRetailFenceCount + index) * sizeof(std::uintptr_t);
+                std::memcpy(&object, reinterpret_cast<const void*>(slot), sizeof(object));
+                if (!object || !RetailProbeReadFenceObject(object, controller, snapshots[controller][index]))
+                    return false;
+            }
+        }
+        return true;
+    }
+
+    bool RetailProbeFastFenceTableFingerprint(const std::uintptr_t candidate,
+        const std::uintptr_t regionEnd, const std::uintptr_t imageBase, const std::uintptr_t imageEnd,
+        std::array<std::uintptr_t, 8>* inferredSampleStrides = nullptr) noexcept
+    {
+        constexpr unsigned sampleIndices[] = { 0, 1, 2, 3, 4, 12, 27, 28 };
+        const std::uintptr_t tableBytes = kRetailFenceRowBytes * kRetailFenceControllerCount;
+        if (!candidate || candidate + tableBytes < candidate || candidate + tableBytes > regionEnd)
+            return false;
+
+        std::array<std::uintptr_t, 8> sampleStrides{};
+        unsigned sampleNumber = 0;
+        for (const unsigned index : sampleIndices)
+        {
+            std::uintptr_t objects[kRetailFenceControllerCount]{};
+            for (unsigned controller = 0; controller < kRetailFenceControllerCount; ++controller)
+            {
+                const std::uintptr_t slot = candidate +
+                    (static_cast<std::uintptr_t>(controller) * kRetailFenceCount + index) * sizeof(std::uintptr_t);
+                std::memcpy(&objects[controller], reinterpret_cast<const void*>(slot), sizeof(objects[controller]));
+            }
+
+            // OpenIW8 uses 0x50-byte concrete fence objects, but Retail is allowed to
+            // change that size. The stable property is stronger: for each concrete
+            // fence type, the eight controller instances are an array, so its pointer
+            // progression must be arithmetic across controller rows. Infer the stride
+            // independently for each sampled fence instead of hardcoding 0x50.
+            if (!objects[0] || !objects[1] || objects[1] <= objects[0])
+                return false;
+            const std::uintptr_t stride = objects[1] - objects[0];
+            if (stride < 0x20u || stride > 0x400u || (stride & 7u) != 0)
+                return false;
+            if (objects[2] != objects[0] + stride * 2u ||
+                objects[7] != objects[0] + stride * 7u)
+                return false;
+
+            // Fence arrays are static Retail image data in the reference layout. Keep
+            // this as a cheap range check only; the full validator below verifies every
+            // object's controller/flags/vtable without assuming any concrete stride.
+            if (objects[0] < imageBase || objects[7] + 32u < objects[7] || objects[7] + 32u > imageEnd)
+                return false;
+
+            sampleStrides[sampleNumber++] = stride;
+        }
+
+        // Do two structural reads only after the cheap arithmetic-array fingerprint.
+        RetailFenceSnapshot c0{};
+        RetailFenceSnapshot c1{};
+        std::uintptr_t first0 = 0;
+        std::uintptr_t first1 = 0;
+        std::memcpy(&first0, reinterpret_cast<const void*>(candidate), sizeof(first0));
+        std::memcpy(&first1, reinterpret_cast<const void*>(candidate + kRetailFenceRowBytes), sizeof(first1));
+        if (!RetailProbeReadFenceObject(first0, 0, c0) || !RetailProbeReadFenceObject(first1, 1, c1))
+            return false;
+
+        if (inferredSampleStrides)
+            *inferredSampleStrides = sampleStrides;
+        return true;
+    }
+
+    std::uintptr_t RetailProbeFindFenceTable(const std::uintptr_t imageBase, const std::size_t imageSize,
+        std::array<std::array<RetailFenceSnapshot, kRetailFenceCount>, kRetailFenceControllerCount>& snapshots) noexcept
+    {
+        const std::uintptr_t imageEnd = imageBase + imageSize;
+        const ULONGLONG started = GetTickCount64();
+        unsigned long long candidates = 0;
+        unsigned long long fastHits = 0;
+        unsigned writableRegions = 0;
+        ConsolePrint("[RETAIL-FENCE-TABLE] scan-begin strategy=dynamic-controller-array-stride-prefilter imageSize=0x%08llX mode=READ_ONLY\r\n",
+            static_cast<unsigned long long>(imageSize));
+
+        std::uintptr_t cursor = imageBase;
+        while (cursor < imageEnd)
+        {
+            MEMORY_BASIC_INFORMATION mbi{};
+            if (!VirtualQuery(reinterpret_cast<LPCVOID>(cursor), &mbi, sizeof(mbi)))
+                break;
+            const std::uintptr_t regionBase = reinterpret_cast<std::uintptr_t>(mbi.BaseAddress);
+            const std::uintptr_t regionEndRaw = regionBase + mbi.RegionSize;
+            const std::uintptr_t regionStart = cursor > regionBase ? cursor : regionBase;
+            const std::uintptr_t regionEnd = regionEndRaw < imageEnd ? regionEndRaw : imageEnd;
+            if (mbi.State == MEM_COMMIT && RetailProbeWritableProtection(mbi.Protect) &&
+                regionEnd > regionStart && regionEnd - regionStart >= kRetailFenceRowBytes * kRetailFenceControllerCount)
+            {
+                ++writableRegions;
+                std::uintptr_t candidate = (regionStart + sizeof(std::uintptr_t) - 1) & ~(sizeof(std::uintptr_t) - 1);
+                const std::uintptr_t last = regionEnd - kRetailFenceRowBytes * kRetailFenceControllerCount;
+                for (; candidate <= last; candidate += sizeof(std::uintptr_t))
+                {
+                    ++candidates;
+                    std::array<std::uintptr_t, 8> inferredStrides{};
+                    if (!RetailProbeFastFenceTableFingerprint(candidate, regionEnd, imageBase, imageEnd, &inferredStrides))
+                        continue;
+                    ++fastHits;
+                    if (RetailProbeValidateFenceTable(candidate, snapshots))
+                    {
+                        ConsolePrint("[RETAIL-FENCE-TABLE] scan-hit candidateRva=0x%08llX candidates=%llu fastHits=%llu writableRegions=%u elapsedMs=%llu sampleStrides={0x%llX,0x%llX,0x%llX,0x%llX,0x%llX,0x%llX,0x%llX,0x%llX}\r\n",
+                            static_cast<unsigned long long>(candidate - imageBase), candidates, fastHits, writableRegions,
+                            static_cast<unsigned long long>(GetTickCount64() - started),
+                            static_cast<unsigned long long>(inferredStrides[0]),
+                            static_cast<unsigned long long>(inferredStrides[1]),
+                            static_cast<unsigned long long>(inferredStrides[2]),
+                            static_cast<unsigned long long>(inferredStrides[3]),
+                            static_cast<unsigned long long>(inferredStrides[4]),
+                            static_cast<unsigned long long>(inferredStrides[5]),
+                            static_cast<unsigned long long>(inferredStrides[6]),
+                            static_cast<unsigned long long>(inferredStrides[7]));
+                        return candidate;
+                    }
+                }
+            }
+            if (regionEndRaw <= cursor)
+                break;
+            cursor = regionEndRaw;
+        }
+
+        ConsolePrint("[RETAIL-FENCE-TABLE] scan-end result=not-found candidates=%llu fastHits=%llu writableRegions=%u elapsedMs=%llu\r\n",
+            candidates, fastHits, writableRegions,
+            static_cast<unsigned long long>(GetTickCount64() - started));
+        return 0;
+    }
+
+    int RetailProbeRootFenceNotPassing(
+        const std::array<RetailFenceSnapshot, kRetailFenceCount>& fences, int index) noexcept
+    {
+        if (index < 0 || index >= static_cast<int>(kRetailFenceCount))
+            return -1;
+        if (fences[index].isPassing)
+            return -1;
+
+        for (unsigned guard = 0; guard < kRetailFenceCount; ++guard)
+        {
+            const std::uint64_t dependencies = fences[index].dependencies;
+            if (!dependencies)
+                return index;
+            int child = -1;
+            for (int bit = 0; bit < static_cast<int>(kRetailFenceCount); ++bit)
+            {
+                if ((dependencies & (1ull << bit)) && !fences[bit].isPassing)
+                {
+                    child = bit;
+                    break;
+                }
+            }
+            if (child < 0 || child == index)
+                return index;
+            index = child;
+        }
+        return index;
+    }
+
+    void RetailProbeDumpFenceTable(const std::uintptr_t imageBase, const std::size_t imageSize) noexcept
+    {
+        std::array<std::array<RetailFenceSnapshot, kRetailFenceCount>, kRetailFenceControllerCount> snapshots{};
+        const std::uintptr_t table = RetailProbeFindFenceTable(imageBase, imageSize, snapshots);
+        if (!table)
+        {
+            ConsolePrint("[RETAIL-FENCE-TABLE] result=not-found strategy=dynamic-controller-array-stride-prefilter mode=READ_ONLY\r\n");
+            return;
+        }
+
+        ConsolePrint("[RETAIL-FENCE-TABLE] result=found tableRva=0x%08llX controllers=8 fences=31 objectStride=inferred-per-fence mode=READ_ONLY\r\n",
+            static_cast<unsigned long long>(table - imageBase));
+
+        const auto& fences = snapshots[0];
+        for (unsigned index = 0; index < kRetailFenceCount; ++index)
+        {
+            const auto& fence = fences[index];
+            const char* state = fence.isPassing ? "PASS" : (fence.failed ? "FAIL" :
+                (fence.dependenciesMet ? "ACTIVE" : "WAIT_DEPS"));
+            ConsolePrint("[RETAIL-FENCE] controller=0 index=%u name=%s state=%s depsMet=%u passing=%u failed=%u ignoreGuest=%u deps=0x%08llX errorGuess=%u objectRva=%s0x%08llX vtableRva=%s0x%08llX\r\n",
+                index, kRetailFenceNames[index], state,
+                static_cast<unsigned>(fence.dependenciesMet), static_cast<unsigned>(fence.isPassing),
+                static_cast<unsigned>(fence.failed), static_cast<unsigned>(fence.ignoreIfGuest),
+                static_cast<unsigned long long>(fence.dependencies), fence.inferredErrorCode,
+                (fence.object >= imageBase && fence.object < imageBase + imageSize) ? "" : "outside-image:",
+                static_cast<unsigned long long>((fence.object >= imageBase && fence.object < imageBase + imageSize) ?
+                    fence.object - imageBase : fence.object),
+                (fence.vtable >= imageBase && fence.vtable < imageBase + imageSize) ? "" : "outside-image:",
+                static_cast<unsigned long long>((fence.vtable >= imageBase && fence.vtable < imageBase + imageSize) ?
+                    fence.vtable - imageBase : fence.vtable));
+        }
+
+        constexpr int targets[] = { 3, 27, 28, 29, 30 };
+        for (const int target : targets)
+        {
+            const int root = RetailProbeRootFenceNotPassing(fences, target);
+            ConsolePrint("[RETAIL-FENCE-ROOT] controller=0 target=%d(%s) passing=%u root=%d(%s)\r\n",
+                target, kRetailFenceNames[target], static_cast<unsigned>(fences[target].isPassing), root,
+                root >= 0 && root < static_cast<int>(kRetailFenceCount) ? kRetailFenceNames[root] : "NONE");
+        }
+    }
+
+    void RetailProbeDumpDirectCalls(const char* label, const std::uintptr_t functionAddress) noexcept
+    {
+        DWORD64 runtimeImageBase = 0;
+        PRUNTIME_FUNCTION runtimeFunction = RtlLookupFunctionEntry(static_cast<DWORD64>(functionAddress),
+            &runtimeImageBase, nullptr);
+        if (!runtimeFunction || !runtimeImageBase)
+            return;
+
+        const std::uintptr_t begin = static_cast<std::uintptr_t>(runtimeImageBase) + runtimeFunction->BeginAddress;
+        const std::uintptr_t end = static_cast<std::uintptr_t>(runtimeImageBase) + runtimeFunction->EndAddress;
+        const std::uintptr_t mainBase = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+        const std::uintptr_t mainEnd = mainBase + static_cast<std::uintptr_t>(g_liveImageSize);
+        if (end <= begin)
+            return;
+
+        unsigned callIndex = 0;
+        for (std::uintptr_t cursor = begin; cursor + 5 <= end && callIndex < 20; ++cursor)
+        {
+            const auto* code = reinterpret_cast<const unsigned char*>(cursor);
+            if (code[0] != 0xE8)
+                continue;
+            std::int32_t displacement = 0;
+            std::memcpy(&displacement, code + 1, sizeof(displacement));
+            const std::uintptr_t target = cursor + 5 + static_cast<std::intptr_t>(displacement);
+            if (target < mainBase || target >= mainEnd || !RetailProbeAddressIsExecutable(target))
+                continue;
+
+            DWORD64 calleeImageBase = 0;
+            PRUNTIME_FUNCTION calleeFunction = RtlLookupFunctionEntry(static_cast<DWORD64>(target),
+                &calleeImageBase, nullptr);
+            std::uintptr_t calleeBegin = target;
+            std::uintptr_t calleeEnd = target;
+            if (calleeFunction && calleeImageBase)
+            {
+                calleeBegin = static_cast<std::uintptr_t>(calleeImageBase) + calleeFunction->BeginAddress;
+                calleeEnd = static_cast<std::uintptr_t>(calleeImageBase) + calleeFunction->EndAddress;
+            }
+
+            char head[24 * 3 + 1]{};
+            std::size_t out = 0;
+            const auto* targetBytes = reinterpret_cast<const unsigned char*>(calleeBegin);
+            for (std::size_t i = 0; i < 24 && out + 3 < sizeof(head); ++i)
+                out += static_cast<std::size_t>(_snprintf_s(head + out, sizeof(head) - out, _TRUNCATE,
+                    "%02X%s", static_cast<unsigned>(targetBytes[i]), (i + 1 == 24) ? "" : " "));
+
+            ConsolePrint("[RETAIL-FRONTEND-PROBE] luaCallGraph anchor=%s call=%u siteRva=0x%08llX targetRva=0x%08llX calleeRva=0x%08llX..0x%08llX head={%s}\r\n",
+                label ? label : "<null>", callIndex,
+                static_cast<unsigned long long>(cursor - mainBase),
+                static_cast<unsigned long long>(target - mainBase),
+                static_cast<unsigned long long>(calleeBegin - mainBase),
+                static_cast<unsigned long long>(calleeEnd - mainBase), head);
+            ++callIndex;
+        }
+    }
+
+    void RetailProbeInspectLuaRegEntry(const char* label, const std::uintptr_t ref,
+        const std::uintptr_t imageBase, const std::size_t imageSize) noexcept
+    {
+        const std::uintptr_t imageEnd = imageBase + imageSize;
+        if (ref < imageBase || ref + 2 * sizeof(std::uintptr_t) > imageEnd)
+            return;
+
+        std::uintptr_t candidate = 0;
+        std::memcpy(&candidate, reinterpret_cast<const void*>(ref + sizeof(std::uintptr_t)), sizeof(candidate));
+        ConsolePrint("[RETAIL-FRONTEND-PROBE] luaReg anchor=%s dataRefRva=0x%08llX functionCandidateRva=%s0x%08llX executable=%s\r\n",
+            label ? label : "<null>",
+            static_cast<unsigned long long>(ref - imageBase),
+            (candidate >= imageBase && candidate < imageEnd) ? "" : "outside-image:",
+            static_cast<unsigned long long>((candidate >= imageBase && candidate < imageEnd) ? (candidate - imageBase) : candidate),
+            RetailProbeAddressIsExecutable(candidate) ? "yes" : "no");
+
+        if (!RetailProbeAddressIsExecutable(candidate) || candidate < imageBase || candidate >= imageEnd)
+            return;
+        RetailProbeDumpFunction(label, candidate);
+        RetailProbeDumpDirectCalls(label, candidate);
+    }
+
+    void RetailProbeDumpFunction(const char* label, const std::uintptr_t xref) noexcept
+    {
+        DWORD64 runtimeImageBase = 0;
+        PRUNTIME_FUNCTION runtimeFunction = RtlLookupFunctionEntry(static_cast<DWORD64>(xref),
+            &runtimeImageBase, nullptr);
+        if (!runtimeFunction || !runtimeImageBase)
+        {
+            ConsolePrint("[RETAIL-FRONTEND-PROBE] anchor=%s xrefRva=0x%08llX function=unwind-not-found\r\n",
+                label ? label : "<null>",
+                static_cast<unsigned long long>(xref - reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr))));
+            return;
+        }
+
+        const std::uintptr_t begin = static_cast<std::uintptr_t>(runtimeImageBase) + runtimeFunction->BeginAddress;
+        const std::uintptr_t end = static_cast<std::uintptr_t>(runtimeImageBase) + runtimeFunction->EndAddress;
+        const std::uintptr_t mainBase = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+        ConsolePrint("[RETAIL-FRONTEND-PROBE] anchor=%s xrefRva=0x%08llX functionRva=0x%08llX..0x%08llX functionBytes=%llu\r\n",
+            label ? label : "<null>",
+            static_cast<unsigned long long>(xref - mainBase),
+            static_cast<unsigned long long>(begin - mainBase),
+            static_cast<unsigned long long>(end - mainBase),
+            static_cast<unsigned long long>(end > begin ? end - begin : 0));
+
+        if (end <= begin)
+            return;
+        const std::size_t dumpBytes = static_cast<std::size_t>((end - begin) < 192 ? (end - begin) : 192);
+        for (std::size_t offset = 0; offset < dumpBytes; offset += 48)
+        {
+            const std::size_t chunk = (dumpBytes - offset) < 48 ? (dumpBytes - offset) : 48;
+            char hex[48 * 3 + 1]{};
+            std::size_t out = 0;
+            const auto* bytes = reinterpret_cast<const unsigned char*>(begin + offset);
+            for (std::size_t i = 0; i < chunk && out + 3 < sizeof(hex); ++i)
+                out += static_cast<std::size_t>(_snprintf_s(hex + out, sizeof(hex) - out, _TRUNCATE,
+                    "%02X%s", static_cast<unsigned>(bytes[i]), (i + 1 == chunk) ? "" : " "));
+            ConsolePrint("[RETAIL-FRONTEND-PROBE] functionDump anchor=%s rva=0x%08llX+0x%03llX bytes={%s}\r\n",
+                label ? label : "<null>",
+                static_cast<unsigned long long>(begin - mainBase),
+                static_cast<unsigned long long>(offset), hex);
+        }
+    }
+
+    DWORD WINAPI RetailFrontendProbeWorker(LPVOID) noexcept
+    {
+        Sleep(42000);
+        if (!IsExactRetailSteamImage())
+            return 0;
+
+        wchar_t disabled[8]{};
+        if (GetEnvironmentVariableW(L"CODREVAMPED_RETAIL_NO_FRONTEND_PROBE", disabled,
+            static_cast<DWORD>(std::size(disabled))) && disabled[0] == L'1')
+        {
+            ConsolePrint("[RETAIL-FRONTEND-PROBE] disabled by CODREVAMPED_RETAIL_NO_FRONTEND_PROBE=1\r\n");
+            return 0;
+        }
+
+        const std::uintptr_t imageBase = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+        const std::size_t imageSize = static_cast<std::size_t>(g_liveImageSize);
+        ConsolePrint("[RETAIL-FRONTEND-PROBE] begin delayMs=42000 imageBase=%p imageSize=0x%08X mode=READ_ONLY writes=0 hooks=0 protectChanges=0\r\n",
+            reinterpret_cast<void*>(imageBase), g_liveImageSize);
+
+        RetailProbeAnchorHits anchorHits{};
+        RetailProbeXrefHits xrefHits{};
+        RetailProbeXrefCounts xrefCounts{};
+        RetailProbeDataRefHits dataRefHits{};
+        RetailProbeDataRefCounts dataRefCounts{};
+        RetailProbeFindAnchors(imageBase, imageSize, anchorHits);
+        RetailProbeFindRipXrefs(imageBase, imageSize, anchorHits, xrefHits, xrefCounts);
+        RetailProbeFindDataPointerRefs(imageBase, imageSize, anchorHits, dataRefHits, dataRefCounts);
+
+        unsigned foundAnchors = 0;
+        unsigned foundXrefs = 0;
+        unsigned foundDataRefs = 0;
+        for (std::size_t index = 0; index < anchorHits.size(); ++index)
+        {
+            const auto& anchor = kRetailProbeAnchors[index];
+            if (!anchorHits[index])
+            {
+                ConsolePrint("[RETAIL-FRONTEND-PROBE] anchor=%s result=not-found text=\"%s\"\r\n",
+                    anchor.label, anchor.text);
+                continue;
+            }
+
+            ++foundAnchors;
+            ConsolePrint("[RETAIL-FRONTEND-PROBE] anchor=%s result=found rva=0x%08llX address=%p codeXrefs=%u dataRefs=%u\r\n",
+                anchor.label,
+                static_cast<unsigned long long>(anchorHits[index] - imageBase),
+                reinterpret_cast<void*>(anchorHits[index]), xrefCounts[index], dataRefCounts[index]);
+            for (unsigned xrefIndex = 0; xrefIndex < xrefCounts[index]; ++xrefIndex)
+            {
+                ++foundXrefs;
+                RetailProbeDumpFunction(anchor.label, xrefHits[index][xrefIndex]);
+            }
+            for (unsigned dataIndex = 0; dataIndex < dataRefCounts[index]; ++dataIndex)
+            {
+                ++foundDataRefs;
+                RetailProbeInspectLuaRegEntry(anchor.label, dataRefHits[index][dataIndex], imageBase, imageSize);
+            }
+            if (!xrefCounts[index] && !dataRefCounts[index])
+                ConsolePrint("[RETAIL-FRONTEND-PROBE] anchor=%s refs=0 note=string-present-but-no-code-or-data-reference\r\n", anchor.label);
+        }
+
+        RetailProbeDumpFenceTable(imageBase, imageSize);
+        ConsolePrint("[RETAIL-FRONTEND-PROBE] complete anchorsFound=%u/%u codeXrefsFound=%u dataRefsFound=%u scans=2-readable+1-executable+1-fast-writable-fence-table mode=READ_ONLY writes=0 hooks=0 protectChanges=0\r\n",
+            foundAnchors, static_cast<unsigned>(std::size(kRetailProbeAnchors)), foundXrefs, foundDataRefs);
+        return 0;
+    }
+
+    void QueueRetailFrontendProbe() noexcept
+    {
+        if (!IsExactRetailSteamImage())
+            return;
+        HANDLE thread = CreateThread(nullptr, 0, RetailFrontendProbeWorker, nullptr, 0, nullptr);
+        if (thread)
+        {
+            CloseHandle(thread);
+            ConsolePrint("[RETAIL-FRONTEND-PROBE] scheduled delayMs=42000 probe=v11 mode=READ_ONLY no-state-writes\r\n");
+        }
+        else
+        {
+            ConsolePrint("[RETAIL-FRONTEND-PROBE] schedule failed win32=%lu\r\n",
+                static_cast<unsigned long>(GetLastError()));
+        }
+    }
+
+    bool IsCrashLikeException(DWORD code) noexcept
+    {
+        switch (code)
+        {
+        case EXCEPTION_ACCESS_VIOLATION:
+        case EXCEPTION_ARRAY_BOUNDS_EXCEEDED:
+        case EXCEPTION_DATATYPE_MISALIGNMENT:
+        case EXCEPTION_FLT_DIVIDE_BY_ZERO:
+        case EXCEPTION_FLT_INVALID_OPERATION:
+        case EXCEPTION_ILLEGAL_INSTRUCTION:
+        case EXCEPTION_IN_PAGE_ERROR:
+        case EXCEPTION_INT_DIVIDE_BY_ZERO:
+        case EXCEPTION_INT_OVERFLOW:
+        case EXCEPTION_PRIV_INSTRUCTION:
+        case EXCEPTION_STACK_OVERFLOW:
+        case 0xC0000409u: // STATUS_STACK_BUFFER_OVERRUN / fail-fast family
+        case 0xC0000374u: // STATUS_HEAP_CORRUPTION
+        case 0xC000000Du: // STATUS_INVALID_PARAMETER
+            return true;
+        default:
+            return false;
+        }
+    }
+
+    LONG CALLBACK TraceRetailCrashVectored(PEXCEPTION_POINTERS info) noexcept
+    {
+        if (!info || !info->ExceptionRecord || !IsCrashLikeException(info->ExceptionRecord->ExceptionCode))
+            return EXCEPTION_CONTINUE_SEARCH;
+
+        const LONG seen = InterlockedIncrement(&g_retailCrashSeen);
+        // Keep first-chance diagnostics passive and bounded.  We deliberately
+        // never consume or modify the exception/context.
+        if (seen > 64 || InterlockedCompareExchange(&g_retailCrashGuard, 1, 0) != 0)
+            return EXCEPTION_CONTINUE_SEARCH;
+
+        const DWORD code = info->ExceptionRecord->ExceptionCode;
+        void* rip = info->ExceptionRecord->ExceptionAddress;
+        unsigned long long rsp = 0;
+        char moduleName[MAX_PATH]{};
+        std::uintptr_t rva = 0;
+
+#if defined(_M_X64)
+        if (info->ContextRecord)
+        {
+            rip = reinterpret_cast<void*>(info->ContextRecord->Rip);
+            rsp = static_cast<unsigned long long>(info->ContextRecord->Rsp);
+        }
+#endif
+        rva = ModuleRvaFromAddress(rip, moduleName, sizeof(moduleName));
+
+        SYSTEMTIME local{};
+        GetLocalTime(&local);
+        WriteRetailCrashLog("[RETAIL-VEH %02u:%02u:%02u.%03u] seen=%ld code=0x%08lX flags=0x%08lX rip=%p module=%s rva=0x%llX rsp=0x%llX params=%lu\r\n",
+            static_cast<unsigned>(local.wHour), static_cast<unsigned>(local.wMinute),
+            static_cast<unsigned>(local.wSecond), static_cast<unsigned>(local.wMilliseconds),
+            static_cast<long>(seen), static_cast<unsigned long>(code),
+            static_cast<unsigned long>(info->ExceptionRecord->ExceptionFlags), rip,
+            moduleName, static_cast<unsigned long long>(rva), rsp,
+            static_cast<unsigned long>(info->ExceptionRecord->NumberParameters));
+
+        if (code == EXCEPTION_ACCESS_VIOLATION && info->ExceptionRecord->NumberParameters >= 2)
+        {
+            WriteRetailCrashLog("[RETAIL-VEH] access operation=%llu target=0x%llX\r\n",
+                static_cast<unsigned long long>(info->ExceptionRecord->ExceptionInformation[0]),
+                static_cast<unsigned long long>(info->ExceptionRecord->ExceptionInformation[1]));
+        }
+
+#if defined(_M_X64)
+        if (info->ContextRecord)
+        {
+            const CONTEXT* c = info->ContextRecord;
+            WriteRetailCrashLog("[RETAIL-VEH] regs rax=%016llX rbx=%016llX rcx=%016llX rdx=%016llX rsi=%016llX rdi=%016llX rbp=%016llX rsp=%016llX\r\n",
+                static_cast<unsigned long long>(c->Rax), static_cast<unsigned long long>(c->Rbx),
+                static_cast<unsigned long long>(c->Rcx), static_cast<unsigned long long>(c->Rdx),
+                static_cast<unsigned long long>(c->Rsi), static_cast<unsigned long long>(c->Rdi),
+                static_cast<unsigned long long>(c->Rbp), static_cast<unsigned long long>(c->Rsp));
+            WriteRetailCrashLog("[RETAIL-VEH] regs r8=%016llX r9=%016llX r10=%016llX r11=%016llX r12=%016llX r13=%016llX r14=%016llX r15=%016llX\r\n",
+                static_cast<unsigned long long>(c->R8), static_cast<unsigned long long>(c->R9),
+                static_cast<unsigned long long>(c->R10), static_cast<unsigned long long>(c->R11),
+                static_cast<unsigned long long>(c->R12), static_cast<unsigned long long>(c->R13),
+                static_cast<unsigned long long>(c->R14), static_cast<unsigned long long>(c->R15));
+
+            // A small raw stack candidate list is far more useful than a guessed
+            // unwind when symbols are unavailable. Resolve only values that map
+            // into loaded modules and leave the process state untouched.
+            const auto stack = reinterpret_cast<const std::uintptr_t*>(c->Rsp);
+            for (unsigned i = 0; i < 32; ++i)
+            {
+                std::uintptr_t candidate = 0;
+                __try
+                {
+                    candidate = stack[i];
+                }
+                __except (EXCEPTION_EXECUTE_HANDLER)
+                {
+                    break;
+                }
+                if (!candidate)
+                    continue;
+                char candidateModule[MAX_PATH]{};
+                const std::uintptr_t candidateRva = ModuleRvaFromAddress(reinterpret_cast<void*>(candidate), candidateModule, sizeof(candidateModule));
+                if (candidateRva || std::strcmp(candidateModule, "<unknown>") != 0)
+                {
+                    WriteRetailCrashLog("[RETAIL-STACK] +0x%03X value=%p module=%s rva=0x%llX\r\n",
+                        i * static_cast<unsigned>(sizeof(std::uintptr_t)), reinterpret_cast<void*>(candidate),
+                        candidateModule, static_cast<unsigned long long>(candidateRva));
+                }
+            }
+        }
+#endif
+        WriteRetailCrashLog("[RETAIL-VEH] action=continue-search contextModified=no\r\n");
+        InterlockedExchange(&g_retailCrashGuard, 0);
+        return EXCEPTION_CONTINUE_SEARCH;
+    }
+
+    void InstallRetailCrashTrace() noexcept
+    {
+        if (InterlockedCompareExchange(&g_compat123Detected, 0, 0) != 0 || g_retailCrashVeh)
+            return;
+        g_retailCrashVeh = AddVectoredExceptionHandler(1, &TraceRetailCrashVectored);
+        WriteRetailCrashLog("\r\n[RETAIL-CRASH-TRACE] session-start timestamp=0x%08X imageSize=0x%08X entryPoint=0x%08X veh=%s passive=yes\r\n",
+            g_liveTimestamp, g_liveImageSize, g_liveEntryPoint, g_retailCrashVeh ? "installed" : "FAILED");
+        ConsolePrint("[CRASH-TRACE] retail passive VEH=%s output=mw2019_retail_crash.log exceptionsConsumed=no contextWrites=no\r\n",
+            g_retailCrashVeh ? "installed" : "FAILED");
     }
 
     bool EqualsNoCase(const char* a, const char* b) noexcept
@@ -422,10 +2118,16 @@ namespace
 
         const auto build = static_cast<StartupCompatBuild>(
             InterlockedCompareExchange(&g_startupCompatBuild, 0, 0));
-        // The verifier address and embedded stock key are proven only for the
-        // exact 1.20 fingerprint.  Never reuse this RVA for another build.
-        if (build != StartupCompatBuild::MW120)
+        // Keep startup compatibility classification unchanged for retail 1.44.
+        // Its existing diagnostic profile identifies this exact response key.
+        const bool is144 = g_liveTimestamp == 0x61671CE8u &&
+            g_liveImageSize == 0x22C1BA00u && g_liveEntryPoint == 0x06D429F8u;
+        if (build != StartupCompatBuild::MW120 && !is144)
             return false;
+        const std::uintptr_t verifierRva = is144 ? 0x0708E2B0ull : kMW120Auth3VerifierRva;
+        ConsolePrint("[AUTH3-PROFILE] build=%s verifierRva=0x%llX trigger=%s\r\n",
+            is144 ? "1.44" : "1.20", static_cast<unsigned long long>(verifierRva),
+            trigger ? trigger : "unknown");
 
         const LONG attempt = InterlockedIncrement(&g_auth3VerifierTrustAttempts);
         unsigned char localKey[294]{};
@@ -433,7 +2135,7 @@ namespace
         if (!ReadGameSiblingAuth3PublicKey(localKey, keyPath, sizeof(keyPath) / sizeof(keyPath[0])))
         {
             if (attempt <= 3 || (attempt % 5) == 0)
-                ConsolePrint("[AUTH3-TRUST] build=1.20 attempt=%ld trigger=%s waiting for auth3-response-signing-public.der; start RevampedIW8Server.exe first\r\n",
+                ConsolePrint("[AUTH3-TRUST] fingerprint-scoped attempt=%ld trigger=%s waiting for auth3-response-signing-public.der; start RevampedIW8Server.exe first\r\n",
                     attempt, trigger ? trigger : "unknown");
             return false;
         }
@@ -445,7 +2147,7 @@ namespace
             localKey[292] != 0x00 || localKey[293] != 0x01 ||
             std::memcmp(localKey, kStockAuth3VerifierDer, sizeof(localKey)) == 0)
         {
-            ConsolePrint("[AUTH3-TRUST] build=1.20 refused malformed/stock local signer DER trigger=%s\r\n",
+            ConsolePrint("[AUTH3-TRUST] fingerprint-scoped refused malformed/stock local signer DER trigger=%s\r\n",
                 trigger ? trigger : "unknown");
             return false;
         }
@@ -453,7 +2155,7 @@ namespace
         const auto base = reinterpret_cast<unsigned char*>(GetModuleHandleW(nullptr));
         if (!base)
         {
-            ConsolePrint("[AUTH3-TRUST] build=1.20 unable to resolve main module trigger=%s\r\n",
+            ConsolePrint("[AUTH3-TRUST] fingerprint-scoped unable to resolve main module trigger=%s\r\n",
                 trigger ? trigger : "unknown");
             return false;
         }
@@ -465,7 +2167,7 @@ namespace
         // The stock DER occurs five times in .rdata, so a uniqueness scan is
         // intentionally wrong for this build.  Patch only the proven Auth3
         // verifier location and validate the entire 294-byte blob before write.
-        unsigned char* target = base + kMW120Auth3VerifierRva;
+        unsigned char* target = base + verifierRva;
         bool alreadyPatched = false;
         bool stockMatches = false;
         __try
@@ -475,8 +2177,8 @@ namespace
         }
         __except (EXCEPTION_EXECUTE_HANDLER)
         {
-            ConsolePrint("[AUTH3-TRUST] build=1.20 exact verifier RVA unreadable rva=0x%llX trigger=%s\r\n",
-                static_cast<unsigned long long>(kMW120Auth3VerifierRva),
+            ConsolePrint("[AUTH3-TRUST] fingerprint-scoped exact verifier RVA unreadable rva=0x%llX trigger=%s\r\n",
+                static_cast<unsigned long long>(verifierRva),
                 trigger ? trigger : "unknown");
             return false;
         }
@@ -484,16 +2186,16 @@ namespace
         if (alreadyPatched)
         {
             InterlockedExchange(&g_auth3VerifierTrustPatched, 1);
-            ConsolePrint("[AUTH3-TRUST] build=1.20 already patched exact verifier DER rva=0x%llX trigger=%s\r\n",
-                static_cast<unsigned long long>(kMW120Auth3VerifierRva),
+            ConsolePrint("[AUTH3-TRUST] fingerprint-scoped already patched exact verifier DER rva=0x%llX trigger=%s\r\n",
+                static_cast<unsigned long long>(verifierRva),
                 trigger ? trigger : "unknown");
             return true;
         }
 
         if (!stockMatches)
         {
-            ConsolePrint("[AUTH3-TRUST] build=1.20 REFUSED exact verifier mismatch rva=0x%llX trigger=%s; no write performed\r\n",
-                static_cast<unsigned long long>(kMW120Auth3VerifierRva),
+            ConsolePrint("[AUTH3-TRUST] fingerprint-scoped REFUSED exact verifier mismatch rva=0x%llX trigger=%s; no write performed\r\n",
+                static_cast<unsigned long long>(verifierRva),
                 trigger ? trigger : "unknown");
             return false;
         }
@@ -501,8 +2203,8 @@ namespace
         DWORD oldProtect = 0;
         if (!VirtualProtect(target, sizeof(localKey), PAGE_READWRITE, &oldProtect))
         {
-            ConsolePrint("[AUTH3-TRUST] build=1.20 VirtualProtect failed rva=0x%llX win32=%lu trigger=%s\r\n",
-                static_cast<unsigned long long>(kMW120Auth3VerifierRva), GetLastError(),
+            ConsolePrint("[AUTH3-TRUST] fingerprint-scoped VirtualProtect failed rva=0x%llX win32=%lu trigger=%s\r\n",
+                static_cast<unsigned long long>(verifierRva), GetLastError(),
                 trigger ? trigger : "unknown");
             return false;
         }
@@ -523,8 +2225,8 @@ namespace
         }
         if (!writePersisted)
         {
-            ConsolePrint("[AUTH3-TRUST] build=1.20 exact verifier DER write did not persist rva=0x%llX trigger=%s\r\n",
-                static_cast<unsigned long long>(kMW120Auth3VerifierRva),
+            ConsolePrint("[AUTH3-TRUST] fingerprint-scoped exact verifier DER write did not persist rva=0x%llX trigger=%s\r\n",
+                static_cast<unsigned long long>(verifierRva),
                 trigger ? trigger : "unknown");
             return false;
         }
@@ -534,8 +2236,8 @@ namespace
             WideCharToMultiByte(CP_UTF8, 0, keyPath, -1, pathUtf8, static_cast<int>(sizeof(pathUtf8)), nullptr, nullptr);
 
         InterlockedExchange(&g_auth3VerifierTrustPatched, 1);
-        ConsolePrint("[AUTH3-TRUST] build=1.20 PATCHED exact native Auth3 response verifier DER rva=0x%llX bytes=294 source=%s trigger=%s\r\n",
-            static_cast<unsigned long long>(kMW120Auth3VerifierRva),
+        ConsolePrint("[AUTH3-TRUST] fingerprint-scoped PATCHED exact native Auth3 response verifier DER rva=0x%llX bytes=294 source=%s trigger=%s\r\n",
+            static_cast<unsigned long long>(verifierRva),
             pathUtf8[0] ? pathUtf8 : "<game-root>", trigger ? trigger : "unknown");
         ConsolePrint("[AUTH3-TRUST] scope=RSA-PSS/SHA-256 response authenticity only; no auth/login/fence state is modified\r\n");
         return true;
@@ -1232,6 +2934,8 @@ namespace
     StartupCompatBuild DetectStartupCompatBuild(std::uint32_t timestamp, std::uint32_t imageSize,
         std::uint32_t entryPoint) noexcept
     {
+        if (timestamp == kMW116Timestamp && imageSize == kMW116ImageSize && entryPoint == kMW116EntryPoint)
+            return StartupCompatBuild::MW116;
         if (timestamp == kMW120Timestamp && imageSize == kMW120ImageSize && entryPoint == kMW120EntryPoint)
             return StartupCompatBuild::MW120;
         if (timestamp == kMW123Timestamp && imageSize == kMW123ImageSize && entryPoint == kMW123EntryPoint)
@@ -1250,6 +2954,7 @@ namespace
     {
         switch (build)
         {
+        case StartupCompatBuild::MW116: return "1.16";
         case StartupCompatBuild::MW120: return "1.20";
         case StartupCompatBuild::MW123: return "1.23";
         case StartupCompatBuild::MW128: return "1.28";
@@ -1260,6 +2965,16 @@ namespace
     bool IsSupportedStartupCompatBuild() noexcept
     {
         return CurrentStartupCompatBuild() != StartupCompatBuild::None;
+    }
+
+    DWORD CompatWindowsBuild() noexcept
+    {
+        // 1.16 predates Windows 10 2004.  Running the launch-era executable while
+        // advertising build 19041 changes several old bootstrap/version branches
+        // before renderer initialization.  Keep newer preserved builds on the
+        // existing 19041 compatibility target, but present 1.16 with the Windows
+        // 10 1903-era build contemporaneous with this October 2019 executable.
+        return CurrentStartupCompatBuild() == StartupCompatBuild::MW116 ? 18362u : kCompatBuild;
     }
 
     bool FullNetworkTraceRequested() noexcept
@@ -1273,16 +2988,49 @@ namespace
         return count != 0 && value[0] == '1';
     }
 
+    bool MW116DeepTraceRequested() noexcept
+    {
+        char value[8]{};
+        const DWORD count = GetEnvironmentVariableA(
+            "CODREVAMPED_MW116_TRACE", value, static_cast<DWORD>(sizeof(value)));
+        return count != 0 && value[0] == '1';
+    }
+
+    bool MW116ProductionMode() noexcept
+    {
+        return CurrentStartupCompatBuild() == StartupCompatBuild::MW116 && !MW116DeepTraceRequested();
+    }
+
+    bool MW123DeepTraceRequested() noexcept
+    {
+        char value[8]{};
+        const DWORD count = GetEnvironmentVariableA(
+            "CODREVAMPED_MW123_TRACE", value, static_cast<DWORD>(sizeof(value)));
+        return count != 0 && value[0] == '1';
+    }
+
+    bool MW123ProductionMode() noexcept
+    {
+        return CurrentStartupCompatBuild() == StartupCompatBuild::MW123 && !MW123DeepTraceRequested();
+    }
+
     bool UseDnsOnlyNetworkHooks() noexcept
     {
-        return CurrentStartupCompatBuild() == StartupCompatBuild::None &&
+        const auto build = CurrentStartupCompatBuild();
+        // Transport wrappers are diagnostic-only.  1.16 and 1.23 both run
+        // old Battle.net/bootstrap code that is sensitive to Winsock IAT
+        // replacement.  Keep those builds on DNS-only routing by default.
+        // Full transport tracing remains opt-in for research.
+        return (build == StartupCompatBuild::None ||
+                build == StartupCompatBuild::MW116 ||
+                build == StartupCompatBuild::MW123) &&
             !FullNetworkTraceRequested();
     }
 
     DWORD WINAPI CompatGetVersion() noexcept
     {
         // GetVersion encodes major/minor in LOWORD and the NT build in HIWORD.
-        return (kCompatBuild << 16) | (kCompatMinor << 8) | kCompatMajor;
+        return (CompatWindowsBuild() << 16) | (kCompatMinor << 8) | kCompatMajor;
     }
 
     void FillCompatVersionA(LPOSVERSIONINFOA info) noexcept
@@ -1291,7 +3039,7 @@ namespace
             return;
         info->dwMajorVersion = kCompatMajor;
         info->dwMinorVersion = kCompatMinor;
-        info->dwBuildNumber = kCompatBuild;
+        info->dwBuildNumber = CompatWindowsBuild();
         info->dwPlatformId = VER_PLATFORM_WIN32_NT;
         info->szCSDVersion[0] = '\0';
 
@@ -1321,6 +3069,140 @@ namespace
         FillCompatVersionA(info);
         SetLastError(ERROR_SUCCESS);
         return TRUE;
+    }
+
+    void FillCompatVersionW(LPOSVERSIONINFOW info) noexcept
+    {
+        if (!info)
+            return;
+        info->dwMajorVersion = kCompatMajor;
+        info->dwMinorVersion = kCompatMinor;
+        info->dwBuildNumber = CompatWindowsBuild();
+        info->dwPlatformId = VER_PLATFORM_WIN32_NT;
+        info->szCSDVersion[0] = L'\0';
+
+        if (info->dwOSVersionInfoSize >= sizeof(OSVERSIONINFOEXW))
+        {
+            auto* ex = reinterpret_cast<LPOSVERSIONINFOEXW>(info);
+            ex->wServicePackMajor = 0;
+            ex->wServicePackMinor = 0;
+            ex->wSuiteMask = 0;
+            ex->wProductType = VER_NT_WORKSTATION;
+            ex->wReserved = 0;
+        }
+    }
+
+    BOOL WINAPI CompatGetVersionExW(LPOSVERSIONINFOW info) noexcept
+    {
+        if (!info ||
+            (info->dwOSVersionInfoSize != sizeof(OSVERSIONINFOW) &&
+             info->dwOSVersionInfoSize != sizeof(OSVERSIONINFOEXW)))
+        {
+            SetLastError(ERROR_INVALID_PARAMETER);
+            return FALSE;
+        }
+
+        if (g_realGetVersionExW)
+            g_realGetVersionExW(info);
+        FillCompatVersionW(info);
+        SetLastError(ERROR_SUCCESS);
+        return TRUE;
+    }
+
+    LONG WINAPI CompatRtlGetVersion(CompatRtlOsVersionInfoW* info) noexcept
+    {
+        if (!info || info->dwOSVersionInfoSize < sizeof(CompatRtlOsVersionInfoW))
+        {
+            Write123StartupLog("[MW116-VERSION] RtlGetVersion invalid-buffer info=%p size=%lu\r\n",
+                info, info ? static_cast<unsigned long>(info->dwOSVersionInfoSize) : 0ul);
+            return static_cast<LONG>(0xC000000DL); // STATUS_INVALID_PARAMETER
+        }
+
+        // Do not call the host RtlGetVersion for the 1.16 compatibility path.
+        // The whole point of this adapter is to give the 2019 binary one
+        // deterministic OS view regardless of the Windows 11 host.
+        info->dwMajorVersion = kCompatMajor;
+        info->dwMinorVersion = kCompatMinor;
+        info->dwBuildNumber = CompatWindowsBuild();
+        info->dwPlatformId = VER_PLATFORM_WIN32_NT;
+        info->szCSDVersion[0] = L'\0';
+        Write123StartupLog("[MW116-VERSION] RtlGetVersion call -> 10.0.%lu status=0\r\n",
+            static_cast<unsigned long>(CompatWindowsBuild()));
+        return 0; // STATUS_SUCCESS
+    }
+
+    VOID WINAPI CompatRtlGetNtVersionNumbers(LPDWORD major, LPDWORD minor, LPDWORD build) noexcept
+    {
+        if (major) *major = kCompatMajor;
+        if (minor) *minor = kCompatMinor;
+        if (build) *build = CompatWindowsBuild();
+    }
+
+    bool IsProcNameString(LPCSTR name) noexcept
+    {
+        return reinterpret_cast<std::uintptr_t>(name) > 0xFFFFu;
+    }
+
+    BOOL WINAPI CompatVerifyVersionInfoA(LPOSVERSIONINFOEXA info, DWORD typeMask, DWORDLONG conditionMask) noexcept;
+    BOOL WINAPI CompatVerifyVersionInfoW(LPOSVERSIONINFOEXW info, DWORD typeMask, DWORDLONG conditionMask) noexcept;
+    VOID WINAPI Trace116RtlExitUserProcess(LONG status) noexcept;
+    VOID WINAPI Trace116RtlExitUserThread(LONG status) noexcept;
+    LONG WINAPI Trace116NtTerminateProcess(HANDLE process, LONG status) noexcept;
+    LONG WINAPI Trace116NtRaiseHardError(LONG errorStatus, ULONG parameterCount, ULONG unicodeMask, PULONG_PTR parameters, ULONG responseOption, PULONG response) noexcept;
+    VOID WINAPI Trace116RaiseFailFastException(PEXCEPTION_RECORD record, PCONTEXT context, DWORD flags) noexcept;
+
+    FARPROC WINAPI Compat116GetProcAddress(HMODULE module, LPCSTR procName) noexcept
+    {
+        const StartupCompatBuild build = CurrentStartupCompatBuild();
+        const bool versionCompatBuild =
+            build == StartupCompatBuild::MW116 || build == StartupCompatBuild::MW123;
+        if (versionCompatBuild && module && procName && IsProcNameString(procName))
+        {
+            HMODULE kernel32 = GetModuleHandleW(L"KERNEL32.dll");
+            HMODULE kernelBase = GetModuleHandleW(L"KERNELBASE.dll");
+            HMODULE ntdll = GetModuleHandleW(L"ntdll.dll");
+
+            FARPROC replacement = nullptr;
+            if (module == ntdll)
+            {
+                if (std::strcmp(procName, "RtlGetVersion") == 0)
+                    replacement = reinterpret_cast<FARPROC>(&CompatRtlGetVersion);
+                else if (std::strcmp(procName, "RtlGetNtVersionNumbers") == 0)
+                    replacement = reinterpret_cast<FARPROC>(&CompatRtlGetNtVersionNumbers);
+                else if (build == StartupCompatBuild::MW116 && MW116DeepTraceRequested() && std::strcmp(procName, "RtlExitUserProcess") == 0)
+                    replacement = reinterpret_cast<FARPROC>(&Trace116RtlExitUserProcess);
+                else if (build == StartupCompatBuild::MW116 && MW116DeepTraceRequested() && std::strcmp(procName, "RtlExitUserThread") == 0)
+                    replacement = reinterpret_cast<FARPROC>(&Trace116RtlExitUserThread);
+                else if (build == StartupCompatBuild::MW116 && MW116DeepTraceRequested() &&
+                    (std::strcmp(procName, "NtTerminateProcess") == 0 || std::strcmp(procName, "ZwTerminateProcess") == 0))
+                    replacement = reinterpret_cast<FARPROC>(&Trace116NtTerminateProcess);
+                else if (build == StartupCompatBuild::MW116 && MW116DeepTraceRequested() && std::strcmp(procName, "NtRaiseHardError") == 0)
+                    replacement = reinterpret_cast<FARPROC>(&Trace116NtRaiseHardError);
+            }
+            else if (module == kernel32 || module == kernelBase)
+            {
+                if (std::strcmp(procName, "GetVersion") == 0)
+                    replacement = reinterpret_cast<FARPROC>(&CompatGetVersion);
+                else if (std::strcmp(procName, "GetVersionExA") == 0)
+                    replacement = reinterpret_cast<FARPROC>(&CompatGetVersionExA);
+                else if (std::strcmp(procName, "GetVersionExW") == 0)
+                    replacement = reinterpret_cast<FARPROC>(&CompatGetVersionExW);
+                else if (std::strcmp(procName, "VerifyVersionInfoA") == 0)
+                    replacement = reinterpret_cast<FARPROC>(&CompatVerifyVersionInfoA);
+                else if (std::strcmp(procName, "VerifyVersionInfoW") == 0)
+                    replacement = reinterpret_cast<FARPROC>(&CompatVerifyVersionInfoW);
+                else if (build == StartupCompatBuild::MW116 && MW116DeepTraceRequested() && std::strcmp(procName, "RaiseFailFastException") == 0)
+                    replacement = reinterpret_cast<FARPROC>(&Trace116RaiseFailFastException);
+            }
+
+            if (replacement)
+            {
+                Write123StartupLog("[COMPAT-VERSION] build=%s dynamic resolve %s -> compat target=10.0.%lu\r\n",
+                    StartupCompatBuildName(build), procName, static_cast<unsigned long>(CompatWindowsBuild()));
+                return replacement;
+            }
+        }
+        return g_realGetProcAddress ? g_realGetProcAddress(module, procName) : nullptr;
     }
 
     BYTE VersionConditionFor(DWORDLONG mask, DWORD type) noexcept
@@ -1370,7 +3252,7 @@ namespace
         if (typeMask & VER_BUILDNUMBER)
         {
             const BYTE c = VersionConditionFor(conditionMask, VER_BUILDNUMBER);
-            if (!c || !VersionCompare(kCompatBuild, requested->dwBuildNumber, c)) return false;
+            if (!c || !VersionCompare(CompatWindowsBuild(), requested->dwBuildNumber, c)) return false;
         }
         if (typeMask & VER_PLATFORMID)
         {
@@ -1432,7 +3314,9 @@ namespace
             return;
         slash[1] = L'\0';
         const StartupCompatBuild build = CurrentStartupCompatBuild();
-        if (build == StartupCompatBuild::MW120)
+        if (build == StartupCompatBuild::MW116)
+            wcscat_s(exePath, exePathCount, L"mw2019_116_startup.log");
+        else if (build == StartupCompatBuild::MW120)
             wcscat_s(exePath, exePathCount, L"mw2019_120_startup.log");
         else if (build == StartupCompatBuild::MW128)
             wcscat_s(exePath, exePathCount, L"mw2019_128_startup.log");
@@ -1859,6 +3743,14 @@ namespace
         if (TryRecover123NullExecute(info))
             return EXCEPTION_CONTINUE_EXECUTION;
 
+        // 1.23 production mode keeps this VEH installed only because the
+        // preserved executable makes one known execute-null bootstrap call
+        // that must be recovered.  Do not perform file/module/CRT work from
+        // unrelated first-chance exceptions; that instrumentation is research
+        // only and can perturb the old runtime while it is already unwinding.
+        if (MW123ProductionMode())
+            return EXCEPTION_CONTINUE_SEARCH;
+
         const LONG seen = InterlockedIncrement(&g_compat123VehCount);
         const DWORD code = info->ExceptionRecord->ExceptionCode;
         // Preserve the stock diagnostic text as well as its exception envelope.
@@ -1915,6 +3807,64 @@ namespace
         return EXCEPTION_CONTINUE_SEARCH;
     }
 
+    VOID WINAPI Trace116RtlExitUserProcess(LONG status) noexcept
+    {
+        char moduleName[MAX_PATH]{};
+        ModuleNameFromAddress(_ReturnAddress(), moduleName, sizeof(moduleName));
+        std::uintptr_t rva = 0;
+        IsAddressInMainImage(reinterpret_cast<std::uintptr_t>(_ReturnAddress()), &rva);
+        Write123StartupLog("[MW116-EXIT] RtlExitUserProcess status=0x%08lX caller=%p module=%s callerRva=0x%llX\r\n",
+            static_cast<unsigned long>(status), _ReturnAddress(), moduleName, static_cast<unsigned long long>(rva));
+        if (g_realRtlExitUserProcess)
+            g_realRtlExitUserProcess(status);
+    }
+
+    VOID WINAPI Trace116RtlExitUserThread(LONG status) noexcept
+    {
+        char moduleName[MAX_PATH]{};
+        ModuleNameFromAddress(_ReturnAddress(), moduleName, sizeof(moduleName));
+        Write123StartupLog("[MW116-EXIT] RtlExitUserThread tid=%lu status=0x%08lX caller=%p module=%s\r\n",
+            static_cast<unsigned long>(GetCurrentThreadId()), static_cast<unsigned long>(status),
+            _ReturnAddress(), moduleName);
+        if (g_realRtlExitUserThread)
+            g_realRtlExitUserThread(status);
+    }
+
+    LONG WINAPI Trace116NtTerminateProcess(HANDLE process, LONG status) noexcept
+    {
+        char moduleName[MAX_PATH]{};
+        ModuleNameFromAddress(_ReturnAddress(), moduleName, sizeof(moduleName));
+        std::uintptr_t rva = 0;
+        IsAddressInMainImage(reinterpret_cast<std::uintptr_t>(_ReturnAddress()), &rva);
+        Write123StartupLog("[MW116-EXIT] NtTerminateProcess process=%p status=0x%08lX caller=%p module=%s callerRva=0x%llX\r\n",
+            process, static_cast<unsigned long>(status), _ReturnAddress(), moduleName,
+            static_cast<unsigned long long>(rva));
+        return g_realNtTerminateProcess ? g_realNtTerminateProcess(process, status) : static_cast<LONG>(0xC0000002L);
+    }
+
+    LONG WINAPI Trace116NtRaiseHardError(LONG errorStatus, ULONG parameterCount, ULONG unicodeMask,
+        PULONG_PTR parameters, ULONG responseOption, PULONG response) noexcept
+    {
+        char moduleName[MAX_PATH]{};
+        ModuleNameFromAddress(_ReturnAddress(), moduleName, sizeof(moduleName));
+        Write123StartupLog("[MW116-EXIT] NtRaiseHardError status=0x%08lX params=%lu option=%lu caller=%p module=%s\r\n",
+            static_cast<unsigned long>(errorStatus), static_cast<unsigned long>(parameterCount),
+            static_cast<unsigned long>(responseOption), _ReturnAddress(), moduleName);
+        return g_realNtRaiseHardError ? g_realNtRaiseHardError(errorStatus, parameterCount, unicodeMask, parameters, responseOption, response)
+            : static_cast<LONG>(0xC0000002L);
+    }
+
+    VOID WINAPI Trace116RaiseFailFastException(PEXCEPTION_RECORD record, PCONTEXT context, DWORD flags) noexcept
+    {
+        char moduleName[MAX_PATH]{};
+        ModuleNameFromAddress(_ReturnAddress(), moduleName, sizeof(moduleName));
+        Write123StartupLog("[MW116-EXIT] RaiseFailFastException code=0x%08lX flags=0x%08lX caller=%p module=%s\r\n",
+            static_cast<unsigned long>(record ? record->ExceptionCode : 0), static_cast<unsigned long>(flags),
+            _ReturnAddress(), moduleName);
+        if (g_realRaiseFailFastException)
+            g_realRaiseFailFastException(record, context, flags);
+    }
+
     LPTOP_LEVEL_EXCEPTION_FILTER WINAPI Trace123SetUnhandledExceptionFilter(LPTOP_LEVEL_EXCEPTION_FILTER filter) noexcept
     {
         Write123StartupLog("[EXCEPTION] SetUnhandledExceptionFilter filter=%p caller=%p\r\n", filter, _ReturnAddress());
@@ -1952,11 +3902,21 @@ namespace
             std::strcmp(caption, "Recommended Settings Updated") == 0 &&
             std::strstr(text, "configure itself optimally with these new settings"))
         {
+            if (CurrentStartupCompatBuild() == StartupCompatBuild::MW116)
+            {
+                Write123StartupLog("[SETTINGS-PROMPT] build=1.16 recommended-settings update accepted result=IDYES reason=startup-recovery\r\n");
+                return IDYES;
+            }
             Write123StartupLog("[SETTINGS-PROMPT] recommended-settings update declined result=IDNO settingsUntouched=yes\r\n");
             return IDNO;
         }
         if (IsStockSafeModePrompt(text, caption))
         {
+            if (CurrentStartupCompatBuild() == StartupCompatBuild::MW116)
+            {
+                Write123StartupLog("[SAFE-MODE] build=1.16 stock previous-run prompt auto-accepted api=MessageBoxA result=IDYES action=reset-safe-startup-settings\r\n");
+                return IDYES;
+            }
             Write123StartupLog("[SAFE-MODE] stock previous-run prompt auto-declined api=MessageBoxA result=IDNO settingsUntouched=yes\r\n");
             return IDNO;
         }
@@ -1971,11 +3931,21 @@ namespace
             std::wcscmp(caption, L"Recommended Settings Updated") == 0 &&
             std::wcsstr(text, L"configure itself optimally with these new settings"))
         {
+            if (CurrentStartupCompatBuild() == StartupCompatBuild::MW116)
+            {
+                Write123StartupLog("[SETTINGS-PROMPT] build=1.16 recommended-settings update accepted result=IDYES reason=startup-recovery\r\n");
+                return IDYES;
+            }
             Write123StartupLog("[SETTINGS-PROMPT] recommended-settings update declined result=IDNO settingsUntouched=yes\r\n");
             return IDNO;
         }
         if (IsStockSafeModePrompt(text, caption))
         {
+            if (CurrentStartupCompatBuild() == StartupCompatBuild::MW116)
+            {
+                Write123StartupLog("[SAFE-MODE] build=1.16 stock previous-run prompt auto-accepted api=MessageBoxW result=IDYES action=reset-safe-startup-settings\r\n");
+                return IDYES;
+            }
             Write123StartupLog("[SAFE-MODE] stock previous-run prompt auto-declined api=MessageBoxW result=IDNO settingsUntouched=yes\r\n");
             return IDNO;
         }
@@ -2006,11 +3976,35 @@ namespace
             fingerprintOk ? "yes" : "no", timestamp, imageSize, entryPoint, StartupCompatBuildName(build));
 
         if (build == StartupCompatBuild::None)
+        {
+            // Exact retail profiles use only the existing dialog handlers,
+            // never the older builds' OS/launcher compatibility hooks.
+            const bool retail144 = fingerprintOk && timestamp == 0x61671CE8u &&
+                imageSize == 0x22C1BA00u && entryPoint == 0x06D429F8u;
+            const bool retailSteam = fingerprintOk && timestamp == 0x69DD404Eu &&
+                imageSize == 0x21679200u && entryPoint == 0x06E4931Cu;
+            if (retail144 || retailSteam)
+            {
+                HMODULE user32 = GetModuleHandleW(L"user32.dll");
+                if (!user32) user32 = LoadLibraryW(L"user32.dll");
+                if (user32)
+                {
+                    g_realMessageBoxA = reinterpret_cast<MessageBoxAFn>(GetProcAddress(user32, "MessageBoxA"));
+                    g_realMessageBoxW = reinterpret_cast<MessageBoxWFn>(GetProcAddress(user32, "MessageBoxW"));
+                    const unsigned patched =
+                        (PatchImport(GetModuleHandleW(nullptr), "USER32.dll", "MessageBoxA", reinterpret_cast<void*>(&CompatMessageBoxA)) ? 1u : 0u) +
+                        (PatchImport(GetModuleHandleW(nullptr), "USER32.dll", "MessageBoxW", reinterpret_cast<void*>(&CompatMessageBoxW)) ? 1u : 0u);
+                    Write123StartupLog("[%s-PROMPT] exact-text handlers=%u/2 settings-preserved=yes\r\n",
+                        retailSteam ? "STEAM-RETAIL" : "MW144", patched);
+                }
+            }
             return;
+        }
 
         InterlockedExchange(&g_compat123Detected, 1);
 
         HMODULE kernel32 = GetModuleHandleW(L"KERNEL32.dll");
+        HMODULE ntdll = GetModuleHandleW(L"ntdll.dll");
         HMODULE advapi32 = GetModuleHandleW(L"ADVAPI32.dll");
         HMODULE crypt32 = GetModuleHandleW(L"CRYPT32.dll");
         HMODULE user32 = GetModuleHandleW(L"USER32.dll");
@@ -2020,8 +4014,19 @@ namespace
         if (!kernel32 || !advapi32 || !mainModule)
             return;
 
+        g_realGetProcAddress = reinterpret_cast<GetProcAddressFn>(GetProcAddress(kernel32, "GetProcAddress"));
         g_realGetVersion = reinterpret_cast<GetVersionFn>(GetProcAddress(kernel32, "GetVersion"));
         g_realGetVersionExA = reinterpret_cast<GetVersionExAFn>(GetProcAddress(kernel32, "GetVersionExA"));
+        g_realGetVersionExW = reinterpret_cast<GetVersionExWFn>(GetProcAddress(kernel32, "GetVersionExW"));
+        if (ntdll)
+        {
+            g_realRtlGetVersion = reinterpret_cast<RtlGetVersionFn>(GetProcAddress(ntdll, "RtlGetVersion"));
+            g_realRtlGetNtVersionNumbers = reinterpret_cast<RtlGetNtVersionNumbersFn>(GetProcAddress(ntdll, "RtlGetNtVersionNumbers"));
+            g_realRtlExitUserProcess = reinterpret_cast<RtlExitUserProcessFn>(GetProcAddress(ntdll, "RtlExitUserProcess"));
+            g_realRtlExitUserThread = reinterpret_cast<RtlExitUserThreadFn>(GetProcAddress(ntdll, "RtlExitUserThread"));
+            g_realNtTerminateProcess = reinterpret_cast<NtTerminateProcessFn>(GetProcAddress(ntdll, "NtTerminateProcess"));
+            g_realNtRaiseHardError = reinterpret_cast<NtRaiseHardErrorFn>(GetProcAddress(ntdll, "NtRaiseHardError"));
+        }
         g_realVerifyVersionInfoA = reinterpret_cast<VerifyVersionInfoAFn>(GetProcAddress(kernel32, "VerifyVersionInfoA"));
         g_realVerifyVersionInfoW = reinterpret_cast<VerifyVersionInfoWFn>(GetProcAddress(kernel32, "VerifyVersionInfoW"));
         g_realGetCommandLineA = reinterpret_cast<GetCommandLineAFn>(GetProcAddress(kernel32, "GetCommandLineA"));
@@ -2033,6 +4038,7 @@ namespace
         g_realFreeLibraryAndExitThread = reinterpret_cast<FreeLibraryAndExitThreadFn>(GetProcAddress(kernel32, "FreeLibraryAndExitThread"));
         g_realSetUnhandledExceptionFilter = reinterpret_cast<SetUnhandledExceptionFilterFn>(GetProcAddress(kernel32, "SetUnhandledExceptionFilter"));
         g_realUnhandledExceptionFilter = reinterpret_cast<UnhandledExceptionFilterFn>(GetProcAddress(kernel32, "UnhandledExceptionFilter"));
+        g_realRaiseFailFastException = reinterpret_cast<RaiseFailFastExceptionFn>(GetProcAddress(kernel32, "RaiseFailFastException"));
 
         g_realRegOpenKeyExA = reinterpret_cast<RegOpenKeyExAFn>(GetProcAddress(advapi32, "RegOpenKeyExA"));
         g_realRegOpenKeyExW = reinterpret_cast<RegOpenKeyExWFn>(GetProcAddress(advapi32, "RegOpenKeyExW"));
@@ -2075,14 +4081,40 @@ namespace
             }
         }
 
-        g_compat123Veh = AddVectoredExceptionHandler(1, &Trace123VectoredException);
-        Write123StartupLog("[BOOT] vectored exception trace=%s\r\n", g_compat123Veh ? "installed" : "FAILED");
+        const bool mw116Production = build == StartupCompatBuild::MW116 && !MW116DeepTraceRequested();
+        const bool mw123Production = build == StartupCompatBuild::MW123 && !MW123DeepTraceRequested();
+        if (!mw116Production)
+        {
+            g_compat123Veh = AddVectoredExceptionHandler(1, &Trace123VectoredException);
+            if (mw123Production)
+                Write123StartupLog("[MW123-PROD] minimal VEH=%s purpose=null-execute-recovery-only unrelatedExceptionLogging=off\r\n",
+                    g_compat123Veh ? "installed" : "FAILED");
+            else
+                Write123StartupLog("[BOOT] vectored exception trace=%s\r\n", g_compat123Veh ? "installed" : "FAILED");
+        }
+        else
+        {
+            g_compat123Veh = nullptr;
+            Write123StartupLog("[MW116-PROD] intrusive startup tracing disabled: VEH=off threadSuspend=off exitIATHooks=off console=off\r\n");
+        }
 
         unsigned versionPatched = 0;
         versionPatched += PatchImport(mainModule, "KERNEL32.dll", "GetVersion", reinterpret_cast<void*>(&CompatGetVersion)) ? 1u : 0u;
         versionPatched += PatchImport(mainModule, "KERNEL32.dll", "GetVersionExA", reinterpret_cast<void*>(&CompatGetVersionExA)) ? 1u : 0u;
         versionPatched += PatchImport(mainModule, "KERNEL32.dll", "VerifyVersionInfoA", reinterpret_cast<void*>(&CompatVerifyVersionInfoA)) ? 1u : 0u;
         versionPatched += PatchImport(mainModule, "KERNEL32.dll", "VerifyVersionInfoW", reinterpret_cast<void*>(&CompatVerifyVersionInfoW)) ? 1u : 0u;
+        if (build == StartupCompatBuild::MW116 || build == StartupCompatBuild::MW123)
+        {
+            PatchImport(mainModule, "KERNEL32.dll", "GetVersionExW", reinterpret_cast<void*>(&CompatGetVersionExW));
+            PatchImport(mainModule, "ntdll.dll", "RtlGetVersion", reinterpret_cast<void*>(&CompatRtlGetVersion));
+            const bool dynamicPatched = g_realGetProcAddress &&
+                PatchImport(mainModule, "KERNEL32.dll", "GetProcAddress", reinterpret_cast<void*>(&Compat116GetProcAddress));
+            InterlockedExchange(&g_compat116DynamicVersionPatched, dynamicPatched ? 1 : 0);
+            if (build == StartupCompatBuild::MW123)
+            {
+                Write123StartupLog("[MW123-COMPAT] extended Windows-version compatibility enabled: GetVersionExW + RtlGetVersion + dynamic GetProcAddress\r\n");
+            }
+        }
         InterlockedExchange(&g_compat123Patched, static_cast<LONG>(versionPatched));
 
         unsigned launcherPatched = 0;
@@ -2098,24 +4130,69 @@ namespace
         InterlockedExchange(&g_compat123LauncherPatched, static_cast<LONG>(launcherPatched));
 
         unsigned safeModePatched = 0;
-        if (g_realMessageBoxA)
-            safeModePatched += PatchImport(mainModule, "USER32.dll", "MessageBoxA", reinterpret_cast<void*>(&CompatMessageBoxA)) ? 1u : 0u;
-        if (g_realMessageBoxW)
-            safeModePatched += PatchImport(mainModule, "USER32.dll", "MessageBoxW", reinterpret_cast<void*>(&CompatMessageBoxW)) ? 1u : 0u;
+        // Let 1.16 own its stock safe-mode/recommended-settings flow.  Forcing a
+        // MessageBox result here did not advance this build and added another
+        // launcher-era behavior difference before the render window existed.
+        if (build != StartupCompatBuild::MW116)
+        {
+            if (g_realMessageBoxA)
+                safeModePatched += PatchImport(mainModule, "USER32.dll", "MessageBoxA", reinterpret_cast<void*>(&CompatMessageBoxA)) ? 1u : 0u;
+            if (g_realMessageBoxW)
+                safeModePatched += PatchImport(mainModule, "USER32.dll", "MessageBoxW", reinterpret_cast<void*>(&CompatMessageBoxW)) ? 1u : 0u;
+        }
         InterlockedExchange(&g_compat123SafeModePatched, static_cast<LONG>(safeModePatched));
 
+        if (build == StartupCompatBuild::MW116)
+        {
+            Write123StartupLog("[MW116-STABILITY] windowsTarget=10.0.%lu safeMode=stock-passthrough networkHooks=dns-only fullNetTrace=%s\r\n",
+                static_cast<unsigned long>(CompatWindowsBuild()), FullNetworkTraceRequested() ? "yes" : "no");
+        }
+        else if (build == StartupCompatBuild::MW123)
+        {
+            Write123StartupLog("[MW123-STABILITY] mode=%s windowsTarget=10.0.%lu networkHooks=%s exitIATHooks=%s exceptionLogging=%s\r\n",
+                mw123Production ? "production" : "diagnostic",
+                static_cast<unsigned long>(CompatWindowsBuild()),
+                UseDnsOnlyNetworkHooks() ? "dns-only" : "full-diagnostic",
+                mw123Production ? "off" : "on",
+                mw123Production ? "null-recovery-only" : "full");
+        }
+
         unsigned exitPatched = 0;
-        exitPatched += PatchImport(mainModule, "KERNEL32.dll", "ExitProcess", reinterpret_cast<void*>(&Trace123ExitProcess)) ? 1u : 0u;
-        exitPatched += PatchImport(mainModule, "KERNEL32.dll", "TerminateProcess", reinterpret_cast<void*>(&Trace123TerminateProcess)) ? 1u : 0u;
-        exitPatched += PatchImport(mainModule, "KERNEL32.dll", "RaiseException", reinterpret_cast<void*>(&Trace123RaiseException)) ? 1u : 0u;
-        exitPatched += PatchImport(mainModule, "KERNEL32.dll", "ExitThread", reinterpret_cast<void*>(&Trace123ExitThread)) ? 1u : 0u;
-        exitPatched += PatchImport(mainModule, "KERNEL32.dll", "FreeLibraryAndExitThread", reinterpret_cast<void*>(&Trace123FreeLibraryAndExitThread)) ? 1u : 0u;
-        exitPatched += PatchImport(mainModule, "KERNEL32.dll", "SetUnhandledExceptionFilter", reinterpret_cast<void*>(&Trace123SetUnhandledExceptionFilter)) ? 1u : 0u;
-        exitPatched += PatchImport(mainModule, "KERNEL32.dll", "UnhandledExceptionFilter", reinterpret_cast<void*>(&Trace123UnhandledExceptionFilter)) ? 1u : 0u;
+        if (!mw116Production && !mw123Production)
+        {
+            exitPatched += PatchImport(mainModule, "KERNEL32.dll", "ExitProcess", reinterpret_cast<void*>(&Trace123ExitProcess)) ? 1u : 0u;
+            exitPatched += PatchImport(mainModule, "KERNEL32.dll", "TerminateProcess", reinterpret_cast<void*>(&Trace123TerminateProcess)) ? 1u : 0u;
+            exitPatched += PatchImport(mainModule, "KERNEL32.dll", "RaiseException", reinterpret_cast<void*>(&Trace123RaiseException)) ? 1u : 0u;
+            exitPatched += PatchImport(mainModule, "KERNEL32.dll", "ExitThread", reinterpret_cast<void*>(&Trace123ExitThread)) ? 1u : 0u;
+            exitPatched += PatchImport(mainModule, "KERNEL32.dll", "FreeLibraryAndExitThread", reinterpret_cast<void*>(&Trace123FreeLibraryAndExitThread)) ? 1u : 0u;
+            exitPatched += PatchImport(mainModule, "KERNEL32.dll", "SetUnhandledExceptionFilter", reinterpret_cast<void*>(&Trace123SetUnhandledExceptionFilter)) ? 1u : 0u;
+            exitPatched += PatchImport(mainModule, "KERNEL32.dll", "UnhandledExceptionFilter", reinterpret_cast<void*>(&Trace123UnhandledExceptionFilter)) ? 1u : 0u;
+            if (build == StartupCompatBuild::MW116)
+            {
+                const unsigned lowLevelExitPatched =
+                    (PatchImport(mainModule, "ntdll.dll", "RtlExitUserProcess", reinterpret_cast<void*>(&Trace116RtlExitUserProcess)) ? 1u : 0u) +
+                    (PatchImport(mainModule, "ntdll.dll", "RtlExitUserThread", reinterpret_cast<void*>(&Trace116RtlExitUserThread)) ? 1u : 0u) +
+                    (PatchImport(mainModule, "ntdll.dll", "NtTerminateProcess", reinterpret_cast<void*>(&Trace116NtTerminateProcess)) ? 1u : 0u) +
+                    (PatchImport(mainModule, "ntdll.dll", "NtRaiseHardError", reinterpret_cast<void*>(&Trace116NtRaiseHardError)) ? 1u : 0u) +
+                    (PatchImport(mainModule, "KERNEL32.dll", "RaiseFailFastException", reinterpret_cast<void*>(&Trace116RaiseFailFastException)) ? 1u : 0u);
+                Write123StartupLog("[MW116-EXIT] low-level passive exit hooks installed=%u/5 dynamicResolver=yes behavior=passthrough\r\n",
+                    lowLevelExitPatched);
+            }
+        }
         InterlockedExchange(&g_compat123ExitTracePatched, static_cast<LONG>(exitPatched));
 
-        Write123StartupLog("[BOOT] startup compatibility build=%s hooks: version=%u/4 launcher=%u/8 safeMode=%u/2 exitTrace=%u/7 nullExecRecovery=armed(max=8,main-image-return-only)\r\n",
-            StartupCompatBuildName(build), versionPatched, launcherPatched, safeModePatched, exitPatched);
+        const unsigned versionExpected = 4u;
+        Write123StartupLog("[BOOT] startup compatibility build=%s hooks: versionDirect=%u/%u dynamicVersionResolver=%ld/1 launcher=%u/8 safeMode=%u/2 exitTrace=%u/7 nullExecRecovery=%s\r\n",
+            StartupCompatBuildName(build), versionPatched, versionExpected,
+            InterlockedCompareExchange(&g_compat116DynamicVersionPatched, 0, 0), launcherPatched, safeModePatched, exitPatched,
+            mw116Production ? "off(production)" :
+            (mw123Production ? "armed(null-call-only,production)" : "armed(max=8,main-image-return-only)"));
+        if (build == StartupCompatBuild::MW123)
+        {
+            Write123StartupLog("[MW123-CRT] debugUcrtLoaded=%s releaseUcrtLoaded=%s expected=debug-no/release-yes\r\n",
+                GetModuleHandleW(L"ucrtbased.dll") ? "YES" : "no",
+                GetModuleHandleW(L"ucrtbase.dll") ? "yes" : "NO");
+        }
     }
 
     struct ModulePatchCounts
@@ -2669,35 +4746,447 @@ namespace
         }
     }
 
+    using EnumWindowsFn = BOOL (WINAPI*)(WNDENUMPROC, LPARAM);
+    using GetWindowThreadProcessIdFn = DWORD (WINAPI*)(HWND, LPDWORD);
+    using IsWindowVisibleFn = BOOL (WINAPI*)(HWND);
+    using GetClassNameWFn = int (WINAPI*)(HWND, LPWSTR, int);
+    using GetWindowTextWFn = int (WINAPI*)(HWND, LPWSTR, int);
+
+    struct MW116WindowProbe
+    {
+        DWORD pid = 0;
+        unsigned total = 0;
+        unsigned visible = 0;
+        HWND first = nullptr;
+        HWND firstVisible = nullptr;
+        GetWindowThreadProcessIdFn getWindowThreadProcessId = nullptr;
+        IsWindowVisibleFn isWindowVisible = nullptr;
+    };
+
+    BOOL CALLBACK MW116EnumWindowsProc(HWND hwnd, LPARAM param) noexcept
+    {
+        auto* probe = reinterpret_cast<MW116WindowProbe*>(param);
+        if (!probe || !probe->getWindowThreadProcessId || !probe->isWindowVisible)
+            return TRUE;
+        DWORD pid = 0;
+        probe->getWindowThreadProcessId(hwnd, &pid);
+        if (pid != probe->pid)
+            return TRUE;
+        ++probe->total;
+        if (!probe->first)
+            probe->first = hwnd;
+        if (probe->isWindowVisible(hwnd))
+        {
+            ++probe->visible;
+            if (!probe->firstVisible)
+                probe->firstVisible = hwnd;
+        }
+        return TRUE;
+    }
+
+    void MW116ProbeWindows(unsigned sample) noexcept
+    {
+        HMODULE user32 = GetModuleHandleW(L"USER32.dll");
+        if (!user32 || !g_realGetProcAddress)
+        {
+            Write123StartupLog("[MW116-STAGE] sample=%u windows=unavailable user32=no dxgi=%s d3d12=%s d3d11=%s winhttp=%s wininet=%s\r\n",
+                sample,
+                GetModuleHandleW(L"dxgi.dll") ? "yes" : "no",
+                GetModuleHandleW(L"d3d12.dll") ? "yes" : "no",
+                GetModuleHandleW(L"d3d11.dll") ? "yes" : "no",
+                GetModuleHandleW(L"winhttp.dll") ? "yes" : "no",
+                GetModuleHandleW(L"wininet.dll") ? "yes" : "no");
+            return;
+        }
+
+        const auto enumWindows = reinterpret_cast<EnumWindowsFn>(g_realGetProcAddress(user32, "EnumWindows"));
+        const auto getWindowThreadProcessId = reinterpret_cast<GetWindowThreadProcessIdFn>(g_realGetProcAddress(user32, "GetWindowThreadProcessId"));
+        const auto isWindowVisible = reinterpret_cast<IsWindowVisibleFn>(g_realGetProcAddress(user32, "IsWindowVisible"));
+        const auto getClassNameW = reinterpret_cast<GetClassNameWFn>(g_realGetProcAddress(user32, "GetClassNameW"));
+        const auto getWindowTextW = reinterpret_cast<GetWindowTextWFn>(g_realGetProcAddress(user32, "GetWindowTextW"));
+        if (!enumWindows || !getWindowThreadProcessId || !isWindowVisible)
+        {
+            Write123StartupLog("[MW116-STAGE] sample=%u windows=unavailable user32=yes reason=resolve-failed\r\n", sample);
+            return;
+        }
+
+        MW116WindowProbe probe{};
+        probe.pid = GetCurrentProcessId();
+        probe.getWindowThreadProcessId = getWindowThreadProcessId;
+        probe.isWindowVisible = isWindowVisible;
+        enumWindows(&MW116EnumWindowsProc, reinterpret_cast<LPARAM>(&probe));
+
+        HWND picked = probe.firstVisible ? probe.firstVisible : probe.first;
+        wchar_t className[128]{};
+        wchar_t title[256]{};
+        if (picked && getClassNameW)
+            getClassNameW(picked, className, static_cast<int>(sizeof(className) / sizeof(className[0])));
+        if (picked && getWindowTextW)
+            getWindowTextW(picked, title, static_cast<int>(sizeof(title) / sizeof(title[0])));
+        char classUtf8[256]{};
+        char titleUtf8[512]{};
+        if (className[0])
+            WideCharToMultiByte(CP_UTF8, 0, className, -1, classUtf8, static_cast<int>(sizeof(classUtf8)), nullptr, nullptr);
+        if (title[0])
+            WideCharToMultiByte(CP_UTF8, 0, title, -1, titleUtf8, static_cast<int>(sizeof(titleUtf8)), nullptr, nullptr);
+        Write123StartupLog("[MW116-STAGE] sample=%u windows=%u visible=%u hwnd=%p class=\"%s\" title=\"%s\" user32=yes dxgi=%s d3d12=%s d3d11=%s winhttp=%s wininet=%s\r\n",
+            sample, probe.total, probe.visible, picked,
+            classUtf8[0] ? classUtf8 : "<none>", titleUtf8[0] ? titleUtf8 : "<none>",
+            GetModuleHandleW(L"dxgi.dll") ? "yes" : "no",
+            GetModuleHandleW(L"d3d12.dll") ? "yes" : "no",
+            GetModuleHandleW(L"d3d11.dll") ? "yes" : "no",
+            GetModuleHandleW(L"winhttp.dll") ? "yes" : "no",
+            GetModuleHandleW(L"wininet.dll") ? "yes" : "no");
+    }
+
+    void MW116ProbeChildProcesses(unsigned sample) noexcept
+    {
+        HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+        if (snapshot == INVALID_HANDLE_VALUE)
+            return;
+        PROCESSENTRY32W entry{};
+        entry.dwSize = sizeof(entry);
+        unsigned children = 0;
+        char childText[768]{};
+        size_t used = 0;
+        if (Process32FirstW(snapshot, &entry))
+        {
+            do
+            {
+                if (entry.th32ParentProcessID != GetCurrentProcessId())
+                    continue;
+                ++children;
+                char name[260]{};
+                WideCharToMultiByte(CP_UTF8, 0, entry.szExeFile, -1, name, static_cast<int>(sizeof(name)), nullptr, nullptr);
+                if (used + 48 < sizeof(childText))
+                {
+                    const int wrote = _snprintf_s(childText + used, sizeof(childText) - used, _TRUNCATE,
+                        "%s%lu:%s", used ? "," : "", static_cast<unsigned long>(entry.th32ProcessID), name);
+                    if (wrote > 0)
+                        used += static_cast<size_t>(wrote);
+                }
+            } while (Process32NextW(snapshot, &entry));
+        }
+        CloseHandle(snapshot);
+        Write123StartupLog("[MW116-STAGE] sample=%u childProcesses=%u children=%s\r\n",
+            sample, children, childText[0] ? childText : "<none>");
+    }
+
+    void MW116BuildStackRvas(const CONTEXT& context, std::uintptr_t mainBase, std::uintptr_t mainEnd,
+        char* out, size_t outSize) noexcept
+    {
+        if (!out || !outSize)
+            return;
+        out[0] = 0;
+        size_t used = 0;
+        unsigned found = 0;
+        __try
+        {
+            const auto* stack = reinterpret_cast<const std::uintptr_t*>(context.Rsp);
+            for (unsigned i = 0; i < 96 && found < 8; ++i)
+            {
+                const std::uintptr_t candidate = stack[i];
+                if (!mainBase || candidate < mainBase || candidate >= mainEnd)
+                    continue;
+                const auto rva = candidate - mainBase;
+                const int wrote = _snprintf_s(out + used, outSize - used, _TRUNCATE,
+                    "%s0x%llX", found ? "," : "", static_cast<unsigned long long>(rva));
+                if (wrote <= 0)
+                    break;
+                used += static_cast<size_t>(wrote);
+                ++found;
+                if (used + 24 >= outSize)
+                    break;
+            }
+        }
+        __except (EXCEPTION_EXECUTE_HANDLER) {}
+        if (!out[0])
+            strncpy_s(out, outSize, "<none>", _TRUNCATE);
+    }
+
+    DWORD WINAPI MW116StartupWatchdog(LPVOID) noexcept
+    {
+#if !defined(_M_X64)
+        return 0;
+#else
+        if (CurrentStartupCompatBuild() != StartupCompatBuild::MW116 || !g_processAttachThreadId)
+            return 0;
+        Sleep(25);
+
+        const auto mainBase = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+        const auto mainEnd = mainBase + static_cast<std::uintptr_t>(g_liveImageSize);
+        HANDLE thread = OpenThread(THREAD_SUSPEND_RESUME | THREAD_GET_CONTEXT | THREAD_QUERY_INFORMATION,
+            FALSE, g_processAttachThreadId);
+        if (!thread)
+        {
+            Write123StartupLog("[MW116-WATCH] OpenThread failed tid=%lu win32=%lu\r\n",
+                static_cast<unsigned long>(g_processAttachThreadId), static_cast<unsigned long>(GetLastError()));
+            return 0;
+        }
+
+        ULONGLONG baseKernelMs = 0;
+        ULONGLONG baseUserMs = 0;
+        FILETIME createTime{}, exitTime{}, kernelTime{}, userTime{};
+        if (GetThreadTimes(thread, &createTime, &exitTime, &kernelTime, &userTime))
+        {
+            baseKernelMs = (static_cast<ULONGLONG>(kernelTime.dwHighDateTime) << 32 | kernelTime.dwLowDateTime) / 10000ULL;
+            baseUserMs = (static_cast<ULONGLONG>(userTime.dwHighDateTime) << 32 | userTime.dwLowDateTime) / 10000ULL;
+        }
+
+        for (unsigned sample = 1; sample <= 100; ++sample)
+        {
+            if (SuspendThread(thread) == static_cast<DWORD>(-1))
+            {
+                Write123StartupLog("[MW116-WATCH] suspend failed sample=%u tid=%lu win32=%lu\r\n",
+                    sample, static_cast<unsigned long>(g_processAttachThreadId), static_cast<unsigned long>(GetLastError()));
+                break;
+            }
+
+            CONTEXT context{};
+            context.ContextFlags = CONTEXT_CONTROL | CONTEXT_INTEGER;
+            bool gotContext = GetThreadContext(thread, &context) != FALSE;
+            std::uintptr_t firstMainReturn = 0;
+            std::uintptr_t firstMainReturnRva = 0;
+            if (gotContext)
+            {
+                __try
+                {
+                    const auto* stack = reinterpret_cast<const std::uintptr_t*>(context.Rsp);
+                    for (unsigned i = 0; i < 40; ++i)
+                    {
+                        const std::uintptr_t candidate = stack[i];
+                        if (mainBase && candidate >= mainBase && candidate < mainEnd)
+                        {
+                            firstMainReturn = candidate;
+                            firstMainReturnRva = candidate - mainBase;
+                            break;
+                        }
+                    }
+                }
+                __except (EXCEPTION_EXECUTE_HANDLER) {}
+            }
+
+            char stackRvas[512]{};
+            if (gotContext)
+                MW116BuildStackRvas(context, mainBase, mainEnd, stackRvas, sizeof(stackRvas));
+
+            // Resume before module-name lookup or file I/O so the sampler never
+            // asks for loader state while the startup thread is suspended.
+            ResumeThread(thread);
+
+            ULONGLONG kernelMs = 0;
+            ULONGLONG userMs = 0;
+            FILETIME nowCreate{}, nowExit{}, nowKernel{}, nowUser{};
+            if (GetThreadTimes(thread, &nowCreate, &nowExit, &nowKernel, &nowUser))
+            {
+                kernelMs = (static_cast<ULONGLONG>(nowKernel.dwHighDateTime) << 32 | nowKernel.dwLowDateTime) / 10000ULL;
+                userMs = (static_cast<ULONGLONG>(nowUser.dwHighDateTime) << 32 | nowUser.dwLowDateTime) / 10000ULL;
+            }
+
+            if (gotContext)
+            {
+                char ripModule[MAX_PATH]{};
+                ModuleNameFromAddress(reinterpret_cast<void*>(context.Rip), ripModule, sizeof(ripModule));
+                const bool ripInMain = mainBase && context.Rip >= mainBase && context.Rip < mainEnd;
+                const std::uintptr_t ripRva = ripInMain ? static_cast<std::uintptr_t>(context.Rip) - mainBase : 0;
+                Write123StartupLog("[MW116-WATCH] sample=%u tid=%lu rip=%p module=%s mainRva=%s0x%llX rsp=0x%llX cpuKernelDeltaMs=%llu cpuUserDeltaMs=%llu firstMainReturn=%p returnRva=0x%llX stackMainRvas=%s\r\n",
+                    sample, static_cast<unsigned long>(g_processAttachThreadId),
+                    reinterpret_cast<void*>(context.Rip), ripModule,
+                    ripInMain ? "" : "n/a:", static_cast<unsigned long long>(ripRva),
+                    static_cast<unsigned long long>(context.Rsp),
+                    static_cast<unsigned long long>(kernelMs >= baseKernelMs ? kernelMs - baseKernelMs : 0),
+                    static_cast<unsigned long long>(userMs >= baseUserMs ? userMs - baseUserMs : 0),
+                    reinterpret_cast<void*>(firstMainReturn), static_cast<unsigned long long>(firstMainReturnRva),
+                    stackRvas);
+            }
+            else
+            {
+                Write123StartupLog("[MW116-WATCH] GetThreadContext failed sample=%u tid=%lu win32=%lu\r\n",
+                    sample, static_cast<unsigned long>(g_processAttachThreadId), static_cast<unsigned long>(GetLastError()));
+            }
+            if (sample == 1 || (sample % 5) == 0)
+            {
+                MW116ProbeWindows(sample);
+                MW116ProbeChildProcesses(sample);
+            }
+            Sleep(200);
+        }
+
+        CloseHandle(thread);
+        return 0;
+#endif
+    }
+
+    void QueueMW116StartupWatchdog() noexcept
+    {
+        if (CurrentStartupCompatBuild() != StartupCompatBuild::MW116 || !MW116DeepTraceRequested())
+            return;
+        static volatile LONG queued = 0;
+        if (InterlockedExchange(&queued, 1) != 0)
+            return;
+        HANDLE thread = CreateThread(nullptr, 0, &MW116StartupWatchdog, nullptr, 0, nullptr);
+        if (thread)
+        {
+            CloseHandle(thread);
+            Write123StartupLog("[MW116-WATCH] queued startup-thread sampler tid=%lu delayMs=25 samples=100 intervalMs=200 stageProbeEvery=5 stateWrites=none\r\n",
+                static_cast<unsigned long>(g_processAttachThreadId));
+        }
+        else
+            Write123StartupLog("[MW116-WATCH] queue failed win32=%lu\r\n", static_cast<unsigned long>(GetLastError()));
+    }
+
+    void Write116MonitorLogLine(const char* format, ...) noexcept
+    {
+        if (!format)
+            return;
+        char line[1024]{};
+        va_list args;
+        va_start(args, format);
+        _vsnprintf_s(line, sizeof(line), _TRUNCATE, format, args);
+        va_end(args);
+
+        wchar_t modulePath[32768]{};
+        if (!g_self || !GetModuleFileNameW(g_self, modulePath, static_cast<DWORD>(sizeof(modulePath) / sizeof(modulePath[0]))))
+            return;
+        wchar_t* slash = wcsrchr(modulePath, L'\\');
+        if (slash)
+            *(slash + 1) = L'\0';
+        wcscat_s(modulePath, L"mw2019_116_exit.log");
+
+        HANDLE file = CreateFileW(modulePath, FILE_APPEND_DATA, FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
+            nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
+        if (file == INVALID_HANDLE_VALUE)
+            return;
+        DWORD written = 0;
+        WriteFile(file, line, static_cast<DWORD>(std::strlen(line)), &written, nullptr);
+        CloseHandle(file);
+    }
+
+    bool IsRundll32Process() noexcept
+    {
+        wchar_t path[MAX_PATH]{};
+        if (!GetModuleFileNameW(nullptr, path, static_cast<DWORD>(sizeof(path) / sizeof(path[0]))))
+            return false;
+        const wchar_t* name = wcsrchr(path, L'\\');
+        name = name ? name + 1 : path;
+        return _wcsicmp(name, L"rundll32.exe") == 0;
+    }
+
+    void StartMW116ExternalExitMonitor() noexcept
+    {
+        if (CurrentStartupCompatBuild() != StartupCompatBuild::MW116 ||
+            InterlockedExchange(&g_mw116ExternalMonitorStarted, 1) != 0)
+            return;
+
+        wchar_t dllPath[32768]{};
+        wchar_t systemDir[MAX_PATH]{};
+        if (!g_self ||
+            !GetModuleFileNameW(g_self, dllPath, static_cast<DWORD>(sizeof(dllPath) / sizeof(dllPath[0]))) ||
+            !GetSystemDirectoryW(systemDir, static_cast<UINT>(sizeof(systemDir) / sizeof(systemDir[0]))))
+        {
+            Write123StartupLog("[MW116-EXT] external exit monitor launch skipped reason=path-resolution-failed win32=%lu\r\n",
+                static_cast<unsigned long>(GetLastError()));
+            return;
+        }
+
+        wchar_t command[65536]{};
+        _snwprintf_s(command, sizeof(command) / sizeof(command[0]), _TRUNCATE,
+            L"\"%ls\\rundll32.exe\" \"%ls\",MW116Monitor %lu",
+            systemDir, dllPath, static_cast<unsigned long>(GetCurrentProcessId()));
+
+        STARTUPINFOW si{};
+        si.cb = sizeof(si);
+        PROCESS_INFORMATION pi{};
+        const BOOL created = CreateProcessW(nullptr, command, nullptr, nullptr, FALSE,
+            CREATE_NO_WINDOW, nullptr, nullptr, &si, &pi);
+        if (!created)
+        {
+            Write123StartupLog("[MW116-EXT] external exit monitor launch FAILED win32=%lu\r\n",
+                static_cast<unsigned long>(GetLastError()));
+            return;
+        }
+
+        Write123StartupLog("[MW116-EXT] external exit monitor pid=%lu targetPid=%lu mode=out-of-process no-target-thread-suspend\r\n",
+            static_cast<unsigned long>(pi.dwProcessId), static_cast<unsigned long>(GetCurrentProcessId()));
+        CloseHandle(pi.hThread);
+        CloseHandle(pi.hProcess);
+    }
+
     DWORD WINAPI RedirectWorker(LPVOID) noexcept
     {
         DeleteFileW(L"mw2019_redirect.log");
         g_traceStartTick = GetTickCount64();
-        OpenResearchConsole();
+        wchar_t backgroundTest[8]{};
+        const bool hideConsole = GetEnvironmentVariableW(L"CODREVAMPED_BACKGROUND_TEST",
+            backgroundTest, static_cast<DWORD>(std::size(backgroundTest))) && backgroundTest[0] == L'1';
+        if (!MW116ProductionMode() && !hideConsole)
+            OpenResearchConsole();
+        StartMW116ExternalExitMonitor();
         ConsolePrint("[REDIRECT] version.dll loaded; safe DNS redirect + adaptive WS2_32 logging trace\r\n");
+        if (MW116ProductionMode())
+            ConsolePrint("[MW116-PROD] minimal startup mode active console=off VEH=off startupThreadSampler=off exitIATHooks=off externalExitMonitor=on\r\n");
+        if (MW123ProductionMode())
+            ConsolePrint("[MW123-PROD] minimal startup mode active nullRecovery=on exceptionLogging=off exitIATHooks=off networkHooks=dns-only\r\n");
         if (InterlockedCompareExchange(&g_liveFingerprintValid, 0, 0) != 0)
         {
             ConsolePrint("[STARTUP] live exe fingerprint timestamp=0x%08X imageSize=0x%08X entryPoint=0x%08X startupCompat=%s\r\n",
                 g_liveTimestamp, g_liveImageSize, g_liveEntryPoint,
                 StartupCompatBuildName(CurrentStartupCompatBuild()));
         }
+        QueueRetailFrontendProbe();
+        QueueRetailRuntimeDump();
+        QueueRetailOnlineLiveTrace();
         if (InterlockedCompareExchange(&g_compat123Detected, 0, 0) != 0)
         {
             const StartupCompatBuild build = CurrentStartupCompatBuild();
-            const char* startupLog = build == StartupCompatBuild::MW120 ? "mw2019_120_startup.log" :
-                (build == StartupCompatBuild::MW128 ? "mw2019_128_startup.log" : "mw2019_123_startup.log");
+            const char* startupLog = build == StartupCompatBuild::MW116 ? "mw2019_116_startup.log" :
+                (build == StartupCompatBuild::MW120 ? "mw2019_120_startup.log" :
+                (build == StartupCompatBuild::MW128 ? "mw2019_128_startup.log" : "mw2019_123_startup.log"));
             ConsolePrint("[COMPAT-STARTUP] supported early build=%s fingerprint timestamp=0x%08X imageSize=0x%08X entryPoint=0x%08X\r\n",
                 StartupCompatBuildName(build), g_liveTimestamp, g_liveImageSize, g_liveEntryPoint);
-            ConsolePrint("[COMPAT-STARTUP] Windows-version compatibility IAT hooks installed=%ld/4 target=10.0.%lu\r\n",
-                InterlockedCompareExchange(&g_compat123Patched, 0, 0), static_cast<unsigned long>(kCompatBuild));
+            const unsigned versionExpected = 4u;
+            ConsolePrint("[COMPAT-STARTUP] Windows-version direct IAT hooks installed=%ld/%u target=10.0.%lu\r\n",
+                InterlockedCompareExchange(&g_compat123Patched, 0, 0), versionExpected, static_cast<unsigned long>(CompatWindowsBuild()));
+            if (build == StartupCompatBuild::MW116 || build == StartupCompatBuild::MW123)
+                ConsolePrint("[COMPAT-VERSION] build=%s dynamic GetProcAddress resolver installed=%ld/1 covers=version%s\r\n",
+                    StartupCompatBuildName(build),
+                    InterlockedCompareExchange(&g_compat116DynamicVersionPatched, 0, 0),
+                    (build == StartupCompatBuild::MW116 && MW116DeepTraceRequested()) ? "+exit-diagnostics" : "");
             ConsolePrint("[COMPAT-STARTUP] launcher shim hooks installed=%ld/8: -uid odin (A+W) + local ODIN launch-options + local WEB_TOKEN DPAPI shim\r\n",
                 InterlockedCompareExchange(&g_compat123LauncherPatched, 0, 0));
-            ConsolePrint("[COMPAT-STARTUP] previous-run Safe Mode prompt handler installed=%ld/2 exactTextMatch=yes result=IDNO\r\n",
-                InterlockedCompareExchange(&g_compat123SafeModePatched, 0, 0));
-            ConsolePrint("[COMPAT-STARTUP] early exit/exception tracing installed=%ld/7 + VEH; details go to %s\r\n",
-                InterlockedCompareExchange(&g_compat123ExitTracePatched, 0, 0), startupLog);
+            if (build == StartupCompatBuild::MW116)
+            {
+                ConsolePrint("[COMPAT-STARTUP] Safe Mode/recommended-settings dialogs=stock-passthrough (no MessageBox override)\r\n");
+                ConsolePrint("[MW116-STABILITY] Windows target=10.0.%lu networkHooks=%s\r\n",
+                    static_cast<unsigned long>(CompatWindowsBuild()),
+                    UseDnsOnlyNetworkHooks() ? "dns-only" : "full-diagnostic");
+            }
+            else
+            {
+                ConsolePrint("[COMPAT-STARTUP] previous-run Safe Mode prompt handler installed=%ld/2 exactTextMatch=yes result=IDNO\r\n",
+                    InterlockedCompareExchange(&g_compat123SafeModePatched, 0, 0));
+            }
+            if (build == StartupCompatBuild::MW116 && !MW116DeepTraceRequested())
+                ConsolePrint("[COMPAT-STARTUP] intrusive exit/exception tracing disabled for 1.16 production mode; external exit-code monitor enabled\r\n");
+            else if (build == StartupCompatBuild::MW123 && !MW123DeepTraceRequested())
+                ConsolePrint("[COMPAT-STARTUP] 1.23 production tracing: null-execute recovery only; exit IAT hooks and unrelated VEH logging disabled\r\n");
+            else
+                ConsolePrint("[COMPAT-STARTUP] early exit/exception tracing installed=%ld/7 + VEH; details go to %s\r\n",
+                    InterlockedCompareExchange(&g_compat123ExitTracePatched, 0, 0), startupLog);
             ConsolePrint("[COMPAT-STARTUP] compatibility is fingerprint-scoped; no login/fence/game-state patch is applied\r\n");
         }
+
+        QueueMW116StartupWatchdog();
+
+        wchar_t skipCrashTrace[8]{};
+        const bool skipRetailCrashTrace = g_liveTimestamp == 0x69DD404Eu &&
+            g_liveImageSize == 0x21679200u && g_liveEntryPoint == 0x06E4931Cu &&
+            GetEnvironmentVariableW(L"CODREVAMPED_RETAIL_NO_VEH", skipCrashTrace,
+                static_cast<DWORD>(std::size(skipCrashTrace))) && skipCrashTrace[0] == L'1';
+        if (!skipRetailCrashTrace)
+            InstallRetailCrashTrace();
+        else
+            ConsolePrint("[CRASH-TRACE] Steam retail diagnostic: VEH logging disabled\r\n");
 
         if (!ResolveWinsock())
         {
@@ -2705,11 +5194,20 @@ namespace
             return 0;
         }
 
-        // The early 1.20/1.23 builds are sensitive during bootstrap.  For those
-        // fingerprints, stay on ordinary IAT hooks only; do not rewrite WS2_32's
-        // export table or patch Winsock provider DLLs.  This keeps the redirect
-        // path while avoiding the malformed provider calls seen in the 1.23 run.
-        if (IsSupportedStartupCompatBuild())
+        // The early 1.16/1.20/1.23/1.28 builds are sensitive during bootstrap.
+        // For those exact fingerprints, stay on ordinary IAT hooks only; do not
+        // rewrite WS2_32's export table or patch Winsock provider DLLs.  1.16
+        // previously took the unknown-retail EAT path before crashing.
+        wchar_t iatOnlyRequested[8]{};
+        const bool retailIatOnly = g_liveTimestamp == 0x69DD404Eu &&
+            g_liveImageSize == 0x21679200u && g_liveEntryPoint == 0x06E4931Cu &&
+            GetEnvironmentVariableW(L"CODREVAMPED_RETAIL_IAT_ONLY", iatOnlyRequested,
+                static_cast<DWORD>(std::size(iatOnlyRequested))) && iatOnlyRequested[0] == L'1';
+        if (retailIatOnly)
+        {
+            ConsolePrint("[WS2-EXPORT] Steam retail diagnostic: EAT hooks disabled; DNS IAT hooks retained\r\n");
+        }
+        else if (IsSupportedStartupCompatBuild())
         {
             ConsolePrint("[WS2-EXPORT] skipped for early startup build=%s; using stable main/app IAT hooks only\r\n",
                 StartupCompatBuildName(CurrentStartupCompatBuild()));
@@ -2730,8 +5228,22 @@ namespace
         // produced auth3-response-signing-public.der at this first attempt.
         if (IsSupportedStartupCompatBuild())
         {
-            InstallEarlyAuth3LocalSigningTrust("worker-pre-IAT");
-            InstallLocalManifestTrust();
+            // These trust RVAs are proven only for 1.20.  Do not copy them into
+            // 1.16 just because it now shares the safe startup compatibility
+            // path; doing so would turn a startup fix into a build-specific crash.
+            if (CurrentStartupCompatBuild() == StartupCompatBuild::MW120)
+            {
+                InstallEarlyAuth3LocalSigningTrust("worker-pre-IAT");
+                InstallLocalManifestTrust();
+            }
+            QueueLsgKey3DiskScanV79();
+        }
+        else if (g_liveTimestamp == 0x69DD404Eu && g_liveImageSize == 0x21679200u &&
+            g_liveEntryPoint == 0x06E4931Cu)
+        {
+            // Reuse the public-SPKI disk scanner for this retail build. No
+            // verifier replacement: the server checks candidates against the
+            // client's own lobby proof before accepting a key derivation.
             QueueLsgKey3DiskScanV79();
         }
 
@@ -2750,8 +5262,8 @@ namespace
             ConsolePrint("[REDIRECT] socket/WSASocket/connect/WSAConnect/WSAIoctl/select tracing is passthrough-only; destination, sockaddr, return value, and WSA error are not modified\r\n");
             ConsolePrint("[REDIRECT] WSAID_CONNECTEX results are wrapped only for logging, then forwarded to the real provider ConnectEx pointer\r\n");
         }
-        if (IsSupportedStartupCompatBuild())
-            ConsolePrint("[REDIRECT] early-build stability mode: WS2_32 EAT hooks disabled; one delayed app-module IAT pass will run once\r\n");
+        if (IsSupportedStartupCompatBuild() || retailIatOnly)
+            ConsolePrint("[REDIRECT] IAT-only mode: WS2_32 EAT hooks disabled; one delayed app-module IAT pass will run once\r\n");
         else if (UseDnsOnlyNetworkHooks())
             ConsolePrint("[REDIRECT] current/unknown retail stability mode: WS2_32 EAT is DNS-only; one delayed DNS-only app-module IAT pass will run once\r\n");
         else
@@ -2898,16 +5410,52 @@ extern "C" BOOL WINAPI Proxy_VerQueryValueW(LPCVOID block, LPCWSTR subBlock, LPV
     return fn ? fn(block, subBlock, buffer, len) : FALSE;
 }
 
+extern "C" __declspec(dllexport) void CALLBACK MW116Monitor(HWND, HINSTANCE, LPSTR commandLine, int)
+{
+    unsigned long pid = 0;
+    if (!commandLine || sscanf_s(commandLine, "%lu", &pid) != 1 || pid == 0)
+        return;
+
+    const ULONGLONG started = GetTickCount64();
+    HANDLE process = OpenProcess(SYNCHRONIZE | PROCESS_QUERY_LIMITED_INFORMATION, FALSE, static_cast<DWORD>(pid));
+    if (!process)
+    {
+        Write116MonitorLogLine("[MW116-EXT] targetPid=%lu OpenProcess FAILED win32=%lu\r\n",
+            pid, static_cast<unsigned long>(GetLastError()));
+        return;
+    }
+
+    Write116MonitorLogLine("[MW116-EXT] monitor-start targetPid=%lu\r\n", pid);
+    const DWORD wait = WaitForSingleObject(process, INFINITE);
+    DWORD exitCode = STILL_ACTIVE;
+    const BOOL gotExit = GetExitCodeProcess(process, &exitCode);
+    const ULONGLONG lifetimeMs = GetTickCount64() - started;
+    Write116MonitorLogLine("[MW116-EXT] targetPid=%lu wait=0x%08lX exitCode=%s0x%08lX monitorLifetimeMs=%llu\r\n",
+        pid, static_cast<unsigned long>(wait), gotExit ? "" : "unknown:",
+        static_cast<unsigned long>(exitCode), static_cast<unsigned long long>(lifetimeMs));
+    CloseHandle(process);
+}
+
 BOOL WINAPI DllMain(HMODULE module, DWORD reason, LPVOID reserved)
 {
     if (reason == DLL_PROCESS_ATTACH)
     {
         g_self = module;
+        g_processAttachThreadId = GetCurrentThreadId();
         DisableThreadLibraryCalls(module);
 
-        // Supported early IW8 builds perform launcher/bootstrap checks before
-        // the normal game flow.  Detect by exact live fingerprint and install
-        // the scoped compatibility path before the EXE entry point runs.
+        // The out-of-process 1.16 exit-code monitor is hosted by rundll32 using
+        // this same DLL. Never initialize the game proxy from that helper.
+        if (IsRundll32Process())
+        {
+            InterlockedExchange(&g_mw116MonitorHost, 1);
+            return TRUE;
+        }
+
+        // Supported early IW8 builds (including the 1.16 fingerprint) perform
+        // launcher/bootstrap checks before the normal game flow. Detect by exact
+        // live fingerprint and install the scoped compatibility path before the
+        // EXE entry point runs.
         Install123StartupCompatibility();
 
         if (HANDLE thread = CreateThread(nullptr, 0, RedirectWorker, nullptr, 0, nullptr))

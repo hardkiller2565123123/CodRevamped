@@ -9,16 +9,19 @@ namespace revamped::iw8::localpublisher
     // publisher helper remains usable by later IW8 builds that use that name.
     inline constexpr const char* PlaylistNameTu19 = "unified_large_playlist_tu19.aggr";
     inline constexpr const char* PlaylistNameTu24 = "unified_large_playlist_tu24.aggr";
+    inline constexpr const char* PlaylistNameTu69 = "unified_large_playlist_tu69.aggr";
 
     inline bool IsManifest(const std::string& name)
     {
         return name == "1_manifest_patch_pc_8.19.txt" ||
-            name == "1_manifest_comms_pc_8.19.txt";
+            name == "1_manifest_comms_pc_8.19.txt" ||
+            name == "1_manifest_patch_pc_8.69.txt" ||
+            name == "1_manifest_comms_pc_8.69.txt";
     }
 
     inline bool IsPlaylist(const std::string& name)
     {
-        return name == PlaylistNameTu19 || name == PlaylistNameTu24;
+        return name == PlaylistNameTu19 || name == PlaylistNameTu24 || name == PlaylistNameTu69;
     }
     inline bool LocalManifestEnabled()
     {

@@ -89,6 +89,11 @@ namespace revamped::iw8::web
         const bool umbrellaHost = hostLower == "umbrella.demonware.net" ||
             (hostLower.size() > umbrellaSuffixLength &&
              hostLower.compare(hostLower.size() - umbrellaSuffixLength, umbrellaSuffixLength, umbrellaSuffix) == 0);
+        const char* unoSuffix = ".uno.demonware.net";
+        const std::size_t unoSuffixLength = std::strlen(unoSuffix);
+        const bool unoHost = hostLower == "uno.demonware.net" ||
+            (hostLower.size() > unoSuffixLength &&
+             hostLower.compare(hostLower.size() - unoSuffixLength, unoSuffixLength, unoSuffix) == 0);
 
         const std::string contentTypeLower = Lower(HeaderValue(headers, "Content-Type"));
         const bool bodyIsJson = contentTypeLower.find("application/json") != std::string::npos || LooksLikeJsonObject(body);
@@ -116,6 +121,55 @@ namespace revamped::iw8::web
             result.statusCode = 200;
             result.label = "local OAuth client_sso access token";
             result.response = BuildResponse(200, "OK", "application/json; charset=utf-8", responseBody);
+        }
+        else if (result.method == "GET" && unoHost &&
+            (pathLower.rfind("/v1.0/users/", 0) == 0 || pathLower.rfind("/users/", 0) == 0))
+        {
+            // Once Umbrella reports a linked provider=uno account, stock bdLogin
+            // advances to FETCHING_UNO_ACCOUNT and performs this HTTPS GET.
+            // Return the same session-derived local identity as a normal full UNO
+            // account so the client completes login without showing registration.
+            const std::string prefix = pathLower.rfind("/v1.0/users/", 0) == 0 ?
+                "/v1.0/users/" : "/users/";
+            const std::size_t idBegin = prefix.size();
+            const std::size_t idEnd = pathLower.find('/', idBegin);
+            const std::string idText = pathLower.substr(idBegin,
+                idEnd == std::string::npos ? std::string::npos : idEnd - idBegin);
+
+            char* end = nullptr;
+            const unsigned long long parsedId = std::strtoull(idText.c_str(), &end, 10);
+            const std::uint64_t localUserId = GetCurrentLocalUserId();
+            const bool validId = end && end != idText.c_str() && *end == '\0' &&
+                parsedId != 0 && static_cast<std::uint64_t>(parsedId) == localUserId;
+
+            result.handled = true;
+            if (!validId)
+            {
+                result.statusCode = 404;
+                result.label = "local UNO profile not found";
+                result.response = BuildResponse(404, "Not Found",
+                    "application/json; charset=utf-8",
+                    "{\"error\":{\"name\":\"Error:ClientError:NotFound\"}}");
+                log::Print("[UNO-PROFILE] request=%s result=not-found localUserId=%llu",
+                    idText.c_str(), static_cast<unsigned long long>(localUserId));
+            }
+            else
+            {
+                const std::string responseBody =
+                    std::string("{\"accountType\":\"full\",\"unoID\":") +
+                    std::to_string(localUserId) +
+                    ",\"userName\":\"revamped\""
+                    ",\"emailVerified\":true,\"over18\":true"
+                    ",\"country\":\"US\""
+                    ",\"created\":\"2020-01-01T00:00:00Z\""
+                    ",\"updated\":\"2020-01-01T00:00:00Z\"}";
+                result.statusCode = 200;
+                result.label = "local existing UNO full account";
+                result.response = BuildResponse(200, "OK",
+                    "application/json; charset=utf-8", responseBody);
+                log::Print("[UNO-PROFILE] response=success unoId=%llu accountType=full username=revamped existing=yes",
+                    static_cast<unsigned long long>(localUserId));
+            }
         }
         else if (result.method == "POST" &&
             umbrellaHost &&
@@ -461,6 +515,39 @@ namespace revamped::iw8::web
                 const std::uint64_t localUserId = StableLocalAuthUserId(machineId, titleId);
                 const std::string clientId = "iw-cod-iw8-steam";
                 const std::string localLsg = "mw-lobby-1.prod.demonware.net";
+                // Exact Steam retail capture: 0x6CACC30 requires these fields
+                // inside `title`, not just at the response root. The 0x21-byte
+                // string buffer decodes to the existing 24-byte local LSG key.
+                const bool nativeRetailTitle = DetectLocalIw8Build() == LocalIw8Build::SteamRetail22824864;
+                std::string nativeTitleFields;
+                std::string nativeUmbrellaFields;
+                std::string nativeUnoFields;
+                const auto loginTicketIssueTime = static_cast<std::uint32_t>(std::time(nullptr));
+                const std::uint64_t umbrellaAccessIssuedAt = static_cast<std::uint64_t>(loginTicketIssueTime);
+                const std::uint64_t umbrellaExpires = umbrellaAccessIssuedAt + 86400ull;
+                const std::uint64_t umbrellaRefreshExpires = umbrellaAccessIssuedAt + 604800ull;
+                const std::string umbrellaIvSeedB64 = Base64Encode(std::vector<std::uint8_t>(
+                    ivSeed.empty() ? std::vector<std::uint8_t>{ '0' } :
+                        std::vector<std::uint8_t>(ivSeed.begin(), ivSeed.end())));
+                if (nativeRetailTitle)
+                {
+                    const std::string sessionKey = Base64Encode(std::vector<std::uint8_t>(
+                        kLocalAuth3SessionKey, kLocalAuth3SessionKey + sizeof(kLocalAuth3SessionKey)));
+                    nativeTitleFields = ",\"sessionID\":" + std::to_string(localUserId) +
+                        ",\"crossplayEnabled\":true,\"sessionKey\":\"" + JsonEscape(sessionKey) +
+                        "\",\"loginTicket\":\"" + JsonEscape(serverTicket) +
+                        "\",\"loginTicketIssueTime\":" + std::to_string(loginTicketIssueTime);
+                    // Keep the native Retail aliases that 0x6CAC5C0 consumes, but
+                    // also satisfy bdUmbrellaCrossplayAccount below with its full
+                    // required schema.  Do not duplicate refreshToken here.
+                    nativeUmbrellaFields = ",\"unoID\":" + std::to_string(localUserId) +
+                        ",\"unoUsername\":\"revamped\",\"accessExpiresIn\":86400,\"refreshExpiresIn\":604800";
+                    // The Retail UNO object is a bdCrossPlatformAccountInfo shape.
+                    // accountType must therefore be a UNO account type (full), not
+                    // the first-party platform string (steam).
+                    nativeUnoFields = ",\"unoID\":" + std::to_string(localUserId) +
+                        ",\"userName\":\"revamped\"";
+                }
 
                 // Compatibility superset: old Auth3 snake_case fields remain in
                 // place for shared login code, while current Steam loginservice
@@ -492,20 +579,35 @@ namespace revamped::iw8::web
                       << ",\"ivSeed\":\"" << JsonEscape(ivSeed) << "\""
                       << ",\"clientTicket\":\"" << JsonEscape(clientTicket) << "\""
                       << ",\"serverTicket\":\"" << JsonEscape(serverTicket) << "\""
+                      << nativeTitleFields
                       << ",\"lsgEndpoint\":\"" << JsonEscape(localLsg) << "\"}"
                       << ",\"umbrella\":{\"umbrellaID\":" << localUserId
+                      << nativeUmbrellaFields
                       << ",\"userID\":" << localUserId
                       << ",\"accountType\":\"steam\""
                       << ",\"username\":\"revamped\""
                       << ",\"accessToken\":\"" << JsonEscape(clientTicket) << "\""
-                      << ",\"accounts\":[]"
+                      << ",\"expires\":" << umbrellaExpires
+                      << ",\"accessIssuedAt\":" << umbrellaAccessIssuedAt
+                      << ",\"initialVectorSeed\":\"" << JsonEscape(umbrellaIvSeedB64) << "\""
+                      << ",\"ticket\":\"" << JsonEscape(serverTicket) << "\""
+                      << ",\"refreshToken\":\"" << JsonEscape(serverTicket) << "\""
+                      << ",\"refreshTokenExpires\":" << umbrellaRefreshExpires
+                      << ",\"accounts\":[{\"provider\":\"uno\",\"username\":\"revamped\",\"accountID\":"
+                      << localUserId << ",\"authorized\":true}]"
                       << ",\"crossPlatformProgressionEnabled\":true"
                       << ",\"lsgEndpoint\":\"" << JsonEscape(localLsg) << "\"}"
                       << ",\"uno\":{\"userID\":" << localUserId
-                      << ",\"accountType\":\"steam\""
-                      << ",\"username\":\"revamped\"}"
+                      << nativeUnoFields
+                      << ",\"accountType\":\"full\""
+                      << ",\"username\":\"revamped\""
+                      << ",\"emailVerified\":true,\"over18\":true,\"country\":\"US\"}"
                       << "}";
+                // 0x6CBBEC1 rejects a zero issued-at value after all three
+                // account objects pass. The title parser reads this as uint32.
                 responseBody += extra.str();
+                if (nativeRetailTitle)
+                    log::Print("[STEAM-LOGIN-V6] exactBuild=22824864 nativeTitle=yes nativeUmbrella=yes nativeUno=yes existingUno=yes linkedAccounts=1 umbrellaSchema=bdUmbrellaCrossplayAccount mandatoryFields=complete unoAccountType=full profileFetch=full issuedAt=present keyBytes=24 tokenForwarded=no stateWrites=off");
 
                 result.statusCode = 200;
                 // Sign the body too.  Clients that do not require X-Signature
