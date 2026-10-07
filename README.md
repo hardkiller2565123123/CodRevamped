@@ -59,7 +59,7 @@ CodRevamped
 │   ├── 🚧 Version 1.64 — Not Tested 
 │   ├── 🚧 Version 1.65 — Not Tested 
 │   ├── 🚧 Version 1.67 — Not Tested 
-│   └── 🚧 Retail / Steam Retail - Launching - Connects To Server - Crash.
+│   └── 🚧 Retail / Steam Retail - Connects To Server.
 │
 │
 ├── Call of Duty: Vanguard
