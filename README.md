@@ -1,6 +1,6 @@
 # CodRevamped
 
-**CodRevamped** is an open-source preservation project focused on restoring **offline and local functionality to newer Call of Duty games**.
+**CodRevamped** is an open-source preservation project focused on restoring **functionality to newer Call of Duty games**.
 
 Many modern Call of Duty titles depend heavily on online services for startup, menus, progression systems, and gameplay features. When those services change, disappear, or stop supporting older builds, parts of those games can become inaccessible.
 
