@@ -95,7 +95,7 @@ Special thanks to the following projects and individuals whose work has helped s
 
 - **[OpenIW8](https://github.com/0xLogic/OpenIW8)** — For providing a valuable reference when comparing and validating my own IDA research into the IW8 engine.
 
-- **KingHunt** — [Discord Profile](https://discord.com/users/312449518635581442) — For helping identify and provide critical missing information needed to advance **Call of Duty: Black Ops Cold War multiplayer** development.
+- **[KingHunt](https://github.com/0xLogic/OpenIW8](https://github.com/Hiuoy )** — For helping identify and provide critical missing information needed to advance **Call of Duty: Black Ops Cold War multiplayer** development.
 
 ### A Community Built on Shared Knowledge
 
