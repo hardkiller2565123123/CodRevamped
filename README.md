@@ -1,6 +1,6 @@
 # CodRevamped
 
-**CodRevamped** is an open-source preservation project focused on restoring **offline and local functionality to newer Call of Duty games**.
+**CodRevamped** is an open-source preservation project focused on restoring **functionality to newer Call of Duty games**.
 
 Many modern Call of Duty titles depend heavily on online services for startup, menus, progression systems, and gameplay features. When those services change, disappear, or stop supporting older builds, parts of those games can become inaccessible.
 
@@ -59,7 +59,7 @@ CodRevamped
 │   ├── 🚧 Version 1.64 — Not Tested 
 │   ├── 🚧 Version 1.65 — Not Tested 
 │   ├── 🚧 Version 1.67 — Not Tested 
-│   └── 🚧 Retail / Steam Retail - Connects To Server.
+│   └── 🚧 Retail / Steam Retail - Checking For updates.
 │
 │
 ├── Call of Duty: Vanguard
@@ -85,13 +85,24 @@ CodRevamped
 
 ---
 
-# Credits & Thanks
+# Credits & Acknowledgments
 
-CodRevamped would not be where it is without the research, documentation, testing, and work shared by other members of the Call of Duty preservation and modding community.
+CodRevamped would not be possible without the research, documentation, tools, and contributions shared by members of the Call of Duty modding and preservation community.
 
-Special thanks to:
+Special thanks to the following projects and individuals whose work has helped support CodRevamped's development:
 
-- **[Project BO4](https://github.com/project-bo4/shield-development)** — For their open-source work and research into newer Call of Duty Demonware systems.
-- **KingHunt** — [Discord Profile](https://discord.com/users/312449518635581442) — for helping provide and identify missing pieces needed for **Black Ops Cold War multiplayer** development.
+- **[Project BO4](https://github.com/project-bo4/shield-development)** — For their open-source research and development surrounding newer Call of Duty titles, particularly their work on Demonware services and backend emulation.
 
-CodRevamped exists because people chose to share their knowledge rather than gatekeep it. Thank you to everyone helping preserve these games and make this work possible.
+- **[OpenIW8](https://github.com/0xLogic/OpenIW8)** — For providing a valuable reference when comparing and validating my own IDA research into the IW8 engine.
+
+- **[KingHunt](https://github.com/0xLogic/OpenIW8](https://github.com/Hiuoy )** — For helping identify and provide critical missing information needed to advance **Call of Duty: Black Ops Cold War multiplayer** development.
+
+### A Community Built on Shared Knowledge
+
+CodRevamped is built on the belief that research and knowledge should be shared, not gatekept.
+
+Every discovery, technical contribution, and piece of publicly available research helps move game preservation forward.
+
+Thank you to everyone who has contributed, shared their findings, or supported the effort to keep these Call of Duty titles accessible for years to come.
+
+**— CodRevamped**
