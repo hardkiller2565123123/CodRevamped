@@ -31,7 +31,7 @@ CodRevamped
 │   ├── 🚧 Version Beta — Not Tested 
 │   ├── 🚧 Version 1.03 — Not Tested 
 │   ├── 🚧 Version 1.16 — Not Tested 
-│   ├── ✅ Version 1.20 — Playable - Mostly Playable Needs some Research and Fixing.
+│   ├── ✅ Version 1.20 — Fully Playable.
 │   ├── 🚧 Version 1.23 — Launching - Crashing
 │   ├── 🚧 Version 1.24 — Not Tested 
 │   ├── 🚧 Version 1.26 — Not Tested 
@@ -96,6 +96,8 @@ Special thanks to the following projects and individuals whose work has helped s
 - **[OpenIW8](https://github.com/0xLogic/OpenIW8)** — For providing a valuable reference when comparing and validating my own IDA research into the IW8 engine.
 
 - **[KingHunt](https://github.com/0xLogic/OpenIW8](https://github.com/Hiuoy )** — For helping identify and provide critical missing information needed to advance **Call of Duty: Black Ops Cold War multiplayer** development.
+
+- **[Entroph](https://github.com/IDARETW)** — For Providing Me With Bunch Of Finished Or Almost Finished Demoware Services for 1.20 almost finishing it off.
 
 ### A Community Built on Shared Knowledge
 
