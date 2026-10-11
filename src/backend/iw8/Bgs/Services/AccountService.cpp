@@ -224,12 +224,11 @@ namespace revamped::iw8::bgs
 
         if (method == 44u)
         {
-            // AccountService.GetSignedAccountState. IW8 consumes response field 1
-            // as account-token JSON. License 29256 is the base-game entitlement
-            // currently exposed by the local preservation account. Native ownership
-            // still depends on the later BNet cross-auth/reconciliation path, so do
-            // not treat this response by itself as proof that OwnsBaseGame is ready.
-            // Keep DLC ownership absent until exact build-1.20 mappings are proven.
+            // AccountService.GetSignedAccountState. Stock IW8 1.20 consumes
+            // response field 1 as account-token JSON. Reverse engineering of the
+            // native BattleNetAuth token parser confirms that the key is singular
+            // "license" and that license 29256 sets the base-game ownership bits.
+            // Keep DLC ownership absent until additional exact license mappings are proven.
             std::vector<Byte> account;
             const bool hasAccount = TryGetBytesField(context.rpc.body.data(), context.rpc.body.size(), 1u, account);
             const std::string signedAccountToken = "{\"country\":\"US\",\"license\":[29256]}";
@@ -237,7 +236,7 @@ namespace revamped::iw8::bgs
             std::vector<Byte> response;
             AppendStringField(response, 1u, signedAccountToken);
             QueueResponse(context, response, "AccountService.GetSignedAccountState response");
-            log::Print("[BGS-ACCOUNT] id=%llu GetSignedAccountState token=%u accountBytes=%llu accountPresent=%s signedTokenBytes=%llu schema=country+license licenses=1 baseGameLicense=29256",
+            log::Print("[BGS-ACCOUNT] id=%llu GetSignedAccountState token=%u accountBytes=%llu accountPresent=%s signedTokenBytes=%llu schema=country+license licenseCount=1 baseGameLicense=29256",
                 static_cast<unsigned long long>(context.connectionId), context.rpc.header.token,
                 static_cast<unsigned long long>(account.size()), hasAccount ? "yes" : "no",
                 static_cast<unsigned long long>(signedAccountToken.size()));

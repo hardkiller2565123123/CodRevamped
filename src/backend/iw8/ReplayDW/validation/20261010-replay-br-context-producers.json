@@ -1,0 +1,95 @@
+{
+  "passed": true,
+  "target_image_sha256": "68fb1cbcb2924182724004039de55a4c50152bb6561803c4898b7930b38132f0",
+  "producer_receipt_sha256": "31cd9482452204ef18a0d6cdda839877ebf628ff5d23216082c8f12e69ffadb5",
+  "records": [
+    {
+      "name": "2300",
+      "payload_sha256": "a3a929faf49ba9958ee15d467fe39746eabe5803fc875e51553b4daa36800e10",
+      "original_path": "data\\remaining-br-context-20261010\\armor-original.gscbin",
+      "normalized_path": "data\\remaining-br-context-20261010\\armor-normalized.gscbin",
+      "normalized_sha256": "fd7030749b518f69ad23631cdc48cdd7bcb3819b36124d4eb04b7cd3ce161466",
+      "disassembly_path": "data\\remaining-br-context-20261010\\disassembled\\iw8\\armor-normalized.gscasm",
+      "disassembly_sha256": "536e693e4fb8e0826f5701117bdcae4451c461c2fd6d0d7634f429800436d76f",
+      "only_reference_operands_changed": true
+    },
+    {
+      "name": "2244",
+      "payload_sha256": "f5811637b282e755343b5ab02ae721c1aaf3cef0ac3bfd0cd7f79ea75f66c262",
+      "original_path": "data\\remaining-br-context-20261010\\game-utility-original.gscbin",
+      "normalized_path": "data\\remaining-br-context-20261010\\game-utility-normalized.gscbin",
+      "normalized_sha256": "73fb2343e80e635d301545dc0b8721423eac24100e60edc6e1e2dcaf491f1a3f",
+      "disassembly_path": "data\\remaining-br-context-20261010\\disassembled\\iw8\\game-utility-normalized.gscasm",
+      "disassembly_sha256": "3e1cbcb19969f56e058de4f545e0e98c077834ad250d29b587713be98c55066f",
+      "only_reference_operands_changed": true
+    },
+    {
+      "name": "scripts/mp/gametypes/br.gsc",
+      "payload_sha256": "a45cb419d3a47fca11244ed273f515bd3d3a45fc62b1b1f45ff4cfaf0592d596",
+      "original_path": "data\\remaining-br-context-20261010\\br-original.gscbin",
+      "normalized_path": "data\\remaining-br-context-20261010\\br-normalized.gscbin",
+      "normalized_sha256": "86694796d22552ad80f9cb85f627caae794ae949ae584bdad80bf764a250d233",
+      "disassembly_path": "data\\remaining-br-context-20261010\\disassembled\\iw8\\br-normalized.gscasm",
+      "disassembly_sha256": "46891529af94098d7056490491d21a921871510aefb262b0e4f96e129f1bb2af",
+      "only_reference_operands_changed": true
+    },
+    {
+      "name": "scripts/mp/gametypes/br_quest_util.gsc",
+      "payload_sha256": "fa2cf78761027acb5ddbdb259a44cccb3b9d5e397f1c368aa199ff78152e4411",
+      "original_path": "data\\remaining-br-context-20261010\\contract-original.gscbin",
+      "normalized_path": "data\\remaining-br-context-20261010\\contract-normalized.gscbin",
+      "normalized_sha256": "b604ba68ee8ad9a52a1e7c03cefa65f3e06abe613cd8b6c0eca0f3fcc5cc5e82",
+      "disassembly_path": "data\\remaining-br-context-20261010\\disassembled\\iw8\\contract-normalized.gscasm",
+      "disassembly_sha256": "10d6540264aad8a93a49ae38a64bb09021ee2434b5aa2d6869d521143cef126d",
+      "only_reference_operands_changed": true
+    }
+  ],
+  "table_manifest_sha256": "4283c9a97bb211813ef3518de224a3578f0b58a0e8aa81763091e8314183907b",
+  "contract_owner_role": 1,
+  "contract_target_role": 2,
+  "contract_success": 1,
+  "contract_failure": 2,
+  "alive_flag_may_be_zero": true,
+  "contract_ids": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+  ],
+  "armor_reference": 7,
+  "ui_br_reference_tables_identical": true,
+  "loadout_flags": {
+    "preset": 0,
+    "custom": 1
+  },
+  "br_game_type_column": 24,
+  "game_type_5": "dm",
+  "supported_new_stage_ids": [
+    50006,
+    50034,
+    50011,
+    50024,
+    50070,
+    50016,
+    50023,
+    50030,
+    50037,
+    50044,
+    50051,
+    50058,
+    50065,
+    50072,
+    50079,
+    50086
+  ],
+  "native_game_callback_verified": false,
+  "game_runs_performed": false,
+  "scope": "Pinned shipped producers, original role-byte operands, reference-only normalization, native BR tables and original C++ parser; generic loadout/contract criteria reconstructed from shipped descriptions, not retail cloud rules; placement earning remains unimplemented pending allocation-lifetime binding"
+}

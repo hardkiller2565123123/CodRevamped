@@ -1,0 +1,39 @@
+{
+  "schema": 1,
+  "passed": true,
+  "recorded_utc": "2026-10-10T08:09:22.834942+00:00",
+  "game_sha256": "d94e0a38383da20b22d490d74fea0dabc8c047809469dd3fc17afcf29f3a81fc",
+  "server_sha256": "af0b0faf2d02318460f8da256121fcf2ccfd771aec48bb70ef3769efce05622e",
+  "executable": "E:\\IW8\\Builds\\1.20-replay\\game_dx12_ship_replay_dw.exe",
+  "game_root": "E:\\IW8\\Builds\\1.20-replay",
+  "pid": 11768,
+  "startup": {
+    "path": "data/remaining-ab-native-rest-20261010/production/native-correlated.json",
+    "sha256": "a6765b98c4a34f4b40a4133037741f3d7e894c0b3dcd466fccba500f74a4c356"
+  },
+  "promotion": {
+    "path": "validation/20261010-ab-rest-production-readiness.json",
+    "sha256": "e3604eae987154b800753fa86ae916c04e92f66648a0c390e037714172b52e5b"
+  },
+  "full_executable_publication": {
+    "path": "data/remaining-ab-native-rest-20261010/production/publication/droplet-publication.json",
+    "sha256": "da800d4a92bdd4a490b58e66efafcc249860c5cc4521386244de4a0e16124172"
+  },
+  "update_release": 15,
+  "native_signin_verified": true,
+  "native_dw_connection_verified": true,
+  "startup_fences_passing": 27,
+  "local_profile_logged_in": true,
+  "default_com_optimized": 1,
+  "ini_sha256": "c88171e0684f8bb7abe326a6cdd830483ce476eb98b404175ed92141cab35575",
+  "ini_unchanged": true,
+  "rest_ab_task_completion_verified": false,
+  "maps_tested": false,
+  "game_runs": 1,
+  "quit_command_dispatched": true,
+  "quit_command_alone_exited": false,
+  "close_main_window_exited": true,
+  "forced_termination": false,
+  "scope": "Bounded one-instance native startup and release-15 update check. Legacy AB route 194/1 is used during this startup; new REST AB writer remains covered by linked VM evidence rather than a live callback proof.",
+  "recorder_sha256": "6217794f6e990ac74134bff19776bfeb4cd95856c79423cd3d1c7587548b536e"
+}

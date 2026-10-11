@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "recorded_utc": "2026-10-05T20:22:10.738783+00:00",
+  "observed_utc": "2026-10-05T20:19:31.640406+00:00",
+  "server_sha256": "c5c840de9c52c2dc86b3942b540a0ba9f5fea997817352e838b1af4b37f6ce75",
+  "game_sha256": "b0075e0dbde62758efe84e23318084608be5b3704f23c269d87254ce2aea58a8",
+  "native_friend_menu_invitation_handshake_verified": true,
+  "native_presence_join_request_verified": true,
+  "native_presence_join_field": "player_id_to_presence_join",
+  "native_assigned_lobby_and_host_verified": true,
+  "native_matchmaking_state": 7,
+  "native_lobby_state": 4,
+  "native_startup_fences_passing": 27,
+  "independent_protocol_checks": 165,
+  "controlled_peer_is_game_host": false,
+  "native_two_game_connection_verified": false,
+  "map_test_performed": false,
+  "engine_recompiled": false,
+  "full_backend_verified": false,
+  "expected_final_result": "Unable to connect to host: the controlled peer supplies session/lobby documents but has no game/DTLS server"
+}

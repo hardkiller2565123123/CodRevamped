@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "game_sha256": "82005de3b87725296b9d16b3880c1ab3a0dd89c0f98aa3fa757df789f9a55440",
+  "server_sha256": "1d88793755cbdb20fc1e35b42c25987c09e884cd8673de79a9a9305d051ef239",
+  "compiler_job": "9e68daf606294557",
+  "native_game_verified": true,
+  "native_online_presence_published": true,
+  "native_local_profile_save_and_reload_verified": true,
+  "different_process_after_reload": true,
+  "native_startup_fences_passed": 27,
+  "settings_option": "keyboard toggle ADS",
+  "initial_value": false,
+  "edited_and_reloaded_value": true,
+  "native_settings_file": {
+    "size": 3003,
+    "modified_utc": "2026-10-06T01:27:34.2392513Z",
+    "path": "C:\\Users\\achar\\Documents\\Call of Duty Modern Warfare\\players\\settings.50E679C9.iw8",
+    "sha256": "8267bf5a88d5dcab50ee51dbdfad1d680a64b2f6ccbe1554a16b3e8f281a2ff0"
+  },
+  "cloud_sync": "native CODPC_NOCLOUD_SYNC opt-out selected before sign-in",
+  "observations": [
+    "before.json",
+    "changed.json",
+    "reloaded.json",
+    "restored.json"
+  ],
+  "observation_sha256": {
+    "before.json": "1f12bf31225cab462bf3a0e141a0888d5e4bd59c6359f2cb87b7f6b8bbc78ca5",
+    "changed.json": "79dc29294447c90888f5d87dc43b94bad391230f9059d5983f82f0d7b8f28f8a",
+    "reloaded.json": "d0b584738e6d30a2ee3c1cb8824dacfb440eee5e009f401030f6b9e63fa0fb3a",
+    "restored.json": "1d23d9d0a10c0440d724af9e1ee438218dee6ccbf039cdd9d258ab4a1496e464",
+    "published-presence.json": "ba8c405a2a38873c2ce1ddd2dc9f21e65f113dcb567a6b97882742c9c1c919b1"
+  },
+  "two_network_party_join_verified": false,
+  "test_setting_restored_via_native_command": true,
+  "restored_settings_file": {
+    "path": "C:\\Users\\achar\\Documents\\Call of Duty Modern Warfare\\players\\settings.50E679C9.iw8",
+    "size": 3003,
+    "modified_utc": "2026-10-06T01:30:14.1299727Z",
+    "sha256": "d2e86d49e7b64d82bde3d9c1a496714b5ced7090c4b98ca3b55e440acd7c2141"
+  }
+}

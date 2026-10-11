@@ -1,0 +1,39 @@
+{
+  "schema": 1,
+  "passed": true,
+  "observed_utc": "2026-10-06T10:05:31.556696+00:00",
+  "server_sha256": "517b8bd7d15daff7d6723036cd2d6dcf5aa59be41ff58033d2989c98512b5b21",
+  "game_sha256": "b326981a9718cedbc05228d40bef8b2adcd6be89307b2cde7d8e878a3ca67885",
+  "protocol_groups": 240,
+  "tournament_round_checks": [
+    "Tournament ready-up waits for available playlist maps and recovers one coupled bracket/enrollment/lobby/search/account-index transaction after a real blocked assignment write; retry keeps its lobby identity",
+    "Four independent ready tournament matches allocate distinct closed native lobbies with actual party search IDs, exact create/join envelopes, Replay tournament/team/round metadata and Shipment-only rules from the common playlist policy",
+    "Temporary same-session reconnect catches up the current bracket and allocated round join once through the existing idle publisher, without a new lobby or repeated native create/join callbacks",
+    "Authenticated host results advance all seven matches through an eight-team tournament; later rounds require fresh scoped readiness and retain distinct native lobby/search/index assignments without carrying forward old ready flags"
+  ],
+  "automatic_round_lobby_allocation_implemented": true,
+  "coupled_round_allocation_recovery_verified": true,
+  "eight_team_seven_match_progression_verified_by_encrypted_clients": true,
+  "fixture_players_registered_through_signed_machine_login": 8,
+  "accepted_enrollment_seeded": false,
+  "player_ids_published_or_seeded": false,
+  "new_player_provisioning_required": false,
+  "native_game_round_create_join_callbacks_verified": false,
+  "client_tournament_map_pool_alignment_verified": false,
+  "playable_tournament_verified": false,
+  "two_network_gameplay_verified": false,
+  "source_sha256": {
+    "src/matchmaking_services.cpp": "6c7f2ac88225c652d9203aa530bbafa6c054c4f56304e6f9c2ff3fb3ec5337a6",
+    "src/matchmaking_services.h": "31017b779c8b8858df7f14b5d45b38203f47dd46fe242124412b27476b9d9968",
+    "src/matchmaking_store.cpp": "c3af5cae7e30b37f6ca0608c1f18d66479b660b2403794ed1ac2c260212c11b0",
+    "src/tournament_services.cpp": "78d296b0f053dba811bc03823e3924ab0e3acbd52484b17607d82c65a4c70083",
+    "src/tournament_services.h": "fc506c7dfd5d17a2f28aa7d91225a11691ad89f1e8a241b7d6e726534cc74b21",
+    "src/services.cpp": "0efa8a9e86248359e2ca13ac433be9c909fea0fe6fd45e46fae861b40f953276",
+    "src/services.h": "67f85dc1c08dbd481efafd90cbe05fa1cfabe6a2d3b7b863408eec3e10b6ca6e",
+    "src/lobby.cpp": "c4ba81b26df3f8e78eafb88db2aceb4ceeeee1a1df847f6a6307c369f888efba",
+    "tools/test-lobby.py": "2d901d64a2a26b088e350e3168d8f9dda525e7c8ab82ed34ad047ef80c5e0f8e",
+    "tools/tournament_round_fixtures.py": "beeb0883f84a7c58cd0fb5da35e4493b9df061970d15a01a18852af85375e0da"
+  },
+  "suite_receipt_sha256": "52593daab3c42d901fe54e0660131e8c34d58feb28f640af3c9ca8beada3fdd5",
+  "scope": "Backend ready-up allocation, shared playlist/map selection, closed native lobby envelopes, coupled storage recovery, temporary same-session catch-up and seven-match progression verified by eight encrypted clients. Native startup/reconnect has a separate receipt; no map or match test."
+}

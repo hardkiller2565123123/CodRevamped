@@ -1,0 +1,43 @@
+{
+  "passed": true,
+  "game_runs_performed": false,
+  "native_game_callback_verified": false,
+  "cache_decision_receipt": "validation/20261009-challenge-cache-decisions.json",
+  "cache_decision_sha256": "23e6d250f38fc507777b052f393165a5ece6d0ab992f7fda6454f97f099102ed",
+  "recovery_receipt_sha256": "21da25d0ceafe8b35d04f7e76e3596d27a2f1cd2082e12d6e6675877ba052555",
+  "gsc_tool_sha256": "1adfd67414a9b886cbad57ee0378f622eed485bcef7711322aee478e298fadcb",
+  "disassembly": {
+    "data\\remaining-challenge-actions-20261009\\disassembled\\iw8\\gulag-normalized.gscasm": "606cd2e370c98b415d604c97f16bc15463798386d91cbbd7bcbaca69053f5cd8",
+    "data\\remaining-contracts-20261009\\native-challenge-scripts\\disassembled\\iw8\\challenge-normalized.gscasm": "eb56bccf022463022125d7374a15548a47fda3efb3628edc67dafa5ef8c51576"
+  },
+  "actor_flags": {
+    "self_revive": [
+      1,
+      1
+    ],
+    "revived_by_other": [
+      1,
+      0
+    ],
+    "reviving_other": [
+      0,
+      1
+    ]
+  },
+  "gulag_result": {
+    "winner": 1,
+    "loser": 2
+  },
+  "supported_new_stage_ids": [
+    50014,
+    50077,
+    50049,
+    50048,
+    50076
+  ],
+  "scope": "Pinned shipped GSCBIN exports and normalized disassembly plus executed original C++ cache decisions; native gameplay consumption not claimed",
+  "native_script_payload_sha256": {
+    "scripts/cp_mp/challenges.gsc": "074bcfaf5cd6fe39c6fde4f02321b7db9ab90197f1eab7d43afbc47a938694f7",
+    "scripts/mp/gametypes/br_gulag.gsc": "ce5307afc1de9bf5ea34a47af637a91b1c4addd9578ab1e8b5f5d8d66ca2c34d"
+  }
+}

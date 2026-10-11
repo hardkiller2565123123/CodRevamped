@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "backend_implemented": true,
+  "server_sha256": "7e447d81283a63afbcbb3009e46f64538a2dfdf74dfd95fe7d7ff132204a14e0",
+  "game_sha256": "b09a9ba25f733960dd1f8c569f566979804c2a1a247a9753e2c6e7a50556c138",
+  "game_recompiled": false,
+  "source_tree": "9f13413ce83eba35021eebf5631241d7658e1a37",
+  "source_archive_sha256": "fe99882518e46af942d6a46ed504f7c2d2203c3f18a7e2e68c9b9f59ddb9aeee",
+  "protocol_evidence": [
+    {
+      "path": "data\\leaderboard-backend-20261007\\windows-contract.json",
+      "sha256": "1796e65fef9053e2570bb24a332bd3cd1da2120ec9724e2f1de6bf6429acefb9",
+      "passed": true,
+      "server_sha256": "aca3627210190598e7b5af54a595d21b8431c15c6daa152a263ec5c713af98ef"
+    },
+    {
+      "path": "data\\leaderboard-backend-20261007\\linux-contract.json",
+      "sha256": "9db6c880352feda00c673825096c0515f4907b1f5bc9023ae01f56bdc4365ed9",
+      "passed": true,
+      "server_sha256": "7e447d81283a63afbcbb3009e46f64538a2dfdf74dfd95fe7d7ff132204a14e0"
+    },
+    {
+      "path": "data\\leaderboard-backend-20261007\\linux-store-regression.json",
+      "sha256": "494f08781cd296941814ae0191299eea61825b8a1da2497d9df74e4efc46acc9",
+      "passed": true,
+      "server_sha256": "7e447d81283a63afbcbb3009e46f64538a2dfdf74dfd95fe7d7ff132204a14e0"
+    },
+    {
+      "path": "data\\leaderboard-backend-20261007\\public-protocol.json",
+      "sha256": "a8d05b66690831ee7b819af6e865f80a0f932821677d112b84b9e2f2f195361d",
+      "passed": true,
+      "server_sha256": "7e447d81283a63afbcbb3009e46f64538a2dfdf74dfd95fe7d7ff132204a14e0"
+    }
+  ],
+  "native_startup": {
+    "pid": 29832,
+    "hsm_33": true,
+    "all_27_fences_passing": true,
+    "observation": "data\\leaderboard-backend-20261007\\native-final.json",
+    "sha256": "702d92ff16f1b3d803559bdc1981bbbfbfa244aed0f8eef1ca958b3ff01107d2"
+  },
+  "native_store": {
+    "display_verified": true,
+    "prior_ownership_retained": true,
+    "new_claim_performed": false,
+    "screenshot": "data\\leaderboard-backend-20261007\\native-store.jpg",
+    "sha256": "9ce979b9d465b6c8362f1d85242285bb49db585c3e124d704f9df3affcb0f5bd"
+  },
+  "original_virtual_builder_verified": 40,
+  "original_ui_column_reads_verified": 265,
+  "encrypted_projected_reads_per_platform": 80,
+  "column_definitions": 747,
+  "native_leaderboard_rows_verified": false,
+  "automatic_virtual_stat_aggregation_implemented": false,
+  "full_backend_completed": false,
+  "game_tests_finished": true,
+  "future_game_tests_authorized": false
+}

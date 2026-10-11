@@ -1,0 +1,1924 @@
+{
+  "passed": true,
+  "tool_sha256": "c094df0ed0617920112185595c92a3d3d3af1ea287420981ba4b27974038d7ee",
+  "original_script_payload_sha256": "074bcfaf5cd6fe39c6fde4f02321b7db9ab90197f1eab7d43afbc47a938694f7",
+  "original_script_disassembly_sha256": "eb56bccf022463022125d7374a15548a47fda3efb3628edc67dafa5ef8c51576",
+  "native_mapents_span_receipt_sha256": "c4a9e6b67caacad2172bddadd7891bacfd324aab7f9a39bfc55245c4d87153ce",
+  "entity_text_sha256": "96910aadd8afb834ca472777e459c8bc32c5bdd83ddbb4b775f9f249090fec42",
+  "entity_reader_sha256": "bb8c0986b984b3bc0d2e38e111e3834d7235d7e07f72c8862645ee8dec92a01a",
+  "assignments": [
+    {
+      "name": "tvstation",
+      "id": 33,
+      "original_byte_offset": 700,
+      "original_bytes_hex": "1621"
+    },
+    {
+      "name": "suburbs_transit",
+      "id": 30,
+      "original_byte_offset": 655,
+      "original_bytes_hex": "161e"
+    },
+    {
+      "name": "suburbs_super",
+      "id": 29,
+      "original_byte_offset": 640,
+      "original_bytes_hex": "161d"
+    },
+    {
+      "name": "suburbs_stadium",
+      "id": 28,
+      "original_byte_offset": 625,
+      "original_bytes_hex": "161c"
+    },
+    {
+      "name": "suburbs_quarry",
+      "id": 27,
+      "original_byte_offset": 610,
+      "original_bytes_hex": "161b"
+    },
+    {
+      "name": "suburbs_hospital",
+      "id": 26,
+      "original_byte_offset": 595,
+      "original_bytes_hex": "161a"
+    },
+    {
+      "name": "suburbs_eastriver",
+      "id": 25,
+      "original_byte_offset": 580,
+      "original_bytes_hex": "1619"
+    },
+    {
+      "name": "suburbs_dam",
+      "id": 24,
+      "original_byte_offset": 565,
+      "original_bytes_hex": "1618"
+    },
+    {
+      "name": "suburbs_coast",
+      "id": 23,
+      "original_byte_offset": 550,
+      "original_bytes_hex": "1617"
+    },
+    {
+      "name": "suburbs_airfield",
+      "id": 22,
+      "original_byte_offset": 535,
+      "original_bytes_hex": "1616"
+    },
+    {
+      "name": "river_south",
+      "id": 19,
+      "original_byte_offset": 490,
+      "original_bytes_hex": "1613"
+    },
+    {
+      "name": "river_north",
+      "id": 18,
+      "original_byte_offset": 475,
+      "original_bytes_hex": "1612"
+    },
+    {
+      "name": "river_east",
+      "id": 17,
+      "original_byte_offset": 460,
+      "original_bytes_hex": "1611"
+    },
+    {
+      "name": "park",
+      "id": 14,
+      "original_byte_offset": 405,
+      "original_bytes_hex": "160e"
+    },
+    {
+      "name": "outskirts",
+      "id": 13,
+      "original_byte_offset": 390,
+      "original_bytes_hex": "160d"
+    },
+    {
+      "name": "maintenance",
+      "id": 12,
+      "original_byte_offset": 375,
+      "original_bytes_hex": "160c"
+    },
+    {
+      "name": "layover",
+      "id": 10,
+      "original_byte_offset": 345,
+      "original_bytes_hex": "160a"
+    },
+    {
+      "name": "farms",
+      "id": 6,
+      "original_byte_offset": 275,
+      "original_bytes_hex": "1606"
+    },
+    {
+      "name": "downtown",
+      "id": 5,
+      "original_byte_offset": 250,
+      "original_bytes_hex": "1605"
+    },
+    {
+      "name": "coast",
+      "id": 3,
+      "original_byte_offset": 220,
+      "original_bytes_hex": "1603"
+    },
+    {
+      "name": "airfield",
+      "id": 1,
+      "original_byte_offset": 171,
+      "original_bytes_hex": "1601"
+    },
+    {
+      "name": "storagetown",
+      "id": 21,
+      "original_byte_offset": 520,
+      "original_bytes_hex": "1615"
+    },
+    {
+      "name": "stadium",
+      "id": 20,
+      "original_byte_offset": 505,
+      "original_bytes_hex": "1614"
+    },
+    {
+      "name": "port",
+      "id": 15,
+      "original_byte_offset": 420,
+      "original_bytes_hex": "160f"
+    },
+    {
+      "name": "transit",
+      "id": 32,
+      "original_byte_offset": 685,
+      "original_bytes_hex": "1620"
+    },
+    {
+      "name": "quarry",
+      "id": 16,
+      "original_byte_offset": 445,
+      "original_bytes_hex": "1610"
+    },
+    {
+      "name": "dam",
+      "id": 4,
+      "original_byte_offset": 235,
+      "original_bytes_hex": "1604"
+    },
+    {
+      "name": "lumber",
+      "id": 11,
+      "original_byte_offset": 360,
+      "original_bytes_hex": "160b"
+    },
+    {
+      "name": "boneyard",
+      "id": 2,
+      "original_byte_offset": 195,
+      "original_bytes_hex": "1602"
+    },
+    {
+      "name": "junkyard",
+      "id": 9,
+      "original_byte_offset": 330,
+      "original_bytes_hex": "1609"
+    },
+    {
+      "name": "hospital",
+      "id": 8,
+      "original_byte_offset": 305,
+      "original_bytes_hex": "1608"
+    },
+    {
+      "name": "gulag",
+      "id": 7,
+      "original_byte_offset": 290,
+      "original_bytes_hex": "1607"
+    },
+    {
+      "name": "super",
+      "id": 31,
+      "original_byte_offset": 670,
+      "original_bytes_hex": "161f"
+    }
+  ],
+  "authored_location_volumes": [
+    {
+      "index": 47433,
+      "script_label": "racing_track",
+      "origin": "-34799 -26669 1664",
+      "brush_model": "?147",
+      "locale_id": null,
+      "fields": [
+        {
+          "code": 212,
+          "value": "info_volume"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?147"
+        },
+        {
+          "code": 709,
+          "value": "-34799 -26669 1664"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "racing_track"
+        },
+        {
+          "code": 1072,
+          "value": "location_volume"
+        }
+      ]
+    },
+    {
+      "index": 47434,
+      "script_label": "bloc_23",
+      "origin": "-9364 55721 1664",
+      "brush_model": "?148",
+      "locale_id": null,
+      "fields": [
+        {
+          "code": 212,
+          "value": "info_volume"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?148"
+        },
+        {
+          "code": 709,
+          "value": "-9364 55721 1664"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "bloc_23"
+        },
+        {
+          "code": 1072,
+          "value": "location_volume"
+        }
+      ]
+    },
+    {
+      "index": 47435,
+      "script_label": "lozoff_pass",
+      "origin": "13696 34631 1664",
+      "brush_model": "?149",
+      "locale_id": null,
+      "fields": [
+        {
+          "code": 212,
+          "value": "info_volume"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?149"
+        },
+        {
+          "code": 709,
+          "value": "13696 34631 1664"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "lozoff_pass"
+        },
+        {
+          "code": 1072,
+          "value": "location_volume"
+        }
+      ]
+    },
+    {
+      "index": 47436,
+      "script_label": "tvstation",
+      "origin": "14452 17604 1664",
+      "brush_model": "?150",
+      "locale_id": 33,
+      "fields": [
+        {
+          "code": 212,
+          "value": "info_volume"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?150"
+        },
+        {
+          "code": 709,
+          "value": "14452 17604 1664"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "tvstation"
+        },
+        {
+          "code": 1072,
+          "value": "location_volume"
+        }
+      ]
+    },
+    {
+      "index": 47437,
+      "script_label": "dam",
+      "origin": "-26995 48649 1664",
+      "brush_model": "?151",
+      "locale_id": 4,
+      "fields": [
+        {
+          "code": 212,
+          "value": "info_volume"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?151"
+        },
+        {
+          "code": 709,
+          "value": "-26995 48649 1664"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "dam"
+        },
+        {
+          "code": 1072,
+          "value": "location_volume"
+        }
+      ]
+    },
+    {
+      "index": 47438,
+      "script_label": "crash_site",
+      "origin": "9229 39190 1664",
+      "brush_model": "?152",
+      "locale_id": null,
+      "fields": [
+        {
+          "code": 212,
+          "value": "info_volume"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?152"
+        },
+        {
+          "code": 709,
+          "value": "9229 39190 1664"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "crash_site"
+        },
+        {
+          "code": 1072,
+          "value": "location_volume"
+        }
+      ]
+    },
+    {
+      "index": 47439,
+      "script_label": "gora_tunnel",
+      "origin": "-31572 39706 1664",
+      "brush_model": "?153",
+      "locale_id": null,
+      "fields": [
+        {
+          "code": 212,
+          "value": "info_volume"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?153"
+        },
+        {
+          "code": 709,
+          "value": "-31572 39706 1664"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "gora_tunnel"
+        },
+        {
+          "code": 1072,
+          "value": "location_volume"
+        }
+      ]
+    },
+    {
+      "index": 47440,
+      "script_label": "bloc_17",
+      "origin": "-27879 34160 1664",
+      "brush_model": "?154",
+      "locale_id": null,
+      "fields": [
+        {
+          "code": 212,
+          "value": "info_volume"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?154"
+        },
+        {
+          "code": 709,
+          "value": "-27879 34160 1664"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "bloc_17"
+        },
+        {
+          "code": 1072,
+          "value": "location_volume"
+        }
+      ]
+    },
+    {
+      "index": 47441,
+      "script_label": "layover",
+      "origin": "-15551 21176 1664",
+      "brush_model": "?155",
+      "locale_id": 10,
+      "fields": [
+        {
+          "code": 212,
+          "value": "info_volume"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?155"
+        },
+        {
+          "code": 709,
+          "value": "-15551 21176 1664"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "layover"
+        },
+        {
+          "code": 1072,
+          "value": "location_volume"
+        }
+      ]
+    },
+    {
+      "index": 47442,
+      "script_label": "bloc_16",
+      "origin": "-11463 29885 1664",
+      "brush_model": "?156",
+      "locale_id": null,
+      "fields": [
+        {
+          "code": 212,
+          "value": "info_volume"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?156"
+        },
+        {
+          "code": 709,
+          "value": "-11463 29885 1664"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "bloc_16"
+        },
+        {
+          "code": 1072,
+          "value": "location_volume"
+        }
+      ]
+    },
+    {
+      "index": 47443,
+      "script_label": "airport_maintenance",
+      "origin": "-4240 12783 1664",
+      "brush_model": "?157",
+      "locale_id": null,
+      "fields": [
+        {
+          "code": 212,
+          "value": "info_volume"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?157"
+        },
+        {
+          "code": 709,
+          "value": "-4240 12783 1664"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "airport_maintenance"
+        },
+        {
+          "code": 1072,
+          "value": "location_volume"
+        }
+      ]
+    },
+    {
+      "index": 47444,
+      "script_label": "downtown",
+      "origin": "22782 -10238 1664",
+      "brush_model": "?158",
+      "locale_id": 5,
+      "fields": [
+        {
+          "code": 212,
+          "value": "info_volume"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?158"
+        },
+        {
+          "code": 709,
+          "value": "22782 -10238 1664"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "downtown"
+        },
+        {
+          "code": 1072,
+          "value": "location_volume"
+        }
+      ]
+    },
+    {
+      "index": 47445,
+      "script_label": "hospital",
+      "origin": "8032 -10504 1664",
+      "brush_model": "?159",
+      "locale_id": 8,
+      "fields": [
+        {
+          "code": 212,
+          "value": "info_volume"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?159"
+        },
+        {
+          "code": 709,
+          "value": "8032 -10504 1664"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "hospital"
+        },
+        {
+          "code": 1072,
+          "value": "location_volume"
+        }
+      ]
+    },
+    {
+      "index": 47446,
+      "script_label": "bloc_15",
+      "origin": "32726 27892 1664",
+      "brush_model": "?160",
+      "locale_id": null,
+      "fields": [
+        {
+          "code": 212,
+          "value": "info_volume"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?160"
+        },
+        {
+          "code": 709,
+          "value": "32726 27892 1664"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "bloc_15"
+        },
+        {
+          "code": 1072,
+          "value": "location_volume"
+        }
+      ]
+    },
+    {
+      "index": 47447,
+      "script_label": "airfield",
+      "origin": "8743 50898 1664",
+      "brush_model": "?161",
+      "locale_id": 1,
+      "fields": [
+        {
+          "code": 212,
+          "value": "info_volume"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?161"
+        },
+        {
+          "code": 709,
+          "value": "8743 50898 1664"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "airfield"
+        },
+        {
+          "code": 1072,
+          "value": "location_volume"
+        }
+      ]
+    },
+    {
+      "index": 47448,
+      "script_label": "bloc_18",
+      "origin": "46553 19920 1664",
+      "brush_model": "?162",
+      "locale_id": null,
+      "fields": [
+        {
+          "code": 212,
+          "value": "info_volume"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?162"
+        },
+        {
+          "code": 709,
+          "value": "46553 19920 1664"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "bloc_18"
+        },
+        {
+          "code": 1072,
+          "value": "location_volume"
+        }
+      ]
+    },
+    {
+      "index": 47449,
+      "script_label": "quarry",
+      "origin": "30397 39908 1664",
+      "brush_model": "?163",
+      "locale_id": 16,
+      "fields": [
+        {
+          "code": 212,
+          "value": "info_volume"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?163"
+        },
+        {
+          "code": 709,
+          "value": "30397 39908 1664"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "quarry"
+        },
+        {
+          "code": 1072,
+          "value": "location_volume"
+        }
+      ]
+    },
+    {
+      "index": 47450,
+      "script_label": "transit",
+      "origin": "-11178 -13389 1664",
+      "brush_model": "?164",
+      "locale_id": 32,
+      "fields": [
+        {
+          "code": 212,
+          "value": "info_volume"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?164"
+        },
+        {
+          "code": 709,
+          "value": "-11178 -13389 1664"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "transit"
+        },
+        {
+          "code": 1072,
+          "value": "location_volume"
+        }
+      ]
+    },
+    {
+      "index": 47451,
+      "script_label": "shopping_district_w",
+      "origin": "-20307 -22998 1664",
+      "brush_model": "?165",
+      "locale_id": null,
+      "fields": [
+        {
+          "code": 212,
+          "value": "info_volume"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?165"
+        },
+        {
+          "code": 709,
+          "value": "-20307 -22998 1664"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "shopping_district_w"
+        },
+        {
+          "code": 1072,
+          "value": "location_volume"
+        }
+      ]
+    },
+    {
+      "index": 47452,
+      "script_label": "hills",
+      "origin": "-7390 -35136 1664",
+      "brush_model": "?166",
+      "locale_id": null,
+      "fields": [
+        {
+          "code": 212,
+          "value": "info_volume"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?166"
+        },
+        {
+          "code": 709,
+          "value": "-7390 -35136 1664"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "hills"
+        },
+        {
+          "code": 1072,
+          "value": "location_volume"
+        }
+      ]
+    },
+    {
+      "index": 47453,
+      "script_label": "bridge_great",
+      "origin": "9879 4968 1664",
+      "brush_model": "?167",
+      "locale_id": null,
+      "fields": [
+        {
+          "code": 212,
+          "value": "info_volume"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?167"
+        },
+        {
+          "code": 709,
+          "value": "9879 4968 1664"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "bridge_great"
+        },
+        {
+          "code": 1072,
+          "value": "location_volume"
+        }
+      ]
+    },
+    {
+      "index": 47454,
+      "script_label": "bridge_tavorsk",
+      "origin": "34128 -10400 1664",
+      "brush_model": "?168",
+      "locale_id": null,
+      "fields": [
+        {
+          "code": 212,
+          "value": "info_volume"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?168"
+        },
+        {
+          "code": 709,
+          "value": "34128 -10400 1664"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "bridge_tavorsk"
+        },
+        {
+          "code": 1072,
+          "value": "location_volume"
+        }
+      ]
+    },
+    {
+      "index": 47455,
+      "script_label": "bridge_west",
+      "origin": "14096 -11916 1664",
+      "brush_model": "?169",
+      "locale_id": null,
+      "fields": [
+        {
+          "code": 212,
+          "value": "info_volume"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?169"
+        },
+        {
+          "code": 709,
+          "value": "14096 -11916 1664"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "bridge_west"
+        },
+        {
+          "code": 1072,
+          "value": "location_volume"
+        }
+      ]
+    },
+    {
+      "index": 47456,
+      "script_label": "bridge_gora",
+      "origin": "14016 -21888 1664",
+      "brush_model": "?170",
+      "locale_id": null,
+      "fields": [
+        {
+          "code": 212,
+          "value": "info_volume"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?170"
+        },
+        {
+          "code": 709,
+          "value": "14016 -21888 1664"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "bridge_gora"
+        },
+        {
+          "code": 1072,
+          "value": "location_volume"
+        }
+      ]
+    },
+    {
+      "index": 47457,
+      "script_label": "styor",
+      "origin": "16680 -34811 1664",
+      "brush_model": "?171",
+      "locale_id": null,
+      "fields": [
+        {
+          "code": 212,
+          "value": "info_volume"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?171"
+        },
+        {
+          "code": 709,
+          "value": "16680 -34811 1664"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "styor"
+        },
+        {
+          "code": 1072,
+          "value": "location_volume"
+        }
+      ]
+    },
+    {
+      "index": 47458,
+      "script_label": "zozsni",
+      "origin": "-18357 -38502 1664",
+      "brush_model": "?172",
+      "locale_id": null,
+      "fields": [
+        {
+          "code": 212,
+          "value": "info_volume"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?172"
+        },
+        {
+          "code": 709,
+          "value": "-18357 -38502 1664"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "zozsni"
+        },
+        {
+          "code": 1072,
+          "value": "location_volume"
+        }
+      ]
+    },
+    {
+      "index": 47459,
+      "script_label": "bridge_grazna",
+      "origin": "6593 17281 1664",
+      "brush_model": "?173",
+      "locale_id": null,
+      "fields": [
+        {
+          "code": 212,
+          "value": "info_volume"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?173"
+        },
+        {
+          "code": 709,
+          "value": "6593 17281 1664"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "bridge_grazna"
+        },
+        {
+          "code": 1072,
+          "value": "location_volume"
+        }
+      ]
+    },
+    {
+      "index": 47460,
+      "script_label": "bridge_karst",
+      "origin": "42137 16347 1664",
+      "brush_model": "?174",
+      "locale_id": null,
+      "fields": [
+        {
+          "code": 212,
+          "value": "info_volume"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?174"
+        },
+        {
+          "code": 709,
+          "value": "42137 16347 1664"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "bridge_karst"
+        },
+        {
+          "code": 1072,
+          "value": "location_volume"
+        }
+      ]
+    },
+    {
+      "index": 47461,
+      "script_label": "jarvdinsk",
+      "origin": "-3439 44021 1664",
+      "brush_model": "?175",
+      "locale_id": null,
+      "fields": [
+        {
+          "code": 212,
+          "value": "info_volume"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?175"
+        },
+        {
+          "code": 709,
+          "value": "-3439 44021 1664"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "jarvdinsk"
+        },
+        {
+          "code": 1072,
+          "value": "location_volume"
+        }
+      ]
+    },
+    {
+      "index": 47462,
+      "script_label": "graveyard",
+      "origin": "-16888 -1032 1664",
+      "brush_model": "?176",
+      "locale_id": null,
+      "fields": [
+        {
+          "code": 212,
+          "value": "info_volume"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?176"
+        },
+        {
+          "code": 709,
+          "value": "-16888 -1032 1664"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "graveyard"
+        },
+        {
+          "code": 1072,
+          "value": "location_volume"
+        }
+      ]
+    },
+    {
+      "index": 47463,
+      "script_label": "storagetown",
+      "origin": "-25755 7109 1664",
+      "brush_model": "?177",
+      "locale_id": 21,
+      "fields": [
+        {
+          "code": 212,
+          "value": "info_volume"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?177"
+        },
+        {
+          "code": 709,
+          "value": "-25755 7109 1664"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "storagetown"
+        },
+        {
+          "code": 1072,
+          "value": "location_volume"
+        }
+      ]
+    },
+    {
+      "index": 47464,
+      "script_label": "boneyard",
+      "origin": "-26680 -10610 1664",
+      "brush_model": "?178",
+      "locale_id": 2,
+      "fields": [
+        {
+          "code": 212,
+          "value": "info_volume"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?178"
+        },
+        {
+          "code": 709,
+          "value": "-26680 -10610 1664"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "boneyard"
+        },
+        {
+          "code": 1072,
+          "value": "location_volume"
+        }
+      ]
+    },
+    {
+      "index": 47465,
+      "script_label": "junk_yard",
+      "origin": "-36042 -3540 1664",
+      "brush_model": "?179",
+      "locale_id": null,
+      "fields": [
+        {
+          "code": 212,
+          "value": "info_volume"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?179"
+        },
+        {
+          "code": 709,
+          "value": "-36042 -3540 1664"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "junk_yard"
+        },
+        {
+          "code": 1072,
+          "value": "location_volume"
+        }
+      ]
+    },
+    {
+      "index": 47466,
+      "script_label": "stadium",
+      "origin": "29648 2644 1664",
+      "brush_model": "?180",
+      "locale_id": 20,
+      "fields": [
+        {
+          "code": 212,
+          "value": "info_volume"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?180"
+        },
+        {
+          "code": 709,
+          "value": "29648 2644 1664"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "stadium"
+        },
+        {
+          "code": 1072,
+          "value": "location_volume"
+        }
+      ]
+    },
+    {
+      "index": 47467,
+      "script_label": "whp_camp",
+      "origin": "26828 21335 1664",
+      "brush_model": "?181",
+      "locale_id": null,
+      "fields": [
+        {
+          "code": 212,
+          "value": "info_volume"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?181"
+        },
+        {
+          "code": 709,
+          "value": "26828 21335 1664"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "whp_camp"
+        },
+        {
+          "code": 1072,
+          "value": "location_volume"
+        }
+      ]
+    },
+    {
+      "index": 47468,
+      "script_label": "bloc_14",
+      "origin": "19899 26987 1664",
+      "brush_model": "?182",
+      "locale_id": null,
+      "fields": [
+        {
+          "code": 212,
+          "value": "info_volume"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?182"
+        },
+        {
+          "code": 709,
+          "value": "19899 26987 1664"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "bloc_14"
+        },
+        {
+          "code": 1072,
+          "value": "location_volume"
+        }
+      ]
+    },
+    {
+      "index": 47469,
+      "script_label": "super",
+      "origin": "-13208 7104 1664",
+      "brush_model": "?183",
+      "locale_id": 31,
+      "fields": [
+        {
+          "code": 212,
+          "value": "info_volume"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?183"
+        },
+        {
+          "code": 709,
+          "value": "-13208 7104 1664"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "super"
+        },
+        {
+          "code": 1072,
+          "value": "location_volume"
+        }
+      ]
+    },
+    {
+      "index": 47470,
+      "script_label": "torsk_bloc",
+      "origin": "-6828 -1032 1664",
+      "brush_model": "?184",
+      "locale_id": null,
+      "fields": [
+        {
+          "code": 212,
+          "value": "info_volume"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?184"
+        },
+        {
+          "code": 709,
+          "value": "-6828 -1032 1664"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "torsk_bloc"
+        },
+        {
+          "code": 1072,
+          "value": "location_volume"
+        }
+      ]
+    },
+    {
+      "index": 47471,
+      "script_label": "shopping_district_e",
+      "origin": "68 -22526 1664",
+      "brush_model": "?185",
+      "locale_id": null,
+      "fields": [
+        {
+          "code": 212,
+          "value": "info_volume"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?185"
+        },
+        {
+          "code": 709,
+          "value": "68 -22526 1664"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "shopping_district_e"
+        },
+        {
+          "code": 1072,
+          "value": "location_volume"
+        }
+      ]
+    },
+    {
+      "index": 47472,
+      "script_label": "riverside",
+      "origin": "-2248 30052 1664",
+      "brush_model": "?186",
+      "locale_id": null,
+      "fields": [
+        {
+          "code": 212,
+          "value": "info_volume"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?186"
+        },
+        {
+          "code": 709,
+          "value": "-2248 30052 1664"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "riverside"
+        },
+        {
+          "code": 1072,
+          "value": "location_volume"
+        }
+      ]
+    },
+    {
+      "index": 47473,
+      "script_label": "tavorsk_park",
+      "origin": "20246 -31788 1664",
+      "brush_model": "?187",
+      "locale_id": null,
+      "fields": [
+        {
+          "code": 212,
+          "value": "info_volume"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?187"
+        },
+        {
+          "code": 709,
+          "value": "20246 -31788 1664"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "tavorsk_park"
+        },
+        {
+          "code": 1072,
+          "value": "location_volume"
+        }
+      ]
+    },
+    {
+      "index": 47474,
+      "script_label": "bloc_6",
+      "origin": "17564 9035 1664",
+      "brush_model": "?188",
+      "locale_id": null,
+      "fields": [
+        {
+          "code": 212,
+          "value": "info_volume"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?188"
+        },
+        {
+          "code": 709,
+          "value": "17564 9035 1664"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "bloc_6"
+        },
+        {
+          "code": 1072,
+          "value": "location_volume"
+        }
+      ]
+    },
+    {
+      "index": 47475,
+      "script_label": "gulag",
+      "origin": "51200 -39168 1664",
+      "brush_model": "?189",
+      "locale_id": 7,
+      "fields": [
+        {
+          "code": 212,
+          "value": "info_volume"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?189"
+        },
+        {
+          "code": 709,
+          "value": "51200 -39168 1664"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "gulag"
+        },
+        {
+          "code": 1072,
+          "value": "location_volume"
+        }
+      ]
+    },
+    {
+      "index": 47476,
+      "script_label": "port",
+      "origin": "36428 -28960 1664",
+      "brush_model": "?190",
+      "locale_id": 15,
+      "fields": [
+        {
+          "code": 212,
+          "value": "info_volume"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?190"
+        },
+        {
+          "code": 709,
+          "value": "36428 -28960 1664"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "port"
+        },
+        {
+          "code": 1072,
+          "value": "location_volume"
+        }
+      ]
+    },
+    {
+      "index": 47477,
+      "script_label": "lumber",
+      "origin": "52552 3904 1664",
+      "brush_model": "?191",
+      "locale_id": 11,
+      "fields": [
+        {
+          "code": 212,
+          "value": "info_volume"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?191"
+        },
+        {
+          "code": 709,
+          "value": "52552 3904 1664"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "lumber"
+        },
+        {
+          "code": 1072,
+          "value": "location_volume"
+        }
+      ]
+    },
+    {
+      "index": 47478,
+      "script_label": "farms",
+      "origin": "50128 -11952 1664",
+      "brush_model": "?192",
+      "locale_id": 6,
+      "fields": [
+        {
+          "code": 212,
+          "value": "info_volume"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?192"
+        },
+        {
+          "code": 709,
+          "value": "50128 -11952 1664"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "farms"
+        },
+        {
+          "code": 1072,
+          "value": "location_volume"
+        }
+      ]
+    }
+  ],
+  "authored_volume_count": 46,
+  "original_value_opcodes_verified": true,
+  "initializer_targetname": "location_volume",
+  "event_fields": {
+    "Param0": "player first mapped touching locale",
+    "Param1": "contract card first mapped touching locale",
+    "Param2": "operator mask"
+  },
+  "first_locale_only": true,
+  "native_game_execution_verified": false,
+  "scope": "Pinned normalized initializer labels with unchanged original GetByte operands; native MapEnts span and complete grammar; numeric keys and fields retained; no brush-model index substituted for a locale ID"
+}

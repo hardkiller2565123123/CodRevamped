@@ -1,0 +1,702 @@
+{
+  "schema": 1,
+  "generated_utc": "2026-10-06T19:39:50.968812+00:00",
+  "audit_tool_sha256": "0f7f3cf793f83552f761452f4578d6bb2a8fd46eb0b514f06ddb0e2fe028b6f1",
+  "target_image_sha256": "68fb1cbcb2924182724004039de55a4c50152bb6561803c4898b7930b38132f0",
+  "routes": [
+    {
+      "operation": "updatesecuredfields",
+      "writer": 5403314944,
+      "constructor": 5403316016,
+      "table": 5409203384,
+      "success": 5403316848,
+      "failure": 5403316192,
+      "method": 5264724,
+      "error_offset": 1064,
+      "request_strings": [
+        "UnoRes",
+        "updatesecuredfields",
+        "Bearer %s",
+        "/v1.0/users/%llu/securedfields/",
+        "client",
+        "userName",
+        "email",
+        "accountType",
+        "full",
+        "password",
+        "firstName",
+        "lastName",
+        "dateOfBirth",
+        "country",
+        "subscriptionOptIn"
+      ],
+      "response_strings": [
+        "success",
+        "IDToken"
+      ],
+      "capacities": {
+        "IDToken": 1024
+      },
+      "response_vtable": [
+        5403316080,
+        5403316848,
+        5403316192,
+        5403309472
+      ],
+      "functions": [
+        {
+          "va": 5403314944,
+          "candidate_alias": "bdUpgradeAnonUnoAccRequest::restSerializeRequest",
+          "size": 947,
+          "bytes_sha256": "10cbf8aa744d6cca6820cc88d5ea0ed006fa24722755a3ee4744fdcff9f9e6e8",
+          "direct_calls": [
+            5404151536,
+            5403298384,
+            5403298080,
+            5403297968,
+            5403651920,
+            5403297968,
+            5403651888,
+            5403298096,
+            5384886016,
+            5403297968,
+            5403650704,
+            5384886016,
+            5403298576,
+            5403648864,
+            5403298576,
+            5403297984,
+            5403436544,
+            5403647168,
+            5403297712,
+            5403206128,
+            5403208320,
+            5403208320,
+            5403208320,
+            5403208320,
+            5403208320,
+            5403208320,
+            5403208320,
+            5403208320,
+            5403206336,
+            5403206704,
+            5404151648
+          ],
+          "rip_references": [
+            5463426040,
+            5406402432,
+            5409203248,
+            5409203268,
+            5409190224,
+            5409190248,
+            5409203280,
+            5409872464,
+            5409199416,
+            5406394016,
+            5407244232,
+            5409199136,
+            5406030880,
+            5409199552,
+            5409199568,
+            5409199592,
+            5409199608,
+            5409203312
+          ],
+          "literal_strings": [
+            "/v1.0/users/%llu/securedfields/",
+            "Authorization",
+            "Bearer %s",
+            "UnoRes",
+            "accountType",
+            "client",
+            "country",
+            "dateOfBirth",
+            "email",
+            "firstName",
+            "full",
+            "lastName",
+            "password",
+            "subscriptionOptIn",
+            "uno",
+            "updatesecuredfields",
+            "userName"
+          ]
+        },
+        {
+          "va": 5403316016,
+          "candidate_alias": "bdUpgradeAnonUnoAccResponse::bdUpgradeAnonUnoAccResponse",
+          "size": 60,
+          "bytes_sha256": "fb0078621c08243443ba9c310a460db5dcefbb1b8c69a2eb57d5adcac186abc2",
+          "direct_calls": [
+            5403309360,
+            5404323008
+          ],
+          "rip_references": [
+            5409203384
+          ],
+          "literal_strings": []
+        },
+        {
+          "va": 5403316848,
+          "candidate_alias": "bdUpgradeAnonUnoAccResponse::handleReplySuccess",
+          "size": 197,
+          "bytes_sha256": "12e2a282fe6ccda74e7dfe6341547320e1a7a304d19206bbad731cf54449bb96",
+          "direct_calls": [
+            5403198096,
+            5403653824,
+            5403204416,
+            5403198096,
+            5403200352,
+            5403202688,
+            5403198128,
+            5403198128
+          ],
+          "rip_references": [
+            5409870232,
+            5409203416
+          ],
+          "literal_strings": [
+            "IDToken",
+            "success"
+          ]
+        },
+        {
+          "va": 5403316192,
+          "candidate_alias": "sub_142100FE0",
+          "size": 648,
+          "bytes_sha256": "5f3809b9f60e74ed6f92b6efac7ab28748aaa9259d63e2761dac486ee88ecae1",
+          "direct_calls": [
+            5403198096,
+            5403653824,
+            5403204416,
+            5403198096,
+            5403202288,
+            5403314608,
+            5403204288,
+            5403198096,
+            5403198528,
+            5403204336,
+            5403198096,
+            5403202176,
+            5403314608,
+            5403198128,
+            5403198128,
+            5403198128,
+            5403198128
+          ],
+          "rip_references": [
+            5409861916,
+            5406550768,
+            5406550768
+          ],
+          "literal_strings": [
+            "context",
+            "error"
+          ]
+        }
+      ]
+    },
+    {
+      "operation": "authenticateUser",
+      "writer": 5403733840,
+      "constructor": 5403734512,
+      "table": 5409242128,
+      "success": 5403735392,
+      "failure": 5403734736,
+      "method": 1347375956,
+      "error_offset": 9264,
+      "request_strings": [
+        "UserResource",
+        "authenticateUser",
+        "/v1.0/auth/",
+        "client",
+        "email",
+        "password",
+        "grantType"
+      ],
+      "response_strings": [
+        "unoID",
+        "tokens",
+        "IDToken",
+        "accessToken",
+        "refreshToken"
+      ],
+      "capacities": {
+        "IDToken": 1024,
+        "accessToken": 4096,
+        "refreshToken": 4096
+      },
+      "response_vtable": [
+        5403734592,
+        5403735392,
+        5403734736,
+        5403309472
+      ],
+      "functions": [
+        {
+          "va": 5403733840,
+          "candidate_alias": "bdAuthenticateCrossPlatformUserRequest::restSerializeRequest",
+          "size": 407,
+          "bytes_sha256": "d7f64e6662fe47fa81edfa483c9951446ceace12af938349a30a27f320d4fe92",
+          "direct_calls": [
+            5403298384,
+            5403298080,
+            5403297968,
+            5403651920,
+            5403297968,
+            5403651888,
+            5403298096,
+            5403298576,
+            5403648864,
+            5403298576,
+            5403297984,
+            5403436544,
+            5403647168,
+            5403297712,
+            5403206128,
+            5403208320,
+            5403208320,
+            5403208320,
+            5403206704
+          ],
+          "rip_references": [
+            5406402432,
+            5409242040,
+            5409201280,
+            5409242064,
+            5409872464,
+            5406394016,
+            5406030880,
+            5406030880,
+            5409110344
+          ],
+          "literal_strings": [
+            "/v1.0/auth/",
+            "UserResource",
+            "authenticateUser",
+            "client",
+            "email",
+            "grantType",
+            "password",
+            "uno"
+          ]
+        },
+        {
+          "va": 5403734512,
+          "candidate_alias": "bdAuthenticateCrossPlatformUserResponse::bdAuthenticateCrossPlatformUserResponse",
+          "size": 65,
+          "bytes_sha256": "0ddd3cca4f15b0137ec787e1cf621c59a1397d5b3369b5e3b22974c1cebb940c",
+          "direct_calls": [
+            5403309360,
+            5404323008
+          ],
+          "rip_references": [
+            5409242128
+          ],
+          "literal_strings": []
+        },
+        {
+          "va": 5403735392,
+          "candidate_alias": "sub_142167560",
+          "size": 424,
+          "bytes_sha256": "dadb922b45d198328c1037b89782847c56c36a2d3ff345223545750f61b4f9bb",
+          "direct_calls": [
+            5403198096,
+            5403653824,
+            5403204288,
+            5403204192,
+            5403204288,
+            5403198096,
+            5403202288,
+            5403204288,
+            5403202688,
+            5403204288,
+            5403202688,
+            5403204288,
+            5403202688,
+            5403198128,
+            5403198128,
+            5403198128
+          ],
+          "rip_references": [
+            5409199408,
+            5409199408,
+            5406376684,
+            5406376684,
+            5409203416,
+            5409203416,
+            5409110376,
+            5409110376,
+            5409199192,
+            5409199192
+          ],
+          "literal_strings": [
+            "IDToken",
+            "accessToken",
+            "refreshToken",
+            "tokens",
+            "unoID"
+          ]
+        },
+        {
+          "va": 5403734736,
+          "candidate_alias": "sub_1421672D0",
+          "size": 648,
+          "bytes_sha256": "e7f2cab03efb2676464580409d7b3462be3cffb58ccd50bb882014108e9c0d1e",
+          "direct_calls": [
+            5403198096,
+            5403653824,
+            5403204416,
+            5403198096,
+            5403202288,
+            5403314608,
+            5403204288,
+            5403198096,
+            5403198528,
+            5403204336,
+            5403198096,
+            5403202176,
+            5403314608,
+            5403198128,
+            5403198128,
+            5403198128,
+            5403198128
+          ],
+          "rip_references": [
+            5409861916,
+            5406550768,
+            5406550768
+          ],
+          "literal_strings": [
+            "context",
+            "error"
+          ]
+        }
+      ]
+    },
+    {
+      "operation": "linkUser",
+      "writer": 5403736000,
+      "constructor": 5403737040,
+      "table": 5409242352,
+      "success": 5403737712,
+      "failure": 5403737184,
+      "method": 5264724,
+      "error_offset": 48,
+      "request_strings": [
+        "umbrella",
+        "UserResource",
+        "linkUser",
+        "Bearer  %s",
+        "/v1.0/users/crossplatform/{m_umbrellaID}/",
+        "client",
+        "unoIDToken",
+        "accessToken",
+        "refreshToken"
+      ],
+      "response_strings": [
+        "umbrellaID"
+      ],
+      "capacities": {},
+      "response_vtable": [
+        5403737088,
+        5403737712,
+        5403737184,
+        5403309472
+      ],
+      "functions": [
+        {
+          "va": 5403736000,
+          "candidate_alias": "bdCrossPlatformLinkUserRequest::restSerializeRequest",
+          "size": 700,
+          "bytes_sha256": "47717d5ebb841dab5d0db7fa391e17c705b1097637dcffe414facbbc7f51f29d",
+          "direct_calls": [
+            5404151536,
+            5403298384,
+            5403298080,
+            5403297968,
+            5403651920,
+            5403297968,
+            5403651888,
+            5403298096,
+            5384886016,
+            5403297968,
+            5403650704,
+            5403298576,
+            5403647408,
+            5403646528,
+            5403647408,
+            5403646416,
+            5403647408,
+            5403646416,
+            5403647408,
+            5403646416,
+            5403647408,
+            5403646416,
+            5403647408,
+            5403649328,
+            5403649328,
+            5403298576,
+            5403297984,
+            5403436544,
+            5403647168,
+            5403297712,
+            5403206128,
+            5403208320,
+            5403208320,
+            5403208320,
+            5403206704,
+            5404151648
+          ],
+          "rip_references": [
+            5463426040,
+            5409201248,
+            5409242224,
+            5409201280,
+            5409201296,
+            5409190248,
+            5409242240,
+            5409872464,
+            5409242288,
+            5409110376,
+            5409199192
+          ],
+          "literal_strings": [
+            "/v1.0/users/crossplatform/{m_umbrellaID}/",
+            "Authorization",
+            "Bearer  %s",
+            "UserResource",
+            "accessToken",
+            "client",
+            "linkUser",
+            "refreshToken",
+            "umbrella",
+            "unoIDToken"
+          ]
+        },
+        {
+          "va": 5403737040,
+          "candidate_alias": "bdCrossPlatformLinkUserResponse::bdCrossPlatformLinkUserResponse",
+          "size": 42,
+          "bytes_sha256": "a035f25ac06b4f7f214a14188494d8aabfd1760ff9e853624adbdecb0ba30522",
+          "direct_calls": [
+            5403309360
+          ],
+          "rip_references": [
+            5409242352
+          ],
+          "literal_strings": []
+        },
+        {
+          "va": 5403737712,
+          "candidate_alias": "bdCrossPlatformLinkUserResponse::handleReplySuccess",
+          "size": 115,
+          "bytes_sha256": "7711a3b96105984a45a29afcf7e8ca078f8664df184ac1da86b4657e2450d61f",
+          "direct_calls": [
+            5403198096,
+            5403653824,
+            5403204192,
+            5403198128
+          ],
+          "rip_references": [
+            5409198944
+          ],
+          "literal_strings": [
+            "umbrellaID"
+          ]
+        },
+        {
+          "va": 5403737184,
+          "candidate_alias": "sub_142167C60",
+          "size": 523,
+          "bytes_sha256": "9bb0d850c4d10b99dc896ef87df4e0b8911ea518014b47d9b4cb4bf184bb3389",
+          "direct_calls": [
+            5403198096,
+            5403653824,
+            5403204416,
+            5403198096,
+            5403202288,
+            5403314608,
+            5403204288,
+            5403198096,
+            5403198528,
+            5403204336,
+            5403198096,
+            5403202176,
+            5403314608,
+            5403198128,
+            5403198128,
+            5403198128,
+            5403198128
+          ],
+          "rip_references": [
+            5409861916,
+            5406550768,
+            5406550768
+          ],
+          "literal_strings": [
+            "context",
+            "error"
+          ]
+        }
+      ]
+    },
+    {
+      "operation": "updateUmbrellaAccount",
+      "writer": 5403737984,
+      "constructor": 5403738768,
+      "table": 5409242544,
+      "success": 5403739440,
+      "failure": 5403738912,
+      "method": 1347375956,
+      "error_offset": 40,
+      "request_strings": [
+        "umbrella",
+        "Umbrella",
+        "updateUmbrellaAccount",
+        "/v1.0/tokens/uno/",
+        "client",
+        "accountID",
+        "tokens",
+        "accessToken",
+        "refreshToken"
+      ],
+      "response_strings": [
+        "umbrellaID"
+      ],
+      "capacities": {},
+      "response_vtable": [
+        5403738816,
+        5403739440,
+        5403738912,
+        5403309472
+      ],
+      "functions": [
+        {
+          "va": 5403737984,
+          "candidate_alias": "bdUpgradeUmbrellaRequest::restSerializeRequest",
+          "size": 500,
+          "bytes_sha256": "bcc211d0684c6044d1e020c0a0ddb53853e1853fdf0fb3d828fe38e9801b76be",
+          "direct_calls": [
+            5403298384,
+            5403298080,
+            5403297968,
+            5403651920,
+            5403297968,
+            5403651888,
+            5403298096,
+            5384886016,
+            5403298576,
+            5403648864,
+            5403298576,
+            5403297984,
+            5403436544,
+            5403647168,
+            5403297712,
+            5403206128,
+            5403209280,
+            5403205792,
+            5403208320,
+            5403208320,
+            5403206704,
+            5403206704,
+            5404151648
+          ],
+          "rip_references": [
+            5463426040,
+            5409201248,
+            5409242448,
+            5406457512,
+            5409242472,
+            5409872464,
+            5409198856,
+            5406376684,
+            5409110376,
+            5409199192
+          ],
+          "literal_strings": [
+            "/v1.0/tokens/uno/",
+            "Umbrella",
+            "accessToken",
+            "accountID",
+            "client",
+            "refreshToken",
+            "tokens",
+            "umbrella",
+            "updateUmbrellaAccount"
+          ]
+        },
+        {
+          "va": 5403738768,
+          "candidate_alias": "sub_142168290",
+          "size": 40,
+          "bytes_sha256": "40c5ec380f49205db932a4efa8c32271935317117f501c26f091555a3699fa22",
+          "direct_calls": [
+            5403309360
+          ],
+          "rip_references": [
+            5409242544
+          ],
+          "literal_strings": []
+        },
+        {
+          "va": 5403739440,
+          "candidate_alias": "bdUpgradeUmbrellaResponse::handleReplySuccess",
+          "size": 163,
+          "bytes_sha256": "f14a2a07f3c6d1ebd051b58ee4120ff79161105b9e661551b528f6cfb927dbff",
+          "direct_calls": [
+            5403198096,
+            5403653824,
+            5403204416,
+            5403198096,
+            5403200352,
+            5403198128,
+            5403198128
+          ],
+          "rip_references": [
+            5409198944
+          ],
+          "literal_strings": [
+            "umbrellaID"
+          ]
+        },
+        {
+          "va": 5403738912,
+          "candidate_alias": "sub_142168320",
+          "size": 523,
+          "bytes_sha256": "95e11dbddb7d7591532213b1607c381015a940a7251c4341673e0fdba31f8c40",
+          "direct_calls": [
+            5403198096,
+            5403653824,
+            5403204416,
+            5403198096,
+            5403202288,
+            5403314608,
+            5403204288,
+            5403198096,
+            5403198528,
+            5403204336,
+            5403198096,
+            5403202176,
+            5403314608,
+            5403198128,
+            5403198128,
+            5403198128,
+            5403198128
+          ],
+          "rip_references": [
+            5409861916,
+            5406550768,
+            5406550768
+          ],
+          "literal_strings": [
+            "context",
+            "error"
+          ]
+        }
+      ]
+    }
+  ],
+  "native_account_menu_callbacks_verified": false,
+  "account_policy": "Optional credentials attach to the current signed machine-owned player. Local account IDs remain stable; cross-player migration and retail account ownership are not inferred."
+}

@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "target_image_sha256": "68fb1cbcb2924182724004039de55a4c50152bb6561803c4898b7930b38132f0",
+  "producer_recovery_sha256": "4e8b9ad1eb9e773444a289a11ddcda276024f5cdaf44d1b45ad8bee903bd21c2",
+  "disassembly_path": "data/remaining-br-entry-20261010/disassembled/iw8/ping-normalized.gscasm",
+  "disassembly_sha256": "403756498bcf6df9877e6d157d41dfe6cd052181ae2b61bd43b99591bda4d05f",
+  "native_table_manifest": "validation/20261010-challenge-asset-tables.json",
+  "native_table_manifest_sha256": "4705255c2aa70705497115c552c4f68bef2042f09bb74d61d870a411960a0a2d",
+  "ping_ids": {
+    "enemy": 9,
+    "object": 13,
+    "danger": 10
+  },
+  "other_build_dump_used": false,
+  "native_game_execution_verified": false,
+  "scope": "Native shipped callout producer plus current UI native-reader/typed StringTable export and original parser output; map-specific ping variants are distinct and not substituted"
+}

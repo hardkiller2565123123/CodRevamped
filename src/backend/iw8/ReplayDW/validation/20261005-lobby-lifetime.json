@@ -1,0 +1,19 @@
+{
+  "schema": 1,
+  "recorded_utc": "2026-10-05T20:35:45.841718+00:00",
+  "server_sha256": "f2c5a1bea21992b8394d32d2fcffa38a60aa9cf6b95339282aa616dc1654cbd2",
+  "game_sha256": "b0075e0dbde62758efe84e23318084608be5b3704f23c269d87254ce2aea58a8",
+  "independent_protocol_checks": 167,
+  "new_checks": [
+    "a superseded presence assignment cannot deliver an old native join callback after a newer search has replaced that member's matchmaking ID",
+    "unexpired persisted lobbies and current-player assignments do not revive disconnected hosts; both presence targets reject without a document mutation"
+  ],
+  "native_multiplayer_menu_verified": true,
+  "native_passing_fences": 27,
+  "previous_native_join_receipt": "validation/20261005-native-presence-join.json",
+  "previous_native_join_receipt_server_sha256": "c5c840de9c52c2dc86b3942b540a0ba9f5fea997817352e838b1af4b37f6ce75",
+  "native_two_game_join_verified": false,
+  "engine_recompiled": false,
+  "map_tests_performed": false,
+  "full_backend_verified": false
+}

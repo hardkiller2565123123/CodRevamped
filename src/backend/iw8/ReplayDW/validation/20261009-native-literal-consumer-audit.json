@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "passed": true,
+  "target_image_sha256": "68fb1cbcb2924182724004039de55a4c50152bb6561803c4898b7930b38132f0",
+  "tool_sha256": "f257025506df3e0364a1b37c72c3fb3fa7e634cbf8d64a4cbbef202b181061c7",
+  "controls": {
+    "known_vector_rest_writer": true,
+    "chained_native_vector_reader": true,
+    "category_request_page_token": true,
+    "consumer_count": 14
+  },
+  "audit_evidence": {
+    "path": "data/remaining-services-20261009/native-literal-audit-controls.json",
+    "sha256": "9b3ec48f11c2f1f5cbba62a7ef015e7708a197ae0fe27c4d0d41587f5cfdca6c"
+  },
+  "aliases_used_for_binding": false,
+  "indirect_pointers_require_dir64": true,
+  "chained_unwind_owners_resolved": true,
+  "full_sdk_audit_complete": false,
+  "native_missing_response_readers_verified": false,
+  "limitations": [
+    "Literal use does not establish argument dataflow or a response class binding",
+    "Only SDK PE-unwind ranges in the declared VA window are scanned",
+    "Leaf functions without unwind entries, dynamically assembled text and deeper pointer chains remain outside scope"
+  ]
+}

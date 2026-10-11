@@ -1,0 +1,97 @@
+{
+  "schema": 1,
+  "generated_utc": "2026-10-07T05:57:50.920793+00:00",
+  "passed": true,
+  "passed_scope": "Fresh compilation, native startup, INI/local-XP persistence, invitation display, independent-party public lobby and gameplay transport",
+  "backend_sha256": "cf739b96d6281df248472f650b8da69cc0901ef12ba3c44d00d2be743a0488cf",
+  "unchanged_shipping_game_sha256": "b09a9ba25f733960dd1f8c569f566979804c2a1a247a9753e2c6e7a50556c138",
+  "build_receipt": {
+    "path": "data/multiplayer-controls-20261006/waiting-backend-build.json",
+    "sha256": "7e5552d7d2071823232b73d94c8bc58f84afaea8f9d543d45647c18ca4ecca9b"
+  },
+  "protocol_evidence": {
+    "path": "data/multiplayer-controls-20261006/full-protocol-verification.json",
+    "sha256": "9129df438128a70f53d4ceae6b7a5023ffbc32303496f4170483246b43c74af7"
+  },
+  "focused_protocol_evidence": {
+    "path": "data/multiplayer-controls-20261006/waiting-protocol-verification.json",
+    "sha256": "2f7c7877e0439071bc51b0a54110afe3344c00fdd0a411f5c62d3e483ebe9041"
+  },
+  "protocol_checks": 297,
+  "focused_protocol_checks": 15,
+  "native_startup": {
+    "passed": true,
+    "pending": false,
+    "evidence": [
+      {
+        "path": "data/multiplayer-controls-20261006/main/waiting-startup.json",
+        "sha256": "6b8a6e799f72ed237bd21f8be2ab8585e4ea16487018042b895ab04b098e2cd3"
+      },
+      {
+        "path": "data/multiplayer-controls-20261006/alpha/waiting-startup.json",
+        "sha256": "f5b891fb3e5193dc741287c9b658df6ea14749bd14e6a8157843fd03e42b372f"
+      },
+      {
+        "path": "data/multiplayer-controls-20261006/bravo/waiting-startup.json",
+        "sha256": "80f95d7cd34a11a59fb2ad30ece9f02913d3f0bb2a668b0dde1f3fff32c0a117"
+      }
+    ]
+  },
+  "native_independent_party_matchmaking_verified": true,
+  "native_private_test_gameplay_snapshot_transport_verified": true,
+  "shipping_executable_two_player_gameplay_inherited": false,
+  "native_lobby_observations": {
+    "main": {
+      "path": "data/multiplayer-controls-20261006/main/waiting-startup.json",
+      "sha256": "6b8a6e799f72ed237bd21f8be2ab8585e4ea16487018042b895ab04b098e2cd3"
+    },
+    "alpha": {
+      "path": "data/multiplayer-controls-20261006/alpha/waiting-startup.json",
+      "sha256": "f5b891fb3e5193dc741287c9b658df6ea14749bd14e6a8157843fd03e42b372f"
+    },
+    "bravo": {
+      "path": "data/multiplayer-controls-20261006/bravo/waiting-startup.json",
+      "sha256": "80f95d7cd34a11a59fb2ad30ece9f02913d3f0bb2a668b0dde1f3fff32c0a117"
+    },
+    "alpha_public_lobby": {
+      "path": "data/multiplayer-controls-20261006/alpha/public-joined.json",
+      "sha256": "4635fb3c7d16a77fc04a77c9c675b03e7eae0fc12d7624fce1aa641c3c9c365f"
+    },
+    "bravo_public_lobby": {
+      "path": "data/multiplayer-controls-20261006/bravo/public-joined.json",
+      "sha256": "5467e413c248298e03eda7767e9c3fb84f7a8d5313fc90cbc5b7bdd7dbcceab7"
+    }
+  },
+  "gameplay_debug_capture": {
+    "path": "data/multiplayer-controls-20261006/pair-debug.jsonl",
+    "sha256": "3ec1ade32044108af53a63009e66c755cd62cf3e9f96be129c8cbd8d75b0989e"
+  },
+  "native_invite_display_verified": true,
+  "invitation_evidence": {
+    "path": "data/multiplayer-controls-20261006/main/invitation-check.json",
+    "sha256": "f9df857406aba4e7f115f6c4b33891b168f0b3c7005ec0040c968ec26c186bd5"
+  },
+  "local_xp_persistence_verified": true,
+  "local_xp_persistence_evidence": {
+    "path": "data/multiplayer-controls-20261006/local-progression-proof.json",
+    "sha256": "3dd4c88fcde27c0e863dc629df798b4717f4ab8288c0c2c109133b7dec83b750"
+  },
+  "original_persistence_test_backend_sha256": "9e766a2953226e262e50ab12957ec866ef1a9534f2579d78ec98364ca6270a47",
+  "rank_selection_verified": [
+    5,
+    0
+  ],
+  "unlock_controls_enabled_then_disabled_verified": true,
+  "optimization_default_verified": 0,
+  "native_earned_match_xp_verified": false,
+  "native_text_message_display_verified": false,
+  "native_voice_audibility_verified": false,
+  "native_scoreboard_distinct_ping_verified": false,
+  "cross_network_gameplay_verified": false,
+  "full_backend_complete": false,
+  "test_run_limits": [
+    "Automated players triggered native inactivity forfeits before a scored XP event.",
+    "The direct xstartlobby test command faulted; normal Quick Play menu entry matched and loaded both clients.",
+    "Native invitation receipt/display passed; this run did not verify accepting the invitation."
+  ]
+}

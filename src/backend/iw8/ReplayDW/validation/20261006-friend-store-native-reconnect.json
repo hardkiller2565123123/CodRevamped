@@ -1,0 +1,49 @@
+{
+  "schema": 2,
+  "observed_utc": "2026-10-06T14:30:43.005826+00:00",
+  "game_sha256": "b326981a9718cedbc05228d40bef8b2adcd6be89307b2cde7d8e878a3ca67885",
+  "server_sha256": "0f1ad0a9846dfc4832427c418588015438659830cccb7adc89ebfcc5bc556f09",
+  "previous_server_sha256": "0f1ad0a9846dfc4832427c418588015438659830cccb7adc89ebfcc5bc556f09",
+  "compiler_job": "436f999a3d444276",
+  "passed": true,
+  "native_startup_fences_passed": 27,
+  "native_profile_and_online_state_verified": true,
+  "native_friend_lists_completed_and_empty": false,
+  "native_accepted_friend_ids_preserved": [
+    76561201025253031
+  ],
+  "backend_restart_and_dw_restart_same_game_process": true,
+  "native_account_preserved_on_reconnect": true,
+  "native_network_online_and_started": true,
+  "fresh_backend_native_auth_and_lobby_session_verified": true,
+  "native_relay_token_renewed_on_restart": true,
+  "native_relay_bind_verify_established_after_restart": true,
+  "native_relay_join_data_correlated_with_backend_event": true,
+  "relay_id_after_restart": 8265893770437622982,
+  "relay_established_event": {
+    "action": "established",
+    "expires": 1791300485,
+    "init_sha256": "ec75451e948cf908fb3a3ce4a51e535a09c9ad75c5cd36b64c6afc21773aa6d5",
+    "port": 3077,
+    "relay_id": 8265893770437622982,
+    "route": 3158421213,
+    "schema": 1,
+    "time": 1791296906,
+    "title": 5800,
+    "user": 76561202200765207,
+    "verification_sha256": "e09b7be6affdd9d259e4bc93f032225bf538962635572f054fe580aa522ce925"
+  },
+  "two_network_party_gameplay_verified": false,
+  "map_or_match_test_performed": false,
+  "complete_backend_verified": false,
+  "observations": {
+    "data\\native-friend-store-20261006\\accepted.json": "29bef2db2d4db2fafb47160071c21cd3763d9cbe548801138070c2598c08cf94",
+    "data\\native-friend-store-20261006\\reconnected.json": "68299fb504bcbb12a1c851fadba1db85279606c94f760f4e35331093b739f80b",
+    "data\\native-friend-store-20261006\\stable.json": "33708fc1267b9c3fe8588d90160cc47b8574a43f66644d65b56c4974a1f4d83e"
+  },
+  "transport_events_sha256": "460e6d5d510dcfad362a234c5f86c1261275da37bedba0acb9d35051df9a1fb1",
+  "pre_connection_retired_route_rejections": [],
+  "native_relay_stability_after_restart_verified": true,
+  "stable_seconds": 114.857653,
+  "keepalive_replies": 11
+}

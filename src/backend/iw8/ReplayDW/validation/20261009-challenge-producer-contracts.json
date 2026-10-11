@@ -1,0 +1,28 @@
+{
+  "passed": true,
+  "script": "scripts/cp_mp/challenges.gsc",
+  "script_payload_sha256": "074bcfaf5cd6fe39c6fde4f02321b7db9ab90197f1eab7d43afbc47a938694f7",
+  "bytecode_sha256": "cc6d1a3a47ed7c10ce372fabf1ca59a6426b2d8d49ae8efc2e3e1d2b15a0ba54",
+  "disassembly_sha256": "eb56bccf022463022125d7374a15548a47fda3efb3628edc67dafa5ef8c51576",
+  "source_receipt_sha256": "21da25d0ceafe8b35d04f7e76e3596d27a2f1cd2082e12d6e6675877ba052555",
+  "unchanged_player_bit_window": {
+    "offset": 5056,
+    "end": 5066,
+    "bytes_hex": "12017205003e16010f24"
+  },
+  "contracts": {
+    "target_player_bit": 1,
+    "target_vehicle_bit": 32,
+    "target_equipment_bit": 64,
+    "pickup_fields": [
+      "weapons",
+      "cash",
+      "caches",
+      "operators"
+    ],
+    "timer_input_unit": "milliseconds",
+    "driving_unit_ms": 60000
+  },
+  "native_game_execution_verified": false,
+  "scope": "Pinned native export and original-bytecode-correlated disassembly; producer semantics only, not gameplay delivery"
+}

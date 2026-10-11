@@ -1,0 +1,16 @@
+{
+  "schema": 1,
+  "generated_utc": "2026-10-08T05:50:19.649914+00:00",
+  "native_populated_store_browsing_verified": true,
+  "native_purchase_completion_verified": false,
+  "bundle": "Cold Blood",
+  "native_price": 2400,
+  "game_sha256": "638dab82f069be51f6450f9ed2744f0b049d34642c0b67ae30cde01b53ea16e5",
+  "backend_sha256": "cbaa25911782460161a7df3272f00993dbb824f79b1fc10f225c5e4c51268574",
+  "live_sku_count": 264,
+  "screenshot": {
+    "path": "data/native-management-20261008/store-bundle-cold-blood.jpg",
+    "sha256": "974bee412522ceac7718dc2f914ce35263da4c9703d5cf9bbec18aa3a97ce146"
+  },
+  "scope": "Native store root, category and bundle contents/artwork/description/price visible on the root-folder game. No purchase made. This does not verify every SKU or first-party commerce."
+}

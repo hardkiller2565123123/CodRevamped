@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "passed": true,
+  "generated_utc": "2026-10-09T08:48:00.591569+00:00",
+  "full_backend_completed": false,
+  "target_image_sha256": "68fb1cbcb2924182724004039de55a4c50152bb6561803c4898b7930b38132f0",
+  "inventory_tool_sha256": "7679f84c3920800f004284f29c959736183489b3b96820e78a6728e841dd44bc",
+  "original_pe_unwind_owners": 29,
+  "chained_owners": 8,
+  "direct_builder_transfers": 54,
+  "builder_identity_verified": 54,
+  "literal_arguments_resolved": 51,
+  "service_operation_bindings_verified": 24,
+  "same_raw_call_sites_as_previous_audit": true,
+  "unowned_or_unreached_direct_sites": 0,
+  "native_response_completion_verified": false,
+  "full_indirect_or_inlined_audit_complete": false,
+  "stack_probe_evidence": {
+    "path": "validation/20261009-native-stack-probe.json",
+    "sha256": "5d49b6959ddd7c2ce7da68f024653cc11e6a96c0a13561b1c2333c02a8d20f0f"
+  },
+  "inventory_evidence": {
+    "path": "data/remaining-services-20261009/native-rest-chained-callgraph.json",
+    "sha256": "e9d1070fbe5ada2bc7758569ecde73c72ee4970998b8912bf10c535d3dfde6bc"
+  },
+  "remaining": [
+    "AB enrollment native writer has empty serviceName and is rejected before transport.",
+    "Three object-store service names come from an environment getter; separate target getter evidence applies.",
+    "Category/extended streaming/large-upload native response binding remains unresolved.",
+    "Indirect/inlined REST paths and full native callback coverage remain open."
+  ]
+}

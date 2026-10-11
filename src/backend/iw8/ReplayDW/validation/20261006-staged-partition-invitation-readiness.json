@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "generated_utc": "2026-10-07T01:46:21.365088+00:00",
+  "compile_passed": true,
+  "focused_protocol_passed": true,
+  "protocol_groups": 8,
+  "backend_sha256": "9fd5ed296f48b447558a74544e78b8c8b4a45b6c0bf8601678155fcb60eb8680",
+  "build_receipt": {
+    "path": "data/backend-snapshot-1791337132787533400/build-receipt.json",
+    "sha256": "bd4d7606dd802596b696e3738bbabe629cc96a0d6c3925ebc11805cba16cddbf"
+  },
+  "protocol_evidence": {
+    "path": "data/backend-validation-1791337500489830600/data/team-policy-verification.json",
+    "sha256": "e6e1c29b52b7cb217e338a906d98d758a7f5a527b953a14c5bbbc6bdf89f1b8c"
+  },
+  "frozen_fixture_inputs": {
+    "path": "data/backend-validation-1791337500489830600/fixture-inputs.json",
+    "sha256": "138e9186c158227d7b820623602c165a1d19c405874de92fa5015373f1d3ad56"
+  },
+  "deployed": false,
+  "server_restart_performed": false,
+  "game_interactions_performed_after_owner_hold": false,
+  "unchanged_live_backend_sha256": "ba343ac0093c15d3fd0792952ed16e0228ff8f157e2c7df1f15cefe274db965d",
+  "native_waiting_fix_verified": false,
+  "native_invite_display_verified": false,
+  "changes": [
+    "split-player policy publishes native ignore-partition rule",
+    "instant-message routing logs exact native invitation subtype/layout/recipient/age without bodies",
+    "observer exposes bounded native invitation records and correct waiting-state bit"
+  ],
+  "next_gate": "Owner authorizes deployment/restart after their ongoing custom-match test."
+}

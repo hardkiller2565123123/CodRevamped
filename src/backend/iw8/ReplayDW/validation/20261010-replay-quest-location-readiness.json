@@ -1,0 +1,323 @@
+{
+  "schema": 1,
+  "passed": true,
+  "full_backend_complete": false,
+  "windows_server_sha256": "47711de4f61003b5e599c91e746911d0a7048b22e76d20a7c0f775a79db474cf",
+  "linux_server_sha256": "43f13b0359d7138d704c8beb5c53d792e51b356886b4bef016b286b9026ca7a1",
+  "compiled_translation_units": 46,
+  "retained_objects": 0,
+  "source_archive_sha256": "88ba3653ed284345fbd898ebf9f05cecddf64caa8fa091bdba3be38b22c95cd1",
+  "windows_source_receipt": "data\\backend-snapshot-1791605464305984300\\build-receipt.json",
+  "windows_object_sha256": {
+    "abtesting_services.obj": "0b95962dff1857f745ed09613484e1bb3ba6cd454068f51c84d01084eea6b30c",
+    "account_services.obj": "22bc9cf42fd0e1d3db915a17ddb11fb43fbb172ccf8e5a0014585e508357a83e",
+    "achievement_services.obj": "f8c593a1dae8d93088f2c63aecf9bb69f4071892d76941120f2104ec7399625a",
+    "achievement_store.obj": "d45e6cdd2026b2c7b93b3c80fa36193800b5c7747cd105846d0595c589c2078d",
+    "anticheat_services.obj": "968620b39c18319965f147c387159b21d92f2fd8da87fba42894872d893500d4",
+    "bandwidth.obj": "caec428c003f7c31b0872f583f443a5194c743037f9f2d7359f2d959f3a1c2c2",
+    "battlepass_services.obj": "8f09df835be5ff284c8df799c54ec324876e84fd4500c8810b9b21f3141c9dc4",
+    "channel_services.obj": "1abaf36806944b674040115a02f4c8ac870eb6920a10f3321163084f9753329d",
+    "channel_store.obj": "a0f4fdc6375dc0239f1cbbdc191cd3f34439499d60fc6b7e1eda35ee2c990d49",
+    "clan_services.obj": "b1d01496e80e23a6fca1d25c58d007991879e85ed3f8511e8ee1d0afbf47eec5",
+    "content_services.obj": "9ca1d3c821dded5f905159bd8003299dc4309d11eda8f3cb96a95710843e0de5",
+    "counter_services.obj": "fb072dff933641332a6a2a39b43e312ed755d1f99f5328bcf27765b1c6adbb66",
+    "crypto.obj": "d1cf6f1957fbdb5780d519551dba86e8c19fa854b182d59dc6882fb0a3b06592",
+    "crypto_provider.obj": "976eeb7430eed0dcb61b7a37bce1ce949c5626778eb38b12d1cdd7d61b09fad9",
+    "engagement_services.obj": "309a0fd93f330cff177a7eab6cc63f057a23d23101e8f9bc9e741f83983b1f06",
+    "host_os.obj": "ae80dd0d78e4783645153d08bb1c97eb92f07e13f4a1355281ba652e63868ad5",
+    "identity_rest_services.obj": "ac3c8fdbb3f68abbb9832761b5a231dd03b07663a5fb9bd6cfa7f44f669b7726",
+    "identity_services.obj": "d36ef5d0094fba36c42aa77b45273235470bf974c5756b2662c3e1ccec327a2a",
+    "inventory_validation_services.obj": "3d9811868e62dfa09526adaddc39d92d28e21ac7ddd012caf13cabd520e1ab38",
+    "leaderboard_services.obj": "0dc2d0199e1623c1e9fb15ff19dc0826bd79463f4c69d663cc4e9e41b538edc5",
+    "lobby.obj": "cdb0bdc8ad08b6df95bc2f3a9d00d10eb6b2f91a26d934ce84454d6c3a06e8d6",
+    "mail_services.obj": "fec6ee23532fc749751563e3da2be60354f59b2f6885a44d0bf6f6d1bfcd59c6",
+    "marketplace_services.obj": "1f7dd0e4cc35d50c8b789f011160d1a7467e95e787e7aba893310f3b637a756b",
+    "matchmaking_services.obj": "b9b6ca263cdb7c68ce1813747bb036c666a866d4b0eb7a9026ceb8dc02910c1c",
+    "matchmaking_store.obj": "2586422d3e872c1682abf753f2cf01cc5da8ded52b930e92788ecae0c4576935",
+    "network.obj": "083bfde1be19046920de92fdee46385356776dd8ceb82e05a1ee3cb226cb426f",
+    "objectstore_services.obj": "0f64a4a9027522ad2af3ba6f573638e7432e4316a1d9ce6fad357eb780994308",
+    "platform.obj": "312ba1cfad15c0a8e366f4338deb33797e706b85cc83801389470daa203d7be6",
+    "platform_account_store.obj": "074afda95bed2409410513042f93e508264a4f357cc3ca93f7cbec0635500834",
+    "platform_resources.obj": "ef151d7907d5ccac2530052e631944efa25278154bfb26cc55b528c4ee792f30",
+    "playlist_catalog.obj": "60da9957f70514d292707de9ffde6c253d69b0a60a94c65540a4118d4538c115",
+    "qos_provider.obj": "2e947c1b3c1fb22502fd367ba9d2b5de43915d7c7a0ed45456d106d064446f17",
+    "qos_services.obj": "c5f7ccc5247ebd7085dba562633964b3b1806d412d128201f04b05dc9367552e",
+    "quest_services.obj": "a6ce12edb7337d52e1346bcebe59bdf5f5842d48e5666bc555506df6b2db6317",
+    "regulation_services.obj": "9b0af6effe153575e104507e5983f0e228b78f155902b256b8a0198f497acafe",
+    "relay_provider.obj": "b339b12b169af001e80512a6475b8a6ab7dfc9586a7565b8a1bdfc9fc0f1f3d1",
+    "relay_services.obj": "6e0d6866ce61c9718ede82b54d25ab47eed2d7c24f8a324e44242fdd41efd9b9",
+    "rest_services.obj": "8acf108389a7741a2610955f6c721119ab67e4ed7b00ad008eb80c399595f26a",
+    "scheduled_services.obj": "602aecb4a65b9249fcaf380ae77bcb6cc841d416a4ff6c136b7b30d21f744900",
+    "server.obj": "08aed6499b8a5b4fc5db73043115dc9d18c4001930c6ffba49f72122c96c2452",
+    "services.obj": "9dd86db579802f98697b8502ef6c98d994c41ac970e6aea6482f1ed3e19781bb",
+    "social_services.obj": "187492322d9c6d4a2f09faf37b20831157ad86b3cba07b42a0b1abdb62b706d3",
+    "startup_services.obj": "ec0902d1146988042445099c77c1aed36901f045e56df0bcf402654ec861fccb",
+    "team_services.obj": "d86b955ccb8bae48dbaea8f6a4a0dedafda3066820d7226ed14a7f09dc26c4d6",
+    "tournament_map_policy.obj": "8c64caebee33b211ddc9fea9045e8b3d0a8e5e3dbed850cbb7c1e86bfc238cf0",
+    "tournament_services.obj": "01aa20f50adfe715f09f1c8f984a4a623095e0536a93006474f8f62cff39be30"
+  },
+  "source_hashes": {
+    "CMakeLists.txt": "686822ad3ec39f403576304d878c5960bef2e7958541805881387fca6adb3dd6",
+    "src/abtesting_services.cpp": "a11153cd0ee262eb6f0976085430dddbb252a6176001d25a6f01b427f3b7fe54",
+    "src/abtesting_services.h": "1e0f918b588c4da81af6b5b8948affac58400c8b94cb5fbaf0590497cc9387b4",
+    "src/account_services.cpp": "0c816098d2ec68ac715eeb6723dca973f40fc49030a14cfd8417cadebedc445f",
+    "src/account_services.h": "d863e5dde1b3cff2ce1ba6927ffadeaa954f4f8ed2c6fdd69487b7f04def9450",
+    "src/achievement_services.cpp": "010d414a58694b75b4a5238900ded265c8bfddb6f1ea8a0a05eca92c735302ad",
+    "src/achievement_services.h": "eaaf36f1bc44ef8f0fb299d2fe8b21b2f178beb93ffa86caedbe1177a1707447",
+    "src/achievement_store.cpp": "96b0d0ff2ee00aa45c8d693e957c5f15cbbecabfaa9776f66790f57a78e720d6",
+    "src/achievement_store.h": "b48d2f4377cd04efadaa3c6a74f18500cf5fb59b68f2d1d38afbdb237b2e6e03",
+    "src/anticheat_services.cpp": "8e8abed9489d3cf791130b8aa68e7a8cffb664aecb8e616d1385857d36dbb46c",
+    "src/anticheat_services.h": "4defb94365009c691ce8b5978ae2006dcc2d77a278fd4df2f4160ce3b615a8ff",
+    "src/bandwidth.cpp": "14577757d825bd141880548a4389fae52a3a1ae6957ecb5df5474ab4d15b77c7",
+    "src/bandwidth.h": "839e0b329d4a58b3214f08ccc091a27c0a9ef58ad6f3b60eb72fa2f794411093",
+    "src/battlepass_services.cpp": "af9e3d94b552b6a485cb6ccc4124d7692f37f1dff8c2ae5d4150120a05925033",
+    "src/battlepass_services.h": "b4d8734b75d89e272bd660fcb8f9e90793f24c4dce713e6aacc46437360986d3",
+    "src/channel_services.cpp": "df2d120f0e99fbeee9590c21c41b6db036073077d4d234c594f66e0b44a7bdf5",
+    "src/channel_services.h": "144e68be8e8c21a1c6d1691e4fd390370f469534b4540146a81275922085c29d",
+    "src/channel_store.cpp": "4a3d042f6572643605e00f7c88ff073394f692ff6a74ec157e803e57a17d27d3",
+    "src/channel_store.h": "c07913a81011f1a92d3de8717705e8aaac3e83d5420455c84cb58558dad566fe",
+    "src/clan_services.cpp": "8a7a020acf9c27ae9d90caa00ee4055067be77d4817f88d60c5df04ccf3fc5d2",
+    "src/clan_services.h": "b81f1b754cde31004f1b45b448f322f842fbbaa348def7a364481a541c61c90e",
+    "src/content_services.cpp": "ebbac2034d3b59fd5937ed323770306f21c693ae3a2ddb7860505116fd4d8cd9",
+    "src/content_services.h": "c1ed35743d6c81d308da2959239d4b9466ee03df8d6673e1c4662bd2b704b165",
+    "src/counter_services.cpp": "fafbf80ce647555df6c516350d2595dbbd1c61d7ca649b549f741fffdc6a7905",
+    "src/counter_services.h": "34347954ba9a8cd53eb6eab95cebeb2cbf7dfb5619dfa049c6aef7236ccddd1d",
+    "src/crypto.cpp": "2900b506aad5302cd5f4160a0288dceda430c1d4d9e736bca4c80856dad2053d",
+    "src/crypto.h": "9af3b102e9f67f92cbe399be67c2cc554608dcb7c0d852c40e407f5ec0c9c9bf",
+    "src/crypto_provider.cpp": "262b6fc01a33165f7a3237f702f4b6d2ee4794143df8077e21b611065f427167",
+    "src/crypto_provider.h": "1d8acf6c95299f0807450eec3b6581ff4fafc55a4f25d6d5f06cce2e88def91e",
+    "src/engagement_services.cpp": "c3fffed631dcaf61b28f269dc6fd61c4f275090b429213fb8edfe7c943b06ef2",
+    "src/engagement_services.h": "2a9bb5c645c88b16f159ad2503e63160ee1872511db0f88c7bcce66ce6a50a03",
+    "src/executable_updates.h": "3257a83aaaa14fe61c5c9c5a6c7be8081ffcfcc61afbab02a6dce9ad8d9802e7",
+    "src/gunsmith_rank_unlock_data.h": "7a52de6ad55cca1f4162bebb58d34e928e991a90b65fd871c832710fabc86a9c",
+    "src/host_os.cpp": "5adb3e2b4a8298c8559ed20aee0731b1261b0905cc980938bae7a3442171e4c5",
+    "src/host_os.h": "da773067e0b98294d027784ddd404785f8062ee7604b78132a710b7967e95d3d",
+    "src/identity_rest_services.cpp": "e6fed718bd85b1f7670a4045c363971cdbe047c71d5fc9d62b90f1b2630a2722",
+    "src/identity_rest_services.h": "7125ce72098b980da6498a15d8d4e1b24f88882458dd705a4eed4afee510afd3",
+    "src/identity_services.cpp": "d8103ab4eb85c344ab2f4c3f713b4e52e54be4c0573685dd1914ec97433f27b6",
+    "src/identity_services.h": "285cad6157512018cb99eaa42bd4a511a421626180be7bba7a664583c20485b1",
+    "src/inventory_validation_services.cpp": "120f2109f8ac9bf2f1c6ad22b4b6a164a08d39cc7f383348aab070f717def3e2",
+    "src/inventory_validation_services.h": "9ebffdc1869eb29b6745de60031bd6dd3933ffaf574fac423370678b0936a989",
+    "src/leaderboard_row.h": "ae29dab7c4f388eee9282024a28fe1af1f9046322cb28f8cd7d11a4498e139e3",
+    "src/leaderboard_services.cpp": "43776b91951912339cacac3c59d29282e38b1ee880ce25b89065b04a21ebd969",
+    "src/leaderboard_services.h": "0f07847d3fc6f91b715b9854516d6e67ecac10a8bebeb4adb7b33187763885d4",
+    "src/lobby.cpp": "64fe4475fcef546c323e54c5f64b9a9cc1434a7d6e9a03841d54eb349a89c5df",
+    "src/lobby.h": "0b5d8c0486a9cf954b237e03b6fab819adb014b49721d459e21d7331f9e71d69",
+    "src/mail_services.cpp": "d748a9d6e24d2279724e037fac905ad3c91ffcaa719bb9ba5b23fa53789f8a2d",
+    "src/mail_services.h": "0a70a7f70eb56170049ed15c9fa5260577d7b76466b5dcc1a4000228634059f9",
+    "src/marketplace_services.cpp": "61d2ae8b4f89a4c44fbdd952fd5f39e5551d3bdde5b27529bfb9611f384a95ce",
+    "src/marketplace_services.h": "4dee0ac97a5023b928a7587a22000ad8554acbefa45f8618b3bb298ec6c54b8d",
+    "src/matchmaking_services.cpp": "f6f235ee58cc0274bcd42ff6cd218e3bda5c98cbd3b8283663515f7da00c4dd3",
+    "src/matchmaking_services.h": "ae44bf7dea4debda9132a86acbee21a6075ba26c9730498c1bc0e64033c7ed64",
+    "src/matchmaking_store.cpp": "5043dc7e1216d7fb678e7409e2b7a68107ef34e22c661fcc80083afcbec251e7",
+    "src/matchmaking_store.h": "8d8e556acc27db47fe207e4d7b54cceb8f29a5d439b92c3068ada645898ebf99",
+    "src/network.cpp": "cb7d0510ba91b5c892e824439a7f25661e014104011690f82d4b5c777e3e0055",
+    "src/network.h": "ab494373d5f0d4c03f01ff2ac65e5a16e3952711005e2bb7aab76a3cd9a1adff",
+    "src/objectstore_services.cpp": "a70cd48a30f5517fc51e856bd4d8bdb15462f41a418e8f6376df43eac470fe7b",
+    "src/objectstore_services.h": "be51745ae962bbb3b2f1e6517192d2831fea8d632ecbc954b32eb13b08cefda0",
+    "src/operator_controls.h": "adb84ea5f9ae6362eed41b6215f58e93b6e1fadbd608556bde223efabe2149a0",
+    "src/platform.cpp": "043600abcc36f12e4ab3b31a709c35c98ccc22ab0daa93f42c5bbe101b0d0264",
+    "src/platform.h": "bbbc88444e4d83f00224a54c59c6cd7f60ae78c42deb0d4b5a50f50334719dd6",
+    "src/platform_account_store.cpp": "71710c099ba3e69b03e2de1a4a8aa13dfbb2dddd4000395dba81caa4601751c8",
+    "src/platform_account_store.h": "a1bbf2ac70ccd9ee489011389e69e429e0869cffd15bf48eabc621bb2f8b4749",
+    "src/platform_resources.cpp": "b323dd5d1082f1d9d2ebbf20fb2d09f8bac38725e9f427795ce5a8cecba53ef1",
+    "src/platform_resources.h": "d53577a516a8e4a398028497c021c7c6202dc4ab807e6acccfa52fd121867a68",
+    "src/playlist_catalog.cpp": "5a7247982890b05b97b5241de2444356789d9a58b7222c2287796d7fe7c9f1b2",
+    "src/playlist_catalog.h": "6a7555badf408171f4539627423f02f33a32ddd41822a77c45c6462fbe32ddd2",
+    "src/progression_ranks.h": "ef264dbb99e9975195911a4bed192c537f979337605a1b1b43b7444d5ff26674",
+    "src/protobuf.h": "d76ba2fe0e9bcc56033bb38268c74ba1f25a15441d195ec489d49628a96a08f3",
+    "src/public_dashboard.h": "48d51a1cc7e9a575b1d96a5569f91dd384430fee0eb718fc830a7f587079d32d",
+    "src/qos_provider.cpp": "f0972dea94fa8279e6bb48aec1cde017a62db0f4aa4590ebc39e8248cb3d4b62",
+    "src/qos_provider.h": "68b2c6b9624a306c93e5b3b033e272e4bc76f1c4eee250dfa7a9920ce3d40781",
+    "src/qos_services.cpp": "ed206bd8184060900b3fb167ccf96b19b52c27407f169688a7aa9bdeb25a6f7d",
+    "src/qos_services.h": "03be86eb0c51652176484b77672c0b679cf8de67a73078f5c41df5e1d04496ef",
+    "src/quest_services.cpp": "739c2f560e25567d06e8cbd92a6669d7a5b97633d12d6d3847072daad6007e26",
+    "src/quest_services.h": "4546ae38dcbc6fe9436ec86576a6e8f837403092b18d0ee4f0ebfb1bd9db12a0",
+    "src/regulation_services.cpp": "d002c8f4089f986a2712eb3bb4187c1cb3d85446cd3311c5452fcc8373d22ede",
+    "src/regulation_services.h": "fd846ed38285c76f9402ee7060ab4a2e8db78476e1e0f8c161c814d3831b9ad3",
+    "src/relay_provider.cpp": "b9b30231cbb0c0da935a14c986cb0df44e7e9f968ea9bb3c6067e93365968d0b",
+    "src/relay_provider.h": "3699d5550ded34a29bd5a011b0092acf270b9d3e12386028ae7a9d2d76935111",
+    "src/relay_services.cpp": "fc770843b58e67e2b8d0d29e33807056781fc54940e7c55b7d9bc2b8e9e14d52",
+    "src/relay_services.h": "2c5a5a7e74e3bd139f26707b1f89a73752e9ff30410e55cac5b2a3a0d8839dca",
+    "src/replay_quest_data.h": "887a2bb5f46c9f11d969fbfbc2f036956a603df99faa2261c91e8e983413548a",
+    "src/rest_services.cpp": "5deb180b617c29a3d2935ad04f259451bd6d024b506f66aac6eea5ef4d2eb193",
+    "src/rest_services.h": "325b7ff3417690471be78879bc49159305431ca5e49e1ae8773ccb8f7a0793da",
+    "src/scheduled_services.cpp": "db2184374943b8122fd34f282eaa7da91763a887505c4930b09d4d39d920b36d",
+    "src/scheduled_services.h": "3383bd0a04e68f59ac0d15c5e53f697e2e5a07134999e8e575e70d3266d60754",
+    "src/server.cpp": "e3873ecc66ecdd42c8b4e2a75fb40ddd7da2703f8f8c7605f95e0198f1597ddb",
+    "src/services.cpp": "fe0c30a414b56bee9a2b0eb62f30f6aec506ae8255188cf580bab7c6fd370bcd",
+    "src/services.h": "04ee7e0d2fc6d46a9f8787d4a5f85e9296324d4d6eea7ee32d81ce7bcb486fe8",
+    "src/social_services.cpp": "17ecf215c9f7b2ff1037c0b18c07218239bea0719bb427ecfd694d808f2e3483",
+    "src/social_services.h": "4742db37b82c80e059bd9ab08b189b9926ebad262c2c9bec4c06c8207dd8cd05",
+    "src/startup_services.cpp": "bb93a2a257d795061a2032fd39811d085236af5792da1ef65dc5b992493d7adf",
+    "src/startup_services.h": "65c0957a130f66c9a36907dce81d25a96cc131fb360b7c4d21863a68d1452a8e",
+    "src/team_services.cpp": "8dffc1ad59322e6001754e9ed6d4f0439c256e7ffee82baf3a72023e2df8ffc8",
+    "src/team_services.h": "23cb63fe433fe26f3fefc812710b708ffc470f679f1d8e5bfa30c34f7e50c9cf",
+    "src/tournament_map_policy.cpp": "58c917f32dc790ab4b4810105a62cd3de326bcbf030791c044da3e4c414fab9c",
+    "src/tournament_map_policy.h": "9ff692ed0449d2c008bd4d218aa65ab958404e8262627bef653ba6e1b83dccfb",
+    "src/tournament_services.cpp": "1c0baf2bf2b074d991cf11f60355ee0a353bfb0549978c1777597a8f7458eca4",
+    "src/tournament_services.h": "5589450cd385076c838952cb7a7180cdff0fa862633d4fb48df474058cc30748",
+    "src/traffic_kdf.h": "044f4a7de21d3f2d621b4ce0557d8f16a0d5a40b3fa18ea45a9bb1615172a1b3",
+    "src/weapon_progression_data.h": "96a30325120bf166dd98a096a3abaef39b44e45710eba5ff44db38fe095c57a2",
+    "src/wire.h": "e98ec512d0bf7a9969258ea09635adb4607fe0952831fbaa2274a49d80f7ecbb"
+  },
+  "original_parser_cases": 176,
+  "shipped_mission_descriptions": 232,
+  "supported_earning_stages": 67,
+  "remaining_earning_stages": 165,
+  "contract_criterion_reconstruction": "Card locale is used for shipped start-at-location descriptions; original actor/card fields are verified, retail cloud criteria are not recovered.",
+  "inferred_geographic_aliases": {
+    "layover": "Airport",
+    "airfield": "Military Base",
+    "transit": "Train Station"
+  },
+  "runtime_locale_assignments": 33,
+  "authored_location_volumes": 46,
+  "game_runs_performed": false,
+  "native_game_callback_verified": false,
+  "server_deployed": true,
+  "evidence": [
+    {
+      "path": "data/remaining-contract-locations-20261010/challenge-parser-verified.json",
+      "sha256": "77b1e4640c866d124118dd9b0a2051beaf7e84672b34713d8f48012192d1cb82"
+    },
+    {
+      "path": "data/remaining-contracts-20261009/challenge-producer-entity-counter-proof.json",
+      "sha256": "572b703fced2d0e520bf6473ea12f2841456781a9e8fb2110ddd10a42a29992b"
+    },
+    {
+      "path": "data/remaining-contracts-20261009/mission-descriptions-eng_global_mp-verified.json",
+      "sha256": "fb0d42b930a60f501b0fc804e65babfadf981beca4a88ae83aec50582b67ffd2"
+    },
+    {
+      "path": "data/remaining-contracts-20261009/mission-descriptions-eng_ui-verified.json",
+      "sha256": "b65411b28da51afafe2ef7cddc0ec4a17ba846e1037e57688049e64a594778cf"
+    },
+    {
+      "path": "data/remaining-contract-locations-20261010/linux-build-receipt.json",
+      "sha256": "f4a053af4a41add16c406ee846ad8b618d13c9f9a500ebc23432986f0af93185"
+    },
+    {
+      "path": "data/remaining-contract-locations-20261010/linux-validation-tool-inputs.json",
+      "sha256": "afd56c7bd4753c7f99c7e751036df0d136d5de6565e489aece4b3a5c31dde23d"
+    },
+    {
+      "path": "data/remaining-contract-locations-20261010/windows-protocol.json",
+      "sha256": "ff5a1d2c9e74beb273be1b4a62e7a6c89a8c28fcd2e1f34bf5834b1380c2a6cc"
+    },
+    {
+      "path": "data/remaining-contract-locations-20261010/windows-quest-earning.json",
+      "sha256": "6a663f070257fe784e9204fb8f00203166f5e3706719e4beb7f49f8e7eb7f886"
+    },
+    {
+      "path": "data/remaining-contract-locations-20261010/windows-quest-management.json",
+      "sha256": "ca849352655ddb9476f00ebba108e3cd3eafdb5c38521e267d8d41f1d1b03493"
+    },
+    {
+      "path": "data/remaining-contract-locations-20261010/linux-protocol.json",
+      "sha256": "ad1e8aec061d3267a52930a4d8ab2ffc7a688a8995f0db4c0c5a56ee231f02ac"
+    },
+    {
+      "path": "data/remaining-contract-locations-20261010/linux-quest-earning.json",
+      "sha256": "7283bd3690e307bee24508306a733b28ca40f0bd79c50871bb1a4c8dd009043b"
+    },
+    {
+      "path": "data/remaining-contract-locations-20261010/linux-quest-management.json",
+      "sha256": "170871832477b850f28444f6c1679549720e654d73f4696e5c08fe654afa6687"
+    },
+    {
+      "path": "data/remaining-contracts-20261009/native-challenge-scripts/recovery-receipt.json",
+      "sha256": "21da25d0ceafe8b35d04f7e76e3596d27a2f1cd2082e12d6e6675877ba052555"
+    },
+    {
+      "path": "data/remaining-contracts-20261009/native-challenge-scripts/disassembled/iw8/challenge-normalized.gscasm",
+      "sha256": "eb56bccf022463022125d7374a15548a47fda3efb3628edc67dafa5ef8c51576"
+    },
+    {
+      "path": "validation/20261010-challenge-entry-parser.json",
+      "sha256": "6bfe26b492a9694b4e5f68f850d4942516d0426dc203c11dc226bb1527d91f00"
+    },
+    {
+      "path": "validation/20261009-challenge-producer-contracts.json",
+      "sha256": "572b703fced2d0e520bf6473ea12f2841456781a9e8fb2110ddd10a42a29992b"
+    },
+    {
+      "path": "validation/20261009-challenge-script-recovery.json",
+      "sha256": "21da25d0ceafe8b35d04f7e76e3596d27a2f1cd2082e12d6e6675877ba052555"
+    },
+    {
+      "path": "validation/20261009-challenge-cache-decisions.json",
+      "sha256": "23e6d250f38fc507777b052f393165a5ece6d0ab992f7fda6454f97f099102ed"
+    },
+    {
+      "path": "validation/20261009-challenge-action-producers.json",
+      "sha256": "cdb42c324c385ce771eb14e20f99b0875519289900e6e8c86b4c9acec91c1175"
+    },
+    {
+      "path": "validation/20261009-objectstore-category-constructors.json",
+      "sha256": "678a124b888e7c1824e1e518dcd9b6abc0dab302bb727337ea4b0c6c43540b13"
+    },
+    {
+      "path": "data\\remaining-challenge-actions-20261009\\disassembled\\iw8\\gulag-normalized.gscasm",
+      "sha256": "606cd2e370c98b415d604c97f16bc15463798386d91cbbd7bcbaca69053f5cd8"
+    },
+    {
+      "path": "data\\remaining-contracts-20261009\\native-challenge-scripts\\disassembled\\iw8\\challenge-normalized.gscasm",
+      "sha256": "eb56bccf022463022125d7374a15548a47fda3efb3628edc67dafa5ef8c51576"
+    },
+    {
+      "path": "validation/20261010-challenge-asset-tables.json",
+      "sha256": "4705255c2aa70705497115c552c4f68bef2042f09bb74d61d870a411960a0a2d"
+    },
+    {
+      "path": "validation/20261010-replay-ping-producers.json",
+      "sha256": "c185d1c8cea97588750b7d4ecbd0925dc35d192a72b9b914885c89974d1ae262"
+    },
+    {
+      "path": "validation/assets/replay120-achievementenginerefs.csv",
+      "sha256": "45a80d0059bcb44e37c6f09fcee7b1795b13fb4b965a07b3857c9fd18f1d4526"
+    },
+    {
+      "path": "validation/20261010-verdansk-authored-locale-triggers.json",
+      "sha256": "432ade91aaa3252a14592f334cd1266d3eeb01d2f41ad7679e296f847c99625d"
+    },
+    {
+      "path": "validation/20261010-verdansk-mapents-native-span.json",
+      "sha256": "c4a9e6b67caacad2172bddadd7891bacfd324aab7f9a39bfc55245c4d87153ce"
+    },
+    {
+      "path": "data/remaining-br-entry-20261010/disassembled/iw8/ping-normalized.gscasm",
+      "sha256": "403756498bcf6df9877e6d157d41dfe6cd052181ae2b61bd43b99591bda4d05f"
+    },
+    {
+      "path": "validation/20261010-replay-runtime-locale-assignments.json",
+      "sha256": "73edc912583a2898ac0f96e46ad0d9c399efb9f347f93b48fd56a1e88363552d"
+    }
+  ],
+  "validation_tool_sha256": {
+    "test-lobby.py": "be32c12658830a8b34f8b98422bf294b06e237f8e1b7c376b0619c3703f5938f",
+    "tournament_round_fixtures.py": "5e53a72bc2303caee703af0bd7846d3e8d0e3408cc59a0969ba451badf65f587",
+    "test-replay-quest-earning.py": "f5d177095d3655df412942363f9418b552c7200fe21f91a31613102d1c126413",
+    "test-replay-quest-management.py": "bd966c94ab397458774fed699acb514961be0509cd91b874a6939d9fa2aead84"
+  },
+  "fixture_ordering_correction": "Retains the verified interrupted native ready-up/enrollment test setup from the preceding release; strict transaction assertions unchanged.",
+  "remaining_contracts": [
+    "Six known streaming/category/large-upload response bindings",
+    "165 remaining mission criteria and producer-context flags",
+    "Delayed-event allocation lifetime and participant session rotation",
+    "Native gameplay earning/reward/successor callbacks and broader per-method runtime audit"
+  ],
+  "live_process": {
+    "pid": 224714,
+    "active": "active",
+    "substate": "running",
+    "executable": "/opt/replay-dw/releases/20261010-43f13b0359d7/iw8-dw-server",
+    "process_executable": "/opt/replay-dw/releases/20261010-43f13b0359d7/iw8-dw-server",
+    "sha256": "43f13b0359d7138d704c8beb5c53d792e51b356886b4bef016b286b9026ca7a1",
+    "process_sha256": "43f13b0359d7138d704c8beb5c53d792e51b356886b4bef016b286b9026ca7a1",
+    "host": "162.243.115.160",
+    "verified_live_process": true,
+    "remote": true
+  },
+  "deployed_map_policy_sha256": "03fbbc68e99bb083302e8acb0ca5c3bf2986e42d2608b26664cc68eb737e2fc4"
+}

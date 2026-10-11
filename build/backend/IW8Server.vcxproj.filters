@@ -1,92 +1,191 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <ItemGroup>
     <Filter Include="App">
-      <UniqueIdentifier>{F5F304F2-4B5A-5028-8E75-254D9E099275}</UniqueIdentifier>
+      <UniqueIdentifier>{6EA4BF3E-8E97-5D79-AE3D-1A58C68B2B44}</UniqueIdentifier>
     </Filter>
     <Filter Include="Bgs">
-      <UniqueIdentifier>{8C9A461E-3C74-5003-9657-991F34A7256E}</UniqueIdentifier>
+      <UniqueIdentifier>{7E674298-E088-51C9-A2EA-33E9EBB16154}</UniqueIdentifier>
     </Filter>
     <Filter Include="Common">
-      <UniqueIdentifier>{3843C647-998D-5BC7-82FF-9C68AE1D8FDA}</UniqueIdentifier>
+      <UniqueIdentifier>{448ED577-0947-5D7D-9DD7-25B69C9B8161}</UniqueIdentifier>
     </Filter>
     <Filter Include="Demonware">
-      <UniqueIdentifier>{228B5AE4-9B60-5D44-8C83-92EE6BB9817C}</UniqueIdentifier>
+      <UniqueIdentifier>{C9C5A3BE-DEB5-50E0-9B05-0D70F87E75D4}</UniqueIdentifier>
     </Filter>
     <Filter Include="Server">
-      <UniqueIdentifier>{D7D7AB7D-5C30-5EF6-9B76-2DED4975B68C}</UniqueIdentifier>
+      <UniqueIdentifier>{B9383E4C-0614-518A-BD43-1F32B9A9E036}</UniqueIdentifier>
     </Filter>
     <Filter Include="Tls">
-      <UniqueIdentifier>{23DDBAD8-B7C2-5DB4-9859-6942119FA140}</UniqueIdentifier>
+      <UniqueIdentifier>{B0333879-B04A-54A9-BEDF-21796BC0CE61}</UniqueIdentifier>
     </Filter>
     <Filter Include="Web">
-      <UniqueIdentifier>{E8990CC3-B9F1-5EEC-A00E-5A3B1BA1234E}</UniqueIdentifier>
+      <UniqueIdentifier>{3AFECC2B-10D5-5B23-B111-5F09F4ECEB53}</UniqueIdentifier>
     </Filter>
     <Filter Include="Bgs\Auth">
-      <UniqueIdentifier>{0D0ADB2C-B4F1-5420-BD5A-B11541C42D17}</UniqueIdentifier>
+      <UniqueIdentifier>{6E4FCA86-88C1-5257-B966-6F1D7B894F55}</UniqueIdentifier>
     </Filter>
     <Filter Include="Bgs\Diagnostics">
-      <UniqueIdentifier>{220CA557-01BC-5A3E-B831-810CEDA477AE}</UniqueIdentifier>
+      <UniqueIdentifier>{97DA6247-0D5D-560F-87F0-64035CC8382C}</UniqueIdentifier>
     </Filter>
     <Filter Include="Bgs\Listeners">
-      <UniqueIdentifier>{388FFE25-98DA-5121-BF70-2ABB146CFE55}</UniqueIdentifier>
+      <UniqueIdentifier>{AEE60370-436C-59B1-B8F8-03AEE90A8F2F}</UniqueIdentifier>
     </Filter>
     <Filter Include="Bgs\Services">
-      <UniqueIdentifier>{244740EF-24F5-587F-964C-49E3097878E5}</UniqueIdentifier>
+      <UniqueIdentifier>{C289C59E-2553-5591-8CE6-739970D66AAE}</UniqueIdentifier>
     </Filter>
     <Filter Include="Bgs\Transport">
-      <UniqueIdentifier>{811FB32B-E066-58DA-9F00-C16436F6319C}</UniqueIdentifier>
+      <UniqueIdentifier>{F9492599-E0CC-5824-B055-3D06A4371025}</UniqueIdentifier>
     </Filter>
     <Filter Include="Common\Logging">
-      <UniqueIdentifier>{C0EB27E3-B9E2-5539-BD85-FE72B8F46254}</UniqueIdentifier>
+      <UniqueIdentifier>{51F97D0D-3D7A-5DEA-8E96-48A0F703AF99}</UniqueIdentifier>
     </Filter>
     <Filter Include="Common\Protocol">
-      <UniqueIdentifier>{2DE6761A-0A04-506C-BE75-461E9BB09590}</UniqueIdentifier>
+      <UniqueIdentifier>{D48F1074-7111-5FF5-817A-6B45A1A6EBA3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Demonware\Internal">
-      <UniqueIdentifier>{CF08065A-29B0-5376-9664-CA58D0CAAC68}</UniqueIdentifier>
+      <UniqueIdentifier>{565EAE02-18C6-5A1B-A833-EE2CCA430971}</UniqueIdentifier>
     </Filter>
     <Filter Include="Demonware\Lsg">
-      <UniqueIdentifier>{52931F5C-72A5-5CD9-8726-7BF252CDD440}</UniqueIdentifier>
+      <UniqueIdentifier>{2702D28E-BEEC-5239-96E2-B451DBA29ED7}</UniqueIdentifier>
     </Filter>
     <Filter Include="Demonware\Public">
-      <UniqueIdentifier>{D6BB6EA3-7425-5B03-8C64-B9908375182F}</UniqueIdentifier>
+      <UniqueIdentifier>{218252C9-960B-5E46-AA10-18CF4E8BCF79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demonware\ReplayDW">
+      <UniqueIdentifier>{0D8A9A3A-8288-55CB-BAE0-9479720F9C5A}</UniqueIdentifier>
     </Filter>
     <Filter Include="Demonware\Services">
-      <UniqueIdentifier>{C139CDE4-0BB8-597F-B73F-B6770662A177}</UniqueIdentifier>
+      <UniqueIdentifier>{860E7F09-F5F1-552E-A71C-78885530FADA}</UniqueIdentifier>
     </Filter>
     <Filter Include="Server\Core">
-      <UniqueIdentifier>{E2796C74-4BB2-5504-A6B7-1A650BA4497D}</UniqueIdentifier>
+      <UniqueIdentifier>{DC071087-204F-521A-8530-93054503651E}</UniqueIdentifier>
     </Filter>
     <Filter Include="Server\Lifecycle">
-      <UniqueIdentifier>{CF51D4A1-27F4-53E3-95E8-D5776DFC9E3B}</UniqueIdentifier>
+      <UniqueIdentifier>{A6E971CD-5C77-528C-9C57-416F0C2DC6EE}</UniqueIdentifier>
     </Filter>
     <Filter Include="Server\Networking">
-      <UniqueIdentifier>{27730FAF-222E-57BB-A54C-327DDCE56CC9}</UniqueIdentifier>
+      <UniqueIdentifier>{EFC7417B-1B63-52EC-96D8-8D6A87CBA22A}</UniqueIdentifier>
     </Filter>
     <Filter Include="Tls\Certificates">
-      <UniqueIdentifier>{35F59B83-9655-52D6-9410-72E7BD74A2A7}</UniqueIdentifier>
+      <UniqueIdentifier>{DBF3295C-0A17-5CB6-827B-00B3A4CF1DB0}</UniqueIdentifier>
     </Filter>
     <Filter Include="Tls\Credentials">
-      <UniqueIdentifier>{CACDBBDC-C459-54D7-81DE-2BF926A3E031}</UniqueIdentifier>
+      <UniqueIdentifier>{B51D4CCC-2256-5622-B9AD-591E58BA6332}</UniqueIdentifier>
     </Filter>
     <Filter Include="Tls\Handshake">
-      <UniqueIdentifier>{F7FC6839-F525-50D0-820C-A3E7EADB0D12}</UniqueIdentifier>
+      <UniqueIdentifier>{FEAAD30D-B5A5-524C-BC55-306B13A64FDE}</UniqueIdentifier>
     </Filter>
     <Filter Include="Tls\Transport">
-      <UniqueIdentifier>{54A4072F-61CD-56F9-968D-56504D553DF4}</UniqueIdentifier>
+      <UniqueIdentifier>{B31A11D2-5066-5802-AC58-AC389D9C4B01}</UniqueIdentifier>
     </Filter>
     <Filter Include="Tls\Trust">
-      <UniqueIdentifier>{788F3FCC-D804-512E-9DE5-34D017CEFED4}</UniqueIdentifier>
+      <UniqueIdentifier>{7209549F-8BF1-512C-8E37-DBFCDC21809C}</UniqueIdentifier>
     </Filter>
     <Filter Include="Tls\WebSocket">
-      <UniqueIdentifier>{36FA977C-40EA-5ACF-BFFB-7AD92620EBF6}</UniqueIdentifier>
+      <UniqueIdentifier>{2F4703FB-505C-55B4-94A7-DADE5498AC20}</UniqueIdentifier>
     </Filter>
     <Filter Include="Web\Internal">
-      <UniqueIdentifier>{991B5C2A-6049-5A4A-A859-02D8D7E6BE4A}</UniqueIdentifier>
+      <UniqueIdentifier>{643EF5BE-7D04-58A4-81DD-9075D5D3777A}</UniqueIdentifier>
     </Filter>
     <Filter Include="Web\Public">
-      <UniqueIdentifier>{1FEC5803-CE69-514B-BCE1-E063623905BF}</UniqueIdentifier>
+      <UniqueIdentifier>{143390EC-9622-5A70-B795-6C8ED6F97695}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demonware\ReplayDW\Core">
+      <UniqueIdentifier>{85D01C5E-E522-55C1-A70F-E84D29CFBBB2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demonware\ReplayDW\Data">
+      <UniqueIdentifier>{0C6DD1B1-0DF6-55CF-A076-AC74C5CA97E1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demonware\ReplayDW\Services">
+      <UniqueIdentifier>{29F7A0D2-3367-5343-9295-8B208904F230}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demonware\ReplayDW\SharedProtocol">
+      <UniqueIdentifier>{7685FA2D-B265-5582-89F0-2F3BE142544A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demonware\ReplayDW\Services\ABTesting">
+      <UniqueIdentifier>{0EB3408D-52F3-53C8-8CE1-EDCE7CB5C634}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demonware\ReplayDW\Services\Account">
+      <UniqueIdentifier>{FBCCC24B-D9AD-5E39-9BE9-4F57490E4303}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demonware\ReplayDW\Services\Achievements">
+      <UniqueIdentifier>{7995838B-EBB4-51AF-A59E-86020E37DE8A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demonware\ReplayDW\Services\AntiCheat">
+      <UniqueIdentifier>{06EA1940-CA56-5DD3-B1E0-E4BFA54EA140}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demonware\ReplayDW\Services\BattlePass">
+      <UniqueIdentifier>{C7B5F15D-BC97-53DD-92D4-DAB89B620DA6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demonware\ReplayDW\Services\Channels">
+      <UniqueIdentifier>{F993827F-7C6F-52AA-9B17-B18BEC457ACF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demonware\ReplayDW\Services\Clans">
+      <UniqueIdentifier>{11E13E43-81BC-5545-9C94-92F0E7555BFE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demonware\ReplayDW\Services\Content">
+      <UniqueIdentifier>{2C22981B-2FBE-5B07-A638-D396F6150CFB}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demonware\ReplayDW\Services\Counters">
+      <UniqueIdentifier>{30813EC6-0BEA-5E1F-8D27-CD6FEDFC5DD4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demonware\ReplayDW\Services\Engagement">
+      <UniqueIdentifier>{4407A374-3170-5118-88B2-572BAE12EC30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demonware\ReplayDW\Services\Identity">
+      <UniqueIdentifier>{8EF269E3-7DE7-5738-B95D-BF394CE82303}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demonware\ReplayDW\Services\Inventory">
+      <UniqueIdentifier>{4DF901C8-1722-5AC4-A299-27B6F6628D9B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demonware\ReplayDW\Services\Leaderboards">
+      <UniqueIdentifier>{81098B58-A406-591D-8D43-2A2F4234DCF3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demonware\ReplayDW\Services\Mail">
+      <UniqueIdentifier>{D4F06632-3DEA-581E-9787-9DC4100C57CF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demonware\ReplayDW\Services\Marketplace">
+      <UniqueIdentifier>{C401135A-1560-5AB2-9DD2-7DCBE2AA011F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demonware\ReplayDW\Services\Matchmaking">
+      <UniqueIdentifier>{12203FE4-856E-59D9-9982-2C14560310EE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demonware\ReplayDW\Services\ObjectStore">
+      <UniqueIdentifier>{915A4685-4843-546B-9A19-14B6C381F9AA}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demonware\ReplayDW\Services\Playlists">
+      <UniqueIdentifier>{E3F0F21F-B469-5ACD-83A0-5A4A8B7E31BF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demonware\ReplayDW\Services\QoS">
+      <UniqueIdentifier>{7CC2370C-45ED-52F6-8BF1-1DC723EEF526}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demonware\ReplayDW\Services\Quests">
+      <UniqueIdentifier>{22A27A83-6533-585F-A3D8-7A9E530E3584}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demonware\ReplayDW\Services\Regulation">
+      <UniqueIdentifier>{33381E84-4B0F-5F63-86E9-9CF1B5E3D53F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demonware\ReplayDW\Services\Relay">
+      <UniqueIdentifier>{01644516-6C61-56A4-9499-A79759D754AF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demonware\ReplayDW\Services\REST">
+      <UniqueIdentifier>{641D5422-6CA0-579B-8D80-174A6BC819DF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demonware\ReplayDW\Services\Scheduled">
+      <UniqueIdentifier>{E26F4548-0547-5E43-B6B6-B2AE731E7329}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demonware\ReplayDW\Services\Social">
+      <UniqueIdentifier>{8290D446-5835-5F95-8DE2-4D168123042E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demonware\ReplayDW\Services\Startup">
+      <UniqueIdentifier>{22C4C53C-D845-5258-ADDA-F7FCE4A20447}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demonware\ReplayDW\Services\Teams">
+      <UniqueIdentifier>{FD880AD9-731A-5B1C-B5B4-62A0F0787E43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demonware\ReplayDW\Services\Tournaments">
+      <UniqueIdentifier>{AAA51562-E95A-5EB4-9050-9068E1A5A9FD}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -148,6 +247,9 @@
       <Filter>Common\Protocol</Filter>
     </ClCompile>
     <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Demonware\DemonwareTaskRouter.cpp">
+      <Filter>Demonware</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Demonware\ReplayDwServiceBridge.cpp">
       <Filter>Demonware</Filter>
     </ClCompile>
     <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Internal\JsonObjectStoreParsing.cpp">
@@ -317,6 +419,141 @@
     </ClCompile>
     <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Web\WebAuthService.cpp">
       <Filter>Web</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\ABTesting\abtesting_services.cpp">
+      <Filter>Demonware\ReplayDW\Services\ABTesting</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Account\account_services.cpp">
+      <Filter>Demonware\ReplayDW\Services\Account</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Achievements\achievement_services.cpp">
+      <Filter>Demonware\ReplayDW\Services\Achievements</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Achievements\achievement_store.cpp">
+      <Filter>Demonware\ReplayDW\Services\Achievements</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\AntiCheat\anticheat_services.cpp">
+      <Filter>Demonware\ReplayDW\Services\AntiCheat</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\bandwidth.cpp">
+      <Filter>Demonware\ReplayDW\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\BattlePass\battlepass_services.cpp">
+      <Filter>Demonware\ReplayDW\Services\BattlePass</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Channels\channel_services.cpp">
+      <Filter>Demonware\ReplayDW\Services\Channels</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Channels\channel_store.cpp">
+      <Filter>Demonware\ReplayDW\Services\Channels</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Clans\clan_services.cpp">
+      <Filter>Demonware\ReplayDW\Services\Clans</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Content\content_services.cpp">
+      <Filter>Demonware\ReplayDW\Services\Content</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Counters\counter_services.cpp">
+      <Filter>Demonware\ReplayDW\Services\Counters</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\crypto.cpp">
+      <Filter>Demonware\ReplayDW\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\crypto_provider.cpp">
+      <Filter>Demonware\ReplayDW\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Engagement\engagement_services.cpp">
+      <Filter>Demonware\ReplayDW\Services\Engagement</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\host_os.cpp">
+      <Filter>Demonware\ReplayDW\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Identity\identity_rest_services.cpp">
+      <Filter>Demonware\ReplayDW\Services\Identity</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Identity\identity_services.cpp">
+      <Filter>Demonware\ReplayDW\Services\Identity</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Inventory\inventory_validation_services.cpp">
+      <Filter>Demonware\ReplayDW\Services\Inventory</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Leaderboards\leaderboard_services.cpp">
+      <Filter>Demonware\ReplayDW\Services\Leaderboards</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\lobby.cpp">
+      <Filter>Demonware\ReplayDW\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Mail\mail_services.cpp">
+      <Filter>Demonware\ReplayDW\Services\Mail</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Marketplace\marketplace_services.cpp">
+      <Filter>Demonware\ReplayDW\Services\Marketplace</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Matchmaking\matchmaking_services.cpp">
+      <Filter>Demonware\ReplayDW\Services\Matchmaking</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Matchmaking\matchmaking_store.cpp">
+      <Filter>Demonware\ReplayDW\Services\Matchmaking</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\network.cpp">
+      <Filter>Demonware\ReplayDW\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\ObjectStore\objectstore_services.cpp">
+      <Filter>Demonware\ReplayDW\Services\ObjectStore</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\platform.cpp">
+      <Filter>Demonware\ReplayDW\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\platform_account_store.cpp">
+      <Filter>Demonware\ReplayDW\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\platform_resources.cpp">
+      <Filter>Demonware\ReplayDW\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Playlists\playlist_catalog.cpp">
+      <Filter>Demonware\ReplayDW\Services\Playlists</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\QoS\qos_provider.cpp">
+      <Filter>Demonware\ReplayDW\Services\QoS</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\QoS\qos_services.cpp">
+      <Filter>Demonware\ReplayDW\Services\QoS</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Quests\quest_services.cpp">
+      <Filter>Demonware\ReplayDW\Services\Quests</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Regulation\regulation_services.cpp">
+      <Filter>Demonware\ReplayDW\Services\Regulation</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Relay\relay_provider.cpp">
+      <Filter>Demonware\ReplayDW\Services\Relay</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Relay\relay_services.cpp">
+      <Filter>Demonware\ReplayDW\Services\Relay</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\REST\rest_services.cpp">
+      <Filter>Demonware\ReplayDW\Services\REST</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Scheduled\scheduled_services.cpp">
+      <Filter>Demonware\ReplayDW\Services\Scheduled</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\services.cpp">
+      <Filter>Demonware\ReplayDW\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Social\social_services.cpp">
+      <Filter>Demonware\ReplayDW\Services\Social</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Startup\startup_services.cpp">
+      <Filter>Demonware\ReplayDW\Services\Startup</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Teams\team_services.cpp">
+      <Filter>Demonware\ReplayDW\Services\Teams</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Tournaments\tournament_map_policy.cpp">
+      <Filter>Demonware\ReplayDW\Services\Tournaments</Filter>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Tournaments\tournament_services.cpp">
+      <Filter>Demonware\ReplayDW\Services\Tournaments</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -535,6 +772,198 @@
     </ClInclude>
     <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Web\WebAuthService.h">
       <Filter>Web</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\bandwidth.h">
+      <Filter>Demonware\ReplayDW\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\crypto.h">
+      <Filter>Demonware\ReplayDW\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\crypto_provider.h">
+      <Filter>Demonware\ReplayDW\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\executable_updates.h">
+      <Filter>Demonware\ReplayDW\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\host_os.h">
+      <Filter>Demonware\ReplayDW\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\lobby.h">
+      <Filter>Demonware\ReplayDW\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\network.h">
+      <Filter>Demonware\ReplayDW\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\operator_controls.h">
+      <Filter>Demonware\ReplayDW\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\platform.h">
+      <Filter>Demonware\ReplayDW\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\platform_account_store.h">
+      <Filter>Demonware\ReplayDW\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\platform_resources.h">
+      <Filter>Demonware\ReplayDW\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\protobuf.h">
+      <Filter>Demonware\ReplayDW\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\public_dashboard.h">
+      <Filter>Demonware\ReplayDW\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\services.h">
+      <Filter>Demonware\ReplayDW\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\traffic_kdf.h">
+      <Filter>Demonware\ReplayDW\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\wire.h">
+      <Filter>Demonware\ReplayDW\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Data\gunsmith_rank_unlock_data.h">
+      <Filter>Demonware\ReplayDW\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Data\leaderboard_row.h">
+      <Filter>Demonware\ReplayDW\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Data\progression_ranks.h">
+      <Filter>Demonware\ReplayDW\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Data\replay_challenge_game_type.h">
+      <Filter>Demonware\ReplayDW\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Data\replay_kill_data.h">
+      <Filter>Demonware\ReplayDW\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Data\replay_kill_event.h">
+      <Filter>Demonware\ReplayDW\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Data\replay_kill_target.h">
+      <Filter>Demonware\ReplayDW\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Data\replay_objective_event.h">
+      <Filter>Demonware\ReplayDW\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Data\replay_quest_data.h">
+      <Filter>Demonware\ReplayDW\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Data\weapon_progression_data.h">
+      <Filter>Demonware\ReplayDW\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\ABTesting\abtesting_services.h">
+      <Filter>Demonware\ReplayDW\Services\ABTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Account\account_services.h">
+      <Filter>Demonware\ReplayDW\Services\Account</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Achievements\achievement_services.h">
+      <Filter>Demonware\ReplayDW\Services\Achievements</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Achievements\achievement_store.h">
+      <Filter>Demonware\ReplayDW\Services\Achievements</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\AntiCheat\anticheat_services.h">
+      <Filter>Demonware\ReplayDW\Services\AntiCheat</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\BattlePass\battlepass_services.h">
+      <Filter>Demonware\ReplayDW\Services\BattlePass</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Channels\channel_services.h">
+      <Filter>Demonware\ReplayDW\Services\Channels</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Channels\channel_store.h">
+      <Filter>Demonware\ReplayDW\Services\Channels</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Clans\clan_services.h">
+      <Filter>Demonware\ReplayDW\Services\Clans</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Content\content_services.h">
+      <Filter>Demonware\ReplayDW\Services\Content</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Counters\counter_services.h">
+      <Filter>Demonware\ReplayDW\Services\Counters</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Engagement\engagement_services.h">
+      <Filter>Demonware\ReplayDW\Services\Engagement</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Identity\identity_rest_services.h">
+      <Filter>Demonware\ReplayDW\Services\Identity</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Identity\identity_services.h">
+      <Filter>Demonware\ReplayDW\Services\Identity</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Inventory\inventory_validation_services.h">
+      <Filter>Demonware\ReplayDW\Services\Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Leaderboards\leaderboard_services.h">
+      <Filter>Demonware\ReplayDW\Services\Leaderboards</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Mail\mail_services.h">
+      <Filter>Demonware\ReplayDW\Services\Mail</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Marketplace\marketplace_services.h">
+      <Filter>Demonware\ReplayDW\Services\Marketplace</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Matchmaking\matchmaking_services.h">
+      <Filter>Demonware\ReplayDW\Services\Matchmaking</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Matchmaking\matchmaking_store.h">
+      <Filter>Demonware\ReplayDW\Services\Matchmaking</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\ObjectStore\objectstore_services.h">
+      <Filter>Demonware\ReplayDW\Services\ObjectStore</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Playlists\playlist_catalog.h">
+      <Filter>Demonware\ReplayDW\Services\Playlists</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\QoS\qos_provider.h">
+      <Filter>Demonware\ReplayDW\Services\QoS</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\QoS\qos_services.h">
+      <Filter>Demonware\ReplayDW\Services\QoS</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Quests\quest_services.h">
+      <Filter>Demonware\ReplayDW\Services\Quests</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\REST\rest_services.h">
+      <Filter>Demonware\ReplayDW\Services\REST</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Regulation\regulation_services.h">
+      <Filter>Demonware\ReplayDW\Services\Regulation</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Relay\relay_provider.h">
+      <Filter>Demonware\ReplayDW\Services\Relay</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Relay\relay_services.h">
+      <Filter>Demonware\ReplayDW\Services\Relay</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Scheduled\scheduled_services.h">
+      <Filter>Demonware\ReplayDW\Services\Scheduled</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Social\social_services.h">
+      <Filter>Demonware\ReplayDW\Services\Social</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Startup\startup_services.h">
+      <Filter>Demonware\ReplayDW\Services\Startup</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Teams\team_services.h">
+      <Filter>Demonware\ReplayDW\Services\Teams</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Tournaments\tournament_map_policy.h">
+      <Filter>Demonware\ReplayDW\Services\Tournaments</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Tournaments\tournament_services.h">
+      <Filter>Demonware\ReplayDW\Services\Tournaments</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\shared_protocol\dw_client_identity.h">
+      <Filter>Demonware\ReplayDW\SharedProtocol</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\shared_protocol\dw_platform_protocol.h">
+      <Filter>Demonware\ReplayDW\SharedProtocol</Filter>
+    </ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\shared_protocol\dw_update_protocol.h">
+      <Filter>Demonware\ReplayDW\SharedProtocol</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

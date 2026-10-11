@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "recorded_utc": "2026-10-05T15:54:38.603698+00:00",
+  "server_sha256": "1995df679da7db3c49f2c70875dca1964b9a819d39895fc85644bf7815513967",
+  "game_sha256": "b0075e0dbde62758efe84e23318084608be5b3704f23c269d87254ce2aea58a8",
+  "game_recompiled": false,
+  "independent_protocol_checks": 145,
+  "independent_user_upload_checks": [
+    "Whole-user preparation DTO, exact-size persistent HTTP staging, idempotent bytes, scoped URLs, range rejection and corrupt blob rollback",
+    "Complete Replay post-upload contract and metadata/FileID prefix, metadata/tags persistence, signed ownership, download, strict malformed rollback and retry fingerprint",
+    "Atomic user-slot replacement, immutable historical metadata receipts, same-slot peer isolation and copy-source counters preserve old-upload retry semantics",
+    "Whole-user capability expiry, unknown optional checksum variant rejection and corrupt durable receipt rejection leave storage unchanged",
+    "Whole-user completed/incomplete HTTP staging, historical result receipts and zero-byte uploads survive a real backend process restart"
+  ],
+  "native_menu_verified": true,
+  "native_passing_fences": 27,
+  "native_user_upload_completion_observed": false,
+  "source_oracle_only_preparation_routes": [
+    "50/5"
+  ],
+  "optional_checksum_mode_implemented": false,
+  "full_backend_verified": false,
+  "map_tests_performed": false,
+  "coverage": {
+    "task_routes": 140,
+    "registered_handlers": 130,
+    "known_target_tasks_without_handler": 10
+  },
+  "target_post_writer": "0x1421339F0",
+  "target_metadata_reader": "0x14213DBE0",
+  "target_task_result_reader": "0x1420FE060",
+  "scope": "Independent whole-user PUT/commit/ownership/COPY/restart validation plus fresh native Multiplayer menu/startup validation; no positive native user-upload callback claim.",
+  "evidence": [
+    {
+      "file": "data/lobby-verification.json",
+      "sha256": "d6c4e3843474f4d89866590ebe5d2602831eb1c4e92b05a6ea961d69e8ab3bf7"
+    },
+    {
+      "file": "data/native-backend-menu-verification.json",
+      "sha256": "8e2b9e4e7f29deb09f38dd5b2c991ec73ac365546c8010f4eec85edbb86aa8a3"
+    },
+    {
+      "file": "data/runtime-user-content-menu.json",
+      "sha256": "690fb9a6f545182e04695073914a0ee7936e6bc4e395c45b0284be056c444d19"
+    }
+  ]
+}

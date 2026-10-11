@@ -1,0 +1,8 @@
+{
+  "source": "E:\\replay-compiler\\evidence\\workstation-stringtable-actsexport-fixed\\mw19replay\\code_post_gfx\\mw19replay\\code_post_gfx\\assets\\stringtable\\mp\\ranktable.csv.597.csv",
+  "source_sha256": "b979cb8e7236832354c38dfc7b5b9342e1ab8c8d43f069651be01ae697016032",
+  "native_asset": "mp/ranktable.csv",
+  "maximum_rank": 54,
+  "header_sha256": "b75d330b2016736ad55d9d936676c99ffd6d573b5de7dae1631b2b7fee3f009f",
+  "native_header_sha256": "4c63c31cb8ea9d591fddb0643aaea3c5be05509590b29f91b493ac1193b96a9c"
+}

@@ -1,0 +1,35 @@
+{
+  "schema": 1,
+  "passed": true,
+  "observed_utc": "2026-10-06T09:31:18.123005+00:00",
+  "server_sha256": "13f9f3441bb8f99519b5a3c79a19e08281ae4bd2ee20d6785c3ce5caab07bb12",
+  "game_sha256": "b326981a9718cedbc05228d40bef8b2adcd6be89307b2cde7d8e878a3ca67885",
+  "protocol_groups": 236,
+  "tournament_formation_checks": [
+    "Automatic tournament capacity publication accepts unassigned registrations and allocates eight independently authenticated real parties, with generated native teams/rounds and no publisher player IDs",
+    "Automatic bracket remains FORMING until all slots and live-session acknowledgements are present; eighth native-wire acknowledgement commits PLAYING and exact event-2010 documents for all accepted users",
+    "Formed bracket uses owned session-bound readiness; changing competition capacity under the same ID fails closed without rewriting the durable allocation",
+    "Interrupted automatic acknowledgement rolls forward its fixed cross-domain enrollment target and formation snapshot together; retry stays idempotent after storage failure",
+    "Forming-party withdrawal releases the entire reservation, preserves peer registration while resetting acceptance, emits exact event-2011, and permits slot reuse/owned decline with no stale assignment"
+  ],
+  "automatic_team_formation_implemented": true,
+  "accepted_enrollment_seeded": false,
+  "player_ids_published_or_seeded": false,
+  "fixture_new_players_registered_through_signed_machine_login": 6,
+  "new_player_provisioning_required": false,
+  "native_game_join_formation_callbacks_verified": false,
+  "playable_round_lobby_scheduling_implemented": false,
+  "playable_tournament_verified": false,
+  "two_network_gameplay_verified": false,
+  "source_sha256": {
+    "src/tournament_services.cpp": "81f6f800e7d5175ccb988f068715ef92932d159324e90cf18b38214bb86b99af",
+    "src/tournament_services.h": "66c5626058daa57d65c4d563af1cbc44d3cabce097005117978499bed7b888bb",
+    "src/matchmaking_store.cpp": "012c95bf5bdbee539e6a1b7c276dc7fe39702ee12438aea5c6a2c67aaf8be76c",
+    "src/services.h": "bd907570e9a9de4fa0153d5e2269abecb3ac0ddb7c8043459f1ed7751aeea339",
+    "src/lobby.cpp": "d7e8dd4fd72536e56c496e95f4c8b7e6b5471f2f67eef8b02c9e9dbb0a7887e9",
+    "tools/test-lobby.py": "b7f0ba54c434a47aea7ee7b98aed59b34bfe908aa09f00f7af771294e9c97fab",
+    "tools/tournament_formation_fixtures.py": "74e4389a4ada6ed39361bc258913ddbe5ffc378c945a4099b55e9681c812a8aa"
+  },
+  "suite_receipt_sha256": "e29d590609a03c4950581857dcc6478180310aede1f8f7a2df6df808a9b242f7",
+  "scope": "Backend capacity allocation, generated native brackets, authenticated live-session acknowledgements, interrupted-write recovery and whole-party withdrawal/slot reuse verified by eight encrypted clients. Native startup/reconnect has a separate receipt; no map test."
+}

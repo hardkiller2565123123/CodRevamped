@@ -1,0 +1,117 @@
+{
+  "passed": true,
+  "target_image_sha256": "68fb1cbcb2924182724004039de55a4c50152bb6561803c4898b7930b38132f0",
+  "entry": 5395891063,
+  "end": 5395893852,
+  "original_window_sha256": "07fe7e12284a7078cf08aef259791fae25eeff32cbf7024a5c3773943dc93e07",
+  "tool_sha256": "40693b615002f2326d2520a53efd02bd541ea422a9b07ce4d9ca9a83f01f8ca0",
+  "cases": [
+    {
+      "name": "pickup",
+      "branch": "pickup",
+      "comparisons": [
+        "pickup"
+      ],
+      "passed": true
+    },
+    {
+      "name": "driving",
+      "branch": "driving",
+      "comparisons": [
+        "pickup",
+        "driving"
+      ],
+      "passed": true
+    },
+    {
+      "name": "alive_in_gas",
+      "branch": "alive_in_gas",
+      "comparisons": [
+        "pickup",
+        "driving",
+        "alive_in_gas"
+      ],
+      "passed": true
+    },
+    {
+      "name": "alive_not_downed",
+      "branch": "alive_not_downed",
+      "comparisons": [
+        "pickup",
+        "driving",
+        "alive_in_gas",
+        "alive_not_downed"
+      ],
+      "passed": true
+    },
+    {
+      "name": "revive",
+      "branch": "immediate",
+      "comparisons": [
+        "pickup",
+        "driving",
+        "alive_in_gas",
+        "alive_not_downed"
+      ],
+      "passed": true
+    },
+    {
+      "name": "gulag_end_match",
+      "branch": "immediate",
+      "comparisons": [
+        "pickup",
+        "driving",
+        "alive_in_gas",
+        "alive_not_downed"
+      ],
+      "passed": true
+    },
+    {
+      "name": "kill",
+      "branch": "immediate",
+      "comparisons": [
+        "pickup",
+        "driving",
+        "alive_in_gas",
+        "alive_not_downed"
+      ],
+      "passed": true
+    },
+    {
+      "name": "match_placement",
+      "branch": "immediate",
+      "comparisons": [
+        "pickup",
+        "driving",
+        "alive_in_gas",
+        "alive_not_downed"
+      ],
+      "passed": true
+    },
+    {
+      "name": "loadout",
+      "branch": "immediate",
+      "comparisons": [
+        "pickup",
+        "driving",
+        "alive_in_gas",
+        "alive_not_downed"
+      ],
+      "passed": true
+    },
+    {
+      "name": "REVIVE",
+      "branch": "immediate",
+      "comparisons": [
+        "pickup",
+        "driving",
+        "alive_in_gas",
+        "alive_not_downed"
+      ],
+      "passed": true
+    }
+  ],
+  "modeled_boundary": "I_stricmp over actual original and input strings",
+  "native_game_execution_verified": false,
+  "scope": "Original event-cache decision only; publishing and allocation ownership are separate"
+}

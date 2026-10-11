@@ -1,0 +1,38 @@
+{
+  "schema": 1,
+  "passed": true,
+  "scope": "Catalog/map-pool consistency and native tournament round/recovery wire contracts",
+  "source": {
+    "path": "data/tournament-publication-20261007/source.json",
+    "sha256": "e3aa6e669c566fa9942455e5bcbd75182f92a4224dfdef31226a4e49f7a419de"
+  },
+  "cpp_inputs": 95,
+  "changed_cpp_inputs": [
+    "src/tournament_services.cpp"
+  ],
+  "windows_server_sha256": "b663edd1e72e49e53dfc496215e3821f9df06a84b4980fc734c18cfc0b147f79",
+  "linux_server_sha256": "336385786f07232d9cfeeb0486e98b5b0aa839ecb01a3d5c8e8e53a15a7f19de",
+  "groups_per_platform": 15,
+  "protocol_evidence": [
+    {
+      "path": "data/tournament-publication-20261007/windows-rounds.json",
+      "sha256": "02933ba111d29cfb0febd057a7147460a5adb2a381378a30bc08599ae66f2d5f"
+    },
+    {
+      "path": "data/tournament-publication-20261007/linux-rounds.json",
+      "sha256": "ddcf11e6863a19677454f141c467ab89be1ecba4c3faf464d3d9acec60caf434"
+    }
+  ],
+  "baseline_failure": {
+    "path": "data/tournament-publication-20261007/before.log",
+    "sha256": "7ec127899433bd357a1b1eca0fd0a413c28b4b222a2e7d44724739ed2f307c4c"
+  },
+  "baseline_terminal": {
+    "path": "data/tournament-publication-20261007/retirement-before.json",
+    "sha256": "4e3ae50957cfb11b305c5ad24d68b2e77c639ee250fe43909ec374fd62a102c0"
+  },
+  "native_game_verified": false,
+  "full_backend_completed": false,
+  "deployed": false,
+  "deployment_hold_reason": "Three active players on the primary server; retain their current session"
+}

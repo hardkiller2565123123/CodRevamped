@@ -7,6 +7,7 @@ namespace revamped::iw8::demonware
         constexpr const char* kIw8StorePublisher = "infinityward";
 
         constexpr const char* kIw8StoreLayoutName = "store_v2_warzone.json";
+        constexpr const char* kIw8StoreLayoutLegacyName = "store_v2.json";
         constexpr const char* kIw8StoreCategoryName = "revamped_store_category.json";
         constexpr const char* kIw8StoreLayoutJson =
             "{\"categories\":[\"revamped_store_category.json\"]}";
@@ -70,6 +71,7 @@ namespace revamped::iw8::demonware
         {
             return owner == kIw8StorePublisher &&
                 (name == kIw8StoreLayoutName ||
+                 name == kIw8StoreLayoutLegacyName ||
                  name == kIw8StoreCategoryName ||
                  IsInGameStoreName(name) ||
                  localpublisher::IsContentCreatorList(name) ||
@@ -139,6 +141,9 @@ namespace revamped::iw8::demonware
             if (name == kIw8StoreCategoryName)
                 return BuildLocalPublisherMetadataJsonForContent(owner, name, context,
                     kIw8StoreCategoryJson, BuildPublisherContentUrl(name));
+            if (name == kIw8StoreLayoutName || name == kIw8StoreLayoutLegacyName)
+                return BuildLocalPublisherMetadataJsonForContent(
+                    owner, name, context, kIw8StoreLayoutJson, BuildPublisherContentUrl(name));
             return BuildLocalPublisherMetadataJsonForContent(
                 owner, name, context, kIw8StoreLayoutJson, kIw8StoreLayoutContentUrl);
         }
@@ -202,7 +207,8 @@ namespace revamped::iw8::demonware
                 if (localpublisher::IsPlaylist(name)) localBytes = localpublisher::PlaylistBody().size();
                 else if (localpublisher::IsManifest(name)) localBytes = localpublisher::ManifestBody().size();
                 else if (localpublisher::IsContentCreatorList(name)) localBytes = localpublisher::ContentCreatorListBody().size();
-                else if (name == kIw8StoreLayoutName) localBytes = std::char_traits<char>::length(kIw8StoreLayoutJson);
+                else if (name == kIw8StoreLayoutName || name == kIw8StoreLayoutLegacyName)
+                    localBytes = std::char_traits<char>::length(kIw8StoreLayoutJson);
                 else if (name == kIw8StoreCategoryName) localBytes = std::char_traits<char>::length(kIw8StoreCategoryJson);
                 else if (IsInGameStoreName(name)) localBytes = std::char_traits<char>::length(kIw8InGameStoreJson);
                 std::printf("[DW-PUBLISHER-LOOKUP] index=%zu owner=%s name=%s available=%s contentLength=%zu\n",

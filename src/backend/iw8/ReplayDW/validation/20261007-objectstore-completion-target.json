@@ -1,0 +1,92 @@
+{
+  "schema": 1,
+  "generated_utc": "2026-10-07T12:57:35.753075+00:00",
+  "target_image_sha256": "68fb1cbcb2924182724004039de55a4c50152bb6561803c4898b7930b38132f0",
+  "tool_sha256": "411b3c2a1f62c51e47711409f56763e1221b6a0f4e89bcb3323cb361161d5016",
+  "original_function": {
+    "address": "0x14215ffe0",
+    "size": 1255,
+    "bytes_sha256": "9ff1ff6c56657b555b03670fddefc7128c7ed17fa6483fb1ed489beff74474f3"
+  },
+  "completion_calls": [
+    {
+      "mode": 2,
+      "call": {
+        "service": 193,
+        "task": 12,
+        "manager": 285216768,
+        "request": 285233184,
+        "response": 285237256,
+        "lobby_service": 285241344
+      },
+      "post_http_state": 4,
+      "parent_error": 37,
+      "passed": true,
+      "request_response_readers_executed": false,
+      "initiation_path_verified": false
+    },
+    {
+      "mode": 4,
+      "call": {
+        "service": 193,
+        "task": 24,
+        "manager": 285216768,
+        "request": 285233184,
+        "response": 285237256,
+        "lobby_service": 285241344
+      },
+      "post_http_state": 4,
+      "parent_error": 37,
+      "passed": true,
+      "request_response_readers_executed": false,
+      "initiation_path_verified": false
+    }
+  ],
+  "rejected_analysis_aliases": [
+    {
+      "address": "0x1420f1890",
+      "analysis_label": "bdObjectStoreCompleteUploadSessionsResponse::deserialize",
+      "bytes_sha256": "53406b89064d51a32be3a908cbcde6922f8312ad3c6cb41646586d0cb1932d6d",
+      "reason": "Original SHA1/HMAC helper, not an object-store JSON response reader"
+    },
+    {
+      "address": "0x142241ba4",
+      "analysis_label": "bdObjectStoreUploadMultipleLargeObjectsResponse::deserialize",
+      "bytes_sha256": "2f2b7858d699091820d2aadfd2fee503186f43aff903fc7a1901e57a5812813f",
+      "reason": "Original CRT floating-point exception/status helper, not a response reader"
+    },
+    {
+      "address": "0x140cc35f0",
+      "analysis_label": "GbdObjectStoreCompleteUploadSessionRequest_UEAAPEAXI_Z_0",
+      "bytes_sha256": "150459ff08a35042e41eae8d400534ff6dc9e43690b5ebf71c15ad1c16a87797",
+      "reason": "Original MSG bit-field reader, not an upload-session request destructor"
+    },
+    {
+      "address": "0x1421f9998",
+      "analysis_label": "bdObjectStoreStreaming::initUserSummaryUpload",
+      "bytes_sha256": "b3c55a36b5470da1b4200e675decda8c0787b765e049976c6f855a6dce517a3b",
+      "reason": "Original InitializeCriticalSectionEx compatibility wrapper, not upload initialization"
+    }
+  ],
+  "interpretation": {
+    "193/12": "Post-HTTP single-upload session completion",
+    "193/24": "Post-HTTP multiple-upload session completion",
+    "initial_upload_task_binding_verified": false,
+    "cached_request_response_class_binding_verified": false,
+    "full_native_method_completion_verified": false
+  },
+  "modeled_boundaries": [
+    "HTTP stop/release callbacks",
+    "Native task manager output handle"
+  ],
+  "vm_environment": {
+    "windows_x64_entry_stack_alignment": 8,
+    "native_stack_probe_executed": true,
+    "tib_stack_base_limit_supplied": true,
+    "conditional_modes_initialized_by_fixture": [
+      2,
+      4
+    ]
+  },
+  "game_runs_performed": false
+}

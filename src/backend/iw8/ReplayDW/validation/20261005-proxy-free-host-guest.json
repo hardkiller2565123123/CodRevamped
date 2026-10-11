@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "created_utc": "2026-10-05T23:15:34.808891+00:00",
+  "game_sha256": "9429d3f1db31e780b6a721fcfd8db2384468b8039f767997fcb953c73279d81c",
+  "server_sha256": "1d88793755cbdb20fc1e35b42c25987c09e884cd8673de79a9a9305d051ef239",
+  "compiler_job": "1a530b481d2a4f82",
+  "proxy_free_native_startup_verified": true,
+  "cases": [
+    {
+      "role": "host",
+      "user": "76561199317547464",
+      "observed_utc": "2026-10-05T23:05:29.884011+00:00",
+      "passing_fences": 27,
+      "native_relay_established": true
+    },
+    {
+      "role": "guest",
+      "user": "76561201687332998",
+      "observed_utc": "2026-10-05T23:11:20.136031+00:00",
+      "passing_fences": 27,
+      "native_relay_established": true
+    }
+  ],
+  "native_host_public_address_verified": true,
+  "public_tcp_8085_and_3075_reachable": true,
+  "public_http_health_200": true,
+  "concurrent_local_public_endpoint_publication_verified": true,
+  "simultaneous_same_folder_native_games": "blocked by native toc1.dcache exclusive lock",
+  "native_party_join_verified": false,
+  "second_network_gameplay_verified": false,
+  "scope": "Separate native startups and public backend reachability; owner/guest party and match test remains."
+}

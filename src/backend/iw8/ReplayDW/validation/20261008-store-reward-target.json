@@ -1,0 +1,631 @@
+{
+  "schema": 1,
+  "passed": true,
+  "generated_utc": "2026-10-08T12:24:28.507221+00:00",
+  "target_image_sha256": "68fb1cbcb2924182724004039de55a4c50152bb6561803c4898b7930b38132f0",
+  "tool_sha256": "48b6da8cbc88eaec7cd8addb10460c062361eb4e6d66484202fc49047fdfb7c8",
+  "functions": {
+    "0x141b3b6d0": {
+      "size": 1268,
+      "bytes_sha256": "de521babe6d55d5c3d670fad5f77bf10886c6833f9a1974a71fdacc5487c3da4"
+    },
+    "0x141b3e0a0": {
+      "size": 194,
+      "bytes_sha256": "61457bbf548b5130d669988564babfe96a928c8accf3cb79b0d432dee11da448"
+    },
+    "0x141b3c230": {
+      "size": 140,
+      "bytes_sha256": "71712ecc99eda95990011d624566162b9b4bd0c3a94b003dcc7849afa8e75c99"
+    },
+    "0x141b3c030": {
+      "size": 8,
+      "bytes_sha256": "0bd3de1e43e912493680acd24ccc0ef87eb3c8b12e041329f22367a41b7118bc"
+    },
+    "0x140f34ca0": {
+      "size": 664,
+      "bytes_sha256": "d27772c69cb138e1c8dc963aba1ea7950fee2bc21e9d555cd3ad9931bf556950"
+    },
+    "0x140f33650": {
+      "size": 944,
+      "bytes_sha256": "1d1f1178f5ea583c6f9f206a682e7ec799a8f8a002b7f29fbbf171167380fe0d"
+    },
+    "0x1420efb80": {
+      "size": 120,
+      "bytes_sha256": "85914acc9c89d9633d07678cc6c03dbba3e448d8eb44c57687bd6018b60dabb4"
+    },
+    "0x142125410": {
+      "size": 742,
+      "bytes_sha256": "b02a72f7b19869240fa18927d8d59c764c8ec4f82ec54d74d6e75dc2d1b92b15"
+    },
+    "0x1421ccf60": {
+      "size": 33,
+      "bytes_sha256": "b3ad9214d16630c341fb631525d4c716af9c64188c7dd173019434064eb0aac2"
+    },
+    "0x1420e4290": {
+      "size": 23,
+      "bytes_sha256": "0b811ac59ab1b0272b2e8b9961e7e653b2d8b0d36da1710099ad9a53cef8f44f"
+    },
+    "0x1420e42b0": {
+      "size": 11,
+      "bytes_sha256": "b65d8cdf2a0a02298a2cb2d832d824f4ad847ddc5a3268451393fd764f9f9b64"
+    }
+  },
+  "cases": [
+    {
+      "case": "original version reader accepts tag-3 byte and rejects tag-10 UInt64",
+      "packet_hex": "0301",
+      "accepted": 1,
+      "output": "01ffffffffffffff",
+      "consumed": 2,
+      "modeled_boundaries": [
+        5403243888,
+        5403255744
+      ]
+    },
+    {
+      "case": "original version reader accepts tag-3 byte and rejects tag-10 UInt64",
+      "packet_hex": "0a0100000000000000",
+      "accepted": 0,
+      "output": "ffffffffffffffff",
+      "consumed": 0,
+      "modeled_boundaries": [
+        5403243888
+      ]
+    },
+    {
+      "case": "lowercase camel-case trigger is ignored by the original reader",
+      "snapshots": [
+        {
+          "count": 0,
+          "rows": [],
+          "cache_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "writer_flags": [],
+      "modeled_boundaries": [
+        5403198528,
+        5403199776,
+        5403202688,
+        5403204288
+      ]
+    },
+    {
+      "case": "native reader uses absolute quantities, including retry and omitted productID",
+      "snapshots": [
+        {
+          "count": 1,
+          "rows": [
+            [
+              1001124,
+              1
+            ]
+          ],
+          "cache_sha256": "e5d706610630222b98e21192c4c8e0c528fcf748a99ac91c0afae4dcbbed97c7"
+        },
+        {
+          "count": 1,
+          "rows": [
+            [
+              1001124,
+              1
+            ]
+          ],
+          "cache_sha256": "e5d706610630222b98e21192c4c8e0c528fcf748a99ac91c0afae4dcbbed97c7"
+        },
+        {
+          "count": 1,
+          "rows": [
+            [
+              1001124,
+              4
+            ]
+          ],
+          "cache_sha256": "da65112c26c63dcccad61a872123273cefebe9c6bf268fb0ae6e91c7042c581e"
+        }
+      ],
+      "writer_flags": [
+        1,
+        1,
+        1
+      ],
+      "modeled_boundaries": [
+        5382761504,
+        5388306464,
+        5395696688,
+        5397263424,
+        5403198528,
+        5403199776,
+        5403201424,
+        5403202288,
+        5403202688,
+        5403204288
+      ]
+    },
+    {
+      "case": "explicit productID special branch preserves the same cache semantics",
+      "snapshots": [
+        {
+          "count": 1,
+          "rows": [
+            [
+              1001124,
+              1
+            ]
+          ],
+          "cache_sha256": "e5d706610630222b98e21192c4c8e0c528fcf748a99ac91c0afae4dcbbed97c7"
+        }
+      ],
+      "writer_flags": [
+        1
+      ],
+      "modeled_boundaries": [
+        5382761504,
+        5388306464,
+        5395696688,
+        5403198528,
+        5403199776,
+        5403201424,
+        5403202288,
+        5403202688,
+        5403204288
+      ]
+    },
+    {
+      "case": "20 item cache writes succeed independently of the native 16-item UI summary",
+      "snapshots": [
+        {
+          "count": 20,
+          "rows": [
+            [
+              1001124,
+              1
+            ],
+            [
+              1001125,
+              1
+            ],
+            [
+              1001126,
+              1
+            ],
+            [
+              1001127,
+              1
+            ],
+            [
+              1001128,
+              1
+            ],
+            [
+              1001129,
+              1
+            ],
+            [
+              1001130,
+              1
+            ],
+            [
+              1001131,
+              1
+            ],
+            [
+              1001132,
+              1
+            ],
+            [
+              1001133,
+              1
+            ],
+            [
+              1001134,
+              1
+            ],
+            [
+              1001135,
+              1
+            ],
+            [
+              1001136,
+              1
+            ],
+            [
+              1001137,
+              1
+            ],
+            [
+              1001138,
+              1
+            ],
+            [
+              1001139,
+              1
+            ],
+            [
+              1001140,
+              1
+            ],
+            [
+              1001141,
+              1
+            ],
+            [
+              1001142,
+              1
+            ],
+            [
+              1001143,
+              1
+            ]
+          ],
+          "cache_sha256": "eecd66c4c3b503f3d9854df90f2d4c056a0a4d4e920d592d55fb3537eb3c9e7b"
+        }
+      ],
+      "writer_flags": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "modeled_boundaries": [
+        5382761504,
+        5388306464,
+        5395696688,
+        5397263424,
+        5403198528,
+        5403199776,
+        5403201424,
+        5403202288,
+        5403202688,
+        5403204288
+      ]
+    },
+    {
+      "case": "relative and absolute primitive writes are distinct",
+      "snapshots": [
+        {
+          "count": 1,
+          "rows": [
+            [
+              1001124,
+              9
+            ]
+          ],
+          "cache_sha256": "a33c5c546a5be96fe6d858cfc0621e76e7cd5a83857ba8bdec54000bd0eae39a"
+        },
+        {
+          "count": 1,
+          "rows": [
+            [
+              1001124,
+              3
+            ]
+          ],
+          "cache_sha256": "4d5b30a978fb8afed8a660e5ed1b39d0b89bd8d52c9a01f243f290498bc0c031"
+        }
+      ],
+      "writer_flags": [
+        0,
+        1
+      ],
+      "modeled_boundaries": [
+        5382761504
+      ]
+    },
+    {
+      "case": "negative quantity cannot create a cache entry",
+      "snapshots": [
+        {
+          "count": 0,
+          "rows": [],
+          "cache_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "writer_flags": [
+        1
+      ],
+      "modeled_boundaries": [
+        5382761504
+      ]
+    },
+    {
+      "case": "negative quantity cannot replace a zero entry",
+      "snapshots": [
+        {
+          "count": 1,
+          "rows": [
+            [
+              1001124,
+              0
+            ]
+          ],
+          "cache_sha256": "32d29420302fdb8b08fd76873d5477c0f6155ccc0ba66d678385905694bd7f94"
+        }
+      ],
+      "writer_flags": [
+        1
+      ],
+      "modeled_boundaries": [
+        5382761504
+      ]
+    },
+    {
+      "case": "full native cache cannot append another item",
+      "snapshots": [
+        {
+          "count": 15000,
+          "rows": [
+            [
+              3000000,
+              1
+            ],
+            [
+              3000001,
+              1
+            ],
+            [
+              3000002,
+              1
+            ],
+            [
+              3000003,
+              1
+            ],
+            [
+              3000004,
+              1
+            ],
+            [
+              3000005,
+              1
+            ],
+            [
+              3000006,
+              1
+            ],
+            [
+              3000007,
+              1
+            ],
+            [
+              3000008,
+              1
+            ],
+            [
+              3000009,
+              1
+            ],
+            [
+              3000010,
+              1
+            ],
+            [
+              3000011,
+              1
+            ],
+            [
+              3000012,
+              1
+            ],
+            [
+              3000013,
+              1
+            ],
+            [
+              3000014,
+              1
+            ],
+            [
+              3000015,
+              1
+            ],
+            [
+              3000016,
+              1
+            ],
+            [
+              3000017,
+              1
+            ],
+            [
+              3000018,
+              1
+            ],
+            [
+              3000019,
+              1
+            ],
+            [
+              3000020,
+              1
+            ],
+            [
+              3000021,
+              1
+            ],
+            [
+              3000022,
+              1
+            ],
+            [
+              3000023,
+              1
+            ],
+            [
+              3000024,
+              1
+            ],
+            [
+              3000025,
+              1
+            ],
+            [
+              3000026,
+              1
+            ],
+            [
+              3000027,
+              1
+            ],
+            [
+              3000028,
+              1
+            ],
+            [
+              3000029,
+              1
+            ],
+            [
+              3000030,
+              1
+            ],
+            [
+              3000031,
+              1
+            ]
+          ],
+          "cache_sha256": "8b41690ec050941dacb5c405de7639e31b48f1e3761efdac92efa0ccfd334c0d"
+        }
+      ],
+      "writer_flags": [
+        1
+      ],
+      "modeled_boundaries": [
+        5382761504
+      ]
+    },
+    {
+      "case": "original completion rejects a grant body with no kind",
+      "snapshots": [
+        {
+          "count": 0,
+          "rows": [],
+          "cache_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "writer_flags": [],
+      "modeled_boundaries": [
+        5389669744,
+        5403201424
+      ]
+    },
+    {
+      "case": "kind-18 original completion dispatcher reaches absolute loot grants without XP or weapon handlers",
+      "snapshots": [
+        {
+          "count": 2,
+          "rows": [
+            [
+              400063,
+              1
+            ],
+            [
+              1001124,
+              3
+            ]
+          ],
+          "cache_sha256": "85870bcc6645a1714e8fb4341f63ff43a0bec542c1172d9b01215bccc1e2943e"
+        },
+        {
+          "count": 2,
+          "rows": [
+            [
+              400063,
+              1
+            ],
+            [
+              1001124,
+              3
+            ]
+          ],
+          "cache_sha256": "85870bcc6645a1714e8fb4341f63ff43a0bec542c1172d9b01215bccc1e2943e"
+        }
+      ],
+      "writer_flags": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "modeled_boundaries": [
+        5382761504,
+        5384600112,
+        5384601040,
+        5388306464,
+        5389669744,
+        5395696688,
+        5397263424,
+        5403198528,
+        5403199776,
+        5403201424,
+        5403202288,
+        5403202688,
+        5403204288
+      ]
+    }
+  ],
+  "native_controller": 0,
+  "native_cache_capacity": 15000,
+  "envelope_gate": {
+    "address": "0x140f33650",
+    "required_literals": [
+      "ACHIEVEMENT",
+      "claimable",
+      "completed",
+      "expirationTimestamp",
+      "expired",
+      "inProgress",
+      "name",
+      "reason",
+      "status",
+      "type"
+    ],
+    "completion_target": "0x140f34ca0",
+    "method": "original instruction/literal validation; not VM executed"
+  },
+  "original_completion_dispatcher_executed": true,
+  "reward_version": {
+    "reader": "0x1420efb80",
+    "consumer": "0x142125410",
+    "tag": 3,
+    "width_bytes": 1,
+    "original_reader_executed": true,
+    "sqlite_name_is_not_wire_type_proof": true
+  },
+  "parser_descriptor_count_offset": 28,
+  "reward_quantity_semantics": "absolute snapshot, flag 1",
+  "verified_trigger_types": [
+    "GRANT_PRODUCT",
+    "GRANT_CURRENCY",
+    "ACTIVATE_ACHIEVEMENT"
+  ],
+  "modeled_boundaries": [
+    "JSON field reads",
+    "controller mapping",
+    "diagnostics",
+    "last-drops history",
+    "Lua begin-event unavailable",
+    "AAR manager summary"
+  ],
+  "original_reward_reader_executed": true,
+  "original_inventory_writer_executed": true,
+  "original_inventory_quantity_getter_executed": true,
+  "native_game_verified": false,
+  "backend_grants_implemented": false,
+  "game_runs_performed": false
+}

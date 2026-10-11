@@ -1,52 +1,61 @@
 #include "PublisherVariables.h"
 
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-
 namespace revamped::iw8::demonware
 {
     namespace
     {
         constexpr std::uint16_t kPublisherMajorVersion = 1u;
         constexpr std::uint16_t kPublisherMinorVersion = 0u;
-        constexpr const char* kEmptyPublisherVariablesJson = "{}";
 
-        // PublisherVariableManager marks the first namespace ("general") as
-        // critical. A successful task carrying an empty object still fails that
-        // fence because ApplyPublisherVariables() returns false when there are
-        // no non-version variables to apply.
+        // Retail ONLINE bootstrap does not consider the required "general"
+        // publisher-variable namespace complete when its parsed variable map
+        // contains only the synthetic MajorVersion/MinorVersion entries.
+        // Native storage processing marks the record successful when it can
+        // read at least one additional key/value entry.  Keep the payload
+        // deliberately small, deterministic and string-only so every supported
+        // serializer path produces the same local cache representation.
         //
-        // Keep the local response intentionally inert: one project-specific
-        // string dvar is enough to make the stock client treat "general" as a
-        // successfully populated publisher-variable namespace without changing
-        // gameplay/network behavior.
+        // Steam Retail applies non-version publisher variables to existing
+        // Dvars through the stock PublisherVariableManager.  Use that native
+        // server-controlled configuration surface instead of writing game
+        // memory or patching any client function.
+        //
+        // Local/offline backend policy:
+        //   NKTMRPRKKK=0  net_relay_enabled
+        //   NSPPTONLNP=0  online_blueprints_enabled
+        //   LKQRNQSSQS=0  online_challenge_fence_enabled
+        //   MNLNLSTSNT=0  crm_enabled
+        //   NQONKSKTLQ=0  dw_region_lookup_timeout
+        //   LNSPMQMSS=0  anticheat main-menu fence failure
+        //   MTNQMNRQML=0  publisher-variable fetch-always
+        //   MLMKNTSSSL=0  publisher-variable fetch-all-on-update
+        //   LNKRTPTKPR=0  publisher-variable refetch-on-mismatch
+        //   MROLPRPTPO=1  com_force_premium
+        //
+        // These remove optional production-only dependencies while retaining
+        // the real stock login, LSG, time, stats/ObjectStore, playlist,
+        // patch-manifest, profile and store bootstrap paths.
+        constexpr const char* kEmptyPublisherVariablesJson = "{}";
         constexpr const char* kGeneralPublisherVariablesJson =
-            "{\"codrevamped_local_pubvar\":\"1\"}";
-
-        bool IsCriticalPublisherNamespace(const std::string& nameSpace)
-        {
-            return nameSpace == "general";
-        }
+            "{"
+            "\"revamped_bootstrap\":\"1\","
+            "\"NKTMRPRKKK\":\"0\","
+            "\"NSPPTONLNP\":\"0\","
+            "\"LKQRNQSSQS\":\"0\","
+            "\"MNLNLSTSNT\":\"0\","
+            "\"NQONKSKTLQ\":\"0\","
+            "\"LNSPMQMSS\":\"0\","
+            "\"MTNQMNRQML\":\"0\","
+            "\"MLMKNTSSSL\":\"0\","
+            "\"LNKRTPTKPR\":\"0\","
+            "\"MROLPRPTPO\":\"1\""
+            "}";
 
         const char* PublisherVariablesJsonForNamespace(const std::string& nameSpace)
         {
-            return IsCriticalPublisherNamespace(nameSpace)
+            return nameSpace == "general"
                 ? kGeneralPublisherVariablesJson
                 : kEmptyPublisherVariablesJson;
-        }
-
-        void LogPublisherVariablesReply(const char* schema, const std::string& nameSpace,
-            const char* json)
-        {
-            std::printf(
-                "[DW-PUBVARS] schema=%s namespace=%s major=%u minor=%u criticalSeed=%s json=%s\n",
-                schema ? schema : "unknown",
-                nameSpace.c_str(),
-                static_cast<unsigned>(kPublisherMajorVersion),
-                static_cast<unsigned>(kPublisherMinorVersion),
-                IsCriticalPublisherNamespace(nameSpace) ? "yes" : "no",
-                json ? json : "{}");
         }
 
         bool ReadLegacyTypedString(const std::uint8_t*& cursor, const std::uint8_t* end,
@@ -159,20 +168,16 @@ namespace revamped::iw8::demonware
             if (CollectPublisherNamespaces(requestPayload, requestPayloadBytes, namespaces))
             {
                 std::vector<std::uint8_t> responseBody;
-                responseBody.reserve(namespaces.size() * 64u);
+                responseBody.reserve(namespaces.size() * 32u);
                 for (const auto& nameSpace : namespaces)
                 {
-                    const char* json = PublisherVariablesJsonForNamespace(nameSpace);
-
                     std::vector<std::uint8_t> info;
-                    info.reserve(nameSpace.size() + std::strlen(json) + 16u);
+                    info.reserve(nameSpace.size() + 16u);
                     AppendPbU32(info, 1u, kPublisherMajorVersion);
                     AppendPbU32(info, 2u, kPublisherMinorVersion);
                     AppendPbString(info, 3u, nameSpace);
-                    AppendPbString(info, 4u, json);
+                    AppendPbString(info, 4u, PublisherVariablesJsonForNamespace(nameSpace));
                     AppendPbObject(responseBody, 1u, info);
-
-                    LogPublisherVariablesReply("struct-adaptive", nameSpace, json);
                 }
 
                 AppendTypedStruct(serviceReply, responseBody);
@@ -184,17 +189,12 @@ namespace revamped::iw8::demonware
             std::string nameSpace;
             if (CollectLegacyPublisherNamespace(requestPayload, requestPayloadBytes, nameSpace))
             {
-                const char* json = PublisherVariablesJsonForNamespace(nameSpace);
-
                 AppendTypedU32(serviceReply, 1u);
                 AppendTypedU32(serviceReply, 1u);
                 AppendTypedU16(serviceReply, kPublisherMajorVersion);
                 AppendTypedU16(serviceReply, kPublisherMinorVersion);
                 AppendTypedString(serviceReply, nameSpace);
-                AppendTypedString(serviceReply, json);
-
-                LogPublisherVariablesReply("legacy-adaptive", nameSpace, json);
-
+                AppendTypedString(serviceReply, PublisherVariablesJsonForNamespace(nameSpace));
                 if (detectedSchema)
                     *detectedSchema = PayloadSchema::LegacyByteBuffer;
                 return true;
@@ -204,15 +204,12 @@ namespace revamped::iw8::demonware
                 *detectedSchema = PayloadSchema::Unknown;
             return false;
         }
-
         bool AppendPublisherVariablesLegacy120(std::vector<std::uint8_t>& serviceReply,
             const std::uint8_t* requestPayload, std::size_t requestPayloadBytes)
         {
             std::string nameSpace;
             if (!CollectLegacyPublisherNamespace(requestPayload, requestPayloadBytes, nameSpace))
                 return false;
-
-            const char* json = PublisherVariablesJsonForNamespace(nameSpace);
 
             // Normal legacy bdRemoteTask result envelope: one returned result.
             AppendTypedU32(serviceReply, 1u); // numResults
@@ -228,9 +225,7 @@ namespace revamped::iw8::demonware
             AppendTypedU16(serviceReply, kPublisherMajorVersion);
             AppendTypedU16(serviceReply, kPublisherMinorVersion);
             AppendTypedString(serviceReply, nameSpace);
-            AppendTypedString(serviceReply, json);
-
-            LogPublisherVariablesReply("legacy-95-1", nameSpace, json);
+            AppendTypedString(serviceReply, PublisherVariablesJsonForNamespace(nameSpace));
             return true;
         }
 
@@ -242,29 +237,17 @@ namespace revamped::iw8::demonware
                 return false;
 
             std::vector<std::uint8_t> responseBody;
-            responseBody.reserve(namespaces.size() * 64u);
+            responseBody.reserve(namespaces.size() * 32u);
             for (const auto& nameSpace : namespaces)
             {
-                const char* json = PublisherVariablesJsonForNamespace(nameSpace);
-
                 std::vector<std::uint8_t> info;
-                info.reserve(nameSpace.size() + std::strlen(json) + 16u);
+                info.reserve(nameSpace.size() + 16u);
                 AppendPbU32(info, 1u, kPublisherMajorVersion);
                 AppendPbU32(info, 2u, kPublisherMinorVersion);
                 AppendPbString(info, 3u, nameSpace);
-                AppendPbString(info, 4u, json);
+                AppendPbString(info, 4u, PublisherVariablesJsonForNamespace(nameSpace));
                 AppendPbObject(responseBody, 1u, info);
-
-                LogPublisherVariablesReply("struct-95-3", nameSpace, json);
             }
-
-            std::printf(
-                "[DW-PUBVARS] schema=struct-95-3 namespaces=%zu responseObjects=%zu generalCriticalSeed=%s\n",
-                namespaces.size(),
-                namespaces.size(),
-                std::find(namespaces.begin(), namespaces.end(), "general") != namespaces.end()
-                    ? "yes"
-                    : "not-requested");
 
             AppendTypedStruct(serviceReply, responseBody);
             return true;

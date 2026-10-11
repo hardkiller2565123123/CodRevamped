@@ -4,10 +4,11 @@ namespace revamped::iw8::demonware
     {
         // MW2019's frontend networking bootstrap uses the async matchmaking
         // service for datacenter/relay discovery. The local preservation
-        // backend deliberately advertises no physical Demonware relay: task 16
-        // returns a valid empty datacenter preference array, task 24 returns a
-        // minimal local datacenter label, task 25 completes DC-QoS with an empty
-        // host set, and task 26 uses the stock no-relay terminal fallback.
+        // backend advertises a local-only relay bootstrap: task 16 returns a
+        // valid empty datacenter preference array, task 24 returns a minimal
+        // local datacenter label, task 25 completes DC-QoS with an empty host
+        // set, and task 26 returns a syntactically valid local bdClientAuthToken
+        // so the stock relay-auth remote task completes naturally.
         constexpr TaskRoute kDataCenterPreferencesRoute = {
             145u, 16u, "bdAsyncMatchMaking", "getDataCenterPreferences",
             ReplyPolicy::NoResultSuccess, TaskSemantic::DcQos
@@ -1229,6 +1230,90 @@ namespace revamped::iw8::demonware
             return FinishLegacyTaskReply(serviceReply, replyPlain);
         }
 
+        bool BuildLocalRelayClientAuthTokenReply(
+            const TaskRequest& request,
+            const std::uint8_t* requestPayload,
+            std::size_t requestPayloadBytes,
+            std::uint64_t transactionId,
+            std::vector<std::uint8_t>& replyPlain)
+        {
+            // Stock MW2019 sends one opaque byte (currently 0) for this task.
+            // Keep validation deliberately narrow so a future build with a
+            // different request contract does not receive a fabricated token.
+            if (!requestPayload || requestPayloadBytes != 1u ||
+                requestPayload[0] != 0u)
+            {
+                return false;
+            }
+
+            // OpenIW8's bdClientAuthTokenResult::deserialize reads one typed
+            // blob into a 77-byte temporary and then calls
+            // bdClientAuthToken::deserialize.  The exact token layout is:
+            //
+            //   byte   0      version (must be 1)
+            //   bytes  1..56  encrypted/opaque relay ticket
+            //   bytes 57..72  16-byte relay secret
+            //   bytes 73..76  expiry delta, little-endian uint32
+            //
+            // The local preservation backend has no external Demonware relay,
+            // so the encrypted portion is intentionally an opaque local marker.
+            // The client only needs a structurally valid token for the stock
+            // remote task / relay-auth state machine to complete.
+            std::uint8_t token[77]{};
+            token[0] = 1u;
+
+            static constexpr char kOpaqueMarker[] =
+                "CodRevamped-IW8-Local-Relay-Auth";
+            constexpr std::size_t kEncryptedOffset = 1u;
+            constexpr std::size_t kEncryptedBytes = 56u;
+            const std::size_t markerBytes =
+                (sizeof(kOpaqueMarker) - 1u < kEncryptedBytes)
+                    ? sizeof(kOpaqueMarker) - 1u
+                    : kEncryptedBytes;
+            std::memcpy(
+                token + kEncryptedOffset,
+                kOpaqueMarker,
+                markerBytes);
+
+            // Deterministic local-only secret. It is not an official DW relay
+            // credential and never leaves the preservation backend path.
+            static constexpr std::uint8_t kLocalSecret[16] = {
+                0x43u, 0x6Fu, 0x64u, 0x52u,
+                0x65u, 0x76u, 0x61u, 0x6Du,
+                0x70u, 0x65u, 0x64u, 0x49u,
+                0x57u, 0x38u, 0x21u, 0x01u
+            };
+            std::memcpy(token + 57u, kLocalSecret, sizeof(kLocalSecret));
+
+            constexpr std::uint32_t kExpirySeconds = 3600u;
+            token[73] = static_cast<std::uint8_t>(kExpirySeconds & 0xFFu);
+            token[74] = static_cast<std::uint8_t>((kExpirySeconds >> 8u) & 0xFFu);
+            token[75] = static_cast<std::uint8_t>((kExpirySeconds >> 16u) & 0xFFu);
+            token[76] = static_cast<std::uint8_t>((kExpirySeconds >> 24u) & 0xFFu);
+
+            std::vector<std::uint8_t> serviceReply;
+            BuildLegacyTaskEnvelope(
+                serviceReply, transactionId, request.taskId);
+
+            // One result / one total result, then bdClientAuthTokenResult's
+            // single typed blob.
+            AppendTypedU32(serviceReply, 1u);
+            AppendTypedU32(serviceReply, 1u);
+            AppendTypedBlob(serviceReply, token, sizeof(token));
+
+            std::printf(
+                "[DW-RELAY] service=%u task=%u transaction=%llu "
+                "response=local-auth-token-success tokenBytes=%zu "
+                "version=1 expiry=%u stock-fallback=no\\n",
+                static_cast<unsigned>(request.serviceId),
+                static_cast<unsigned>(request.taskId),
+                static_cast<unsigned long long>(transactionId),
+                sizeof(token),
+                kExpirySeconds);
+
+            return FinishLegacyTaskReply(serviceReply, replyPlain);
+        }
+
         bool BuildEmptyDataCenterPreferencesReply(
             const TaskRequest& request,
             const std::uint8_t* requestPayload,
@@ -1339,12 +1424,20 @@ namespace revamped::iw8::demonware
                  !(cursor + 1u == requestPayloadBytes && requestPayload[cursor] == 0u)))
                 return false;
 
-            // Online_DcQos_FetchRelayServerComplete accepts the relay result as
-            // valid when the root JSON contains a datacenter string. Omitting
-            // server_info/relay_auth_token intentionally avoids advertising a
-            // fake remote relay while still finalizing the QoS result.
-            const std::string json =
-                "{\"datacenter\":\"bG9jYWw=\"}";
+            // Offline preservation mode: deliberately return a successful
+            // Demonware task with NO usable relay server details.
+            //
+            // Why:
+            // - task 26 must succeed so NetRelay::m_authTokenState becomes the
+            //   "fetched" state instead of LONG/retry.
+            // - Online_DcQos_FetchRelayServerComplete treats an empty JSON
+            //   object as a completed-but-invalid relay result.
+            // - NetRelay::Start then sees authToken=fetched + relayResult=invalid
+            //   and takes IW8's native no-relay path:
+            //       dwRelaySetError(DW_NET_ERROR_NO_RELAY_SERVER)
+            // - NetRelay::IsStarted() treats dwRelayIsFailed() as terminal,
+            //   allowing the relay fence to pass without a UDP relay server.
+            const std::string json = "{}";
 
             std::vector<std::uint8_t> serviceReply;
             BuildLegacyTaskEnvelope(serviceReply, transactionId, request.taskId);
@@ -1353,7 +1446,9 @@ namespace revamped::iw8::demonware
             AppendTypedString(serviceReply, json);
 
             std::printf(
-                "[DW-DCQOS] getPreferredServerDetails build=%s context=%s datacenter=local relayToken=omitted response=success\n",
+                "[DW-DCQOS] getPreferredServerDetails build=%s context=%s "
+                "relayResult=intentionally-invalid response=success "
+                "mode=native-no-relay-terminal\n",
                 buildName.c_str(), context.c_str());
             return FinishLegacyTaskReply(serviceReply, replyPlain);
         }
@@ -1804,12 +1899,17 @@ namespace revamped::iw8::demonware
 
         if (route.serviceId == 145u && route.taskId == 26u)
         {
-            // Do not fabricate a bdClientAuthToken. NetRelay's stock failure path
-            // marks the auth-token attempt finished and then falls back to
-            // DW_NET_ERROR_NO_RELAY_SERVER; NET_IsRelayStarted treats the failed
-            // relay state as terminal for the relay fence.
-            return BuildIntentionalTaskFailure(
-                request, transactionId, 108u, "[DW-RELAY]", replyPlain);
+            // IMPORTANT: this task must succeed. On failure IW8 sets
+            // m_authTokenState=LONG, and NetRelay::Request() fetches it again
+            // forever. A valid local token moves the state to "fetched"; task
+            // 24 then intentionally supplies no usable relay result so the
+            // stock NetRelay::Start path selects DW_NET_ERROR_NO_RELAY_SERVER.
+            return BuildLocalRelayClientAuthTokenReply(
+                request,
+                requestPayload,
+                requestPayloadBytes,
+                transactionId,
+                replyPlain);
         }
 
         if (route.replyPolicy == ReplyPolicy::LegacyUnsupported)

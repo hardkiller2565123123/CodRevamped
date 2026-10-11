@@ -1,0 +1,80 @@
+{
+  "schema": 1,
+  "passed": true,
+  "generated_utc": "2026-10-09T08:44:02.166188+00:00",
+  "target_image_sha256": "68fb1cbcb2924182724004039de55a4c50152bb6561803c4898b7930b38132f0",
+  "tool_sha256": "59b34b5b6c3ada4a97333eaf03ef3b6cf70405e10e1ddb3df79fb69be4560f79",
+  "function": {
+    "va": 5404151536,
+    "size": 81,
+    "bytes_sha256": "99d2cc1dbc125fe60aeb6230c1033e4ddda1e4488b7baf555c32ea70e50e79da"
+  },
+  "original_instructions_executed": true,
+  "modeled_external_calls": false,
+  "scope": "Nine valid frame allocations; actual GPR preservation, return and writes below entry RSP. Flags and Windows guard-page faults are not modeled.",
+  "cases": [
+    {
+      "allocation": 0,
+      "passed": true,
+      "preserved_gprs": 15,
+      "writes_below_entry_rsp": 2,
+      "probed_pages": 0
+    },
+    {
+      "allocation": 32,
+      "passed": true,
+      "preserved_gprs": 15,
+      "writes_below_entry_rsp": 2,
+      "probed_pages": 0
+    },
+    {
+      "allocation": 4095,
+      "passed": true,
+      "preserved_gprs": 15,
+      "writes_below_entry_rsp": 2,
+      "probed_pages": 0
+    },
+    {
+      "allocation": 4096,
+      "passed": true,
+      "preserved_gprs": 15,
+      "writes_below_entry_rsp": 2,
+      "probed_pages": 0
+    },
+    {
+      "allocation": 4097,
+      "passed": true,
+      "preserved_gprs": 15,
+      "writes_below_entry_rsp": 2,
+      "probed_pages": 0
+    },
+    {
+      "allocation": 6848,
+      "passed": true,
+      "preserved_gprs": 15,
+      "writes_below_entry_rsp": 3,
+      "probed_pages": 1
+    },
+    {
+      "allocation": 8192,
+      "passed": true,
+      "preserved_gprs": 15,
+      "writes_below_entry_rsp": 3,
+      "probed_pages": 1
+    },
+    {
+      "allocation": 33792,
+      "passed": true,
+      "preserved_gprs": 15,
+      "writes_below_entry_rsp": 10,
+      "probed_pages": 8
+    },
+    {
+      "allocation": 69632,
+      "passed": true,
+      "preserved_gprs": 15,
+      "writes_below_entry_rsp": 18,
+      "probed_pages": 16
+    }
+  ]
+}

@@ -1,0 +1,280 @@
+{
+  "schema": 1,
+  "passed": true,
+  "generated_utc": "2026-10-07T22:46:38.438719+00:00",
+  "target_image_sha256": "68fb1cbcb2924182724004039de55a4c50152bb6561803c4898b7930b38132f0",
+  "tool_sha256": "b92e1ad875d9a4978de19456da5293af981c5944e25fbe1c60d97161f8cffc99",
+  "functions": {
+    "0x140f33650": {
+      "size": 944,
+      "bytes_sha256": "1d1f1178f5ea583c6f9f206a682e7ec799a8f8a002b7f29fbbf171167380fe0d"
+    },
+    "0x1420e4250": {
+      "size": 53,
+      "bytes_sha256": "a6c59e8d5d42655426862a5d4a9b0ae3fddd8830acb0ca19b4c5d644d836fbc3"
+    },
+    "0x14107e890": {
+      "size": 7,
+      "bytes_sha256": "3b98965107b095508ee4fc4b85b2f7577d6b087b36ca11d22785db60f8c44b97"
+    },
+    "0x142103dc0": {
+      "size": 9,
+      "bytes_sha256": "b48012e8f742594a83a6f476efe990e215c15697818fe172e4aed993851ec3a7"
+    },
+    "0x1421ccf60": {
+      "size": 33,
+      "bytes_sha256": "b3ad9214d16630c341fb631525d4c716af9c64188c7dd173019434064eb0aac2"
+    }
+  },
+  "cases": [
+    {
+      "case": "corrected generated progression envelope",
+      "kind": 0,
+      "reason": "inProgress",
+      "dispatches": [
+        {
+          "handler": "update",
+          "owner": 42,
+          "event": {
+            "type": "ACHIEVEMENT",
+            "name": "player_xp",
+            "reason": "inProgress",
+            "kind": 0,
+            "id_": 1000000,
+            "multiProgress": {
+              "xp": {
+                "value": 750
+              },
+              "rank": {
+                "value": 1
+              }
+            }
+          }
+        }
+      ],
+      "diagnostics": [],
+      "boundaries": [
+        5384654656,
+        5388306464,
+        5403198128,
+        5403202688,
+        5403204480,
+        5403229008,
+        5403236832,
+        5403272352,
+        5404323008
+      ]
+    },
+    {
+      "case": "corrected generated progression envelope",
+      "kind": 0,
+      "reason": "completed",
+      "dispatches": [
+        {
+          "handler": "completion",
+          "owner": 42,
+          "event": {
+            "type": "ACHIEVEMENT",
+            "name": "player_xp",
+            "reason": "completed",
+            "kind": 0,
+            "id_": 1000000,
+            "multiProgress": {
+              "xp": {
+                "value": 750
+              },
+              "rank": {
+                "value": 1
+              }
+            }
+          }
+        }
+      ],
+      "diagnostics": [],
+      "boundaries": [
+        5384653984,
+        5388306464,
+        5403198128,
+        5403202688,
+        5403204480,
+        5403229008,
+        5403236832,
+        5403272352,
+        5404323008
+      ]
+    },
+    {
+      "case": "corrected generated progression envelope",
+      "kind": 5,
+      "reason": "inProgress",
+      "dispatches": [
+        {
+          "handler": "update",
+          "owner": 42,
+          "event": {
+            "type": "ACHIEVEMENT",
+            "name": "iw8_pi_golf21",
+            "reason": "inProgress",
+            "kind": 5,
+            "id_": 2000001,
+            "multiProgress": {
+              "xp": {
+                "value": 750
+              },
+              "rank": {
+                "value": 1
+              }
+            }
+          }
+        }
+      ],
+      "diagnostics": [],
+      "boundaries": [
+        5384654656,
+        5388306464,
+        5403198128,
+        5403202688,
+        5403204480,
+        5403229008,
+        5403236832,
+        5403272352,
+        5404323008
+      ]
+    },
+    {
+      "case": "corrected generated progression envelope",
+      "kind": 5,
+      "reason": "completed",
+      "dispatches": [
+        {
+          "handler": "completion",
+          "owner": 42,
+          "event": {
+            "type": "ACHIEVEMENT",
+            "name": "iw8_pi_golf21",
+            "reason": "completed",
+            "kind": 5,
+            "id_": 2000001,
+            "multiProgress": {
+              "xp": {
+                "value": 750
+              },
+              "rank": {
+                "value": 1
+              }
+            }
+          }
+        }
+      ],
+      "diagnostics": [],
+      "boundaries": [
+        5384653984,
+        5388306464,
+        5403198128,
+        5403202688,
+        5403204480,
+        5403229008,
+        5403236832,
+        5403272352,
+        5404323008
+      ]
+    },
+    {
+      "case": "native rejection control",
+      "alteration": {
+        "type": "achievement"
+      },
+      "dispatches": [],
+      "diagnostics": [
+        "Achievement message has bad type value\n"
+      ],
+      "boundaries": [
+        5388305776,
+        5388306464,
+        5403198128,
+        5403202688,
+        5403204480,
+        5403229008,
+        5403236832,
+        5403272352,
+        5404323008
+      ]
+    },
+    {
+      "case": "native rejection control",
+      "alteration": {
+        "name": null
+      },
+      "dispatches": [],
+      "diagnostics": [
+        "Achievement message has bad name value\n"
+      ],
+      "boundaries": [
+        5388305776,
+        5388306464,
+        5403198128,
+        5403202688,
+        5403204480,
+        5403229008,
+        5403236832,
+        5403272352,
+        5404323008
+      ]
+    },
+    {
+      "case": "native rejection control",
+      "alteration": {
+        "reason": null
+      },
+      "dispatches": [],
+      "diagnostics": [
+        "Bad or missing reason for achievement event (%s)\n"
+      ],
+      "boundaries": [
+        5388305776,
+        5388306464,
+        5403198128,
+        5403202688,
+        5403204480,
+        5403229008,
+        5403236832,
+        5403272352,
+        5404323008
+      ]
+    },
+    {
+      "case": "native rejection control",
+      "alteration": {
+        "reason": "IN_PROGRESS"
+      },
+      "dispatches": [],
+      "diagnostics": [
+        "Bad or missing reason for achievement event (%s)\n"
+      ],
+      "boundaries": [
+        5388305776,
+        5388306464,
+        5403198128,
+        5403202688,
+        5403204480,
+        5403229008,
+        5403236832,
+        5403272352,
+        5404323008
+      ]
+    }
+  ],
+  "confirmed_previous_notification_rejected": true,
+  "required_type": "ACHIEVEMENT",
+  "original_dispatcher_executed": true,
+  "modeled_boundaries": [
+    "bdString access",
+    "JSON parse/field access",
+    "memset",
+    "diagnostics",
+    "handler entry",
+    "account/JSON retirement"
+  ],
+  "native_game_verified": false,
+  "game_runs_performed": false
+}

@@ -1,0 +1,35 @@
+{
+  "schema": 1,
+  "created_utc": "2026-10-06T07:53:41.493923+00:00",
+  "server_sha256": "7069ed6be1d2261fd6b5117902638ac8d48323c0dee86902a462d0aaf5fc5cc9",
+  "game_sha256": "b326981a9718cedbc05228d40bef8b2adcd6be89307b2cde7d8e878a3ca67885",
+  "engine_recompiled": false,
+  "suite_grouped_checks": 219,
+  "covered_checks": [
+    "host migration denies takeover while the original native host lease is live",
+    "host migration keeps get-documents readable, returns native false for stale CAS and rejects wrong native addresses or missing/removing successor",
+    "host migration requires current assignment, live token lease and original search-token binding; newer logins/searches cannot revive historical membership",
+    "host migration atomically moves ownership and native address, preserves DTLS/map/rules, retires departed member/index state and emits native update 2006 with monotonic clocks",
+    "host migration fences a returned former host while the successor can perform ordinary host updates and native disband",
+    "host migration recovers a real interrupted ownership/index publication as one durable transaction, with no mixed former-host authority"
+  ],
+  "native_startup_reconnect_receipt": "validation\\20261006-host-migration-native-reconnect.json",
+  "native_startup_reconnect_receipt_sha256": "3763dcfe230284e4c93b30dc30b9cfdde7cb70502311d2a33a184940cfb7478f",
+  "lobby_verification_sha256": "47c4f5a54b78d7f25ac8ea26a33aade05bf15c126994ab5704530870fa5d6644",
+  "source_sha256": {
+    "src/matchmaking_services.cpp": "8600ea4213fb855165fd47ed5a704c2f3bef2024218eebf832e2da8f38ab75c2",
+    "tools/host_migration_fixtures.py": "518bb3da595077292e5b9456afdd5b226ee5b189a79529b3aa7fab3db57eee23",
+    "tools/test-lobby.py": "97b81fdddf1e2e3b2cfdc352bac0af740b08f858efd82cb23034c6db26e25514"
+  },
+  "original_target_evidence_sha256": {
+    "data/native-mm-document-parsers.json": "822d369d7cb0761d67ba51cc157d91e6e70b539b58b12431cd63e9fcd117f347",
+    "data/native-host-doc-callback-callers-20261006.json": "58c5fa5d7d868bc0f5fa670753ca139221315a9c21f67a7667cd5d8261ea5a81"
+  },
+  "party_elected_native_contract_implemented": true,
+  "native_in_game_host_migration_callback_verified": false,
+  "automatic_backend_host_election_implemented": false,
+  "two_network_gameplay_verified": false,
+  "map_or_match_test_performed": false,
+  "complete_backend_verified": false,
+  "native_ui_limit": "Terms of Agreement screen remained unaccepted"
+}

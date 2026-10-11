@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "generated_utc": "2026-10-06T22:32:29.649302+00:00",
+  "passed": true,
+  "backend_sha256": "8919c101bb62b7cb002c09c114c6c3182c06964ea1e510db4d6f74b0dd59f031",
+  "unchanged_shipping_game_sha256": "bdc091d35dc57f29c10ce14a4552467a5ce0d8c0d881d287ec31f09fc7ee9e18",
+  "build_receipt": {
+    "path": "data/backend-snapshot-1791325176234385200/build-receipt.json",
+    "sha256": "2e2565427d5ee4d674b61510306b9d9b6c5a3657ce46849bef1c5bea50cec399"
+  },
+  "protocol_evidence": {
+    "path": "data/lobby-verification.json",
+    "sha256": "1b305e7fee8d726b4fbea5209ee1eead4bba4bf55c7ef9c06efa6ab068397791"
+  },
+  "protocol_groups": 295,
+  "account_protocol_checks": [
+    "Four native account routes bind exact Replay methods/paths/body layouts; foreign sessions and invalid or ambiguous credential fields cannot mutate existing player identities",
+    "Optional email credentials attach to the stable signed player without provisioning; salted PBKDF2-SHA256 matches an independent implementation and exact upgrade retries preserve durable files and grants",
+    "Native UNO ID/access/refresh token triples are distinct per live session; link and Umbrella updates persist owner-bound state and credential changes revoke grants across all sessions without changing account IDs",
+    "Failed intent publication changes neither the account document nor the platform profile and cannot issue success or new grants",
+    "Same-process publication recovery revokes the old grant before authorization is checked; a stale token cannot overwrite recovered credentials and another owner's username lookup remains available",
+    "A real account-document/profile split interruption recovers through server initialization; credential hashes, name and stable IDs survive restart, old grants expire and current UNO access tokens authorize native rename"
+  ],
+  "target_contract_evidence": {
+    "path": "validation/20261006-native-account-auth-layout.json",
+    "sha256": "f13eb6389ba3e97e1b17924c8f616143bf5452d86e7d027dedc349e9ba9637f4"
+  },
+  "native_startup": {
+    "game_sha256": "73ded44317c35d6efcfeb9ca9f5fa03a20f73e41926e6ea3a0d6c94423db7644",
+    "native_online_status": 2,
+    "native_fences_passing": 27,
+    "native_logged_in": true,
+    "network_error": 0,
+    "relay_state": 3,
+    "friends_empty": true,
+    "same_game_process": true,
+    "evidence": [
+      {
+        "path": "data/native-tournament-offline-20261006/alpha/startup.json",
+        "sha256": "d44c165e6d4c6fd3ee0043c20be0590f2ff483e4d0c0fd7096f028795594f907"
+      },
+      {
+        "path": "data/native-tournament-offline-20261006/alpha/stable.json",
+        "sha256": "74eb986243ee59f9783b37fb294611c54140f267b8737ea1c8d633214a716e8a"
+      }
+    ]
+  },
+  "account_menu_callbacks_verified": false,
+  "native_crossplay_login_selected": false,
+  "main_exe_ini_identity_preserved": true,
+  "game_recompile_performed": false,
+  "owned_root_test_artifacts_removed": true,
+  "map_test_performed": false,
+  "cross_network_gameplay_verified": false,
+  "full_backend_complete": false
+}

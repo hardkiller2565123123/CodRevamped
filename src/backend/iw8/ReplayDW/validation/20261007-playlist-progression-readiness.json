@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "generated_utc": "2026-10-07T12:44:20.027027+00:00",
+  "passed": true,
+  "passed_scope": "Fresh backend compilation and bounded playlist/native-wire contracts",
+  "backend_sha256": "26e8b34b93de4842f70636e8e37c7f08f5fd723372cb6562d4690179fd30641b",
+  "unchanged_shipping_game_sha256": "b09a9ba25f733960dd1f8c569f566979804c2a1a247a9753e2c6e7a50556c138",
+  "build_receipt": {
+    "path": "data/subsystem-integration-20261007/26e8b34b93de/backend-build.json",
+    "sha256": "aa8a401c3c94f60ef74629cb804e1ae9a7a95c674645a20b0b90467b656c4578"
+  },
+  "protocol_evidence": {
+    "path": "data/subsystem-integration-20261007/26e8b34b93de/multiplayer-progression-wire.json",
+    "sha256": "b4d04e534b5d4b8f8058aa7e4ac7b2f400414f7700fba71ea018b4c978cc857d"
+  },
+  "playlist_protocol_evidence": {
+    "path": "data/subsystem-integration-20261007/26e8b34b93de/playlist-wire.json",
+    "sha256": "4083c19e0d1170c532aa59a8dccaad56856663dacb37586951ba775f2be01a55"
+  },
+  "compiled_selector_evidence": {
+    "path": "data/subsystem-integration-20261007/26e8b34b93de/compiled-selector.json",
+    "sha256": "28526071e330bcc941ae67d334e8cd9260ec837a4f0cf9800b207a46d214fb5c"
+  },
+  "package_inventory": {
+    "path": "data/subsystem-integration-20261007/26e8b34b93de/installed-packages.json",
+    "sha256": "7033d9d236a73c2f8bfb45d5d9c1924feea8d9b5b148e28644f2f3c8000e49a1"
+  },
+  "protocol_checks": 20,
+  "full_protocol_evidence": {
+    "path": "data/subsystem-integration-20261007/26e8b34b93de/full-protocol.json",
+    "sha256": "e03f8d9209fc341609fbe2cc520da743d8ab89ed16333cd95091fddc12873185"
+  },
+  "full_protocol_checks": 297,
+  "playlists_checked": 63,
+  "eligible_playlists": 44,
+  "installed_main_packages": 12,
+  "native_startup": {
+    "passed": false,
+    "pending": true,
+    "evidence": []
+  },
+  "game_runs_performed": false,
+  "native_map_load_verified": false,
+  "transient_completeness_verified": false,
+  "full_backend_complete": false,
+  "source_scope": "Committed snapshot; unrelated dirty sources excluded"
+}

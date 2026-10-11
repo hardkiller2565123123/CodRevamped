@@ -1,0 +1,113 @@
+{
+  "passed": true,
+  "target_image_sha256": "68fb1cbcb2924182724004039de55a4c50152bb6561803c4898b7930b38132f0",
+  "tool_sha256": "8112220f0793184c06606a148292d8f85387fe098514f77cfb8d9f984d4c291b",
+  "parser_proof_path": "data/remaining-destruction-20261010/challenge-parser-verified.json",
+  "parser_proof_sha256": "93646a23f2ab8edc52d3712586df875843a1ffeca218865e09a5da073a8f867c",
+  "sources": [
+    {
+      "path": "data/remaining-contracts-20261009/native-challenge-scripts/scripts/cp_mp/challenges.gscbin",
+      "sha256": "074bcfaf5cd6fe39c6fde4f02321b7db9ab90197f1eab7d43afbc47a938694f7"
+    },
+    {
+      "path": "data/remaining-contracts-20261009/native-challenge-scripts/disassembled/iw8/challenge-normalized.gscasm",
+      "sha256": "eb56bccf022463022125d7374a15548a47fda3efb3628edc67dafa5ef8c51576"
+    }
+  ],
+  "bytecode_sha256": "cc6d1a3a47ed7c10ce372fabf1ca59a6426b2d8d49ae8efc2e3e1d2b15a0ba54",
+  "flags": [
+    {
+      "name": "Player",
+      "bit": 1,
+      "original_offsets": [
+        5062
+      ],
+      "original_bytes_hex": "16010f"
+    },
+    {
+      "name": "Killstreak",
+      "bit": 2,
+      "original_offsets": [
+        5090
+      ],
+      "original_bytes_hex": "16020f"
+    },
+    {
+      "name": "AirborneStreak",
+      "bit": 4,
+      "original_offsets": [
+        5322
+      ],
+      "original_bytes_hex": "16040f"
+    },
+    {
+      "name": "Ground",
+      "bit": 8,
+      "original_offsets": [
+        5312,
+        5389
+      ],
+      "original_bytes_hex": "16080f"
+    },
+    {
+      "name": "SupportStreak",
+      "bit": 16,
+      "original_offsets": [
+        5332
+      ],
+      "original_bytes_hex": "16100f"
+    },
+    {
+      "name": "Vehicle",
+      "bit": 32,
+      "original_offsets": [
+        5356
+      ],
+      "original_bytes_hex": "16200f"
+    },
+    {
+      "name": "Equipment",
+      "bit": 64,
+      "original_offsets": [
+        5406
+      ],
+      "original_bytes_hex": "16400f"
+    },
+    {
+      "name": "AgentSoldier",
+      "bit": 512,
+      "original_offsets": [
+        5460
+      ],
+      "original_bytes_hex": "6600020f"
+    },
+    {
+      "name": "AgentJuggernaut",
+      "bit": 128,
+      "original_offsets": [
+        5472
+      ],
+      "original_bytes_hex": "16800f"
+    },
+    {
+      "name": "AgentSuicideBomber",
+      "bit": 1024,
+      "original_offsets": [
+        5483
+      ],
+      "original_bytes_hex": "6600040f"
+    },
+    {
+      "name": "AgentShield",
+      "bit": 256,
+      "original_offsets": [
+        5495
+      ],
+      "original_bytes_hex": "6600010f"
+    }
+  ],
+  "generated": "src/replay_kill_target.h",
+  "generated_sha256": "06537c36dc4b9f4903b690f3d73fe9b58c4315dd3823a68a39cc1716d0fcd72d",
+  "native_game_execution_verified": false,
+  "scope": "Original ScriptFile constant operands and original native parser output; overlapping masks retained"
+}

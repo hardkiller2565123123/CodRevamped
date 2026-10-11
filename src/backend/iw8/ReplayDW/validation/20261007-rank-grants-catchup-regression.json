@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "passed": true,
+  "checks": [
+    "signed local rank restoration is published once on the authenticated idle writer without any achievement query",
+    "accepted earned XP and its pending local-save snapshot share the durable event journal; successful immediate delivery coalesces idle repeats",
+    "an older signed local snapshot cannot erase pending XP; reconnect receives the accepted total without retrying its event",
+    "nonce-bound local persistence confirmation retires the pending snapshot; later awards create a new one",
+    "explicit INI rank changes override pending XP while preserving accepted-event retry identity",
+    "a blocked accepted event cannot notify partial state; idle maintenance recovers and delivers it after the write blocker is removed",
+    "pending progression survives backend process restart and stale player-local restoration without an event retry",
+    "after pending delivery is confirmed, the existing signed local-profile authority remains intact"
+  ],
+  "server_sha256": "1b4370e65972f5000db6686799be668a946303d0d190c370a3a4b2eecd73eef9",
+  "native_game_verified": false,
+  "fixture": "E:\\DW\\IW8\\data\\progression-catchup-fixture-1791415280323848600"
+}

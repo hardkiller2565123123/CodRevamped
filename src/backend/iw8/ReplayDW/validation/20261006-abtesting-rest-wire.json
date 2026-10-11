@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "passed": true,
+  "verified_utc": "2026-10-06T16:58:49.463123+00:00",
+  "server_sha256": "9d65291ea8732de9faedbb8183bc7e2c3aab55d28a856549406b9ad58e9c4a4f",
+  "source_sha256": {
+    "src/abtesting_services.cpp": "891e46c21c0e51df85f6d276221d698ad44811e218a7790f869176d4a9218083",
+    "src/abtesting_services.h": "1e0f918b588c4da81af6b5b8948affac58400c8b94cb5fbaf0590497cc9387b4",
+    "src/rest_services.cpp": "f99c67a7141de4ef0382b8f3f7b397e92a81df0fc389c82ee56b7758ef41a424",
+    "src/rest_services.h": "325b7ff3417690471be78879bc49159305431ca5e49e1ae8773ccb8f7a0793da",
+    "tools/test-lobby.py": "5a7a366e0041444f55d0971aac929cc96af36199654f9a35292b90ed9a0c6511",
+    "tools/abtesting_rest_fixtures.py": "5d3d3699579850078c98c08acd5a0dab4e0151bae433c69866a09a1dcc093dbc"
+  },
+  "encrypted_service_groups": 280,
+  "ab_rest_groups": [
+    "AB REST explicitly addressed bodyless POST shares native IDs, cohorts, schedules and durable tokens with task 194/1; UNO/Battle.net aliases preserve signed ownership",
+    "AB REST rejects the original SDK's empty service, malformed/body-bearing requests, foreign namespaces and duplicate query fields before persistence",
+    "Both AB transports accept eight enrollments at exactly 8095 JSON bytes and reject one-byte legacy buffer overflow without publishing a new token or enrollment",
+    "AB REST failed atomic publication preserves the prior complete enrollment; successful retry replaces it through the shared legacy journal",
+    "AB REST/legacy shared cohort and owner token survive actual backend process restart"
+  ],
+  "maximum_enrollment_json_bytes": 8095,
+  "legacy_buffer_includes_terminator_bytes": 8096,
+  "native_game_rest_callback_verified": false,
+  "game_recompiled": false,
+  "two_network_gameplay_verified": false,
+  "complete_backend_verified": false
+}

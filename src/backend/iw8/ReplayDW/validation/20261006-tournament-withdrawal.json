@@ -1,0 +1,38 @@
+{
+  "schema": 1,
+  "verified_at": "2026-10-06T11:18:43.962694+00:00",
+  "server_sha256": "c34afab4a5d05f058fe498209e8b0dac4d819194ed5e31e71f7e8d19725c8d51",
+  "passed": true,
+  "scope": "Authenticated explicit withdrawal cancels unfinished backend-managed tournaments",
+  "checks": [
+    "Authenticated departure after elimination or a completed final preserves all seven actual results and never cancels the finished managed tournament",
+    "Managed PLAYING decline retires all eight live party searches atomically; native event-2012 is delivered once even with live updates disabled, and stale readiness/accept/result/registration cannot resurrect the competition",
+    "Managed PLAYING leave retires an allocated lobby and all eight live party searches atomically; native event-2012 is delivered once even with live updates disabled, and stale readiness/accept/result/registration cannot resurrect the competition",
+    "Withdrawal validates complete retirement/terminal snapshots, preserves enrollment on malformed source, recovers a blocked terminal write with owned retry, preserves actual results and winning searches after elimination, retains terminal audit data after peer leave, and never interprets a temporary same-session disconnect as cancellation"
+  ],
+  "suite_checks": 246,
+  "terminal_records_retained_after_fixture_server_restart": [
+    {
+      "id": 4611686018427388466,
+      "action": "decline",
+      "sha256": "117938d440fdaf26b1d8940da1fa5412eced34879d10af1f41b0e3e4ca4bc7fd"
+    },
+    {
+      "id": 4611686018427388467,
+      "action": "leave",
+      "sha256": "d13fc4034e2c285ad2cfa1425e1cdbf0ff4ff33279d2af6873711018562bd01f"
+    }
+  ],
+  "source_sha256": {
+    "src/tournament_services.cpp": "4cf0efc07422c93bc212b795dd99644116bf3c349c4d72d103f67d75a3db89a8",
+    "src/tournament_services.h": "fb165309af218dd682fafd721231ce1f09b63cfc8f3a2faa580f3238749f27ac",
+    "src/matchmaking_store.cpp": "568113325a72598729e89c9f17f9680a3c696088ae99d0997cbc95a6764b66f5",
+    "tools/tournament_withdrawal_fixtures.py": "5cb9426480815bca5e564244b75afa580a4f38c832574c77f4d0cd858f505a89",
+    "tools/tournament_round_fixtures.py": "8c7698a26f80123f179a3a5529e146ffad80e1d6843ebb0f9a76f85041cdbfec",
+    "tools/record-tournament-withdrawal-proof.py": "e80a0624c30fce9d6aab05cc527c5ff1c79d7795e6f25986b517b228be18c9b4"
+  },
+  "native_withdrawal_callback_verified": false,
+  "native_tournament_playability_verified": false,
+  "retail_forfeit_or_disconnect_timeout_implemented": false,
+  "two_network_multiplayer_verified": false
+}

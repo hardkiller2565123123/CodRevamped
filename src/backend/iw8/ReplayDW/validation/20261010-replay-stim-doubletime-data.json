@@ -1,0 +1,50 @@
+{
+  "passed": true,
+  "target_image_sha256": "68fb1cbcb2924182724004039de55a4c50152bb6561803c4898b7930b38132f0",
+  "parser_proof_path": "data/remaining-stim-doubletime-20261010/challenge-parser-verified.json",
+  "parser_proof_sha256": "5b86831c2c46c2780499c333a42dfd148de4ed197904741e795aa8aae792eec6",
+  "tool_sha256": "d1ccac4da5114045ad4ce84029a965d82d9833c4c1622110e98812458711d50d",
+  "inputs": {
+    "loot/weapon_ids.csv": {
+      "path": "E:\\replay-compiler\\evidence\\workstation-stringtable-actsexport-fixed\\mw19replay\\code_post_gfx\\mw19replay\\code_post_gfx\\assets\\stringtable\\loot\\weapon_ids.csv.235.csv",
+      "sha256": "266c8607dc9ed42bd382d8b32d03c0ed4230435e5537df5239c858d005e46019"
+    },
+    "mp/statstable.csv": {
+      "path": "E:\\replay-compiler\\evidence\\workstation-stringtable-actsexport-fixed\\mw19replay\\code_post_gfx\\mw19replay\\code_post_gfx\\assets\\stringtable\\mp\\statstable.csv.613.csv",
+      "sha256": "1c61aba44835340e6f6da374b75667109ed1ed293f803fcebb5e2e585ed694a2"
+    },
+    "mp/perktable.csv": {
+      "path": "E:\\replay-compiler\\evidence\\workstation-stringtable-actsexport-fixed\\mw19replay\\code_post_gfx\\mw19replay\\code_post_gfx\\assets\\stringtable\\mp\\perktable.csv.575.csv",
+      "sha256": "65afdeb28787db040c13c047fb7a80a2615e319f2a6af2b1a90684a6d6ee3372"
+    },
+    "mp/reticlecategorytable.csv": {
+      "path": "E:\\replay-compiler\\evidence\\workstation-stringtable-actsexport-fixed\\mw19replay\\code_post_gfx\\mw19replay\\code_post_gfx\\assets\\stringtable\\mp\\reticlecategorytable.csv.604.csv",
+      "sha256": "a24eeb7cf7fdb5ea2367414eb463f44295b294de34a629ed20d4913b25f9600f"
+    }
+  },
+  "families": {
+    "weapon_dmr": [
+      27,
+      28,
+      29,
+      33,
+      536
+    ],
+    "weapon_sniper": [
+      30,
+      31,
+      32
+    ]
+  },
+  "constants": {
+    "Ghost": 52,
+    "Shrapnel": 12,
+    "Tracker": 56,
+    "DoubleTime": 7,
+    "Reflex": 1,
+    "VariableZoom": 6,
+    "Ak47": 16
+  },
+  "generated": "src/replay_kill_data.h",
+  "generated_sha256": "d4aa7153b5cf4b343b3b1129af59aaf4868d536e5c463bcd9f51cd75077cb427"
+}

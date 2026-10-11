@@ -1,0 +1,84 @@
+{
+  "schema": 1,
+  "passed": true,
+  "recorded_utc": "2026-10-05T18:43:22.266684+00:00",
+  "server_sha256": "9d23206498bc33b8117b686f7392943093bb11942755a99cb8bbc4783a619672",
+  "game_sha256": "b0075e0dbde62758efe84e23318084608be5b3704f23c269d87254ce2aea58a8",
+  "native_idle_publication_update_verified": true,
+  "game_or_server_restarted": false,
+  "client_tournament_task_during_edit": false,
+  "event_id": 2010,
+  "observed_counts": {
+    "participant_count": 8,
+    "team_size": 1,
+    "team_count": 8,
+    "round_count": 3,
+    "local_team": 0
+  },
+  "recipient_acceptance_seeded": true,
+  "temporary_publication_restored": true,
+  "native_join_assignment_verified": false,
+  "native_disband_callback_verified": true,
+  "disband_event_id": 2012,
+  "disband_native_tournament_state_cleared": true,
+  "disband_screenshot_requires_visual_review": true,
+  "playable_tournament_verified": false,
+  "full_backend_verified": false,
+  "map_tests_performed": false,
+  "evidence": [
+    {
+      "file": "data/native-tournament-live-edit.json",
+      "sha256": "cbd705f92f6d1ce45ad076526896a3b2faafe56f508d356c0e6958217d2c1394"
+    },
+    {
+      "file": "data/runtime-tournament-updates-playing.json",
+      "sha256": "3400c3142de207e1429ef6faba09d26962b1cbbb435084a6ef3e467776d4359b"
+    },
+    {
+      "file": "data/runtime-tournament-live-edited.json",
+      "sha256": "95242324685b7bb5bed3b3e3827884bd9ccf4f3d49374496880e93778e81601c"
+    },
+    {
+      "file": "data/native-tournament-live-expire.json",
+      "sha256": "a2c4c8e2e9a92e5bb99f26b638efb15d0bbc4f71808e11f320bafb94aca7d53e"
+    },
+    {
+      "file": "data/runtime-tournament-live-expired.json",
+      "sha256": "f33f6f0cc702b1dea05ae19464a7161ae0a13a7f9574b2029f91a6e5d76657b6"
+    },
+    {
+      "file": "data/native-tournament-live-expired.jpg",
+      "sha256": "b56bee2ee2d762582b39bc153408ed62234e6745bb2033654d9a3db18c392d85"
+    },
+    {
+      "file": "data/native-tournament-live-expired.jpg.json",
+      "sha256": "474e75a9e05e5e6ce900cc0bcf978944ccc2fd1b4e4d5c88d23f913af5cd6be5"
+    },
+    {
+      "file": "data/native-tournament-test-publication.json",
+      "sha256": "121837b6a8b75f1db31d3c97c93f09a1a84135fd38cf26d617f3d5a227a8ad63"
+    },
+    {
+      "file": "data/lobby-verification.json",
+      "sha256": "bdf0e8a743207b089806697188355f2b64629ec8060b6e931ea6df960ff387f4"
+    },
+    {
+      "file": "data/native-backend-menu-verification.json",
+      "sha256": "624fa36a81423fcaa7c969926bb96fe666d774fa81789313c3359ad826008cbb"
+    },
+    {
+      "file": "data/native-tournament-update-verification.json",
+      "sha256": "577a3c868d38be8e8f3f9fd4c26383249a7489562bab165d180a298db88abce9"
+    }
+  ],
+  "independent_protocol_checks": 157,
+  "game_recompiled": false,
+  "native_menu_verified": true,
+  "native_passing_fences": 27,
+  "coverage": {
+    "task_routes": 140,
+    "registered_handlers": 132,
+    "known_target_tasks_without_handler": 8
+  },
+  "native_disband_message_visually_reviewed": "Tournament has been disbanded. Please try again later."
+}

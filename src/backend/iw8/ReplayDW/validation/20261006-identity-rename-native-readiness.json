@@ -1,0 +1,117 @@
+{
+  "schema": 1,
+  "generated_utc": "2026-10-06T19:22:39.090558+00:00",
+  "passed": true,
+  "backend_sha256": "4b089496d887970d38dace5441bb60bbc8788fb947b254cc73cd5d29eb8939df",
+  "unchanged_shipping_game_sha256": "bdc091d35dc57f29c10ce14a4552467a5ce0d8c0d881d287ec31f09fc7ee9e18",
+  "build_receipt": {
+    "path": "data/backend-snapshot-1791313520951998500/build-receipt.json",
+    "sha256": "e260815ab6d8ee65ad2612fa04befd090eaa13fcd77c87ad0758a12ed2a12315"
+  },
+  "protocol_evidence": {
+    "path": "data/lobby-verification.json",
+    "sha256": "1130d496163bbbc0b7b651605ffd31f25fb2328d1ebee9bc9f13288f7ba08af8"
+  },
+  "protocol_groups": 283,
+  "target_contract_evidence": {
+    "path": "validation/20261006-native-identity-rename-layout.json",
+    "sha256": "422bbc3170169d3dd4832604d8991861bfb93e994d2c970f7208de29bf40dc53"
+  },
+  "native_observer": {
+    "startup_source": {
+      "path": "data/native-pair-rename-20261006/observe-game-startup-captured.py",
+      "sha256": "23bb80f256261dc96185c5f98e467499732a55c5d73fd80108d1da0b2bb73110"
+    },
+    "captured_source": {
+      "path": "data/native-pair-rename-20261006/observe-game-captured.py",
+      "sha256": "0cc061b17572d9d6dd2af96c30b3fe4833850827a132694ce909bdc0d7b24d50"
+    },
+    "current_source": {
+      "path": "tools/observe-game.py",
+      "sha256": "6e082783a333795bba1da8c0b89a8330d6a61e5347327eb0042c4a2c469062b6"
+    },
+    "reconnect_source_python_ast_identical": true,
+    "startup_native_readers_identical": true,
+    "startup_differences": "No per-instance connection-receipt selector before reconnect tooling was added"
+  },
+  "rename_protocol_checks": [
+    "UNO rename binds the exact target PUT/body/path, owner and live issued access token; foreign-session tokens, name collisions, malformed names and ambiguous request layouts cannot mutate an identity",
+    "A failed atomic rename leaves both disk and canonical lookup unchanged; successful rename updates the same stable player identity and exact retries do not rewrite its file",
+    "Renamed identity survives a backend process restart and is returned by the signed login and native username DTO; old tokens are rejected and the owned fixture name is restored"
+  ],
+  "rename_native_callback_verified": false,
+  "native_two_client_reconnect": {
+    "alpha": {
+      "game_sha256": "73ded44317c35d6efcfeb9ca9f5fa03a20f73e41926e6ea3a0d6c94423db7644",
+      "same_game_process_after_backend_restart": true,
+      "stable_seconds": 80.121373,
+      "native_fences_passing": 27,
+      "native_online_status": 2,
+      "stable_established_relay": true,
+      "native_friend_lists_empty": true,
+      "evidence": {
+        "startup": {
+          "path": "data/native-pair-rename-20261006/alpha/startup.json",
+          "sha256": "d4ddb44d4269fefde99d66ce50a5b4d089f0aca419d41b892a1d738baf8af246"
+        },
+        "reconnected": {
+          "path": "data/native-pair-rename-20261006/alpha/reconnected.json",
+          "sha256": "9ef243cba4c997380ab281cbeba2464a3a8ac9a369f3d43b6fca3459b5b24feb"
+        },
+        "stable": {
+          "path": "data/native-pair-rename-20261006/alpha/stable.json",
+          "sha256": "b5f15160220137209aad3434e20c8e9d0b7adc902f6ba357c06238aad135238a"
+        }
+      }
+    },
+    "bravo": {
+      "game_sha256": "73ded44317c35d6efcfeb9ca9f5fa03a20f73e41926e6ea3a0d6c94423db7644",
+      "same_game_process_after_backend_restart": true,
+      "stable_seconds": 80.098989,
+      "native_fences_passing": 27,
+      "native_online_status": 2,
+      "stable_established_relay": true,
+      "native_friend_lists_empty": true,
+      "evidence": {
+        "startup": {
+          "path": "data/native-pair-rename-20261006/bravo/startup.json",
+          "sha256": "56e2290d86fd5d0b7c7d2ae477266d3e797522a6325152e5ee770d10cd838a40"
+        },
+        "reconnected": {
+          "path": "data/native-pair-rename-20261006/bravo/reconnected.json",
+          "sha256": "149517ec6b7e3edd67af1901f7c5739006754f304c366ec6529c06a8025ccb1d"
+        },
+        "stable": {
+          "path": "data/native-pair-rename-20261006/bravo/stable.json",
+          "sha256": "dd22a32d6fd5bbfb99c4d407778ea6ba44c579259542e0ee5a1c671dcb483e55"
+        }
+      }
+    }
+  },
+  "friend_cache_revocation": {
+    "native_verified": true,
+    "backend_sha256": "9d65291ea8732de9faedbb8183bc7e2c3aab55d28a856549406b9ad58e9c4a4f",
+    "game_sha256": "73ded44317c35d6efcfeb9ca9f5fa03a20f73e41926e6ea3a0d6c94423db7644",
+    "cache_record_retained": true,
+    "active_crossplay_bits_cleared": true,
+    "before": {
+      "path": "data/native-pair-20261006/alpha/presence-friends-active.json",
+      "sha256": "af9cd2c1e6f7fe4ac71af70fe1b140ed23c3ce26361aae3762499d19117e9bbe"
+    },
+    "after": [
+      {
+        "path": "data/native-pair-20261006/alpha/presence-after-revocation.json",
+        "sha256": "a700ac3fb60eab30752b165c17ed59c9da98acc847e139a0ee6f3756794b95f2"
+      },
+      {
+        "path": "data/native-pair-20261006/bravo/presence-after-revocation.json",
+        "sha256": "9a59ef80059b508de1f73492648d5497c4804b36fcc6ca35b423bd11c0eede68"
+      }
+    ]
+  },
+  "main_exe_ini_identity_preserved": true,
+  "owned_root_test_artifacts_removed": true,
+  "map_test_performed": false,
+  "cross_network_gameplay_verified": false,
+  "full_backend_complete": false
+}

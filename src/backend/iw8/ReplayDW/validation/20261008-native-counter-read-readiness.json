@@ -1,0 +1,142 @@
+{
+  "schema": 1,
+  "passed": true,
+  "generated_utc": "2026-10-08T10:25:47.363852+00:00",
+  "server_sha256": "24aeb6cba0abdc854c06e815a55db0eb49ae3dccbeca2569b9a1eb56d285e163",
+  "game_sha256": "902b0ce8371320a7882e70c8903abcbf3d43abaee04b14d5f07ff97c703f20c1",
+  "shipping_game_sha256": "638dab82f069be51f6450f9ed2744f0b049d34642c0b67ae30cde01b53ea16e5",
+  "backend_pid": 95210,
+  "game_pid": 9156,
+  "native_counter_read_completion_verified": true,
+  "native_original_getter_called": true,
+  "native_counter_cache_matches_durable_totals": true,
+  "native_counter_task_retired": true,
+  "private_diagnostic_command": true,
+  "shipping_executable_native_completion_inherited": false,
+  "counter_upload_verified": false,
+  "counter_store_unchanged": true,
+  "progression_unchanged": true,
+  "read_interval_minutes": 15,
+  "original_getter_va": "0x1414F2320",
+  "linked_getter_rva": 22016800,
+  "native_download": [
+    {
+      "id": 1,
+      "value": 0
+    },
+    {
+      "id": 2,
+      "value": 0
+    },
+    {
+      "id": 3,
+      "value": 0
+    },
+    {
+      "id": 4,
+      "value": 13
+    },
+    {
+      "id": 5,
+      "value": 0
+    },
+    {
+      "id": 6,
+      "value": 21
+    },
+    {
+      "id": 7,
+      "value": 7
+    }
+  ],
+  "native_service_log": [
+    "2026-10-08T10:12:17Z TASK service=23 task=2 operation=global-counter-totals-read error=0 results=7"
+  ],
+  "scope": "Private freshly compiled root-folder game called the original counter getter. The original frame sent task 23/2, the SDK populated all CSV-defined cached values and the task retired. No uploads or direct cache/task writes; shipping-image completion is not inherited.",
+  "evidence": [
+    {
+      "path": "data/native-counter-read-20261008/native-before-read.json",
+      "sha256": "73e6e32d7477cf441096a3feeacc8c7a45913646a3e44a8878a66ea3ad9d96b3"
+    },
+    {
+      "path": "data/native-counter-read-20261008/native-after-read.json",
+      "sha256": "de76be369db71124c3bf3973383a711b19a3b02b29a4f9383c4abe92ca4dc598"
+    },
+    {
+      "path": "data/native-counter-read-20261008/deployment.json",
+      "sha256": "d3eb28e6b311fd1a96ffd3cfa513a67390b9b3508b06527577f34c5f6eb32ce2"
+    },
+    {
+      "path": "data/native-counter-read-20261008/native-launch.json",
+      "sha256": "188a4156fdeed74c7d5a229269f400b5d8be302c2a90b677852510f6ad561c57"
+    },
+    {
+      "path": "data/native-counter-read-20261008/input.json",
+      "sha256": "7f96ec7dd2f5cde1cfee32f2865fe388568dd013ec5c572c60f35f0422411399"
+    },
+    {
+      "path": "data/native-counter-read-20261008/job.json",
+      "sha256": "db69d3c6e58e2a54cb7607c0530d57b6e83e652efeb33df239f9ed4702811149"
+    },
+    {
+      "path": "data/native-counter-read-20261008/snapshot.json",
+      "sha256": "1f5f1de9e915b9657da3d2d759ae48b3fc16ed25aa815c3ecd385c5992a03897"
+    },
+    {
+      "path": "data/native-counter-read-20261008/server-after-read.json",
+      "sha256": "b4f0355ef957dc74cd82574feb627dbfd4636d2c3fe08613217160210b2e3cbb"
+    },
+    {
+      "path": "data/native-counter-read-20261008/counter-store-before.json",
+      "sha256": "a63a017f89064e30d8d52e2eec28ca1f3cd0ed283597eb017f2cb705eee741cf"
+    },
+    {
+      "path": "data/native-counter-read-20261008/counter-store-after.json",
+      "sha256": "e20464c282e62a155f11ae9f1a8062f51c16ffd609251401b085d0254ebd470a"
+    },
+    {
+      "path": "data/native-counter-read-20261008/native-read-command.txt",
+      "sha256": "41629c5e3eefb3b84fb65378d11c379bf54cdaeb9103f917ed980b2c7d7aca0e"
+    },
+    {
+      "path": "data/native-counter-read-20261008/shipping-restored-ready.json",
+      "sha256": "c5c120bfef2929e86a1698992ac0644d9f5a2f2cc6c5ab30f5bdceea94a178d7"
+    },
+    {
+      "path": "data/native-counter-read-20261008/shipping-restored-launch.json",
+      "sha256": "1d75d02773f3fde8af44e0e11356e03f71bd44538dafd0dd3e04fa4c9ac3b815"
+    },
+    {
+      "path": "data/native-counter-read-20261008/cleanup.json",
+      "sha256": "1f031c2784293d76042bbf99f8218f3fb7135454f7fa1cc5006470296492b153"
+    },
+    {
+      "path": "data/workstation-builds/build-workstation-84d4e38556ed4c0b/build-report.json",
+      "sha256": "d615bcd71c1203f5b80f794d49b8af5d93d413b3984c6565ca8c444b7211eacf"
+    },
+    {
+      "path": "data/workstation-builds/build-workstation-84d4e38556ed4c0b/verification-report.json",
+      "sha256": "b3e5eda4c403b282d6a7a1fb98ba9723ec1426d10690690cb3cee59987769cdb"
+    },
+    {
+      "path": "data/workstation-builds/build-workstation-84d4e38556ed4c0b/relocation-audit.json",
+      "sha256": "73a063c8522b95aa34e31c94491c8a329352f33bc2640c1e54ad570356193bd1"
+    },
+    {
+      "path": "tools/record-native-counter-read.py",
+      "sha256": "fe0e6b7d2a4bd4ae1ec452bf3c6001c021ce00b82ece8241a91b27a01be767d6"
+    },
+    {
+      "path": "tools/prepare-native-counter-read-test.py",
+      "sha256": "6fb5d105b34ed4690cb58f05b47c283a0b344ac217871012b47ea84403c9e748"
+    },
+    {
+      "path": "tools/observe-game.py",
+      "sha256": "9195eb741f087a21a3601ec3ce7c5ceedc592b6a9b2052e15c860b1ae67de9d6"
+    }
+  ],
+  "full_backend_complete": false,
+  "normal_game_restored": true,
+  "normal_game_native_fences_passed": 27,
+  "temporary_root_game_files_removed": true
+}

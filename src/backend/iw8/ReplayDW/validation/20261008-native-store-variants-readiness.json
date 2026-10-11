@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "passed": true,
+  "generated_utc": "2026-10-08T12:24:28.788393+00:00",
+  "server_sha256": "e5150218c9c44ee37f125a2acb975405060f610d4cb5a6951185ee5e41d9242f",
+  "game_sha256": "028d1f64588725672dc19256e866d1c9ed5313767a511fe6f1375e7a9be3e288",
+  "pid": 23172,
+  "private_test_game": true,
+  "shipping_image_completion_inherited": false,
+  "native_sale_purchase_completion_verified": true,
+  "native_immediate_inventory_update_verified": true,
+  "native_inventory_override_applied": false,
+  "sku": 420093,
+  "base_bundle": 400093,
+  "inventory_before": 248,
+  "inventory_after": 250,
+  "granted_quantities": {
+    "190013": 1,
+    "400093": 1
+  },
+  "progression_unchanged": true,
+  "native_smart_purchase_verified": false,
+  "native_paid_sale_verified": false,
+  "full_backend_complete": false,
+  "scope": "Real zero-price sale purchase through native Store UI; exact saved base/child quantities appeared without restarting the game",
+  "recorder_sha256": "f696f0298e0dbf84bd7ae7e55e7ba2e52f31a0be7472f0d296b2f3bcc7488a9f",
+  "evidence": {
+    "data/store-variants-20261008-v4/native-before-purchase.json": "21e2cf9495dc406cb069ed82d3c3a5c58292983b5bcee35170f83de7b2d4e07d",
+    "data/store-variants-20261008-v4/native-after-purchase.json": "696e5c7fb16f6e1c6271c6294c075792684396fb4250823816d706a9b8ec06dd",
+    "data/store-variants-20261008-v4/native-durable-inventory.json": "233ed7804b1c9fd69756a117f11f269f784aa142be49e9c9b81ee7ce93a0b44d",
+    "data/store-variants-20261008-v4/native/alpha/launch.json": "cbbcbd1ce7c26a0d6750f6beea99d370d732cf7d30291c7da5851d80a3a5d1f4",
+    "data/store-variants-20261008-v4/native/alpha/deployment.json": "8d1a738598275966847ba8d9e72d4e5953bf48307d8b5f288d7abc0e09c73647",
+    "data/store-variants-20261008-v4/source.json": "0fff9989a31728c4c70fb6efa4fb0447176867a479ee9d58193fdd6be10a0843",
+    "data/store-variants-20261008-v4/linux-build.json": "a2c4ead96ba4b0cdeb7818d8ab21d63b97faae565434a2da19f9c6a4b6b73771",
+    "data/store-variants-20261008-v4/linux-variants.json": "978d2bcbf8df223f8ef8803769766278ba5a7adb060034801d3146831ad68266",
+    "data/store-variants-20261008-v4/linux-startup-verification.json": "4117d23afbe4bcc6bacebdb7923754075bb8ae30a6e126ddade3036b2e65baa4",
+    "data/store-variants-20261008-v4/native-sale-purchased.jpg": "0b911d9e54cfc65a8163fe1b89b469e0a839c4ad42405b3a41435eefa78411dc",
+    "data/store-variants-20261008-v4/native-publication/manifest.json": "f937e883243da6df09cc9386c617ed212e0319e1fdd5c97bf06d9ed43f904b1c",
+    "validation/20261008-store-reward-target.json": "8ad2b7520ab4f249c5f00fec9d677e0a4bc9244c41cb30663aba2e60fbf5c9e7"
+  }
+}

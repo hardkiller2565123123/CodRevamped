@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "verified_at": "2026-10-06T14:03:27.410267+00:00",
+  "passed": true,
+  "server_sha256": "ce16a7b4d7b0bfc07537eeb606179077da5b3abde64c99192715c313ce8cd119",
+  "game_sha256": "b326981a9718cedbc05228d40bef8b2adcd6be89307b2cde7d8e878a3ca67885",
+  "pid": 23776,
+  "scope": "First authenticated peer message is consumed by one native root-folder game's private-party chat",
+  "native_channel": 11157596464537770695,
+  "native_category": "chat",
+  "native_chat_type": 3,
+  "separate_existing_test_peer": 76561201025253031,
+  "native_channel_message_verified": true,
+  "positive_native_member_callback_verified": true,
+  "native_channel_create_completion_verified": true,
+  "message_body_sha256": "72291a2c5a6ff17c08776425c38645add6bb87eac79b262cadb99b06823b9fdc",
+  "checks": [
+    "Game-owned private-party create installed the actual channel and host member",
+    "Peer subscribed and immediately sent its first message without waiting for the delayed join",
+    "Native chat history contains exactly one incoming record with the real peer ID/name and body hash",
+    "Peer unsubscribe and socket close retain the native message and remove only its membership"
+  ],
+  "observations": {
+    "created": {
+      "path": "E:\\DW\\IW8\\data\\objectstore-rest-native-before.json",
+      "sha256": "851ed020eb75ea0f6ccd7431e8947b3438f0aa064aa2f051b479e70b0f2971e2"
+    },
+    "first-message": {
+      "path": "E:\\DW\\IW8\\data\\20261006-objectstore-rest-channel-native-message-observations\\first-message.json",
+      "sha256": "fa1e562b02deaab586380d90088d2ef65c8976315573d6a4ebfb4165ea7f1e58"
+    },
+    "unsubscribed": {
+      "path": "E:\\DW\\IW8\\data\\20261006-objectstore-rest-channel-native-message-observations\\unsubscribed.json",
+      "sha256": "f97cf620b4e5c8f16c668567fa64bcdb6e32f19a39e7fcac94f34fd91ecaf107"
+    },
+    "disconnected": {
+      "path": "E:\\DW\\IW8\\data\\20261006-objectstore-rest-channel-native-message-observations\\disconnected.json",
+      "sha256": "cde0b2107a5704c99b02c11c942b09b469245ecb36b8eb8db4e2db8f78056375"
+    }
+  },
+  "source_sha256": {
+    "tools/observe-game.py": "72345f75158f1606f8ed652c6d9895d137be341c64d41b1ef4b1a86835d372fd",
+    "tools/native-channel-message-test.py": "c7e53fd6602225c5a1f2cb88f888e907b057402a71c7ff6493f0766330a13c22"
+  },
+  "friendship_or_profile_created": false,
+  "two_network_multiplayer_verified": false
+}

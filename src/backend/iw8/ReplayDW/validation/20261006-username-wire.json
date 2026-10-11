@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "generated_utc": "2026-10-06T13:27:53.908485+00:00",
+  "passed": true,
+  "server_sha256": "74ccca38c956651299a44c7e4b05365319de6cd1ef5c58885f80e0fec0c7dfa1",
+  "target_image_sha256": "68fb1cbcb2924182724004039de55a4c50152bb6561803c4898b7930b38132f0",
+  "native_game_verified": false,
+  "native_username_resolver_completion_verified": false,
+  "checks": [
+    "Native bulk username DTO: registered UNO/Battle.net aliases, requested order/duplicates, 200-record capacity and genuine empty unknown/provider results",
+    "Bulk username ownership scope and native URI limits: mismatched title/context, duplicate query, malformed account ID, excess count, body and method rejected",
+    "REST singleton routing/header fields reject duplicates while native repeated accepts/headers and unknown extensions remain compatible"
+  ],
+  "full_independent_group_count": 260,
+  "target_layout_receipt_sha256": "fac1704da1b7215526370d32bd256e6b7574b16d0c5485f1168bc15aa3bf4bb4",
+  "source_sha256": {
+    "src/social_services.cpp": "bf06ef6d02e1762f39735a79e97c6a4038c0551742620eacf6dfd28bd9cfd0f0",
+    "src/rest_services.cpp": "073716826153f5d4e04d37af01841e070f60c7d5e36cd9e3a90e5460e4158935",
+    "tools/username_fixtures.py": "a0853ce1305fe1978eb1ea2eb83b4371e5c50001591b12d68ddb6fddf9dcb751",
+    "tools/test-lobby.py": "4709311ffe2093d85bf82b4990b9f3257e570d69616fbea9b52284196b297ff8",
+    "tools/tournament_round_fixtures.py": "1c61458eab3d6e870c67e0666cecab28cbbd160b53cdd219bb748ba539e070ad"
+  }
+}

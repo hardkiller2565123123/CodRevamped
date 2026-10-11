@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "created_utc": "2026-10-06T06:06:09.871871+00:00",
+  "server_sha256": "7941c1548b5a6b2c8d4c01749f9ecd92af843a69ae85f43d46880246be88d8ad",
+  "game_sha256": "b326981a9718cedbc05228d40bef8b2adcd6be89307b2cde7d8e878a3ca67885",
+  "engine_recompiled": false,
+  "suite_grouped_checks": 191,
+  "independent_encrypted_clients": 2,
+  "covered_checks": [
+    "host snapshots reject non-owner updates, missing/removing host, invalid status and unknown members without changing durable state",
+    "native WONT_CONNECT acknowledgment then omitted READY_TO_REMOVE releases member/team/capacity/index/search state; stale snapshots cannot resurrect it and a fresh join succeeds",
+    "explicit READY_TO_REMOVE clears squads/performance/slots while preserving a shared party search and a newer player lobby assignment",
+    "member removal recovers after a real blocked index write; document timestamps strictly advance across rapid updates and reject UInt64 overflow without mutations",
+    "native in_game lobbies honor join-in-progress policy and retain the same assigned game instead of spawning a second match",
+    "rejected relay packets retain bounded header-only diagnostics matching transport counters without credentials, packet bodies or peer addresses"
+  ],
+  "lobby_verification_sha256": "2a06ad7e70a8f30566a4e268bc540611c42eae6a627a6924b1e6079b238a9129",
+  "native_startup_reconnect_receipt": "validation\\20261006-membership-native-reconnect.json",
+  "native_startup_reconnect_receipt_sha256": "2506cad8f59a9f27907c76ba8d6f8777520f547eebebb99aef9911848d78fb29",
+  "source_sha256": {
+    "src/matchmaking_services.cpp": "3d85854cf8f0c6fde768b99d62392a0bba51a5c24cc99bf96d4d51e28b61503f",
+    "src/relay_provider.cpp": "3a4c8ebea0c270e6954b5f8c89e7656f710ac1efd71b26283b016c22309646cb",
+    "tools/matchmaking_membership_fixtures.py": "0b96fee6ea676799317665bf98be3a121716e5447cd183b8e57d0cd0abababeb",
+    "tools/public_matchmaking_fixtures.py": "892d9d6c74a7963efd19f1dc6bcebfbf10533eff624edcd7c121db6ee23d442e",
+    "tools/relay_transport_fixtures.py": "abe8d6c51e309211b1b29065d2d5db6125728c9816d1722743ac2b50e5040092"
+  },
+  "target_contract_provenance": {
+    "StartMatchmaking_primary_members_and_tokens": "0x14104A450",
+    "UpdateHostDoc_complete_snapshot_and_in_game": "0x14104BFA0",
+    "TaskUpdateLobbyDocument_status_acknowledgment": "0x14104BA20",
+    "UpdateLobbyDocument_strict_timestamp_order": "0x14104C6D0",
+    "ReconcileExpectedPlayers": "0x141047E60",
+    "SetPlayerCurrentStatus_enum_names": "0x141049B50"
+  },
+  "native_departure_callback_verified": false,
+  "native_public_menu_join_verified": false,
+  "host_migration_verified": false,
+  "two_network_gameplay_verified": false,
+  "map_or_match_test_performed": false,
+  "complete_backend_verified": false,
+  "native_ui_limit": "Terms of Agreement screen remained unaccepted"
+}

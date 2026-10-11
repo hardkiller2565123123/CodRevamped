@@ -1,0 +1,72 @@
+{
+  "schema": 1,
+  "passed": true,
+  "scope": "Target-build absolute weapon XP and rank state/notifications; existing player XP preserved",
+  "compiled_cpp_inputs": 94,
+  "source": {
+    "path": "data/weapon-progression-backend-20261007/source.json",
+    "sha256": "16174d994dcc78c1fb60d84a8cf9831bca7c6631e97e4516779bc71e388eabeb"
+  },
+  "deployment": {
+    "path": "data/weapon-progression-backend-20261007/deployment.json",
+    "sha256": "336fdcdc0d89684b1c5f19aaa84f2adc69d9cd22f524d57ae530c0e078c2c9ad"
+  },
+  "server_sha256": "16f7efe4a7471436457f0f3cfe376a5d11e0adc609cceb6fcbfc876179bcfe4d",
+  "windows_server_sha256": "0cfde5b6a4e39b72ddad1e2dd3798f2d212220b161e9fbca7cc25fae2db64acc",
+  "protocol_evidence": [
+    {
+      "path": "data/weapon-progression-backend-20261007/windows-weapons.json",
+      "sha256": "655aaf9ca0524fcaff26a390e9254d11822b102dceb19972da32d3f057057865"
+    },
+    {
+      "path": "data/weapon-progression-backend-20261007/windows-retry.json",
+      "sha256": "75e35be7bce45ca5a56e45f0b77674e3b0736792bc016865928fb3238d5fb851"
+    },
+    {
+      "path": "data/weapon-progression-backend-20261007/windows-catchup.json",
+      "sha256": "4cc87ca42f436531d7efefc96af0f41f1aad681d1f474f63f5505f8c412d0c92"
+    },
+    {
+      "path": "data/weapon-progression-backend-20261007/linux-weapons.json",
+      "sha256": "3ec9c9b4b6e4c3dcd857e2feb9a4d3b560888479d44e6e06757b52360cf8cd78"
+    },
+    {
+      "path": "data/weapon-progression-backend-20261007/linux-retry.json",
+      "sha256": "48b9515e81bfe67334cccd39f4796f2740c15f0410a490af251bf3de0951f96f"
+    },
+    {
+      "path": "data/weapon-progression-backend-20261007/linux-catchup.json",
+      "sha256": "35171ccd4f206b035fc8e36a132a8a459236125757f11e616a3893f960d5a7a1"
+    },
+    {
+      "path": "data/weapon-progression-backend-20261007/linux-delivery.json",
+      "sha256": "a8ede4a753e5831bd2aaabac9015b4914acd3a68fb12b37adf2e640148f3a0a7"
+    },
+    {
+      "path": "data/weapon-progression-backend-20261007/public-protocol.json",
+      "sha256": "65818f6eb4bc59067b8e4e47e3491ea81780e67961989f4b4f6bb78fe7966eac"
+    },
+    {
+      "path": "data/weapon-progression-backend-20261007/public-dashboard.json",
+      "sha256": "caf0d6d78c18252a3cf528afc00984b6252619031a63879f667257ad2d339da8"
+    }
+  ],
+  "native_consumer_evidence": {
+    "path": "validation/20261007-weapon-progression-target.json",
+    "sha256": "122e6373ec92f7d2b93c4e925a151a84bd1891ae4d27abdc33440396c63e3802"
+  },
+  "shipped_asset_evidence": {
+    "path": "validation/20261007-weapon-progression-assets.json",
+    "sha256": "c75591f8adf738183cf20935816cbb0f8986fed1d5b35e58dfaad6d3d2e0622c"
+  },
+  "backend_groups_per_platform": 27,
+  "compiled_delivery_checks": 19,
+  "game_recompiled": false,
+  "native_game_verified": false,
+  "full_backend_completed": false,
+  "remaining": [
+    "Native gameplay and player-local weapon XP saving confirmation",
+    "Camo/attachment challenge triggers and grants require separate native rule reconstruction",
+    "Previously inventoried remaining service/task contracts"
+  ]
+}

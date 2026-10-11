@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "passed": true,
+  "recorded_utc": "2026-10-05T17:54:18.165188+00:00",
+  "server_sha256": "86b123e35a64e85d99a90e4358ad2b064fb45856428d466c3c6c3361edb60199",
+  "game_sha256": "b0075e0dbde62758efe84e23318084608be5b3704f23c269d87254ce2aea58a8",
+  "native_registration_callback_verified": true,
+  "native_update_receiver_verified": true,
+  "native_playing_bracket_parser_verified": true,
+  "event_id": 2010,
+  "target_decoder": "0x14213F1C0",
+  "target_callback": "0x14103F3F0",
+  "target_bracket_parser": "0x141074530",
+  "observed_counts": {
+    "participant_count": 16,
+    "team_size": 2,
+    "team_count": 8,
+    "round_count": 3,
+    "local_team": 0
+  },
+  "recipient_acceptance_seeded": true,
+  "temporary_publication_restored": true,
+  "native_join_assignment_verified": false,
+  "playable_tournament_verified": false,
+  "full_backend_verified": false,
+  "map_tests_performed": false,
+  "independent_protocol_checks": 155,
+  "scope": "Native registration, then encrypted event-2010 decoding and FORMING/PLAYING parsing. Recipient acceptance was seeded in backend data; native join assignment and playable tournaments are separate gates.",
+  "evidence": [
+    {
+      "file": "data\\runtime-tournament-updates-enrolled.json",
+      "sha256": "875b9d04f7ea7fa245a4831c91518d2b6d7ee184ac05c78b68822539356cf242"
+    },
+    {
+      "file": "data\\runtime-tournament-updates-consumed.json",
+      "sha256": "db9b7cd76adadde420bc3c38459b18dabd38037dd1adf65261f6cd1714890b7f"
+    },
+    {
+      "file": "data\\runtime-tournament-updates-playing.json",
+      "sha256": "4631daf8a94fb782a71e9931150e030e52e0ca827946b27a1a86baa0a5c9e095"
+    },
+    {
+      "file": "data\\native-tournament-update-emission.json",
+      "sha256": "d3e6c535924b7d6cd01127165531885301ef903d6df3a084ac490ce923d6033c"
+    },
+    {
+      "file": "data\\native-tournament-test-publication.json",
+      "sha256": "0eb0b967a9e9e13b9d9090f257db25856fe878be7c6b6cc62b4901c18e7a4323"
+    },
+    {
+      "file": "data/lobby-verification.json",
+      "sha256": "74af16dd9effa311e938b4bed67b5525b6352af207ed98ca6f29284aed993c1d"
+    },
+    {
+      "file": "data/native-backend-menu-verification.json",
+      "sha256": "7c7ed822ca33405faf1414dd8755c7ab6765c44fc2e8bb377191c2d20c4c1921"
+    }
+  ],
+  "game_recompiled": false,
+  "native_menu_verified": true,
+  "native_passing_fences": 27,
+  "coverage": {
+    "task_routes": 140,
+    "registered_handlers": 132,
+    "known_target_tasks_without_handler": 8
+  }
+}

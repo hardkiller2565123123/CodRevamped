@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "passed": true,
+  "backend_sha256": "a2b2a38e8e2064d334c0850696dfa52029c2fe1e5dd7332db714b9ddb09c5e07",
+  "unchanged_shipping_game_sha256": "b09a9ba25f733960dd1f8c569f566979804c2a1a247a9753e2c6e7a50556c138",
+  "primary_host": "162.243.115.160",
+  "build_receipt": {
+    "path": "data/droplet-20261007/linux-build.json",
+    "sha256": "9577a0e7db22f41a9ecf96aec9e2dd47e783e9d7fa8cfb5dd421b74a13e48aff"
+  },
+  "protocol_evidence": [
+    {
+      "path": "data/droplet-20261007/linux-protocol.json",
+      "sha256": "f89766df183aeac848e762abf2952755f149cca47f8f118db9c62b42eb71cd1a"
+    },
+    {
+      "path": "data/droplet-20261007/public-protocol.json",
+      "sha256": "d2f16c7e3f5459cbe792aa07463cd746235d1082787f957c5c17d1a283f7ed0f"
+    }
+  ],
+  "native_startup": {
+    "passed": true,
+    "fences_passed": 27,
+    "network_error": 0,
+    "connected_state_33": true,
+    "root_game_directory": "E:/IW8/Builds/1.20-replay",
+    "evidence": [
+      {
+        "path": "data/droplet-20261007/mp-ready.json",
+        "sha256": "816c8c005395641e2dd928e8d029ccd60f9f3ba795d08cf15a7672d47dbec8cc"
+      }
+    ],
+    "menu_and_3d_frontend_observed": true
+  },
+  "runtime_state_migrated_files": 1112,
+  "server_identity_preserved": true,
+  "backup_restore_checked": true,
+  "windows_regression_build_passed": true,
+  "concurrent_bandwidth_contract": {
+    "windows_passed": true,
+    "linux_passed": true
+  },
+  "native_gameplay_verified": false,
+  "native_tls_supported": false,
+  "full_backend_completed": false,
+  "remaining_goal_active": true
+}

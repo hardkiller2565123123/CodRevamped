@@ -1,0 +1,291 @@
+{
+  "schema": 1,
+  "generated_utc": "2026-10-06T19:20:43.501948+00:00",
+  "audit_tool_sha256": "e4c7a941ab24045f551b50f6f21f40994f439dea8bfd2d3022f2933894e7bdba",
+  "target_image_sha256": "68fb1cbcb2924182724004039de55a4c50152bb6561803c4898b7930b38132f0",
+  "functions": [
+    {
+      "va": 5384628048,
+      "candidate_alias": "q_Online_AccountRegistration_Rename",
+      "exported_size": 922,
+      "target_bytes_sha256": "1e034ec1414afbb20873addfc63e92dea36045bfcad923241ffc90f0eef4f6c5",
+      "direct_calls": [
+        5404151536,
+        5389671232,
+        5388305776,
+        5384629632,
+        5391815872,
+        5388305776,
+        5397266480,
+        5397266992,
+        5397228720,
+        5397228400,
+        5388305776,
+        5403312544,
+        5388305776,
+        5384629632,
+        5403228720,
+        5403313632,
+        5384877200,
+        5384878112,
+        5384455760,
+        5403283360,
+        5403313488,
+        5403282256,
+        5403313360,
+        5403313504,
+        5384877200,
+        5384876752,
+        5384922432,
+        5389469808,
+        5389469248,
+        5403283520,
+        5403283360,
+        5388306464,
+        5388305776,
+        5384455968,
+        5403296752,
+        5404151648
+      ],
+      "rip_references": [
+        5463426040,
+        5406396512,
+        5406396584,
+        5618624912,
+        5406396608,
+        5618624928,
+        5618624920,
+        5618624936,
+        5406396688,
+        5406396784,
+        5406396584,
+        5384628976,
+        5406396880,
+        5406396992
+      ],
+      "literal_strings": [
+        "AccountRenameFailure",
+        "[LOGINREG] Rename called for controller (%u) but we already have a rename task in flight.",
+        "[LOGINREG] Rename called for controller (%u) but you don't have any rename tokens available."
+      ]
+    },
+    {
+      "va": 5384628976,
+      "candidate_alias": "q_Online_AccountRegistration_RenameComplete",
+      "exported_size": 173,
+      "target_bytes_sha256": "dd13d81f21ad9f699a317fc2f37eef616cc1465dda51363d0c0a07c1fc8af54e",
+      "direct_calls": [
+        5403313760,
+        5384627808,
+        5384629632,
+        5384629888,
+        5397228720,
+        5397228032
+      ],
+      "rip_references": [
+        5406396584,
+        5406397680
+      ],
+      "literal_strings": [
+        "AccountRenameFailure",
+        "AccountRenameSuccess"
+      ]
+    },
+    {
+      "va": 5403547872,
+      "candidate_alias": "bdCrossPlatformIdentity::renameUser",
+      "exported_size": 69,
+      "target_bytes_sha256": "b6f4aacb32078337f3e680bc01d9bba5d4a90dc69d14955d6b4b119ae636406a",
+      "direct_calls": [
+        5403441440,
+        5403672176
+      ],
+      "rip_references": [],
+      "literal_strings": []
+    },
+    {
+      "va": 5403312688,
+      "candidate_alias": "bdRenameCrossPlatformUserRequest::restSerializeRequest",
+      "exported_size": 661,
+      "target_bytes_sha256": "e1d65f26837b2751ad8b2d90d907cd2fcf6b20520313482fa7ae9177503d77bb",
+      "direct_calls": [
+        5404151536,
+        5403298384,
+        5403298080,
+        5403297968,
+        5403651920,
+        5403297968,
+        5403651888,
+        5403298096,
+        5384886016,
+        5403297968,
+        5403650704,
+        5403298576,
+        5403297984,
+        5403436544,
+        5403647408,
+        5403646528,
+        5403647408,
+        5403646416,
+        5403647408,
+        5403646416,
+        5403647408,
+        5403646416,
+        5403647408,
+        5403646416,
+        5403647408,
+        5403649328,
+        5403649328,
+        5403298576,
+        5403297984,
+        5403436544,
+        5403647168,
+        5403297712,
+        5403206128,
+        5403208320,
+        5403206704,
+        5404151648
+      ],
+      "rip_references": [
+        5463426040,
+        5406402432,
+        5409203048,
+        5409201280,
+        5409201296,
+        5409190248,
+        5409203064,
+        5409872464,
+        5409199416
+      ],
+      "literal_strings": [
+        "/v1.0/users/{uno_id}/securedfields/",
+        "Authorization",
+        "Bearer  %s",
+        "UserResource",
+        "client",
+        "renameUsername",
+        "uno",
+        "userName"
+      ]
+    },
+    {
+      "va": 5403313632,
+      "candidate_alias": "sub_1421005E0",
+      "exported_size": 40,
+      "target_bytes_sha256": "1bebd5aed2be7ce205ac2c40b566ad31d818b3d214dd46c01b74257cebab32ea",
+      "direct_calls": [
+        5403309360
+      ],
+      "rip_references": [
+        5409203152
+      ],
+      "literal_strings": []
+    },
+    {
+      "va": 5403313776,
+      "candidate_alias": "sub_142100670",
+      "exported_size": 645,
+      "target_bytes_sha256": "4e73224f8311ea2b389286e569a82580e160ad5dbdc74590c0f048404922848a",
+      "direct_calls": [
+        5403198096,
+        5403653824,
+        5403204416,
+        5403198096,
+        5403202288,
+        5403314608,
+        5403204288,
+        5403198096,
+        5403198528,
+        5403204336,
+        5403198096,
+        5403202176,
+        5403314608,
+        5403198128,
+        5403198128,
+        5403198128,
+        5403198128
+      ],
+      "rip_references": [
+        5409861916,
+        5406550768,
+        5406550768
+      ],
+      "literal_strings": [
+        "context",
+        "error"
+      ]
+    },
+    {
+      "va": 5403314432,
+      "candidate_alias": "bdRenameCrossPlatformUserResponse::handleReplySuccess",
+      "exported_size": 163,
+      "target_bytes_sha256": "0fc755aeba4dcf4c252ccbbffc68df38ac8b1bacf449a55f08813931d90e2998",
+      "direct_calls": [
+        5403198096,
+        5403653824,
+        5403204416,
+        5403198096,
+        5403200352,
+        5403198128,
+        5403198128
+      ],
+      "rip_references": [
+        5409870232
+      ],
+      "literal_strings": [
+        "success"
+      ]
+    },
+    {
+      "va": 5403314608,
+      "candidate_alias": "bdLoginUtils::parseSingleError",
+      "exported_size": 148,
+      "target_bytes_sha256": "a68be046f9c2a41a444137b6dff27958883d2eafb5d22f00a5342b3913734df2",
+      "direct_calls": [
+        5403203808,
+        5403202688,
+        5403202688,
+        5404151648
+      ],
+      "rip_references": [
+        5463426040,
+        5406280508,
+        5409861600,
+        5409870368
+      ],
+      "literal_strings": [
+        "code",
+        "msg",
+        "name"
+      ]
+    }
+  ],
+  "response_vtable": {
+    "va": 5409203152,
+    "entries": [
+      5403313680,
+      5403314432,
+      5403313776,
+      5403309472
+    ],
+    "success_slot": 1,
+    "error_slot": 2,
+    "error_code_offset": 40
+  },
+  "request": {
+    "service": "uno",
+    "resource": "UserResource",
+    "operation": "renameUsername",
+    "method": "PUT",
+    "path": "/v1.0/users/{auth-info.userID}/securedfields/",
+    "query": [
+      "client"
+    ],
+    "json_body": {
+      "userName": "string"
+    },
+    "authorization_prefix": "Bearer  "
+  },
+  "native_callback_verified": false,
+  "native_engine_preconditions": "Original engine checks rename inventory/currency and uses CrossplayAccessInfo access token. Local legacy login does not establish that native flow."
+}

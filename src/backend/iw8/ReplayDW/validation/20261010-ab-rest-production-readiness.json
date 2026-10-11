@@ -1,0 +1,64 @@
+{
+  "passed": true,
+  "generated_utc": "2026-10-10T08:00:25.562495+00:00",
+  "job_id": "48b2f9957f534bb3",
+  "game_sha256": "d94e0a38383da20b22d490d74fea0dabc8c047809469dd3fc17afcf29f3a81fc",
+  "candidate": "E:\\DW\\IW8\\data\\workstation-output\\48b2f9957f534bb3\\game_dx12_ship_replay.exe",
+  "previous_game_sha256": "80277fed1fe1488310ff271fc1af21272e2bc4ea453e5179312bc0d80f57494d",
+  "previous_deployment": {
+    "path": "data/deployment.json",
+    "sha256": "aa0b770aa831e08b1fba8fcd3403a33a673868e827a0f1498f2b37b8a0438776"
+  },
+  "build_report": {
+    "path": "data/workstation-builds/build-workstation-48b2f9957f534bb3/build-report.json",
+    "sha256": "5c53d733531dce24cad99a0e4ce59f84ad07a2fc2771d181af9e014095e011ba"
+  },
+  "snapshot_receipt": {
+    "path": "data/remaining-ab-native-rest-20261010/production/compiler-snapshot-receipt.json",
+    "sha256": "67034a03421ed41bbd3d0b338178c9f589f52584e4b5922a9275f971a07f20cf"
+  },
+  "linked_proofs": {
+    "linked-writer-proof.json": {
+      "path": "data/remaining-ab-native-rest-20261010/production/linked-writer-proof.json",
+      "sha256": "cc254f408216cbc67c5456f2e66c3c6589dc3d73d4b66ba027afaab10242d6ea"
+    },
+    "linked-client.json": {
+      "path": "data/remaining-ab-native-rest-20261010/production/linked-client.json",
+      "sha256": "5bde0d9a4f28ec8eeff493401c40c3ee836d9939fc8d6b4cff089219afc6a69b"
+    },
+    "linked-ownership.json": {
+      "path": "data/remaining-ab-native-rest-20261010/production/linked-ownership.json",
+      "sha256": "adfae82f547c000f169bf6170910d7731af2d5bf151dc2d121646dadd3f62ec5"
+    },
+    "linked-updater.json": {
+      "path": "data/remaining-ab-native-rest-20261010/production/linked-updater.json",
+      "sha256": "c5f08d6b5592070a4e558e29b577afa4a0240b085fd90bde6a55355d0ef0d1dc"
+    }
+  },
+  "inherited_cpp_sources": 88,
+  "nonfunctional_source_differences": [
+    "src/DW_ExecutableUpdate.cpp",
+    "src/ScrPlace_EndFrame.cpp"
+  ],
+  "native_production_player_path_retained": true,
+  "new_rest_task_completion_verified": false,
+  "game_runtime_tested": false,
+  "installed": true,
+  "live_server": {
+    "pid": 234478,
+    "active": "active",
+    "substate": "running",
+    "executable": "/opt/replay-dw/releases/20261010-af0b0faf2d02/iw8-dw-server",
+    "process_executable": "/opt/replay-dw/releases/20261010-af0b0faf2d02/iw8-dw-server",
+    "sha256": "af0b0faf2d02318460f8da256121fcf2ccfd771aec48bb70ef3769efce05622e",
+    "process_sha256": "af0b0faf2d02318460f8da256121fcf2ccfd771aec48bb70ef3769efce05622e",
+    "host": "162.243.115.160",
+    "verified_live_process": true,
+    "remote": true
+  },
+  "server_restarted": false,
+  "rollback_executable": {
+    "path": "data/remaining-ab-native-rest-20261010/production/80277fed1fe1488310ff271fc1af21272e2bc4ea453e5179312bc0d80f57494d.previous.exe",
+    "sha256": "80277fed1fe1488310ff271fc1af21272e2bc4ea453e5179312bc0d80f57494d"
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "schema": 1,
+  "passed": true,
+  "generated_utc": "2026-10-09T09:42:51.998034+00:00",
+  "target_image_sha256": "68fb1cbcb2924182724004039de55a4c50152bb6561803c4898b7930b38132f0",
+  "tool_sha256": "b6e2b9b51630305e56cc788bf48ad1bbf94168eed19df90c3eebb063d5c3b8c0",
+  "producer": {
+    "va": 5384652224,
+    "size": 1361,
+    "bytes_sha256": "211b79e74331d64c9fac9c68625b1e9ffe468684a8c1250caa88b42f785b0b59"
+  },
+  "target_cache_layout": {
+    "manager_offset": 56352,
+    "record_stride": 968,
+    "game_mode": 0,
+    "account": 8,
+    "first_party_account": 80,
+    "platform": 152,
+    "player_xp": 160,
+    "battlepass_xp": 176,
+    "secure_integer_size": 16,
+    "weapons": 192,
+    "weapon_stride": 24,
+    "weapon_capacity": 32,
+    "weapon_count": 960
+  },
+  "cases": [
+    {
+      "player_xp": 500,
+      "battlepass_xp": 37,
+      "weapons": [],
+      "emitted": [
+        {
+          "version": 1,
+          "gamemode": 2,
+          "Param0": 500,
+          "Param1": 0,
+          "Param2": 0,
+          "Param3": 0,
+          "Param4": 37
+        }
+      ],
+      "passed": true
+    },
+    {
+      "player_xp": 500,
+      "battlepass_xp": 37,
+      "weapons": [
+        [
+          18,
+          11
+        ],
+        [
+          8,
+          13
+        ]
+      ],
+      "emitted": [
+        {
+          "version": 1,
+          "gamemode": 2,
+          "Param0": 500,
+          "Param4": 37,
+          "Param1": 0,
+          "Param2": 18,
+          "Param3": 11
+        },
+        {
+          "version": 1,
+          "gamemode": 2,
+          "Param0": 0,
+          "Param4": 0,
+          "Param1": 0,
+          "Param2": 8,
+          "Param3": 13
+        }
+      ],
+      "passed": true
+    },
+    {
+      "player_xp": 0,
+      "battlepass_xp": 4294967303,
+      "weapons": [],
+      "emitted": [
+        {
+          "version": 1,
+          "gamemode": 2,
+          "Param0": 0,
+          "Param1": 0,
+          "Param2": 0,
+          "Param3": 0,
+          "Param4": 4294967303
+        }
+      ],
+      "passed": true
+    }
+  ],
+  "original_producer_executed": true,
+  "scope": "Original cache reads, secure integer decode, event selection and first-weapon gating. SDK setters/report calls, game context and cleanup are modeled boundaries; native game callback completion is not claimed."
+}

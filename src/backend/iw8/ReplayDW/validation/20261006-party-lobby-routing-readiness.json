@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "generated_utc": "2026-10-06T23:52:41.154812+00:00",
+  "passed": true,
+  "backend_sha256": "e3d7e40904f890b77d4fae88b61fa4a42c002364212dadcf68476ea3290cddce",
+  "unchanged_shipping_game_sha256": "bdc091d35dc57f29c10ce14a4552467a5ce0d8c0d881d287ec31f09fc7ee9e18",
+  "build_receipt": {
+    "path": "data/backend-snapshot-1791329710605093500/build-receipt.json",
+    "sha256": "c4b329efcf4770f0bcdd7ed7a5988b47267627995b875b756ba32e15cc9e2f5f"
+  },
+  "protocol_evidence": {
+    "path": "data/manual-pair-quickplay-20261006/protocol-verification.json",
+    "sha256": "ee19d89eada436d31bf5376a4532740f1cdb596502953131d5c1d80d77256574"
+  },
+  "protocol_groups": 296,
+  "verification_source": {
+    "path": "data/manual-pair-quickplay-20261006/protocol-source.json",
+    "sha256": "7ec9371b1025f110ae5d754b8031b0fc6f7b9feb37d43f35df7f1232de38f8e4"
+  },
+  "native_startup": {
+    "game_sha256": "bdc091d35dc57f29c10ce14a4552467a5ce0d8c0d881d287ec31f09fc7ee9e18",
+    "native_online_status": 2,
+    "native_fences_passing": 27,
+    "native_logged_in": true,
+    "network_error": 0,
+    "relay_state": 3,
+    "both_instances_verified": true,
+    "existing_friendship_preserved": true,
+    "evidence": [
+      {
+        "path": "data/manual-pair-quickplay-20261006/main/startup.json",
+        "sha256": "37cfa1afc445b238d4cb75aa759032f2b04744e52283bace9fbc41cb9762182c"
+      },
+      {
+        "path": "data/manual-pair-quickplay-20261006/bravo/startup.json",
+        "sha256": "e1da68731b47a95d1b30a05d5cfc6a958082bebdbd4f8cda90c5a05fc268a173"
+      }
+    ]
+  },
+  "fix": "Fresh lobby creation sends event 2005 to the creator and event 2001 to every other authenticated party member. Search ID, documents and delivery validation remain shared.",
+  "game_recompile_performed": false,
+  "map_test_performed": false,
+  "native_two_player_matchmaking_verified": false,
+  "cross_network_gameplay_verified": false,
+  "full_backend_complete": false,
+  "next_gate": "Owner retry: friend joins party, host starts Quick Play, both instances reach the same matchmaking player list."
+}

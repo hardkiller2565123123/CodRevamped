@@ -1,0 +1,132 @@
+{
+  "schema": 1,
+  "recorded_utc": "2026-10-06T21:16:25.997838+00:00",
+  "passed": true,
+  "backend_sha256": "c614ff0b5340442ff2540343cc16de82ed3c3a7530f103db288e5f4b597b3e55",
+  "game_sha256": "73ded44317c35d6efcfeb9ca9f5fa03a20f73e41926e6ea3a0d6c94423db7644",
+  "private_build_job": "728b618c35724535",
+  "audit_tool_sha256": "ecb7baaeec90a97fe7c043c738e754c5cb88bdb1e38e86c2db60bc0108e31473",
+  "source_sha256": {
+    "src/social_services.cpp": "8c172fede650cb399ff4944b3e8ae96a4e65380a752df8f83e5baed3ceadc5dd",
+    "src/channel_services.cpp": "683c86ef4ed7792488f3b6dd68a8bc5ee826389c89855c7464170e06e58dbffb",
+    "tools/observe-game.py": "6e082783a333795bba1da8c0b89a8330d6a61e5347327eb0042c4a2c469062b6"
+  },
+  "backend_build": {
+    "path": "data/backend-build-latest.json",
+    "sha256": "52929a3373c4458e0401c796c7988ee9502bedb096ec184383be5abc58b1df0a"
+  },
+  "protocol": {
+    "path": "data/lobby-verification.json",
+    "sha256": "7e318200aa02b028f6eff37f7b98b5a0034c8ec0ab0984c94f743601ad208fe5"
+  },
+  "native_rest_bindings": [
+    [
+      "umbrella",
+      "UserResource",
+      "usernamesearch"
+    ],
+    [
+      "friends",
+      "Friends",
+      "invite_friend"
+    ],
+    [
+      "social-service",
+      "Friends",
+      "get_friends"
+    ],
+    [
+      "social-service",
+      "Friends",
+      "get_pending_friend_requests"
+    ],
+    [
+      "friends",
+      "Friends",
+      "reject_friend_request"
+    ],
+    [
+      "presence",
+      "UsersPresence",
+      "subscribe_to_users"
+    ],
+    [
+      "presence",
+      "UserPresence",
+      "set_user_presence"
+    ]
+  ],
+  "native_two_game_private_party_join_verified": true,
+  "native_two_game_party_channel_member_and_host_callbacks_verified": true,
+  "native_friend_removal_and_active_crossplay_mask_cleanup_verified": true,
+  "retained_inactive_presence_cache_is_not_a_failed_unsubscribe": true,
+  "native_transport_unsubscribe_callback_verified": false,
+  "temporary_friendship_added_through_native_name_search": true,
+  "initial_friendships": 0,
+  "final_friendships": 0,
+  "native_fences_passing_per_client": 27,
+  "evidence": {
+    "alpha": {
+      "online": {
+        "path": "data/native-pair-current-20261006/alpha/online.json",
+        "sha256": "e7507c36bdf34031b28d1469a8522ed8e9c1c6052305d37e5525c5d091a47d01"
+      },
+      "friends": {
+        "path": "data/native-pair-current-20261006/alpha/friends.json",
+        "sha256": "67bdad51a40c968962cec4574c9387cc58a977cfc81194ab38f9eb06ba38ef6f"
+      },
+      "joined-party": {
+        "path": "data/native-pair-current-20261006/alpha/joined-party.json",
+        "sha256": "63b3c10bc6cde4a18eb241a729b6220e52e7fba746f42ab195d26bdd3042b108"
+      },
+      "cleanup": {
+        "path": "data/native-pair-current-20261006/alpha/cleanup.json",
+        "sha256": "3233f5ac0a49374b56f1eec4ad59b3074b5694d2c628310a5a5929b0dbab8d7d"
+      },
+      "party-roster_image": {
+        "path": "data/native-pair-current-20261006/alpha/party-roster.jpg",
+        "sha256": "d9e9be795df7e06fb4f8e559db0de0486406a0b94e6420d4f327bce0e0e9d537"
+      },
+      "friends_image": {
+        "path": "data/native-pair-current-20261006/alpha/friends.jpg",
+        "sha256": "9a492f93b724aa1c5630a40e77cb34a10bfcc86afc2d43326f45d83cd8bf1457"
+      }
+    },
+    "bravo": {
+      "online": {
+        "path": "data/native-pair-current-20261006/bravo/online.json",
+        "sha256": "df50c29f0b7db8849b844eccad05e85dac79a578a6d0a0e1abbd7d1707c61c48"
+      },
+      "friends": {
+        "path": "data/native-pair-current-20261006/bravo/friends.json",
+        "sha256": "b804cea5751d873b47cd8e1a9d6fd98aa0605c711d3d8638ff5b07a242fe5777"
+      },
+      "joined-party": {
+        "path": "data/native-pair-current-20261006/bravo/joined-party.json",
+        "sha256": "057d78d3c0d0f9cf3da9d7c1bd1e1492b8b727574054d168b389d34c324b6806"
+      },
+      "cleanup": {
+        "path": "data/native-pair-current-20261006/bravo/cleanup.json",
+        "sha256": "ceb9750a64251ce308ca428668e3b3eda4a2727acf85b006db812dce0f801876"
+      },
+      "party-roster_image": {
+        "path": "data/native-pair-current-20261006/bravo/party-roster.jpg",
+        "sha256": "ca651d1b108b13b6f5877d9690ed64838b6b93fac0aa0033b378d71064980383"
+      },
+      "friends_image": {
+        "path": "data/native-pair-current-20261006/bravo/friends.jpg",
+        "sha256": "6d5b79be4a69584f2a887a82969721a6dab95e4d94e5b420778bcb11c0634e94"
+      }
+    }
+  },
+  "observed_open_issues": [
+    "Remove Friend confirmation displays nil while the friend/action panels display the correct name"
+  ],
+  "scope": "Two owned root-folder native Replay processes with separate persisted profiles/cache. Local social and private-party callbacks only; no map launched.",
+  "game_recompiled_for_this_test": false,
+  "shipping_executable_native_completion_inherited": false,
+  "cross_network_gameplay_verified": false,
+  "relay_peer_data_forwarding_verified": false,
+  "full_backend_verified": false,
+  "owned_root_test_artifacts_removed": true
+}

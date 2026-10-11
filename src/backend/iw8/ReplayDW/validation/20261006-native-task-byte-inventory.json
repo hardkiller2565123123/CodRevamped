@@ -1,0 +1,37 @@
+{
+  "schema": 1,
+  "passed": true,
+  "generated_utc": "2026-10-06T22:59:59.618283+00:00",
+  "target_image_sha256": "68fb1cbcb2924182724004039de55a4c50152bb6561803c4898b7930b38132f0",
+  "audit_tool_sha256": "9ddb247c403eb8d9d74c5750665ee02edd5fcb4970a1d2678e5a1ea2fd42ecac",
+  "test_tool_sha256": "67b8b237064d4e0e526621dd3b2fb46c9f0a8e5e27b58bb07c5ecef671b90149",
+  "independent_x64_trace_cases": 24,
+  "route_count": 123,
+  "inspected_functions": 495,
+  "unwind_bounded_functions": 494,
+  "sqlite_fallback_functions": 1,
+  "state_limited_paths": 16,
+  "unresolved_paths": 183,
+  "unowned_candidate_sites": 0,
+  "text_inventory_routes": 121,
+  "text_routes_not_recovered_from_bytes": [],
+  "additional_raw_routes": [
+    [
+      29,
+      7
+    ],
+    [
+      29,
+      9
+    ]
+  ],
+  "raw_inventory": {
+    "path": "data/native-task-bytes-20261006.json",
+    "sha256": "bc349637e4d41ad310585a923e0e3570b767bb8b45b936cc03302a472540b2fd"
+  },
+  "original_assembly_text_used": false,
+  "database_aliases_used_for_call_resolution": false,
+  "full_method_audit_complete": false,
+  "native_completion_verified": false,
+  "scope": "Bounded potential direct calls and forwarding wrappers. No indirect dispatch, stack argument, branch feasibility or native callback completion claim."
+}

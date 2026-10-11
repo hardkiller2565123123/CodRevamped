@@ -1,0 +1,176 @@
+{
+  "passed": true,
+  "target_image_sha256": "68fb1cbcb2924182724004039de55a4c50152bb6561803c4898b7930b38132f0",
+  "source": {
+    "path": "E:\\IW8\\Builds\\1.20-replay\\zone\\mp_donetsk.ff",
+    "bytes": 364593288,
+    "sha256": "e7045f25213bbd0f7616016659df99c5b1612e817239588b259aa989bde87748",
+    "header": {
+      "magic": "IWffa100",
+      "header_version": 11,
+      "xfile_version": 4065,
+      "compression": 1,
+      "encryption": 0,
+      "transient_type": 0
+    },
+    "header_signature_marker": "IWffs100",
+    "signature_block_sha256": "9ae275ea1331b16379d742611ea97255034bcae8e4d11333e33fa38e7081cd82",
+    "observed_replay_revisions": [
+      4045,
+      4047,
+      4053,
+      4065,
+      4083,
+      4085,
+      4087
+    ],
+    "revision_seen_in_observed_set": true,
+    "patches": [
+      {
+        "path": "E:\\IW8\\Builds\\1.20-replay\\zone\\mp_donetsk.fp",
+        "extension": ".fp",
+        "header_version": 6,
+        "previous": {
+          "magic": "IWffa100",
+          "header_version": 11,
+          "xfile_version": 4065,
+          "compression": 1,
+          "encryption": 0,
+          "transient_type": 0
+        },
+        "target": {
+          "magic": "IWffa100",
+          "header_version": 11,
+          "xfile_version": 4087,
+          "compression": 1,
+          "encryption": 0,
+          "transient_type": 0
+        },
+        "previous_layout": {
+          "decoded_size": 667224341,
+          "block_sizes": [
+            0,
+            31981840,
+            8786848,
+            0,
+            2578832,
+            585645020,
+            31820,
+            11990720,
+            0,
+            0,
+            0
+          ]
+        },
+        "target_layout": {
+          "decoded_size": 573432600,
+          "block_sizes": [
+            0,
+            31981840,
+            8791744,
+            0,
+            2609552,
+            491497936,
+            35662,
+            13701920,
+            0,
+            0,
+            0
+          ]
+        },
+        "previous_header_hex": "49576666613130300b000000e10f0000010000000040bb15bf92cae030216d071509c5270000000084450c000000000000000000000000001001e80100000000a01386000000000000000000000000009059270000000000dc3be822000000004c7c000000000000c0f6b60000000000000000000000000000000000000000000000000000000000",
+        "target_header_hex": "49576666613130300b000000f70f00000100000000c0e70fa6103660e069d50718e32d220000000027560c000000000000000000000000001001e80100000000c026860000000000000000000000000090d1270000000000d0a94b1d000000004e8b0000000000002013d10000000000000000000000000000000000000000000000000000000000",
+        "header_only_zero_payload": false,
+        "bytes": 83755336,
+        "sha256": "0894f4784b1abd1045d9ab56426a557d4c046ccb4d6b86a5d3f564d865aad822"
+      }
+    ],
+    "final_header": {
+      "magic": "IWffa100",
+      "header_version": 11,
+      "xfile_version": 4087,
+      "compression": 1,
+      "encryption": 0,
+      "transient_type": 0,
+      "decoded_size": 573432600,
+      "block_sizes": [
+        0,
+        31981840,
+        8791744,
+        0,
+        2609552,
+        491497936,
+        35662,
+        13701920,
+        0,
+        0,
+        0
+      ]
+    },
+    "header_only_zero_payload_chain": false
+  },
+  "decoded_body_sha256": "1cb413a30b8c4f79efdd300a287d610794a710d832cc02a36d5e4103c6ba3448",
+  "native_walk_receipt_sha256": "163c6cf34a0aa3e4f55625569e9aea4bcc0cf9d35295a148745db821f7687d6c",
+  "original_loader": {
+    "address": 5383435552,
+    "end": 5383436482,
+    "bytes_sha256": "173cdd1e7bbc34bfe3e03109e04c801cc77c108ba4cf7b940aa21738e5434bb4",
+    "entity_pointer_offset": 8,
+    "entity_char_count_offset": 16,
+    "root_bytes": 1032
+  },
+  "owned_read_calls": [
+    {
+      "kind": "load_stream_call",
+      "loader_start_arg": 0,
+      "at_start": true,
+      "size": 1032,
+      "caller_rva": 14726486,
+      "destination_stream_location": {
+        "stream": 1,
+        "offset": 0
+      },
+      "destination_root_delta": 0,
+      "sequence": 8416878,
+      "xasset_index": 91842,
+      "type_id": 29,
+      "root_stream_location": {
+        "stream": 1,
+        "offset": 0
+      },
+      "stream_block": 1,
+      "stream_stack_depth": 2,
+      "serialized_input_cursor": 542994499
+    },
+    {
+      "kind": "load_stream_call",
+      "loader_start_arg": 0,
+      "at_start": true,
+      "size": 7985624,
+      "caller_rva": 14726589,
+      "destination_stream_location": {
+        "stream": 5,
+        "offset": 461105332
+      },
+      "destination_root_delta": null,
+      "sequence": 8416885,
+      "xasset_index": 91842,
+      "type_id": 29,
+      "root_stream_location": {
+        "stream": 1,
+        "offset": 0
+      },
+      "stream_block": 5,
+      "stream_stack_depth": 3,
+      "serialized_input_cursor": 542995531
+    }
+  ],
+  "header_sha256": "520ff1fd66d575a2d94900e0f73dc19b52918c9e361fc82d11a835c5e06c6729",
+  "entity_text_sha256": "96910aadd8afb834ca472777e459c8bc32c5bdd83ddbb4b775f9f249090fec42",
+  "authored_entity_receipt": "validation/20261010-verdansk-authored-locale-triggers.json",
+  "authored_entity_receipt_sha256": "432ade91aaa3252a14592f334cd1266d3eeb01d2f41ad7679e296f847c99625d",
+  "runtime_locale_ids_verified": false,
+  "semantic_mapents_export_complete": false,
+  "native_game_execution_verified": false,
+  "scope": "Complete original native zone read plus correlated MapEnts root/char-array read and full numeric/literal-key grammar; POI labels are not runtime locale IDs"
+}

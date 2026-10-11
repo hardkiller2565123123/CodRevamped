@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "observed": true,
+  "generated_utc": "2026-10-10T05:23:59.047297+00:00",
+  "source": "Read-only primary-droplet accepted achievement journals; bounded to 128 accounts and 16 MiB per file; aggregate output only",
+  "server_sha256": "43f13b0359d7138d704c8beb5c53d792e51b356886b4bef016b286b9026ca7a1",
+  "start_markers": 72,
+  "end_markers": 16,
+  "paired_end_markers": 16,
+  "no_end_field_matches_preceding_native_id_in_samples": true,
+  "full_lifetime_contract_verified": false,
+  "game_runs_performed": false,
+  "reports_not_proven_all_game_generated": true,
+  "evidence": [
+    {
+      "path": "data/remaining-br-context-20261010/live-event-name-aggregate.json",
+      "sha256": "faeb174da9bba28de8c9b1ebf01afe3b6aefbd6d3636eea2d9dfdff199261f3e"
+    },
+    {
+      "path": "data/remaining-br-context-20261010/live-marker-relationship-aggregate.json",
+      "sha256": "2ef5ae9d9f40aca35326faf0f4c5d972140d085d3d790641833b4b448aff11d2"
+    }
+  ],
+  "scope": "Observed accepted historical reports; neither client identity nor raw native match IDs retained. Event arrival order alone cannot establish allocation ownership, retired-match earning or native callback completion."
+}

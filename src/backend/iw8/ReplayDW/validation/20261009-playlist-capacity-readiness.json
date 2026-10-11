@@ -1,0 +1,84 @@
+{
+  "schema": 1,
+  "generated_utc": "2026-10-09T06:29:13.105460+00:00",
+  "full_backend_completed": false,
+  "change": "Resolve public capacity from selected native playlist/group instead of Quick Play anchor",
+  "server_sha256": "0b18ae96aa610ddbb5bef928991014de11a30d5399cbe3ef5799dd775f8dbc75",
+  "executable_sha256": "80277fed1fe1488310ff271fc1af21272e2bc4ea453e5179312bc0d80f57494d",
+  "fresh_game_recompile_required": false,
+  "native_runtime": {
+    "one_instance": true,
+    "root_game_folder": true,
+    "com_optimized": 1,
+    "hc_ffa_ui_capacity": 8,
+    "stored_capacity": 8,
+    "fill_lobby_request": 4,
+    "stored_bot_count": 4,
+    "native_bot_count": 4,
+    "shipment_loadout_reached": true,
+    "test_filters_restored": true,
+    "owned_instance_stopped": true
+  },
+  "temporary_policy_restored": "03fbbc68e99bb083302e8acb0ca5c3bf2986e42d2608b26664cc68eb737e2fc4",
+  "automated": {
+    "startup_groups": 123,
+    "transaction_groups": 134,
+    "playlist_lifecycles": 63,
+    "selector_capacity_groups": 5
+  },
+  "evidence": [
+    {
+      "path": "data/remaining-services-20261009/linux-r2-startup.json",
+      "sha256": "fa3b8bccd384507d8b0e46dc35e4d00b0116961f15176980578a8ee17eafa852"
+    },
+    {
+      "path": "data/remaining-services-20261009/linux-r2-transaction.json",
+      "sha256": "ab967015940028d013ea0dbc726516d98c4d088741132423b948f50bbac91e13"
+    },
+    {
+      "path": "data/remaining-services-20261009/linux-r2-playlists.json",
+      "sha256": "c1741b09d40a46701e5ccd8a0214146b000d9cfe8927df310d21663f4065104c"
+    },
+    {
+      "path": "data/remaining-services-20261009/linux-r2-capacity.json",
+      "sha256": "313cab2a3666f533446c93b4c16e8d19dc9fb7de0858ebd2e1b9e07b0a40af12"
+    },
+    {
+      "path": "data/remaining-services-20261009/native-capacity-ffa.json",
+      "sha256": "afc0c9141c191938cf46ba9de44384d115403058b4ff3a5ef120526aa1417a2d"
+    },
+    {
+      "path": "data/remaining-services-20261009/native-capacity-ffa-server.json",
+      "sha256": "c46bd7b835dc7d1441718e9b77ae8aaf3bb03682c05814d87101d9a11ad6370f"
+    },
+    {
+      "path": "data/remaining-services-20261009/native-capacity-ffa-lobby.jpg",
+      "sha256": "ffc3068e4f23b1f838610dabdd9b771469dd07e1c13739d0746af9e032212fc9"
+    },
+    {
+      "path": "data/remaining-services-20261009/native-capacity-filled.json",
+      "sha256": "62e430ffc3f8696d29f32894df07a17532fdd4a1b8882f37aa801dd3e93670d0"
+    },
+    {
+      "path": "data/remaining-services-20261009/native-capacity-filled-server.json",
+      "sha256": "02506ca1838ddb736b7430cce808cf91b7b665960d91d30ee7587989cce4a78d"
+    },
+    {
+      "path": "data/remaining-services-20261009/native-capacity-filled.jpg",
+      "sha256": "db2821239c940be2181a18efc178073b6582faa36ef7dfd1d9649778c7d48a79"
+    },
+    {
+      "path": "data/remaining-services-20261009/native-capacity-filters-restored.jpg",
+      "sha256": "2eed126837bfa8e1e41ef366d580a462151767d501238a714b20045856f30abd"
+    },
+    {
+      "path": "data/remaining-services-20261009/policy-restored.json",
+      "sha256": "f466dc839e78f5b08e2836c70b411c65be81aabfbbd297b690f4b3e4d8379d47"
+    }
+  ],
+  "remaining": [
+    "Native streaming task 22 for services 50 and 58",
+    "Native object-store tasks 9, 10, 12 and 24",
+    "Native publisher-category REST and indirect/inlined route audit"
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "passed": true,
+  "research_only": true,
+  "target_image_sha256": "68fb1cbcb2924182724004039de55a4c50152bb6561803c4898b7930b38132f0",
+  "evidence": [
+    {
+      "path": "data/remaining-objectstore-categories-20261010/page-token-literals.json",
+      "sha256": "3d0a0edb3496ef0f49e65b5eb15b9cee05f04e0231baf59708ce423355f4778a"
+    },
+    {
+      "path": "data/remaining-objectstore-categories-20261010/live-metadata-accesses-expanded.json",
+      "sha256": "53077965c505217c314ba39ec101614e355894846f3c726b56871d6e1f774c05"
+    }
+  ],
+  "field_tool_sha256": "ab6cf1952f4f09b2e22c88db337fb395cbc19806668a330621c7297348f45f9c",
+  "page_token_owners": [
+    "0x142139260",
+    "0x142144CF0",
+    "0x142148050"
+  ],
+  "page_token_candidates_not_category_readers": true,
+  "unowned_raw_nominations": [
+    {
+      "address": 5400124497,
+      "displacement": 28944
+    },
+    {
+      "address": 5400124487,
+      "displacement": 28944
+    }
+  ],
+  "native_category_response_reader_verified": false,
+  "native_extended_streaming_deserializer_verified": false,
+  "new_handlers_implemented": false,
+  "native_game_runs": false,
+  "scope": "Candidate tracing only. Unwind-owned memory operands and unowned raw nominations are separate. Social-list and request-writer pageToken references do not bind category response types. No absence-of-reader or positive native-completion claim."
+}

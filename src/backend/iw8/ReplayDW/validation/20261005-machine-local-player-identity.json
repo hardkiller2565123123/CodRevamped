@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "game_sha256": "df4cc6cb2c9c7e47ff7ae08daf45c8a4d43f84b381dab1ac95af2e1c562e8654",
+  "server_sha256": "3cf5546db3904957fce943aae42773dc15c97b006e54a0b8ba945839d7c0905d",
+  "compiler_job": "3d9d0d0610ba49de",
+  "automatic_registration": true,
+  "player_provisioning_required": false,
+  "normal_windows_profile_verified": true,
+  "local_key_selects_native_account": true,
+  "native_account_stable_across_processes": true,
+  "native_processes": [
+    9160,
+    26764,
+    6296
+  ],
+  "native_startup_fences_passed": 27,
+  "native_online_presence_published": true,
+  "native_setting_saved_reloaded_restored": true,
+  "native_friend_name_search_and_invitation": true,
+  "native_accepted_friendship_persisted": true,
+  "native_friend_lists_empty_after_cleanup": true,
+  "universal_package_has_no_identity_or_credentials": true,
+  "archive_sha256": "4c1da99bdbaf4f045806e2e4ac2951b5ead3fd427c50863c204618352a642d90",
+  "two_network_party_join_verified": false,
+  "complete_backend_verified": false,
+  "protocol_checks": {
+    "distinct_players": true,
+    "new_process_persistence": true,
+    "rename_preserves_identity": true,
+    "backend_restart_persistence": true,
+    "interrupted_write_recovered": true,
+    "corrupt_identity_preserved_and_rejected": true,
+    "duplicate_machine_names_rejected": true,
+    "legacy_names_do_not_block_machine_players": true
+  },
+  "observation_sha256": {
+    "before.json": "853bcbc461cfba7cdbee9ddac2b904698bf5400549e83ea843ac517b4529c296",
+    "outgoing.json": "d4c9e11bf8f05361096252f784c7da91afe7d1cd8b9d1a4fad4c363c58092f1c",
+    "changed.json": "09a8b2b9d622f76c92446025015d43cea9db8be3d73a67ba9a4aacc6d7f5c672",
+    "reloaded.json": "b31859c8f2c293ec2ce0ae738511866aa4a685ded883585019eb822da618c38b",
+    "restored.json": "2fa9a6bd268bd55c3fd8395ec60d07f26ec1d149d87192e299e15c5427b0e8a8",
+    "final.json": "9e9af9bf029f3412e71eb0e355f34d2e26b51d8e58fea8766a8d1196fc625d16"
+  }
+}

@@ -1,0 +1,447 @@
+{
+  "schema": 1,
+  "passed": true,
+  "native_runtime_verified": false,
+  "target_image": "E:\\IW8\\Builds\\1.20-replay\\game_dx12_ship_replay.exe",
+  "target_image_sha256": "68fb1cbcb2924182724004039de55a4c50152bb6561803c4898b7930b38132f0",
+  "target_database": "E:\\IW8\\Builds\\1.20-replay\\game_dx12_ship_replay.exe.sqlite",
+  "target_database_size": 4255539200,
+  "target_database_mtime_ns": 1791300166081201300,
+  "target_database_changed": false,
+  "generated_utc": "2026-10-06T15:58:12.823825+00:00",
+  "audit_tool_sha256": "06463552b977f1ccc8985395c0b47d3a660716dcf741fc2ccb91e7be670fa82c",
+  "functions": [
+    {
+      "va": 5388370240,
+      "database_alias": "NetRelay::Reset",
+      "size": 289,
+      "original_code_sha256": "0131019611ce998135c51c76812925d0655fb14814b2bae268b93490fab3719b",
+      "direct_targets": [
+        5384542896,
+        5390662800,
+        5403612736,
+        5403229024,
+        5403914272,
+        5403269952,
+        5403229008,
+        5389633392,
+        5404151648
+      ],
+      "constant_stores": [
+        {
+          "va": 5388370302,
+          "base": "rdi",
+          "offset": 16,
+          "width": 1,
+          "value": 1,
+          "provenance": "immediate"
+        },
+        {
+          "va": 5388370318,
+          "base": "rdi",
+          "offset": 20,
+          "width": 4,
+          "value": 0,
+          "provenance": "XOR-zeroed nonvolatile RSI"
+        },
+        {
+          "va": 5388370321,
+          "base": "rdi",
+          "offset": 72,
+          "width": 1,
+          "value": 0,
+          "provenance": "XOR-zeroed nonvolatile RSI"
+        },
+        {
+          "va": 5388370325,
+          "base": "rdi",
+          "offset": 168,
+          "width": 8,
+          "value": 0,
+          "provenance": "XOR-zeroed nonvolatile RSI"
+        },
+        {
+          "va": 5388370435,
+          "base": "rdi",
+          "offset": 296,
+          "width": 8,
+          "value": 0,
+          "provenance": "XOR-zeroed nonvolatile RSI"
+        },
+        {
+          "va": 5388370475,
+          "base": "rsp",
+          "offset": 32,
+          "width": 8,
+          "value": 0,
+          "provenance": "XOR-zeroed nonvolatile RSI"
+        },
+        {
+          "va": 5388370480,
+          "base": "rsp",
+          "offset": 56,
+          "width": 2,
+          "value": 256,
+          "provenance": "immediate"
+        }
+      ]
+    },
+    {
+      "va": 5388368176,
+      "database_alias": "q_NetRelay::FenceCallback",
+      "size": 106,
+      "original_code_sha256": "6242009be722b0269cc5d2cde9e03e99e73b3c2eb485a5d2fae771d9af928ab1",
+      "direct_targets": [
+        5388354160,
+        5382761552,
+        5390662576,
+        5390662560,
+        5388370064
+      ],
+      "constant_stores": []
+    },
+    {
+      "va": 5388370064,
+      "database_alias": "NetRelay::Request",
+      "size": 168,
+      "original_code_sha256": "96bb1f3a66690c7ed7865308a8492c0d6969b352a4d7add83d5fb7843b687e71",
+      "direct_targets": [
+        5388306464,
+        5389633856,
+        5390662592,
+        5384770368,
+        5388370150,
+        5390269664,
+        5388370195,
+        5382761552,
+        5388368288
+      ],
+      "constant_stores": [
+        {
+          "va": 5388370105,
+          "base": "rbx",
+          "offset": 20,
+          "width": 4,
+          "value": 2,
+          "provenance": "immediate"
+        }
+      ]
+    },
+    {
+      "va": 5388368288,
+      "database_alias": "q_NetRelay_FetchAuthToken",
+      "size": 528,
+      "original_code_sha256": "ca3812a9dee0ef24a4b1042741f8fd7b0712dcee18f65247e49b5a98ac24c928",
+      "direct_targets": [
+        5388306464,
+        5384877200,
+        5384876384,
+        5384903712,
+        5389469808,
+        5389469248,
+        5388368616,
+        5388305776
+      ],
+      "constant_stores": [
+        {
+          "va": 5388368317,
+          "base": "rbp",
+          "offset": -9,
+          "width": 8,
+          "value": -1,
+          "provenance": "immediate"
+        },
+        {
+          "va": 5388368362,
+          "base": "rbp",
+          "offset": 55,
+          "width": 1,
+          "value": 1,
+          "provenance": "immediate"
+        }
+      ]
+    },
+    {
+      "va": 5388368816,
+      "database_alias": "sub_1412BFBB0",
+      "size": 579,
+      "original_code_sha256": "fdd929f4dbdcd2a81cffef13cec3d00c9581a62f3adde6d71a4acc1e62a779a2",
+      "direct_targets": [
+        5388355280,
+        5388358976,
+        5390662336,
+        5388358992,
+        5384765072,
+        5402487312,
+        5384765056,
+        5403850128,
+        5388355504,
+        5384765056,
+        5403850128,
+        5385764992,
+        5385765632,
+        5387091680,
+        5387119728,
+        5385790288,
+        5386299296,
+        5391808848,
+        5384768992,
+        5384768976,
+        5390662800,
+        5384769040,
+        5388306464,
+        5388358976,
+        5384765056,
+        5390662656,
+        5388358992,
+        5390662592,
+        5389633648,
+        5388355552,
+        5386299296,
+        5391808848,
+        5389633600,
+        5388370064
+      ],
+      "constant_stores": [
+        {
+          "va": 5388368942,
+          "base": "rbx",
+          "offset": 20,
+          "width": 4,
+          "value": 6,
+          "provenance": "immediate"
+        },
+        {
+          "va": 5388368964,
+          "base": "rbx",
+          "offset": 20,
+          "width": 4,
+          "value": 5,
+          "provenance": "immediate"
+        },
+        {
+          "va": 5388369191,
+          "base": "rbx",
+          "offset": 20,
+          "width": 4,
+          "value": 0,
+          "provenance": "immediate"
+        },
+        {
+          "va": 5388369233,
+          "base": "rbx",
+          "offset": 20,
+          "width": 4,
+          "value": 3,
+          "provenance": "immediate"
+        },
+        {
+          "va": 5388369292,
+          "base": "rbx",
+          "offset": 20,
+          "width": 4,
+          "value": 0,
+          "provenance": "immediate"
+        },
+        {
+          "va": 5388369314,
+          "base": "rbx",
+          "offset": 20,
+          "width": 4,
+          "value": 0,
+          "provenance": "immediate"
+        },
+        {
+          "va": 5388369321,
+          "base": "rbx",
+          "offset": 168,
+          "width": 8,
+          "value": 0,
+          "provenance": "immediate"
+        }
+      ]
+    },
+    {
+      "va": 5390662800,
+      "database_alias": "dwRelayStop",
+      "size": 3,
+      "original_code_sha256": "01cb47d078b4841b8408ec4fe278efa83115c6f6e101972987507d2b2b57dcf0",
+      "direct_targets": [],
+      "constant_stores": []
+    },
+    {
+      "va": 5390662560,
+      "database_alias": "sub_1414EFBA0",
+      "size": 11,
+      "original_code_sha256": "4cc82b6492e499a4a4c473c185db5bce53c8333df160e4ceae2b24bf95220442",
+      "direct_targets": [],
+      "constant_stores": []
+    },
+    {
+      "va": 5390662576,
+      "database_alias": "q_BG_AgentSystemEnabled",
+      "size": 11,
+      "original_code_sha256": "95351f203daba69ea23bb258b32e4042ace88d8af96b21c4e8c845fbc78cf216",
+      "direct_targets": [],
+      "constant_stores": []
+    },
+    {
+      "va": 5403887888,
+      "database_alias": "bdSocketRouter::bindToRelay",
+      "size": 25,
+      "original_code_sha256": "b98a501ee4b9a19bbf40b51d1a1d1fea222b099e130f12afece2f51202aea3e6",
+      "direct_targets": [
+        5403924320
+      ],
+      "constant_stores": []
+    },
+    {
+      "va": 5403813152,
+      "database_alias": "bdSocketRouter::getAddressMap",
+      "size": 8,
+      "original_code_sha256": "32e367ffcc0f4f1c1b2341027c61f626c079a60290f05df32b9093494d7b6d63",
+      "direct_targets": [],
+      "constant_stores": []
+    },
+    {
+      "va": 5403927040,
+      "database_alias": "sub_142196200",
+      "size": 5,
+      "original_code_sha256": "a8adead0a89e8bcc0f6079669194e35b31c483df478a1515e46c55a9cf74fb51",
+      "direct_targets": [],
+      "constant_stores": []
+    },
+    {
+      "va": 5403963840,
+      "database_alias": "sub_14219F1C0",
+      "size": 141,
+      "original_code_sha256": "d9c624a8f5a7814ee0017baff1cfbcd6ca39f7c8d5c57012a1e22ae49a8f9801",
+      "direct_targets": [
+        5403233168,
+        5403970208,
+        5403963949,
+        5403969568,
+        5403963949,
+        5403913328,
+        5403233184
+      ],
+      "constant_stores": [
+        {
+          "va": 5403963917,
+          "base": "rdi",
+          "offset": 1208,
+          "width": 4,
+          "value": 0,
+          "provenance": "immediate"
+        }
+      ]
+    },
+    {
+      "va": 5403970208,
+      "database_alias": "sub_1421A0AA0",
+      "size": 392,
+      "original_code_sha256": "6049ae6c58ed02db97c61beffe57a336445f120246a6acaaec6a12ff17650579",
+      "direct_targets": [
+        5403913328,
+        5403250432,
+        5403913328,
+        5403250528,
+        5403977568,
+        5403978192,
+        5404017472,
+        5403977600,
+        5403970563,
+        5403836320,
+        5403838208,
+        5403913328,
+        5403969568,
+        5404151648
+      ],
+      "constant_stores": [
+        {
+          "va": 5403970247,
+          "base": "rcx",
+          "offset": 1208,
+          "width": 4,
+          "value": 5,
+          "provenance": "immediate"
+        },
+        {
+          "va": 5403970305,
+          "base": "rsp",
+          "offset": 48,
+          "width": 4,
+          "value": 0,
+          "provenance": "immediate"
+        },
+        {
+          "va": 5403970359,
+          "base": "rsp",
+          "offset": 32,
+          "width": 4,
+          "value": 16,
+          "provenance": "immediate"
+        },
+        {
+          "va": 5403970538,
+          "base": "rsi",
+          "offset": 1220,
+          "width": 4,
+          "value": 6,
+          "provenance": "immediate"
+        },
+        {
+          "va": 5403970548,
+          "base": "rsi",
+          "offset": 1208,
+          "width": 4,
+          "value": 0,
+          "provenance": "immediate"
+        }
+      ]
+    },
+    {
+      "va": 5390662368,
+      "database_alias": "dwRelayDisconnected",
+      "size": 168,
+      "original_code_sha256": "b6a0c2da10ed0e6095ae5ed7afe79cb7e25a7ef9c812c2d8447522e2a25d2fe6",
+      "direct_targets": [
+        5390659072,
+        5388306464,
+        5390658960,
+        5388306464
+      ],
+      "constant_stores": [
+        {
+          "va": 5390662449,
+          "base": "rip",
+          "offset": 219995909,
+          "width": 4,
+          "value": 2,
+          "provenance": "immediate"
+        }
+      ]
+    }
+  ],
+  "scope": "Exact Replay dwRelayStop is a no-op; the dependency callback rejects DW status 3/4. Native socket-router/routing-layer getters lead to the bound SDK association, whose disconnect owns locking and sends packet type 10. The native completion callback returns DW status to 2. Reset clears the credential owner; the dependency callback then reaches the original SDK request. Database aliases alone are not ABI evidence.",
+  "sdk_socket_router_routing_layer_offset": 184,
+  "sdk_bound_reference_getter_offset": 32,
+  "original_dw_relay_stop_is_stub": true,
+  "network_status_values": {
+    "started": 2,
+    "relay_starting": 3,
+    "relay_started": 4
+  },
+  "native_fence_header": {
+    "controller_offset": 8,
+    "dependencies_met_offset": 12,
+    "size": 16
+  },
+  "native_relay_header": {
+    "net_init_offset": 8,
+    "callback_registered_offset": 16,
+    "state_offset": 20,
+    "size": 24
+  },
+  "layout_evidence": "Original reset/request/frame instructions and existing linked read-only controller-zero fence observation; complete allocation sizes exceed these explicitly named headers."
+}

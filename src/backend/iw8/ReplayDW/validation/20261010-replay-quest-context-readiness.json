@@ -1,0 +1,424 @@
+{
+  "schema": 1,
+  "passed": true,
+  "full_backend_complete": false,
+  "windows_server_sha256": "875a046c5e5f817b7a2cd3e2a5059fa37e74152b977243e317c4cb871469e60f",
+  "linux_server_sha256": "33b7145ba39cfa8bc24671e4ab1df8e4265540dfda312a5226dae740a7764d5a",
+  "compiled_translation_units": 46,
+  "retained_objects": 0,
+  "source_archive_sha256": "0938e94b5d6da0e58f847a777020c5fb68ed0f9a571dd675abd6533e32fa3cb7",
+  "windows_source_receipt": "data\\backend-snapshot-1791608610420699200\\build-receipt.json",
+  "windows_object_sha256": {
+    "abtesting_services.obj": "bde7d3ff5da50b63a3572d40ae40a055831744a9c721124f9415641f107ad3ab",
+    "account_services.obj": "ac2129c3081d5f0667f4c1bdd7c785a0da3b9becb6cbe0f903c6ac7af022819a",
+    "achievement_services.obj": "401e65d59a17efe471e5e014e31dcf6211ca3d8129216b64afe01840cc9faf09",
+    "achievement_store.obj": "50f0afa4654b4371a4ea848b55f1533662f538e39f01d6db39d743eb1a9ed086",
+    "anticheat_services.obj": "32c02f34bde818bce77ab471c3198db419ae43f29f445317818f729680f69094",
+    "bandwidth.obj": "9a629da552e4e1debaa6b51ad9e3aa8c8bee89669e136e5888ea4156c42ad945",
+    "battlepass_services.obj": "70b37a7fbbd5c0f650ebbe90836f1b0946de875f00b0418147aca8e525943463",
+    "channel_services.obj": "c962b300124c2ce3c45b1bc5816328a4bd0829631e40c9a32176834fbe6ffc5c",
+    "channel_store.obj": "64321bae3182d9b14656f32adafa03180637ba73e6c3674fd26149c51e689d34",
+    "clan_services.obj": "1a38fc212c9559b7d78ced7ccebc244e8d1a00719bc3a5d77442b3a5ef9bf1e4",
+    "content_services.obj": "3ae8f54928eb4eaf333497e34b1b53d5b886ff7779da8fbae106d2cc35852292",
+    "counter_services.obj": "79fcdd414cfe4a52d0b48216b46781175c42210e5ae3f50392a3c5138c5fb7d4",
+    "crypto.obj": "3c9fa59ac02d539ee22b349a44a1bd9b3928efd86102275122c92d408f09d9a4",
+    "crypto_provider.obj": "9ce0f6d5908250fdb5fa0ba0c0551c57f2335ab965271876843a3d22db1c35d3",
+    "engagement_services.obj": "cfcfd448acd4fa5bade0137933290a5a9c0d9bc1f076f770fd8ccab4154db6e3",
+    "host_os.obj": "c22008542be392762c0becc51d5556b5feb9eaff67f195084bbfd19075ed960e",
+    "identity_rest_services.obj": "e03c5909c122ab6bd211f81983c9c0c3385df668468cb5d225fe3e54c57c6a4f",
+    "identity_services.obj": "335488f6fb445608b4df08a153b808a5c7fc656679c48ebc5c2cb635916bf44e",
+    "inventory_validation_services.obj": "50730f11c1ff174bcf00965a0e711d330ee4448c8a6baba872ee49bb7c6fa1e7",
+    "leaderboard_services.obj": "2720f9229acf66e632139c4445de0d904ad97c8dc61870ea71b3887c2e29fc7a",
+    "lobby.obj": "72d8d68881e7d7b720e8bc48942106920f4f59367fbc1d78279bf275041eab64",
+    "mail_services.obj": "aac758338b4022c99752914380fc8cf150444f8c6d8527952fd95e024da6bbd5",
+    "marketplace_services.obj": "d65fddc0f38d9270ae933199b4ed107032d0b08a79f68e1a9a5cfed6f7eef7c6",
+    "matchmaking_services.obj": "9f9c022b4b3accb9706a53b0b989045c2d69b26771b25a1ba10a1e66c38a9fac",
+    "matchmaking_store.obj": "045b05693def86a8c68cd63d4243a43509197bda2b0eea4673264a042ec84cf1",
+    "network.obj": "c25251c342d83ae3cacc24d9529e69392cfcc10ef9ded94e91059daf5e1a9c50",
+    "objectstore_services.obj": "a82ecfae77587a4a4c6800ab3ab96a059f4f3ab18bc652840dfc4e7946570396",
+    "platform.obj": "79a1ee67dcf6849407931b2f194fcae4cb18a850bc8b64771db20055d4c7c207",
+    "platform_account_store.obj": "7ad0887fc6820eb42cc4e02290cfba032ae26419fe2b128f1fef4e8482997bee",
+    "platform_resources.obj": "dc1f8adfc0fc11be5f30cfb2762e83a9c584241c92ad72731617154ca89c450e",
+    "playlist_catalog.obj": "41c06c7e1c4b3f74379959aa47c4e76a14dbd6396b93542cc3a3045ca71b1957",
+    "qos_provider.obj": "2e363d11b9d27119058584d724ebaad625b0eb19f7cf540bf501cd8bbfb20287",
+    "qos_services.obj": "1911fe6d5ec0c47fcb92bc1307bc742b989f84b54516e690c7c154df7b39e003",
+    "quest_services.obj": "13ba06abacaf00a01a44e0b09ba4e6dc39bb631bc1bf97b15908ea1d6bd25cc1",
+    "regulation_services.obj": "21ef918f1443442a0fe2bc0d9b3f742e35cf80df2ed840840fcba347aa1bd716",
+    "relay_provider.obj": "928bcfbaec6a998b9836500b7cb5bc89af4e420f19b9efb0cfbf5c89a54c7630",
+    "relay_services.obj": "147c2e3b4e19d979d384a3390fca6605b9848db257123282500be887784afc56",
+    "rest_services.obj": "e4fe322142b73431c8163f70d5d2161051c67b084b3ffeb3f4b133e17b0aab31",
+    "scheduled_services.obj": "983e9ca7fd6414d3ff7fdb0cc7dfa4b22b638091619b9bf2de17e3c25a1ea809",
+    "server.obj": "fa9e6e69504cdc3c4e01e80dc77c577f9a9e770d804ebebf7e78a88855b102d5",
+    "services.obj": "a35dfe76b762f81b2091bbf1f2d0365dd4464b8e424e7290e8cfd8b381c56926",
+    "social_services.obj": "7127dbf46499cd31975f51e21284f7036e0c98e5a0579e33b8cd77a83e216f98",
+    "startup_services.obj": "dcaa7f685890dbc318c8af2468b35f09fe6fde1489505b89780dd0f18bcd1a4a",
+    "team_services.obj": "a3114ff155db1f5b82772f80dda48e3b295c3854574be454bd8300654b7565d6",
+    "tournament_map_policy.obj": "c8cbe703978a422adf1a1421c38e0a8484b55499af7f3b99b89c503cb60b53ee",
+    "tournament_services.obj": "0c0bba0f9c36d995d4bf7dc7b3255d5a01904bb6eb54cde805a0a0fbb17e95b6"
+  },
+  "source_hashes": {
+    "CMakeLists.txt": "686822ad3ec39f403576304d878c5960bef2e7958541805881387fca6adb3dd6",
+    "src/abtesting_services.cpp": "a11153cd0ee262eb6f0976085430dddbb252a6176001d25a6f01b427f3b7fe54",
+    "src/abtesting_services.h": "1e0f918b588c4da81af6b5b8948affac58400c8b94cb5fbaf0590497cc9387b4",
+    "src/account_services.cpp": "0c816098d2ec68ac715eeb6723dca973f40fc49030a14cfd8417cadebedc445f",
+    "src/account_services.h": "d863e5dde1b3cff2ce1ba6927ffadeaa954f4f8ed2c6fdd69487b7f04def9450",
+    "src/achievement_services.cpp": "69f51311753d03ff2f60b6ce37bd9db8b8c5e6f2dccb318aabbfbc8205d8a5b4",
+    "src/achievement_services.h": "eaaf36f1bc44ef8f0fb299d2fe8b21b2f178beb93ffa86caedbe1177a1707447",
+    "src/achievement_store.cpp": "96b0d0ff2ee00aa45c8d693e957c5f15cbbecabfaa9776f66790f57a78e720d6",
+    "src/achievement_store.h": "b48d2f4377cd04efadaa3c6a74f18500cf5fb59b68f2d1d38afbdb237b2e6e03",
+    "src/anticheat_services.cpp": "8e8abed9489d3cf791130b8aa68e7a8cffb664aecb8e616d1385857d36dbb46c",
+    "src/anticheat_services.h": "4defb94365009c691ce8b5978ae2006dcc2d77a278fd4df2f4160ce3b615a8ff",
+    "src/bandwidth.cpp": "14577757d825bd141880548a4389fae52a3a1ae6957ecb5df5474ab4d15b77c7",
+    "src/bandwidth.h": "839e0b329d4a58b3214f08ccc091a27c0a9ef58ad6f3b60eb72fa2f794411093",
+    "src/battlepass_services.cpp": "af9e3d94b552b6a485cb6ccc4124d7692f37f1dff8c2ae5d4150120a05925033",
+    "src/battlepass_services.h": "b4d8734b75d89e272bd660fcb8f9e90793f24c4dce713e6aacc46437360986d3",
+    "src/channel_services.cpp": "df2d120f0e99fbeee9590c21c41b6db036073077d4d234c594f66e0b44a7bdf5",
+    "src/channel_services.h": "144e68be8e8c21a1c6d1691e4fd390370f469534b4540146a81275922085c29d",
+    "src/channel_store.cpp": "4a3d042f6572643605e00f7c88ff073394f692ff6a74ec157e803e57a17d27d3",
+    "src/channel_store.h": "c07913a81011f1a92d3de8717705e8aaac3e83d5420455c84cb58558dad566fe",
+    "src/clan_services.cpp": "8a7a020acf9c27ae9d90caa00ee4055067be77d4817f88d60c5df04ccf3fc5d2",
+    "src/clan_services.h": "b81f1b754cde31004f1b45b448f322f842fbbaa348def7a364481a541c61c90e",
+    "src/content_services.cpp": "ebbac2034d3b59fd5937ed323770306f21c693ae3a2ddb7860505116fd4d8cd9",
+    "src/content_services.h": "c1ed35743d6c81d308da2959239d4b9466ee03df8d6673e1c4662bd2b704b165",
+    "src/counter_services.cpp": "fafbf80ce647555df6c516350d2595dbbd1c61d7ca649b549f741fffdc6a7905",
+    "src/counter_services.h": "34347954ba9a8cd53eb6eab95cebeb2cbf7dfb5619dfa049c6aef7236ccddd1d",
+    "src/crypto.cpp": "2900b506aad5302cd5f4160a0288dceda430c1d4d9e736bca4c80856dad2053d",
+    "src/crypto.h": "9af3b102e9f67f92cbe399be67c2cc554608dcb7c0d852c40e407f5ec0c9c9bf",
+    "src/crypto_provider.cpp": "262b6fc01a33165f7a3237f702f4b6d2ee4794143df8077e21b611065f427167",
+    "src/crypto_provider.h": "1d8acf6c95299f0807450eec3b6581ff4fafc55a4f25d6d5f06cce2e88def91e",
+    "src/engagement_services.cpp": "c3fffed631dcaf61b28f269dc6fd61c4f275090b429213fb8edfe7c943b06ef2",
+    "src/engagement_services.h": "2a9bb5c645c88b16f159ad2503e63160ee1872511db0f88c7bcce66ce6a50a03",
+    "src/executable_updates.h": "3257a83aaaa14fe61c5c9c5a6c7be8081ffcfcc61afbab02a6dce9ad8d9802e7",
+    "src/gunsmith_rank_unlock_data.h": "7a52de6ad55cca1f4162bebb58d34e928e991a90b65fd871c832710fabc86a9c",
+    "src/host_os.cpp": "5adb3e2b4a8298c8559ed20aee0731b1261b0905cc980938bae7a3442171e4c5",
+    "src/host_os.h": "da773067e0b98294d027784ddd404785f8062ee7604b78132a710b7967e95d3d",
+    "src/identity_rest_services.cpp": "e6fed718bd85b1f7670a4045c363971cdbe047c71d5fc9d62b90f1b2630a2722",
+    "src/identity_rest_services.h": "7125ce72098b980da6498a15d8d4e1b24f88882458dd705a4eed4afee510afd3",
+    "src/identity_services.cpp": "d8103ab4eb85c344ab2f4c3f713b4e52e54be4c0573685dd1914ec97433f27b6",
+    "src/identity_services.h": "285cad6157512018cb99eaa42bd4a511a421626180be7bba7a664583c20485b1",
+    "src/inventory_validation_services.cpp": "120f2109f8ac9bf2f1c6ad22b4b6a164a08d39cc7f383348aab070f717def3e2",
+    "src/inventory_validation_services.h": "9ebffdc1869eb29b6745de60031bd6dd3933ffaf574fac423370678b0936a989",
+    "src/leaderboard_row.h": "ae29dab7c4f388eee9282024a28fe1af1f9046322cb28f8cd7d11a4498e139e3",
+    "src/leaderboard_services.cpp": "43776b91951912339cacac3c59d29282e38b1ee880ce25b89065b04a21ebd969",
+    "src/leaderboard_services.h": "0f07847d3fc6f91b715b9854516d6e67ecac10a8bebeb4adb7b33187763885d4",
+    "src/lobby.cpp": "64fe4475fcef546c323e54c5f64b9a9cc1434a7d6e9a03841d54eb349a89c5df",
+    "src/lobby.h": "0b5d8c0486a9cf954b237e03b6fab819adb014b49721d459e21d7331f9e71d69",
+    "src/mail_services.cpp": "d748a9d6e24d2279724e037fac905ad3c91ffcaa719bb9ba5b23fa53789f8a2d",
+    "src/mail_services.h": "0a70a7f70eb56170049ed15c9fa5260577d7b76466b5dcc1a4000228634059f9",
+    "src/marketplace_services.cpp": "61d2ae8b4f89a4c44fbdd952fd5f39e5551d3bdde5b27529bfb9611f384a95ce",
+    "src/marketplace_services.h": "4dee0ac97a5023b928a7587a22000ad8554acbefa45f8618b3bb298ec6c54b8d",
+    "src/matchmaking_services.cpp": "f6f235ee58cc0274bcd42ff6cd218e3bda5c98cbd3b8283663515f7da00c4dd3",
+    "src/matchmaking_services.h": "ae44bf7dea4debda9132a86acbee21a6075ba26c9730498c1bc0e64033c7ed64",
+    "src/matchmaking_store.cpp": "5043dc7e1216d7fb678e7409e2b7a68107ef34e22c661fcc80083afcbec251e7",
+    "src/matchmaking_store.h": "8d8e556acc27db47fe207e4d7b54cceb8f29a5d439b92c3068ada645898ebf99",
+    "src/network.cpp": "cb7d0510ba91b5c892e824439a7f25661e014104011690f82d4b5c777e3e0055",
+    "src/network.h": "ab494373d5f0d4c03f01ff2ac65e5a16e3952711005e2bb7aab76a3cd9a1adff",
+    "src/objectstore_services.cpp": "a70cd48a30f5517fc51e856bd4d8bdb15462f41a418e8f6376df43eac470fe7b",
+    "src/objectstore_services.h": "be51745ae962bbb3b2f1e6517192d2831fea8d632ecbc954b32eb13b08cefda0",
+    "src/operator_controls.h": "adb84ea5f9ae6362eed41b6215f58e93b6e1fadbd608556bde223efabe2149a0",
+    "src/platform.cpp": "043600abcc36f12e4ab3b31a709c35c98ccc22ab0daa93f42c5bbe101b0d0264",
+    "src/platform.h": "bbbc88444e4d83f00224a54c59c6cd7f60ae78c42deb0d4b5a50f50334719dd6",
+    "src/platform_account_store.cpp": "71710c099ba3e69b03e2de1a4a8aa13dfbb2dddd4000395dba81caa4601751c8",
+    "src/platform_account_store.h": "a1bbf2ac70ccd9ee489011389e69e429e0869cffd15bf48eabc621bb2f8b4749",
+    "src/platform_resources.cpp": "b323dd5d1082f1d9d2ebbf20fb2d09f8bac38725e9f427795ce5a8cecba53ef1",
+    "src/platform_resources.h": "d53577a516a8e4a398028497c021c7c6202dc4ab807e6acccfa52fd121867a68",
+    "src/playlist_catalog.cpp": "5a7247982890b05b97b5241de2444356789d9a58b7222c2287796d7fe7c9f1b2",
+    "src/playlist_catalog.h": "6a7555badf408171f4539627423f02f33a32ddd41822a77c45c6462fbe32ddd2",
+    "src/progression_ranks.h": "ef264dbb99e9975195911a4bed192c537f979337605a1b1b43b7444d5ff26674",
+    "src/protobuf.h": "d76ba2fe0e9bcc56033bb38268c74ba1f25a15441d195ec489d49628a96a08f3",
+    "src/public_dashboard.h": "48d51a1cc7e9a575b1d96a5569f91dd384430fee0eb718fc830a7f587079d32d",
+    "src/qos_provider.cpp": "f0972dea94fa8279e6bb48aec1cde017a62db0f4aa4590ebc39e8248cb3d4b62",
+    "src/qos_provider.h": "68b2c6b9624a306c93e5b3b033e272e4bc76f1c4eee250dfa7a9920ce3d40781",
+    "src/qos_services.cpp": "ed206bd8184060900b3fb167ccf96b19b52c27407f169688a7aa9bdeb25a6f7d",
+    "src/qos_services.h": "03be86eb0c51652176484b77672c0b679cf8de67a73078f5c41df5e1d04496ef",
+    "src/quest_services.cpp": "c30803258b546e4dbf3ea3d5aee6693af9296997cdb44383448d4e74b392db64",
+    "src/quest_services.h": "4546ae38dcbc6fe9436ec86576a6e8f837403092b18d0ee4f0ebfb1bd9db12a0",
+    "src/regulation_services.cpp": "d002c8f4089f986a2712eb3bb4187c1cb3d85446cd3311c5452fcc8373d22ede",
+    "src/regulation_services.h": "fd846ed38285c76f9402ee7060ab4a2e8db78476e1e0f8c161c814d3831b9ad3",
+    "src/relay_provider.cpp": "b9b30231cbb0c0da935a14c986cb0df44e7e9f968ea9bb3c6067e93365968d0b",
+    "src/relay_provider.h": "3699d5550ded34a29bd5a011b0092acf270b9d3e12386028ae7a9d2d76935111",
+    "src/relay_services.cpp": "fc770843b58e67e2b8d0d29e33807056781fc54940e7c55b7d9bc2b8e9e14d52",
+    "src/relay_services.h": "2c5a5a7e74e3bd139f26707b1f89a73752e9ff30410e55cac5b2a3a0d8839dca",
+    "src/replay_quest_data.h": "887a2bb5f46c9f11d969fbfbc2f036956a603df99faa2261c91e8e983413548a",
+    "src/rest_services.cpp": "5deb180b617c29a3d2935ad04f259451bd6d024b506f66aac6eea5ef4d2eb193",
+    "src/rest_services.h": "325b7ff3417690471be78879bc49159305431ca5e49e1ae8773ccb8f7a0793da",
+    "src/scheduled_services.cpp": "db2184374943b8122fd34f282eaa7da91763a887505c4930b09d4d39d920b36d",
+    "src/scheduled_services.h": "3383bd0a04e68f59ac0d15c5e53f697e2e5a07134999e8e575e70d3266d60754",
+    "src/server.cpp": "e3873ecc66ecdd42c8b4e2a75fb40ddd7da2703f8f8c7605f95e0198f1597ddb",
+    "src/services.cpp": "fe0c30a414b56bee9a2b0eb62f30f6aec506ae8255188cf580bab7c6fd370bcd",
+    "src/services.h": "04ee7e0d2fc6d46a9f8787d4a5f85e9296324d4d6eea7ee32d81ce7bcb486fe8",
+    "src/social_services.cpp": "17ecf215c9f7b2ff1037c0b18c07218239bea0719bb427ecfd694d808f2e3483",
+    "src/social_services.h": "4742db37b82c80e059bd9ab08b189b9926ebad262c2c9bec4c06c8207dd8cd05",
+    "src/startup_services.cpp": "bb93a2a257d795061a2032fd39811d085236af5792da1ef65dc5b992493d7adf",
+    "src/startup_services.h": "65c0957a130f66c9a36907dce81d25a96cc131fb360b7c4d21863a68d1452a8e",
+    "src/team_services.cpp": "8dffc1ad59322e6001754e9ed6d4f0439c256e7ffee82baf3a72023e2df8ffc8",
+    "src/team_services.h": "23cb63fe433fe26f3fefc812710b708ffc470f679f1d8e5bfa30c34f7e50c9cf",
+    "src/tournament_map_policy.cpp": "58c917f32dc790ab4b4810105a62cd3de326bcbf030791c044da3e4c414fab9c",
+    "src/tournament_map_policy.h": "9ff692ed0449d2c008bd4d218aa65ab958404e8262627bef653ba6e1b83dccfb",
+    "src/tournament_services.cpp": "1c0baf2bf2b074d991cf11f60355ee0a353bfb0549978c1777597a8f7458eca4",
+    "src/tournament_services.h": "5589450cd385076c838952cb7a7180cdff0fa862633d4fb48df474058cc30748",
+    "src/traffic_kdf.h": "044f4a7de21d3f2d621b4ce0557d8f16a0d5a40b3fa18ea45a9bb1615172a1b3",
+    "src/weapon_progression_data.h": "96a30325120bf166dd98a096a3abaef39b44e45710eba5ff44db38fe095c57a2",
+    "src/wire.h": "e98ec512d0bf7a9969258ea09635adb4607fe0952831fbaa2274a49d80f7ecbb"
+  },
+  "original_parser_cases": 192,
+  "shipped_mission_descriptions": 232,
+  "supported_earning_stages": 83,
+  "remaining_earning_stages": 149,
+  "contract_criterion_reconstruction": "Card locale is used for shipped start-at-location descriptions; original actor/card fields are verified, retail cloud criteria are not recovered.",
+  "inferred_geographic_aliases": {
+    "layover": "Airport",
+    "airfield": "Military Base",
+    "transit": "Train Station"
+  },
+  "runtime_locale_assignments": 33,
+  "authored_location_volumes": 46,
+  "game_runs_performed": false,
+  "native_game_callback_verified": false,
+  "server_deployed": true,
+  "evidence": [
+    {
+      "path": "data/remaining-br-context-20261010/challenge-parser-verified.json",
+      "sha256": "1660fe7f5028dec4dcc51e146e66148d5e7c9968dce574f56e0c6bbea362dfbd"
+    },
+    {
+      "path": "data/remaining-contracts-20261009/challenge-producer-entity-counter-proof.json",
+      "sha256": "572b703fced2d0e520bf6473ea12f2841456781a9e8fb2110ddd10a42a29992b"
+    },
+    {
+      "path": "data/remaining-contracts-20261009/mission-descriptions-eng_global_mp-verified.json",
+      "sha256": "fb0d42b930a60f501b0fc804e65babfadf981beca4a88ae83aec50582b67ffd2"
+    },
+    {
+      "path": "data/remaining-contracts-20261009/mission-descriptions-eng_ui-verified.json",
+      "sha256": "b65411b28da51afafe2ef7cddc0ec4a17ba846e1037e57688049e64a594778cf"
+    },
+    {
+      "path": "data/remaining-br-context-20261010/linux-build-receipt.json",
+      "sha256": "f7a0aecfdc901032f0f4b33b23b3a7882cfdccf9a2c0e7634e64515f61ab77c8"
+    },
+    {
+      "path": "data/remaining-br-context-20261010/linux-validation-tool-inputs.json",
+      "sha256": "89bd2d34fc3747dfb6de44aae75e9d5ba517afa64729c8980addb1aa7f121e50"
+    },
+    {
+      "path": "data/remaining-br-context-20261010/windows-protocol.json",
+      "sha256": "b6590f61214547485817ac7f3115d3a5cb9db369841261cad0191a849ca96ea3"
+    },
+    {
+      "path": "data/remaining-br-context-20261010/windows-quest-earning.json",
+      "sha256": "488dee779ad8b9452235265729d803e29ab5e1ebf8faf5da42dfdc314f429a3f"
+    },
+    {
+      "path": "data/remaining-br-context-20261010/windows-quest-management.json",
+      "sha256": "6bd7087ccdcaac62b7651dca24135e3342dc6e35017d1c7c8fa6ab0202ad5074"
+    },
+    {
+      "path": "data/remaining-br-context-20261010/linux-protocol.json",
+      "sha256": "9e49b697ef4214aa94688f464f6af99bfa2650cedcadfa5fbfac2a2ec3eeb566"
+    },
+    {
+      "path": "data/remaining-br-context-20261010/linux-quest-earning.json",
+      "sha256": "ae15fd364383fd2a88891d84cf354d76d14ade2a8ef153287014ee179108aa03"
+    },
+    {
+      "path": "data/remaining-br-context-20261010/linux-quest-management.json",
+      "sha256": "9b9b85d19a55b35565f12c40337350aecfd31e569c1e6f2a0930bcc37e894e07"
+    },
+    {
+      "path": "data/remaining-contracts-20261009/native-challenge-scripts/recovery-receipt.json",
+      "sha256": "21da25d0ceafe8b35d04f7e76e3596d27a2f1cd2082e12d6e6675877ba052555"
+    },
+    {
+      "path": "data/remaining-contracts-20261009/native-challenge-scripts/disassembled/iw8/challenge-normalized.gscasm",
+      "sha256": "eb56bccf022463022125d7374a15548a47fda3efb3628edc67dafa5ef8c51576"
+    },
+    {
+      "path": "validation/20261010-challenge-entry-parser.json",
+      "sha256": "6bfe26b492a9694b4e5f68f850d4942516d0426dc203c11dc226bb1527d91f00"
+    },
+    {
+      "path": "validation/20261009-challenge-producer-contracts.json",
+      "sha256": "572b703fced2d0e520bf6473ea12f2841456781a9e8fb2110ddd10a42a29992b"
+    },
+    {
+      "path": "validation/20261009-challenge-script-recovery.json",
+      "sha256": "21da25d0ceafe8b35d04f7e76e3596d27a2f1cd2082e12d6e6675877ba052555"
+    },
+    {
+      "path": "validation/20261009-challenge-cache-decisions.json",
+      "sha256": "23e6d250f38fc507777b052f393165a5ece6d0ab992f7fda6454f97f099102ed"
+    },
+    {
+      "path": "validation/20261009-challenge-action-producers.json",
+      "sha256": "cdb42c324c385ce771eb14e20f99b0875519289900e6e8c86b4c9acec91c1175"
+    },
+    {
+      "path": "validation/20261009-objectstore-category-constructors.json",
+      "sha256": "678a124b888e7c1824e1e518dcd9b6abc0dab302bb727337ea4b0c6c43540b13"
+    },
+    {
+      "path": "data\\remaining-challenge-actions-20261009\\disassembled\\iw8\\gulag-normalized.gscasm",
+      "sha256": "606cd2e370c98b415d604c97f16bc15463798386d91cbbd7bcbaca69053f5cd8"
+    },
+    {
+      "path": "data\\remaining-contracts-20261009\\native-challenge-scripts\\disassembled\\iw8\\challenge-normalized.gscasm",
+      "sha256": "eb56bccf022463022125d7374a15548a47fda3efb3628edc67dafa5ef8c51576"
+    },
+    {
+      "path": "validation/20261010-challenge-asset-tables.json",
+      "sha256": "4705255c2aa70705497115c552c4f68bef2042f09bb74d61d870a411960a0a2d"
+    },
+    {
+      "path": "validation/20261010-replay-ping-producers.json",
+      "sha256": "c185d1c8cea97588750b7d4ecbd0925dc35d192a72b9b914885c89974d1ae262"
+    },
+    {
+      "path": "validation/assets/replay120-achievementenginerefs.csv",
+      "sha256": "45a80d0059bcb44e37c6f09fcee7b1795b13fb4b965a07b3857c9fd18f1d4526"
+    },
+    {
+      "path": "validation/20261010-verdansk-authored-locale-triggers.json",
+      "sha256": "432ade91aaa3252a14592f334cd1266d3eeb01d2f41ad7679e296f847c99625d"
+    },
+    {
+      "path": "validation/20261010-verdansk-mapents-native-span.json",
+      "sha256": "c4a9e6b67caacad2172bddadd7891bacfd324aab7f9a39bfc55245c4d87153ce"
+    },
+    {
+      "path": "data/remaining-br-entry-20261010/disassembled/iw8/ping-normalized.gscasm",
+      "sha256": "403756498bcf6df9877e6d157d41dfe6cd052181ae2b61bd43b99591bda4d05f"
+    },
+    {
+      "path": "validation/20261010-replay-runtime-locale-assignments.json",
+      "sha256": "73edc912583a2898ac0f96e46ad0d9c399efb9f347f93b48fd56a1e88363552d"
+    },
+    {
+      "path": "data/remaining-br-context-20261010/armor-original.gscbin",
+      "sha256": "a3a929faf49ba9958ee15d467fe39746eabe5803fc875e51553b4daa36800e10"
+    },
+    {
+      "path": "data/remaining-br-context-20261010/armor-normalized.gscbin",
+      "sha256": "fd7030749b518f69ad23631cdc48cdd7bcb3819b36124d4eb04b7cd3ce161466"
+    },
+    {
+      "path": "data/remaining-br-context-20261010/disassembled/iw8/armor-normalized.gscasm",
+      "sha256": "536e693e4fb8e0826f5701117bdcae4451c461c2fd6d0d7634f429800436d76f"
+    },
+    {
+      "path": "data/remaining-br-context-20261010/game-utility-original.gscbin",
+      "sha256": "f5811637b282e755343b5ab02ae721c1aaf3cef0ac3bfd0cd7f79ea75f66c262"
+    },
+    {
+      "path": "data/remaining-br-context-20261010/game-utility-normalized.gscbin",
+      "sha256": "73fb2343e80e635d301545dc0b8721423eac24100e60edc6e1e2dcaf491f1a3f"
+    },
+    {
+      "path": "data/remaining-br-context-20261010/disassembled/iw8/game-utility-normalized.gscasm",
+      "sha256": "3e1cbcb19969f56e058de4f545e0e98c077834ad250d29b587713be98c55066f"
+    },
+    {
+      "path": "data/remaining-br-context-20261010/br-original.gscbin",
+      "sha256": "a45cb419d3a47fca11244ed273f515bd3d3a45fc62b1b1f45ff4cfaf0592d596"
+    },
+    {
+      "path": "data/remaining-br-context-20261010/br-normalized.gscbin",
+      "sha256": "86694796d22552ad80f9cb85f627caae794ae949ae584bdad80bf764a250d233"
+    },
+    {
+      "path": "data/remaining-br-context-20261010/disassembled/iw8/br-normalized.gscasm",
+      "sha256": "46891529af94098d7056490491d21a921871510aefb262b0e4f96e129f1bb2af"
+    },
+    {
+      "path": "data/remaining-br-context-20261010/contract-original.gscbin",
+      "sha256": "fa2cf78761027acb5ddbdb259a44cccb3b9d5e397f1c368aa199ff78152e4411"
+    },
+    {
+      "path": "data/remaining-br-context-20261010/contract-normalized.gscbin",
+      "sha256": "b604ba68ee8ad9a52a1e7c03cefa65f3e06abe613cd8b6c0eca0f3fcc5cc5e82"
+    },
+    {
+      "path": "data/remaining-br-context-20261010/disassembled/iw8/contract-normalized.gscasm",
+      "sha256": "10d6540264aad8a93a49ae38a64bb09021ee2434b5aa2d6869d521143cef126d"
+    },
+    {
+      "path": "validation/20261010-replay-br-context-producers.json",
+      "sha256": "bf0623326c680f01ad92589877afbc230bd8301989fb7fe2ab885ba5b64ee4bb"
+    },
+    {
+      "path": "validation/20261010-challenge-br-asset-tables.json",
+      "sha256": "4283c9a97bb211813ef3518de224a3578f0b58a0e8aa81763091e8314183907b"
+    },
+    {
+      "path": "validation/assets/replay120-brmissions.csv",
+      "sha256": "ed41731780679656fd3f3ff3c52fbc790d6f84da0868a2da856f7b5aea8c8163"
+    },
+    {
+      "path": "validation/assets/replay120-brkioskpurchases.csv",
+      "sha256": "b2e69accad8bc1c5820d50cfec71be81f3b585c4d14f17e52759325fba816f70"
+    },
+    {
+      "path": "validation/20261010-br-context-cache-decisions.json",
+      "sha256": "35e8b4af33064e0173069316eaa6f4733616dcc34595e8daa8d64194bddc721d"
+    },
+    {
+      "path": "validation/20261010-objectstore-field-candidates.json",
+      "sha256": "2efe398efaadaf7ccd91927638da56caa87004dba169c91085d6c77f0d80c692"
+    },
+    {
+      "path": "validation/20261010-match-marker-observation.json",
+      "sha256": "c7ca90ba897fd37ffbac5bb9bdc26d319c6ae937dd847421830bd0b0e30a3cfe"
+    }
+  ],
+  "validation_tool_sha256": {
+    "test-lobby.py": "be32c12658830a8b34f8b98422bf294b06e237f8e1b7c376b0619c3703f5938f",
+    "tournament_round_fixtures.py": "5e53a72bc2303caee703af0bd7846d3e8d0e3408cc59a0969ba451badf65f587",
+    "test-replay-quest-earning.py": "b8e41b1b98c8582f66e244a95835498b5a9b5839679398a02c767e5229f30363",
+    "test-replay-quest-management.py": "bd966c94ab397458774fed699acb514961be0509cd91b874a6939d9fa2aead84"
+  },
+  "fixture_ordering_correction": "Retains the verified interrupted native ready-up/enrollment test setup from the preceding release; strict transaction assertions unchanged.",
+  "remaining_contracts": [
+    "Six known streaming/category/large-upload response bindings",
+    "149 remaining mission criteria and producer-context flags",
+    "Delayed-event allocation lifetime and participant session rotation",
+    "Native gameplay earning/reward/successor callbacks and broader per-method runtime audit"
+  ],
+  "live_process": {
+    "pid": 227436,
+    "active": "active",
+    "substate": "running",
+    "executable": "/opt/replay-dw/releases/20261010-33b7145ba39c/iw8-dw-server",
+    "process_executable": "/opt/replay-dw/releases/20261010-33b7145ba39c/iw8-dw-server",
+    "sha256": "33b7145ba39cfa8bc24671e4ab1df8e4265540dfda312a5226dae740a7764d5a",
+    "process_sha256": "33b7145ba39cfa8bc24671e4ab1df8e4265540dfda312a5226dae740a7764d5a",
+    "host": "162.243.115.160",
+    "verified_live_process": true,
+    "remote": true
+  },
+  "deployed_map_policy_sha256": "03fbbc68e99bb083302e8acb0ca5c3bf2986e42d2608b26664cc68eb737e2fc4",
+  "new_context_stages": {
+    "loadout": [
+      50006,
+      50034
+    ],
+    "armor_use": [
+      50011,
+      50024,
+      50070
+    ],
+    "contract_completion": [
+      50016,
+      50023,
+      50030,
+      50037,
+      50044,
+      50051,
+      50058,
+      50065,
+      50072,
+      50079,
+      50086
+    ]
+  },
+  "context_criterion_reconstruction": "Generic loadout collection accepts successful preset/custom selections; contract completion accepts successful known-category owners, including dead owners. Rules are reconstructed from shipped descriptions and original fields, not retail cloud policy."
+}

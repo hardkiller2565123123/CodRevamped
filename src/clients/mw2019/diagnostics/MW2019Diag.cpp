@@ -2401,20 +2401,6 @@ namespace
             WriteAiBridgeResponse144(id, command, "complete", "known auth offsets logged", uptimeMs);
             return;
         }
-        if (_stricmp(command, "authscan") == 0)
-        {
-            mw2019_diag::RunServerEmuAuthScan();
-            WriteAiBridgeResponse144(id, command, "complete", "protocol/auth surface scan completed", uptimeMs);
-            return;
-        }
-        if (_stricmp(command, "protocol_scan") == 0)
-        {
-            static std::atomic_uint aiProtocolPass{900};
-            const unsigned pass = aiProtocolPass.fetch_add(1, std::memory_order_relaxed);
-            ScanServerEmuProtocolSurface(GetModuleHandleW(nullptr), pass);
-            WriteAiBridgeResponse144(id, command, "complete", "focused protocol scan completed", uptimeMs);
-            return;
-        }
         if (_stricmp(command, "auth_topology") == 0)
         {
             DumpAuthGateTopology144();
@@ -2580,7 +2566,7 @@ namespace
         }
 
         WriteAiBridgeResponse144(id, command, "error",
-            "unknown read-only command; use status/authscan/find_string/read/xref/readers/writers/inspect/frontend_backtrace/fence_event_path", uptimeMs);
+            "unknown read-only command; use status/find_string/read/xref/readers/writers/inspect/frontend_backtrace/fence_event_path", uptimeMs);
     }
 
     DWORD WINAPI Steam120Thread(LPVOID) noexcept
@@ -2606,22 +2592,16 @@ namespace
         AppendRaw(IsExactMW2019_120(game) ?
             "[SERVER-EMU120] exact Replay 1.20 fingerprint matched; native OwnsBaseGame pin armed\r\n" :
             "[SERVER-EMU120] 1.20 markers matched but exact Replay fingerprint did not; native ownership RVAs disabled\r\n");
-        AppendRaw("[SERVER-EMU120] installing generic DNS/connect/WinHTTP redirect plus signature-scanned trust bootstrap\r\n");
+        AppendRaw("[SERVER-EMU120] installing generic DNS/connect/WinHTTP redirect; runtime memory scanner disabled\r\n");
 
         // Set this before hooks are active so the first bootstrap socket cannot
         // enter any exact-1.44 observer or RVA path.
         g_serverEmuGenericPureMode.store(true);
         InstallServerEmuNetworkHooksGeneric(game);
 
-        // 1.20's free/paid frontend split is exposed through these two Engine
-        // Lua predicates. Keep the native online state machine and backend
-        // reconciliation intact, but advertise the locally emulated account as
-        // premium so Multiplayer does not collapse into PurchaseFullGameButton.
-        // Resolution is signature-based; no new 1.20 RVA is hardcoded here.
-        if (mw2019_scanner::EnablePremiumOwnershipOverride())
-            AppendRaw("[OWNERSHIP120] Multiplayer premium ownership compatibility enabled\r\n");
-        else
-            AppendRaw("[OWNERSHIP120] premium ownership compatibility not installed; check diagnostic log\r\n");
+        // Runtime memory/signature scanner removed. 1.20 now relies on
+        // native fixed/profile logic plus server-provided state only.
+        AppendRaw("[MEMORY-SCANNER] 1.20 signature-scanned ownership/menu overrides disabled\r\n");
 
         std::uint32_t timestamp = 0;
         std::uint32_t imageSize = 0;
@@ -2640,9 +2620,6 @@ namespace
         // UI back into the F2P/trial/upsell presentation after login.
         const ULONGLONG premiumStart = GetTickCount64();
         ULONGLONG lastPremiumApply = 0;
-        ULONGLONG lastPremiumScan = 0;
-        unsigned lastPremiumMatched = 0xFFFFFFFFu;
-        bool premiumAllAnnounced = false;
         Ownership120PinResult lastOwnershipResult = Ownership120PinResult::NotExactBuild;
         int lastOwnershipAuthState = -1;
         unsigned lastOwnershipReadyByte = 0xFFFFFFFFu;
@@ -2692,50 +2669,6 @@ namespace
                     }
                 }
 
-                if (!mw2019_scanner::GetAddress("Dvar_FindVarByName") &&
-                    (lastPremiumScan == 0 || premiumUptime - lastPremiumScan >= 10000))
-                {
-                    lastPremiumScan = premiumUptime;
-                    mw2019_scanner::ScanNow("1.20 premium frontend presentation");
-                }
-
-                if (mw2019_scanner::GetAddress("Dvar_FindVarByName"))
-                {
-                    unsigned matched = 0;
-                    // LiveStorage_IsPaidUser checks com_force_free_to_play first.
-                    // If it is enabled, IW8 returns false immediately and never
-                    // reaches com_force_premium or the paid-entitlement result.
-                    // Pin both sides of that priority gate for the local 1.20
-                    // preservation profile.
-                    matched += mw2019_scanner::SetBool("NPSSNLOLPS", "com_force_free_to_play", false) ? 1u : 0u;
-                    matched += mw2019_scanner::SetBool("MROLPRPTPO", "com_force_premium", true) ? 1u : 0u;
-                    matched += mw2019_scanner::SetBool("MNTMKQRSTQ", "hide_select_buy_mw_prompt", true) ? 1u : 0u;
-                    matched += mw2019_scanner::SetBool("MQRQOLKOTK", "premium_sale_ui_for_f2p", false) ? 1u : 0u;
-                    matched += mw2019_scanner::SetBool("LNRQKOQLNN", "promoted_mp_trial_buttons", false) ? 1u : 0u;
-                    matched += mw2019_scanner::SetBool("LNSMSSTTSK", "trial_ending", false) ? 1u : 0u;
-                    matched += mw2019_scanner::SetBool("NORMPNKNKQ", "warzone_trial_access", false) ? 1u : 0u;
-
-                    // Exact 1.20 frontend selectors: do not hide core modes because
-                    // platform DLC/install enumeration is incomplete in the local
-                    // preservation environment, use the normal (non-Magma) owned
-                    // menu presentation, and keep Private Match visible.
-                    matched += mw2019_scanner::SetBool("RLSPOOTTT", "com_checkIfGameModeInstalled", false) ? 1u : 0u;
-                    matched += mw2019_scanner::SetBool("LRKPTLNQTT", "lui_enable_magma_blade_layout", false) ? 1u : 0u;
-                    matched += mw2019_scanner::SetBool("MTSTMKPMRM", "ui_onlineRequired", false) ? 1u : 0u;
-                    matched += mw2019_scanner::SetBool("LQKTNLONLP", "ui_mp_private_match_enabled", true) ? 1u : 0u;
-
-                    constexpr unsigned kPremiumMenuDvarCount = 11u;
-                    if (matched != lastPremiumMatched ||
-                        (matched == kPremiumMenuDvarCount && !premiumAllAnnounced))
-                    {
-                        InternalLog(
-                            "[PREMIUM120] ownership/menu presentation pinned matched=%u/%u forceF2P=0 forcePremium=1 hideBuyMW=1 f2pSale=0 mpTrialPromoted=0 trialEnding=0 wzTrialAccess=0 checkInstalled=0 magmaLayout=0 onlineRequired=0 privateMatch=1\r\n",
-                            matched, kPremiumMenuDvarCount);
-                        lastPremiumMatched = matched;
-                        if (matched == kPremiumMenuDvarCount)
-                            premiumAllAnnounced = true;
-                    }
-                }
             }
 
             PsManifest120Snapshot current{};
@@ -2785,13 +2718,11 @@ namespace
                 g_consoleOut = GetStdHandle(STD_OUTPUT_HANDLE);
         }
 
-        mw2019_scanner::Initialize();
-        mw2019_scanner::StartConsole();
         AppendRaw("[1.44] CodRevamped MW2019 1.44 SERVER-EMULATION research profile started - phase 1\r\n");
         AppendRaw("[SERVER-EMU144] PURE EMULATION: no sign-in/fence/content/LUI/menu truth patches will be installed\r\n");
         AppendRaw("[SERVER-EMU144] installing endpoint + Winsock + WinHTTP tracing/redirection before stock online startup\r\n");
         InstallServerEmuNetworkHooks(game);
-        AppendRaw("[AUTH-SCAN] automatic full-image scans are disabled to avoid startup/intro stalls; use the authscan console command manually when research data is needed\r\n");
+        AppendRaw("[MEMORY-SCANNER] disabled; runtime profile uses fixed/proven paths only\r\n");
 
         std::string message;
         if (!iw8_144::Initialize(game, message))
@@ -2887,7 +2818,7 @@ namespace mw2019_diag
         _vsnprintf_s(body, sizeof(body), _TRUNCATE, format, args);
         va_end(args);
 
-        // The per-game MW2019 DLL keeps scanner/console output under the same
+        // The per-game MW2019 DLL keeps console output under the same
         // compact build tag as the dedicated profile logger. No wall-clock or
         // INFO/TRACE prefix is added here.
         const HMODULE game = GetModuleHandleW(nullptr);
@@ -2900,7 +2831,7 @@ namespace mw2019_diag
             strncpy_s(line, body, _TRUNCATE);
 
         // 1.69 allocates the console in the dedicated profile logger rather
-        // than DiagnosticThread. Attach lazily so scanner command output still
+        // than DiagnosticThread. Attach lazily so command output still
         // appears in that same console window.
         if (g_consoleOut == INVALID_HANDLE_VALUE && GetConsoleWindow())
         {
@@ -2920,19 +2851,10 @@ namespace mw2019_diag
         AppendRaw(line);
     }
 
-    void RunServerEmuAuthScan(unsigned pass) noexcept
+    void RunServerEmuAuthScan(unsigned) noexcept
     {
-        const HMODULE game = GetModuleHandleW(nullptr);
-        if (!iw8_144::IsExactBuild(game) || !iw8_144::IsPureServerEmulationMode())
-        {
-            Log("[AUTH-SCAN] available only for the MW2019 1.44 pure server-emulation profile\r\n");
-            return;
-        }
-
-        static std::atomic_uint manualPass{100};
-        const unsigned resolvedPass = pass ? pass : manualPass.fetch_add(1, std::memory_order_relaxed);
-        Log("[AUTH-SCAN] manual pass %u starting\r\n", resolvedPass);
-        ScanServerEmuProtocolSurface(game, resolvedPass);
+        Log("[MEMORY-SCANNER] disabled in this build
+");
     }
 
     void PrintServerEmuNetworkStatus() noexcept

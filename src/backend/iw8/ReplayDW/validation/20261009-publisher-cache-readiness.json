@@ -1,0 +1,85 @@
+{
+  "schema": 1,
+  "generated_utc": "2026-10-09T07:40:41.618888+00:00",
+  "full_backend_completed": false,
+  "change": "Durable publisher cache recovery and current publication authority for retained download URLs",
+  "server_sha256": "312a8f7f53cbf776738afcad9ada668ab80f754447b972ce43fea588e5b7a1e5",
+  "executable_sha256": "80277fed1fe1488310ff271fc1af21272e2bc4ea453e5179312bc0d80f57494d",
+  "game_recompile_required": false,
+  "compiled": {
+    "linux_linked": true,
+    "windows_changed_unit_w4_wx": true,
+    "windows_object_sha256": "5ab56e4562f80c8246f96766d5146cd141896415ffb699e4654a367b799b7a16",
+    "changed_objects": {
+      "objectstore_services.cpp": "3a1893d64754589ee2d2d37e818b0399b02c32c3be6a74b568f6d2eab8075a15"
+    },
+    "retained_object_count": 44
+  },
+  "verified": {
+    "publisher_cache_groups": 6,
+    "startup_and_host_groups": 123,
+    "native_startup_fences": 27,
+    "native_publisher_cache_publications": 8,
+    "root_game_folder": true,
+    "one_game_instance": true,
+    "multiplayer_frontend_reached": true,
+    "com_optimized": 1,
+    "game_interruption_or_cache_damage_not_tested_in_production": true
+  },
+  "evidence": [
+    {
+      "path": "data/remaining-services-20261009/linux-cache-r3-build.json",
+      "sha256": "eae7becace20b3bfefaa686bc3c26757c178e1f7243ceb3ce16119fb6c7de678"
+    },
+    {
+      "path": "data/remaining-services-20261009/linux-cache-r3-cache.json",
+      "sha256": "c0e05842112e825de5d896c70d74f98b9265b29b96e9c594d48b5d62be2b380c"
+    },
+    {
+      "path": "data/remaining-services-20261009/linux-cache-r3-startup.json",
+      "sha256": "c8446d8e11511318c8897ecc3b1305b1a2d9e5cec7e1eaf6a845b8a7cde7de76"
+    },
+    {
+      "path": "data/remaining-services-20261009/linux-cache-r3-tools.json",
+      "sha256": "3bc6d271de6ea61e1689e0e1fd1c6ecc2c50b55f463bc5d01d82949cedf6b7eb"
+    },
+    {
+      "path": "data/remaining-services-20261009/native-cache-r3-mp.json",
+      "sha256": "af27bdcbe5f1aa3c6230a456a1a684dc9bd845b7f2008552fea4a2bc1a522538"
+    },
+    {
+      "path": "data/remaining-services-20261009/native-cache-r3-mp.jpg",
+      "sha256": "d5bf58377c393f4a1bb42f9f1537959fcd2d990a8f263376f84edce0eceaf5f3"
+    },
+    {
+      "path": "data/remaining-services-20261009/native-cache-r3-publications.json",
+      "sha256": "88d6ebeeecc1d58a0822af3179e12d0b5d8664d4dad33f00b6ee7f3b8fa0ffa6"
+    },
+    {
+      "path": "data/remaining-services-20261009/linux-cache-r3-deployment.json",
+      "sha256": "6c7c14c0afbd003f897fba5865c64ba23332f1063ecb03d3a8ec93400228b7dc"
+    }
+  ],
+  "runtime_sources": [
+    {
+      "path": "src/objectstore_services.cpp",
+      "sha256": "a70cd48a30f5517fc51e856bd4d8bdb15462f41a418e8f6376df43eac470fe7b"
+    },
+    {
+      "path": "tools/test-publisher-cache.py",
+      "sha256": "1065d43329240f8c3d682033a5620a7593124e0b2c1caf9f32d2d599940fe42e"
+    }
+  ],
+  "data_format": {
+    "cache_reference_schema": 1,
+    "authoritative_publisher_documents_unchanged": true,
+    "references_lazy_created_after_verified_native_metadata_request": true,
+    "rollback_ignores_additive_reference_files": true
+  },
+  "remaining": [
+    "Exact native category-list response binding for 193/9 and 193/10",
+    "Large upload completion request/response binding for 193/12 and 193/24",
+    "Extended live-download result reader for 50/22 and 58/22",
+    "Remaining indirect SDK/REST call audit and positive native callbacks"
+  ]
+}

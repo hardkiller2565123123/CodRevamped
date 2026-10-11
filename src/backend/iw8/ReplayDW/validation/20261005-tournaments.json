@@ -1,0 +1,20 @@
+{
+  "game_recompiled": false,
+  "recorded_utc": "2026-10-05T10:00:13.5668-04:00",
+  "native_registration_callback_verified": true,
+  "native_state_result_sha256": "f6a9191d2202309254b1cf32c8242136cdbd73b9ce2ff906d5d7dbf7f69b8687",
+  "temporary_publication_restored": true,
+  "server_sha256": "27c9ccd04e0b7fcf0341980c971393921f13c5ff18ddb39cdd535f0733261e51",
+  "native_registration_result_sha256": "eb6b6f0f072b5c1b6940c5230066768af955ec503e4693c415e985c0d5866419",
+  "native_state_callback_verified": true,
+  "scope": "Actual native bdStringResult readers and completion callbacks: registration offset, task cleanup and persisted tournament-ID parsing after both process restarts. No match scheduling or bracket push consumer proof.",
+  "backend_and_game_process_restart_verified": true,
+  "playable_tournament_verified": false,
+  "native_rejoin_candidate_matches_persisted_tournament": true,
+  "game_sha256": "b0075e0dbde62758efe84e23318084608be5b3704f23c269d87254ce2aea58a8",
+  "native_parsed_search_offset": 600,
+  "full_backend_verified": false,
+  "map_tests_performed": false,
+  "schema": 1,
+  "independent_protocol_checks": 131
+}

@@ -1,0 +1,58 @@
+{
+  "schema": 2,
+  "observed_utc": "2026-10-06T07:52:04.738547+00:00",
+  "game_sha256": "b326981a9718cedbc05228d40bef8b2adcd6be89307b2cde7d8e878a3ca67885",
+  "server_sha256": "7069ed6be1d2261fd6b5117902638ac8d48323c0dee86902a462d0aaf5fc5cc9",
+  "previous_server_sha256": "7069ed6be1d2261fd6b5117902638ac8d48323c0dee86902a462d0aaf5fc5cc9",
+  "compiler_job": "436f999a3d444276",
+  "passed": true,
+  "native_startup_fences_passed": 27,
+  "native_profile_and_online_state_verified": true,
+  "native_friend_lists_completed_and_empty": true,
+  "backend_restart_and_dw_restart_same_game_process": true,
+  "native_account_preserved_on_reconnect": true,
+  "native_network_online_and_started": true,
+  "fresh_backend_native_auth_and_lobby_session_verified": true,
+  "native_relay_token_renewed_on_restart": true,
+  "native_relay_bind_verify_established_after_restart": true,
+  "native_relay_join_data_correlated_with_backend_event": true,
+  "relay_id_after_restart": 11033975215255120297,
+  "relay_established_event": {
+    "action": "established",
+    "expires": 1791276578,
+    "init_sha256": "3731525c5ab11498db5bf0f34ffa303f944ded4aabf69d31cd6e6b94297bfa4c",
+    "port": 3077,
+    "relay_id": 11033975215255120297,
+    "route": 1086144904,
+    "schema": 1,
+    "time": 1791272999,
+    "title": 5800,
+    "user": 76561202200765207,
+    "verification_sha256": "b6a0938d38c866c580c3b7b83de0c3b84cda18467b90d748fe1a9f2342beb7c2"
+  },
+  "two_network_party_gameplay_verified": false,
+  "map_or_match_test_performed": false,
+  "complete_backend_verified": false,
+  "observations": {
+    "data\\native-reconnect-20261006\\host-migration-before-7069.json": "b7bda687292bdca6b01c35078a5ab32674607d550540d11ed5a06e8473078255",
+    "data\\native-reconnect-20261006\\host-migration-stable-7069.json": "2b820355f97fb5465610ce2952841a4cff65514e5f4f126c9ecbaec739380180",
+    "data\\native-reconnect-20261006\\host-migration-final-7069.json": "f69148a235a71b074238686d621ccc71e1ca5ea138b6f0c1bfc5022e213499e6"
+  },
+  "transport_events_sha256": "5b258c80b781cfcbdd853ba46dbb58aeed169937f33b86b3f216b0133224d53a",
+  "pre_connection_retired_route_rejections": [
+    {
+      "action": "rejected",
+      "bytes": 32,
+      "packet_type": 6,
+      "port": 3077,
+      "reason": "unknown-route",
+      "relay_id": 11033975215255120297,
+      "route": 808143848,
+      "schema": 1,
+      "time": 1791272978
+    }
+  ],
+  "native_relay_stability_after_restart_verified": true,
+  "stable_seconds": 88.406804,
+  "keepalive_replies": 9
+}

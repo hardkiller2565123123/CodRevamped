@@ -1,0 +1,31 @@
+{
+  "schema": 1,
+  "passed": true,
+  "recorded_utc": "2026-10-06T22:30:17.472424+00:00",
+  "backend_sha256": "8919c101bb62b7cb002c09c114c6c3182c06964ea1e510db4d6f74b0dd59f031",
+  "source_sha256": {
+    "src/server.cpp": "99d7a31d8f9e7afe42d5420d375cb36726e79774e60ecd2c47713cf52b1abc99",
+    "src/services.cpp": "8222a351c397726da7bff879890c6f1cc5ddf61ef27b3e207ced7127d2d6ff5a",
+    "src/services.h": "127c98d14a746943d32219a358269cd535b3b88434df287e02c37dfdd0e5a5a4",
+    "src/tournament_services.cpp": "cb2360b8daec1e137e7f3f590a2cf454fbac5e66818039318338e479862421bf",
+    "src/tournament_services.h": "3ef84a3be4dac00227ed7ea3ae8eb8e0f65dc9725395f938b3d5cc48626ce0e0"
+  },
+  "test_tool_sha256": "02eee5aba121bf1ac92bac1eebb8b4e25ca77d1c0b9bb441fc2d6802bfa3133a",
+  "protocol_groups": 295,
+  "server_pid": 20464,
+  "authenticated_lobby_connections": 0,
+  "authentication_requests": 0,
+  "native_tasks": 0,
+  "real_clock_expiry": true,
+  "terminal_committed": true,
+  "readiness_cleared": true,
+  "malformed_realm_preserved": true,
+  "independent_realm_progressed": true,
+  "game_launched": false,
+  "receiver_membership_seeded": true,
+  "protocol_evidence": {
+    "path": "E:\\DW\\IW8\\data\\backend-validation-1791325376832734500\\data\\lobby-verification.json",
+    "sha256": "1b305e7fee8d726b4fbea5209ee1eead4bba4bf55c7ef9c06efa6ab068397791"
+  },
+  "exact_source_restoration_verified": true
+}

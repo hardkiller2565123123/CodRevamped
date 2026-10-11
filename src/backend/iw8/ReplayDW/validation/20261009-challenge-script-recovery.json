@@ -1,0 +1,199 @@
+{
+  "source": {
+    "path": "E:\\IW8\\Builds\\1.20-replay\\zone\\common_base_mp.ff",
+    "bytes": 133218440,
+    "sha256": "fe29f14466473a59eb8b454ef60d31ae794d594911c54ab18883f09a6fa6c58c",
+    "header": {
+      "magic": "IWffa100",
+      "header_version": 11,
+      "xfile_version": 4065,
+      "compression": 1,
+      "encryption": 0,
+      "transient_type": 0
+    },
+    "header_signature_marker": "IWffs100",
+    "signature_block_sha256": "3535e902b6c081b5e27034ac76503241340b14e41c4cf5c7048f6cf9ec03e851",
+    "observed_replay_revisions": [
+      4045,
+      4047,
+      4053,
+      4065,
+      4083,
+      4085,
+      4087
+    ],
+    "revision_seen_in_observed_set": true,
+    "patches": [
+      {
+        "path": "E:\\IW8\\Builds\\1.20-replay\\zone\\common_base_mp.fp",
+        "extension": ".fp",
+        "header_version": 6,
+        "previous": {
+          "magic": "IWffa100",
+          "header_version": 11,
+          "xfile_version": 4065,
+          "compression": 1,
+          "encryption": 0,
+          "transient_type": 0
+        },
+        "target": {
+          "magic": "IWffa100",
+          "header_version": 11,
+          "xfile_version": 4087,
+          "compression": 1,
+          "encryption": 0,
+          "transient_type": 0
+        },
+        "previous_layout": {
+          "decoded_size": 236633766,
+          "block_sizes": [
+            0,
+            2560272,
+            1888192,
+            0,
+            0,
+            186139334,
+            2489427,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "target_layout": {
+          "decoded_size": 267508476,
+          "block_sizes": [
+            0,
+            2022672,
+            2023584,
+            0,
+            0,
+            205444414,
+            2682710,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "previous_header_hex": "49576666613130300b000000e10f00000100000000c0f007f15a69f4608f5907a6be1a0e00000000f65700000000000000000000000000001011270000000000c0cf1c000000000000000000000000000000000000000000c642180b0000000053fc2500000000000000000000000000000000000000000000000000000000000000000000000000",
+        "target_header_hex": "49576666613130300b000000f70f00000100000000409808cf57d22a90b82b09fcdaf10f000000001d61000000000000000000000000000010dd1e0000000000a0e01e0000000000000000000000000000000000000000003ed53e0c0000000056ef2800000000000000000000000000000000000000000000000000000000000000000000000000",
+        "header_only_zero_payload": false,
+        "bytes": 25133384,
+        "sha256": "e1e3bf3d04aa8a2218f3014390d2f95681332abdb394f80e1fa3c2b379b209b7"
+      }
+    ],
+    "final_header": {
+      "magic": "IWffa100",
+      "header_version": 11,
+      "xfile_version": 4087,
+      "compression": 1,
+      "encryption": 0,
+      "transient_type": 0,
+      "decoded_size": 267508476,
+      "block_sizes": [
+        0,
+        2022672,
+        2023584,
+        0,
+        0,
+        205444414,
+        2682710,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "header_only_zero_payload_chain": false
+  },
+  "body_sha256": "faab9d06c7710fdc7b03e5b6c29b2c8149717ae7bd9250f251a72ff7efde6745",
+  "export_index_sha256": "5bb1994938a32a8465af251c8ec730bf7555e404ccc7d964bea60179fbae5f5a",
+  "decompiler_sha256": "1adfd67414a9b886cbad57ee0378f622eed485bcef7711322aee478e298fadcb",
+  "records": [
+    {
+      "asset_index": 10964,
+      "type_id": 52,
+      "type_name": "scriptfile",
+      "name": "scripts/cp_mp/challenges.gsc",
+      "rank": 316,
+      "format": "gsc-tool gscbin",
+      "payload_bytes": 7310,
+      "payload_sha256": "074bcfaf5cd6fe39c6fde4f02321b7db9ab90197f1eab7d43afbc47a938694f7",
+      "payload_relative_path": "payloads/000316.gscbin",
+      "exporter_status": "ok",
+      "decompiled_path": "data/remaining-contracts-20261009/native-challenge-scripts/scripts/cp_mp/challenges.gsc",
+      "decompiled_sha256": "7911cb883f9e752e611bbe8e26296a30c33be503e7bc03bbb5385c33c38a7b2b"
+    },
+    {
+      "asset_index": 11070,
+      "type_id": 52,
+      "type_name": "scriptfile",
+      "name": "scripts/mp/challenges_mp.gsc",
+      "rank": 422,
+      "format": "gsc-tool gscbin",
+      "payload_bytes": 35,
+      "payload_sha256": "fc6cbbb4a3c72766ea83a3a3e6d0de331518cd1748eb962627190830c67651c7",
+      "payload_relative_path": "payloads/000422.gscbin",
+      "exporter_status": "ok",
+      "decompiled_path": "data/remaining-contracts-20261009/native-challenge-scripts/scripts/mp/challenges_mp.gsc",
+      "decompiled_sha256": "5450e5274c78d80d8660b07c4ff84e586ae24895ed6285cbfae86113edb26ba1"
+    },
+    {
+      "asset_index": 11086,
+      "type_id": 52,
+      "type_name": "scriptfile",
+      "name": "scripts/mp/gametypes/br_armor.gsc",
+      "rank": 438,
+      "format": "gsc-tool gscbin",
+      "payload_bytes": 1162,
+      "payload_sha256": "3a6209fd1855913ea228645f5d37137304339b6f562bee95e08980b51b5a2f15",
+      "payload_relative_path": "payloads/000438.gscbin",
+      "exporter_status": "ok",
+      "decompiled_path": "data/remaining-contracts-20261009/native-challenge-scripts/scripts/mp/gametypes/br_armor.gsc",
+      "decompiled_sha256": "c738e78f687d2300b3ee6948da0c998c0f2d309623b65c46527339c52f977d99"
+    },
+    {
+      "asset_index": 11087,
+      "type_id": 52,
+      "type_name": "scriptfile",
+      "name": "scripts/mp/gametypes/br_armory_kiosk.gsc",
+      "rank": 439,
+      "format": "gsc-tool gscbin",
+      "payload_bytes": 9004,
+      "payload_sha256": "273740afbb626193bfd7ab378c3e811910eeffdc1f0711ff5a16897518275732",
+      "payload_relative_path": "payloads/000439.gscbin",
+      "exporter_status": "ok",
+      "decompile_error": "GSC Tool decomp failed (1): [ERROR]:disassembler: couldn't resolve function name at index 0x2596 at br_armory_kiosk.gscbin"
+    },
+    {
+      "asset_index": 11113,
+      "type_id": 52,
+      "type_name": "scriptfile",
+      "name": "scripts/mp/gametypes/br_gulag.gsc",
+      "rank": 465,
+      "format": "gsc-tool gscbin",
+      "payload_bytes": 39595,
+      "payload_sha256": "ce5307afc1de9bf5ea34a47af637a91b1c4addd9578ab1e8b5f5d8d66ca2c34d",
+      "payload_relative_path": "payloads/000465.gscbin",
+      "exporter_status": "ok",
+      "decompiled_path": "data/remaining-contracts-20261009/native-challenge-scripts/scripts/mp/gametypes/br_gulag.gsc",
+      "decompiled_sha256": "2d48f427afa01e1b21fa17c0da6061ef54e9628492a3ab61562117f5eea9cf98"
+    },
+    {
+      "asset_index": 11123,
+      "type_id": 52,
+      "type_name": "scriptfile",
+      "name": "scripts/mp/gametypes/br_pickups.gsc",
+      "rank": 475,
+      "format": "gsc-tool gscbin",
+      "payload_bytes": 22953,
+      "payload_sha256": "c8461b4d74eda980250219134e03570736cffdd243274331e492b2eebd1d704c",
+      "payload_relative_path": "payloads/000475.gscbin",
+      "exporter_status": "ok",
+      "decompiled_path": "data/remaining-contracts-20261009/native-challenge-scripts/scripts/mp/gametypes/br_pickups.gsc",
+      "decompiled_sha256": "e7da88726b9203f3f80c046939def856e7a868d109d2c8a75cba950f3e59ef93"
+    }
+  ],
+  "scope": "Cached native ScriptFile exports, current FF/FP/body/payload hashes verified. Decompiled logic requires bytecode corroboration."
+}

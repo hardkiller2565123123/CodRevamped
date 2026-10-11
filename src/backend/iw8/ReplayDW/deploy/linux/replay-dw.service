@@ -1,0 +1,37 @@
+[Unit]
+Description=Replay Demonware emulator
+Wants=network-online.target
+After=network-online.target
+StartLimitIntervalSec=60
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=replay-dw
+Group=replay-dw
+WorkingDirectory=/var/lib/replay-dw
+ExecStart=/opt/replay-dw/current/iw8-dw-server /var/lib/replay-dw
+Restart=on-failure
+RestartSec=3
+TimeoutStopSec=30
+KillSignal=SIGTERM
+UMask=0077
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/var/lib/replay-dw
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+LockPersonality=yes
+LimitNOFILE=1024
+TasksMax=320
+MemoryMax=600M
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

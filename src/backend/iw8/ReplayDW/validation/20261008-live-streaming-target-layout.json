@@ -1,0 +1,242 @@
+{
+  "schema": 1,
+  "passed": true,
+  "generated_utc": "2026-10-08T08:23:54.240124+00:00",
+  "original_image_sha256": "68fb1cbcb2924182724004039de55a4c50152bb6561803c4898b7930b38132f0",
+  "tool_sha256": "cc58426e44ab9d92a6bd72a570437b0c2901199153bdb4c916a516dcd183b15c",
+  "oracle": {
+    "path": "data/oracle-bdLiveStreamingFileMetaData-20261008.json",
+    "sha256": "0f974cd69b5e61fa5449e0618d8672a10fb90afda16ab0f5c4f2af9116602b96",
+    "guid": "{910A7F7F-2DB0-4028-966A-F6BF38DD3ACC}",
+    "age": 1,
+    "full_layout": {
+      "name": "bdLiveStreamingFileMetaData",
+      "size": 28992,
+      "fields": [
+        {
+          "offset": 16,
+          "size": 8,
+          "tag": 16,
+          "name": "m_fileID",
+          "type": ""
+        },
+        {
+          "offset": 24,
+          "size": 4,
+          "tag": 16,
+          "name": "m_createTime",
+          "type": ""
+        },
+        {
+          "offset": 28,
+          "size": 4,
+          "tag": 16,
+          "name": "m_modifedTime",
+          "type": ""
+        },
+        {
+          "offset": 32,
+          "size": 4,
+          "tag": 16,
+          "name": "m_fileSize",
+          "type": ""
+        },
+        {
+          "offset": 40,
+          "size": 8,
+          "tag": 16,
+          "name": "m_ownerID",
+          "type": ""
+        },
+        {
+          "offset": 48,
+          "size": 64,
+          "tag": 15,
+          "name": "m_ownerName",
+          "type": ""
+        },
+        {
+          "offset": 112,
+          "size": 128,
+          "tag": 15,
+          "name": "m_fileName",
+          "type": ""
+        },
+        {
+          "offset": 240,
+          "size": 2,
+          "tag": 16,
+          "name": "m_category",
+          "type": ""
+        },
+        {
+          "offset": 244,
+          "size": 4,
+          "tag": 16,
+          "name": "m_numTags",
+          "type": ""
+        },
+        {
+          "offset": 248,
+          "size": 2,
+          "tag": 16,
+          "name": "m_numParts",
+          "type": ""
+        },
+        {
+          "offset": 250,
+          "size": 2048,
+          "tag": 15,
+          "name": "m_metaData",
+          "type": ""
+        },
+        {
+          "offset": 2300,
+          "size": 4,
+          "tag": 16,
+          "name": "m_metaDataSize",
+          "type": ""
+        },
+        {
+          "offset": 2304,
+          "size": 4,
+          "tag": 16,
+          "name": "m_summaryFileSize",
+          "type": ""
+        },
+        {
+          "offset": 2312,
+          "size": 16384,
+          "tag": 15,
+          "name": "m_tags",
+          "type": ""
+        },
+        {
+          "offset": 18696,
+          "size": 4,
+          "tag": 16,
+          "name": "m_numCopiesMade",
+          "type": ""
+        },
+        {
+          "offset": 18700,
+          "size": 10250,
+          "tag": 15,
+          "name": "m_urls",
+          "type": ""
+        },
+        {
+          "offset": 28952,
+          "size": 4,
+          "tag": 16,
+          "name": "m_numUrls",
+          "type": ""
+        },
+        {
+          "offset": 28960,
+          "size": 8,
+          "tag": 16,
+          "name": "m_originFileID",
+          "type": ""
+        },
+        {
+          "offset": 28968,
+          "size": 2,
+          "tag": 16,
+          "name": "m_partOffset",
+          "type": ""
+        }
+      ],
+      "partial": true
+    },
+    "provenance": "Xbox IW8 PDB type oracle; only listed original Replay consumer accesses are corroborated"
+  },
+  "original_consumer_accesses": [
+    {
+      "function_va": "0x142130f70",
+      "function_size": 983,
+      "bytes_sha256": "86266584546444fcc3849eb66ea0de62ed06b48469720783774939d2679eca80",
+      "accesses": [
+        {
+          "address": "0x142131044",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [rcx + 0x7118]",
+          "size": 4,
+          "displacement": 28952
+        }
+      ]
+    },
+    {
+      "function_va": "0x142131550",
+      "function_size": 950,
+      "bytes_sha256": "706d77f1fc9534443bb8198a46405da9169987c567226a490709eb80380b0ab9",
+      "accesses": [
+        {
+          "address": "0x142131842",
+          "mnemonic": "movzx",
+          "operands": "edx, word ptr [rdx + 0x7128]",
+          "size": 2,
+          "displacement": 28968
+        }
+      ]
+    },
+    {
+      "function_va": "0x142132c10",
+      "function_size": 959,
+      "bytes_sha256": "e9bb0176027e9b9f328a33b72ef20b947f92f6b6c7126ce61ac1b3dfb72783f6",
+      "accesses": [
+        {
+          "address": "0x142132e9d",
+          "mnemonic": "movzx",
+          "operands": "ecx, word ptr [rax + 0x7118]",
+          "size": 2,
+          "displacement": 28952
+        },
+        {
+          "address": "0x142132ea4",
+          "mnemonic": "movsx",
+          "operands": "edx, word ptr [rax + 0x7128]",
+          "size": 2,
+          "displacement": 28968
+        }
+      ]
+    }
+  ],
+  "unchanged_original_vm_cases": [
+    {
+      "part_index": 0,
+      "url_displacement": 18700,
+      "file_id": 1311768467463790320,
+      "file_size": 123456,
+      "url_count": 10,
+      "executed_instructions": 37,
+      "external_calls": 0,
+      "passed": true
+    },
+    {
+      "part_index": 1,
+      "url_displacement": 19725,
+      "file_id": 1311768467463790320,
+      "file_size": 123456,
+      "url_count": 10,
+      "executed_instructions": 37,
+      "external_calls": 0,
+      "passed": true
+    },
+    {
+      "part_index": 9,
+      "url_displacement": 27925,
+      "file_id": 1311768467463790320,
+      "file_size": 123456,
+      "url_count": 10,
+      "executed_instructions": 37,
+      "external_calls": 0,
+      "passed": true
+    }
+  ],
+  "target_consumer_layout_corroborated": true,
+  "response_wire_order_verified": false,
+  "extended_metadata_deserializer_verified": false,
+  "native_task_completion_verified": false,
+  "interpretation": "Replay mode 102 selects a URL from an extended result using 1025-byte stride at +18700 and retains its file ID, size and URL count. Pump consumes the signed part offset at +28968. Ordinary bdFileMetaData serialization cannot establish this response contract."
+}

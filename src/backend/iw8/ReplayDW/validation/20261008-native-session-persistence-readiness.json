@@ -1,0 +1,144 @@
+{
+  "schema": 1,
+  "passed": true,
+  "generated_utc": "2026-10-08T09:32:34.887983+00:00",
+  "backend_sha256": "24aeb6cba0abdc854c06e815a55db0eb49ae3dccbeca2569b9a1eb56d285e163",
+  "game_sha256": "638dab82f069be51f6450f9ed2744f0b049d34642c0b67ae30cde01b53ea16e5",
+  "backend_pid_before": 94075,
+  "backend_pid_after": 95210,
+  "native_game_pid_during_restart": 7600,
+  "clean_game_pid": 22784,
+  "signed_private_session_store_verified": true,
+  "native_cached_platform_credentials_reauthenticated_after_server_restart": true,
+  "native_signed_renewal_after_server_restart_verified": true,
+  "native_reauthentication_rotated_ticket_and_key": true,
+  "native_renewal_preserved_current_ticket_and_key": true,
+  "native_clean_multiplayer_relaunch_verified": true,
+  "local_progression_file_and_restored_xp_rank_preserved": true,
+  "native_transparent_frontend_recovery_verified": false,
+  "observed_native_disconnect_error": 65538,
+  "scope": "Same game process reauthenticated with its persisted platform token and consumed signed renewal after a real Linux server restart. The game retained its native disconnect/quit popup. A separate clean relaunch verified Multiplayer, all 27 fences, relay establishment and the original locally saved XP/rank. Transparent frontend or in-match recovery is not credited.",
+  "full_backend_complete": false,
+  "evidence": [
+    {
+      "path": "data/session-persistence-20261008/source.json",
+      "sha256": "64b91d21500a4bc828da4ff6d061448ff08de264917ef1439d5680dea273af8b"
+    },
+    {
+      "path": "data/session-persistence-20261008/linux-build.json",
+      "sha256": "6fc69cc44f544f76ea83fdb9eb09ebafef687dd2138b8d588cf32bed446e1488"
+    },
+    {
+      "path": "data/session-persistence-20261008/windows-persistence.json",
+      "sha256": "c96e173e713dae2d563f4a29b51e30b232d247c8352cb9600f9e33be6dde8359"
+    },
+    {
+      "path": "data/session-persistence-20261008/windows-renewal.json",
+      "sha256": "c82f7e14055cf9ecf0686180c623a844173f71cb7af14a474ee92c3119fae512"
+    },
+    {
+      "path": "data/session-persistence-20261008/windows-continuity.json",
+      "sha256": "e783359edb8fcb1a95eba5a0ae8e7dffec52a5eeb67415808759565142d835ad"
+    },
+    {
+      "path": "data/session-persistence-20261008/windows-startup-verification.json",
+      "sha256": "76ce910c67e5bad6c3ae16abd37bc00fade3681dbe2366f61955588353d361c2"
+    },
+    {
+      "path": "data/session-persistence-20261008/linux-persistence.json",
+      "sha256": "51314102f09661fa211a9ffbbdd94c5c1752a51016cbcfadf26868059642cfa2"
+    },
+    {
+      "path": "data/session-persistence-20261008/linux-renewal.json",
+      "sha256": "72f1c4b65d3d6e3808605e7f15ff06e08f2dc0331144ed22ab4af98829714727"
+    },
+    {
+      "path": "data/session-persistence-20261008/linux-continuity.json",
+      "sha256": "e88c76fdea0edf0c4a114ef4a8ffe1d895e509f23a1445d806cca6fb67e95481"
+    },
+    {
+      "path": "data/session-persistence-20261008/linux-startup-verification.json",
+      "sha256": "171c9ca7051ca1ca0747dc3401e98a816b1c8b3128f08919b1150d71603efb29"
+    },
+    {
+      "path": "data/session-persistence-20261008/native-menu-before-restart.json",
+      "sha256": "b24a8dbe85c485e44b08f7ae55d177cd990339ec62a9440d94e0a3a155f472c2"
+    },
+    {
+      "path": "data/session-persistence-20261008/native-after-server-restart.json",
+      "sha256": "9f7704709f74035d49212d3ff4d0feeebc3789bdbbbb0b23ae622ca724a83016"
+    },
+    {
+      "path": "data/session-persistence-20261008/native-renewal-after-restart.json",
+      "sha256": "867151c9d7835e9a6126eef9924c2a9d2d1e4620c77a47f9cab1d59d83b6344b"
+    },
+    {
+      "path": "data/session-persistence-20261008/native-clean-menu.json",
+      "sha256": "40e9e40395300e6bf636feaaa24d0ee351a22989c729a4fabdc2dddd8acbf719"
+    },
+    {
+      "path": "data/session-persistence-20261008/server-before-controlled-restart.json",
+      "sha256": "a234db568702f30c325f89bb442b0ee7eb9ec11212226c502fecdcef74179546"
+    },
+    {
+      "path": "data/session-persistence-20261008/server-after-controlled-restart.json",
+      "sha256": "b4f0355ef957dc74cd82574feb627dbfd4636d2c3fe08613217160210b2e3cbb"
+    },
+    {
+      "path": "data/session-persistence-20261008/native-session-store-before.json",
+      "sha256": "23ab0fce53b304d9fe4447ca126d8f5a79b1008539d21e958fe31bd378f3db18"
+    },
+    {
+      "path": "data/session-persistence-20261008/native-session-store-after-start.json",
+      "sha256": "b5ca2a8dbac3361824f48c7e7fa7005c6df90298183794c5da9cbee90e5dd074"
+    },
+    {
+      "path": "data/session-persistence-20261008/native-session-store-after-reconnect.json",
+      "sha256": "efe70fabb7e64354b0b65e7da2f132a2b7f6a4370289846f122a1f1b33a13068"
+    },
+    {
+      "path": "data/session-persistence-20261008/native-session-store-after-renewal.json",
+      "sha256": "504604ba1930991631afeba8825aa51f2be5bde2460e4532a202583abdeaeaa4"
+    },
+    {
+      "path": "data/session-persistence-20261008/local-progression-before.sha256",
+      "sha256": "3b17bf23657faf9839db381c8247b367d463d0536bdfa791ccf51b049d5b3a2c"
+    },
+    {
+      "path": "data/session-persistence-20261008/local-progression-after.sha256",
+      "sha256": "3b17bf23657faf9839db381c8247b367d463d0536bdfa791ccf51b049d5b3a2c"
+    },
+    {
+      "path": "data/session-persistence-20261008/native-launch.json",
+      "sha256": "d5109b5c155327af9c385df50acb7489765eb6e5a5af8ef3be92a5205164cf55"
+    },
+    {
+      "path": "data/session-persistence-20261008/native-clean-launch.json",
+      "sha256": "72564be755d8d95106940b1870a75b4b253a6bf2a2ede4c7cc4e0e1c04a5ac4d"
+    },
+    {
+      "path": "data/session-persistence-20261008/native-menu-before-restart.jpg",
+      "sha256": "35147c85163e09cc612e1f28b2a3500a045b8fb03842c2fea9ce0c5e5b44acb5"
+    },
+    {
+      "path": "data/session-persistence-20261008/native-disconnect-latch.jpg",
+      "sha256": "8443756f4b9fafebbd341f7a34009be42b7554d496f90a950434ebd0e2f8adaa"
+    },
+    {
+      "path": "data/session-persistence-20261008/native-clean-menu.jpg",
+      "sha256": "cb2ae8047a917dc9c6dd08bcee0e992249b987918765d523c5cc6c5048cd8554"
+    },
+    {
+      "path": "tools/record-native-session-persistence.py",
+      "sha256": "4f9dd6b370deaaf17252a37d3389a0b54142b457ff43c866bd71960df5806a20"
+    },
+    {
+      "path": "tools/observe-remote-session-store.py",
+      "sha256": "ed909461ea15a61514f53ec36bf4738960743a0341ba9633884e434ebe4508f8"
+    },
+    {
+      "path": "tools/test-platform-session-persistence.py",
+      "sha256": "d4cbf33d217477beb635b29975276f801b00763bf73f87c61c8865af3ca766b8"
+    }
+  ]
+}

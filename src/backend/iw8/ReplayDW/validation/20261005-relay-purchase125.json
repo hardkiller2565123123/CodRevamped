@@ -1,0 +1,37 @@
+{
+  "schema": 1,
+  "recorded_utc": "2026-10-05T13:06:30.014876+00:00",
+  "server_sha256": "316c8d92b6475db935ffea0463170e78de13d6612c3bc120d1cd486c67678f48",
+  "game_sha256": "b0075e0dbde62758efe84e23318084608be5b3704f23c269d87254ce2aea58a8",
+  "game_recompiled": false,
+  "map_tests_performed": false,
+  "build": {
+    "compiler": "MSVC C++20",
+    "warnings": "/W4 /WX",
+    "passed": true
+  },
+  "independent_wire_and_domain_checks": 127,
+  "native_menu": {
+    "verified": true,
+    "passing_fences": 27
+  },
+  "native_relay": {
+    "bind_verify_established": true,
+    "stable_seconds": 102.565362,
+    "additional_keepalive_replies": 10,
+    "native_two_game_join_forwarding_verified": false
+  },
+  "purchase125": {
+    "owner_sku_atomic_debit_grant_and_full_result_fixture_verified": true,
+    "restart_retry_fixture_verified": true,
+    "native_positive_completion_verified": false,
+    "coupon_order_v2_redemption_implemented": false
+  },
+  "coverage": {
+    "task_routes": 137,
+    "registered_handlers": 120,
+    "known_target_tasks_without_handler": 17
+  },
+  "full_backend_complete": false,
+  "runtime_receipts": "Local data directory; intentionally excluded from this repository"
+}

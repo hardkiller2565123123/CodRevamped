@@ -1,0 +1,93 @@
+{
+  "schema": 1,
+  "passed": true,
+  "generated_utc": "2026-10-08T06:43:44.781382+00:00",
+  "native_free_bundle_purchase_completion_verified": true,
+  "native_inventory_refresh_verified": true,
+  "native_inventory_process_restart_reload_verified": true,
+  "native_purchase_ui": "Purchased; all six contents checked; Items added to inventory",
+  "backend_sha256": "f447cfe3737b7f41ff66da6d1bef013c8ce51d72b6340b0d89ad179ffc7d8ee4",
+  "private_game_sha256": "028d1f64588725672dc19256e866d1c9ed5313767a511fe6f1375e7a9be3e288",
+  "purchase_pid": 25032,
+  "restarted_pid": 13484,
+  "temporary_player": 76561198757481750,
+  "sku": 400060,
+  "bundle": "Standard Issue I",
+  "native_inventory_count_before": 224,
+  "native_inventory_count_after": 231,
+  "native_grants": {
+    "170009": 1,
+    "180025": 1,
+    "190001": 1,
+    "190107": 1,
+    "210003": 1,
+    "210009": 1,
+    "400060": 1
+  },
+  "purchase_receipts": 1,
+  "native_purchase_task": "2026-10-08T06:34:11Z TASK service=80 task=106 operation=marketplace-purchase-committed error=0 results=1",
+  "native_restart_inventory_task": "2026-10-08T06:36:01Z TASK service=80 task=69 operation=inventory-read error=0 results=0",
+  "player_xp_unchanged": 0,
+  "real_money_or_first_party_purchase_tested": false,
+  "native_paid_or_gift_purchase_tested": false,
+  "full_backend_complete": false,
+  "scope": "Actual original game UI purchase and native inventory on an owned temporary profile; no grant was injected by a fixture or process-memory write",
+  "evidence": [
+    {
+      "path": "data/store-native-20261008/before.json",
+      "sha256": "11c5a424cce70dd0a870c9735470bc7fda66857f55bedcdb672b79eef6a4d05c"
+    },
+    {
+      "path": "data/store-native-20261008/after-submit.json",
+      "sha256": "944b32cb6183d53ad9c46314ef546bcb483b826cd6ed2536661668d9a390140a"
+    },
+    {
+      "path": "data/store-native-20261008/restarted.json",
+      "sha256": "6ba684a916cda332435357016c3e4bd7e8a62a1759b0a3276779f3813edda36c"
+    },
+    {
+      "path": "data/store-native-20261008/durable-after.json",
+      "sha256": "8f3db05b82ad811cf84fe758ecb82517c113f40a0738602f0c6987c519241127"
+    },
+    {
+      "path": "data/store-native-20261008/alpha-launch-purchase.json",
+      "sha256": "fe8f87bd07a9527a86ec79b5bb32e806481229492707eb07e214e927db16aaac"
+    },
+    {
+      "path": "data/store-native-20261008/alpha-launch-restarted.json",
+      "sha256": "66da57f55ec1ba18108873899903ce8313505e68ebcfa21e474a85cfd89d65d1"
+    },
+    {
+      "path": "data/store-native-20261008/alpha-deployment.json",
+      "sha256": "14f249cf29480b4410f38164243c6256120dbdd0c125f400dec4d8e0123089f2"
+    },
+    {
+      "path": "data/store-native-20261008/alpha-ini-used.ini",
+      "sha256": "70c91ea0414848e2a100fbe6f5040b2a73cc5f89799b6be5ad46a38a4200fbf2"
+    },
+    {
+      "path": "data/store-native-20261008/native-purchased.jpg",
+      "sha256": "8ab30f9ff411754dbe1c4b1498aa5be111339e25db042e5b4f7cca807a94e1c0"
+    },
+    {
+      "path": "data/store-native-20261008/observer-source.py",
+      "sha256": "a004c82a0c95aa3594297309f91bb55098238844cccafeb682cf37afb417021a"
+    },
+    {
+      "path": "data/store-native-20261008/native-loot-inventory-source.py",
+      "sha256": "3785bc45331f566fcc77a1e8d0c6f9f144edb02588a1175417dcd79ae02cea32"
+    },
+    {
+      "path": "data/store-catalog-20261007/marketplace/catalog.json",
+      "sha256": "b30d6f4e40d6b38ffc1b8cc5358cb3b2f1c2cac729f29e2e74440640ef9cf108"
+    },
+    {
+      "path": "data/store-catalog-20261007/marketplace/purchase-rules.json",
+      "sha256": "28778ba91b7db653667eb4ef861f5c766f61f06407d2c156c00d4c6ece232dc2"
+    },
+    {
+      "path": "validation/20261007-replay-store-target.json",
+      "sha256": "9525f2deac26cd2b5b4ebc0dd3e62502b0c4c26c9625eaa1c897ef012a0e2e6e"
+    }
+  ]
+}

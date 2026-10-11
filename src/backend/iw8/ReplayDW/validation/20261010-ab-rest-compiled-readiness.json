@@ -1,0 +1,96 @@
+{
+  "schema": 1,
+  "passed": true,
+  "recorded_utc": "2026-10-10T07:43:52.173599+00:00",
+  "scope": "Private compiled and linked AB REST writer; not a live enrollment or production deployment proof",
+  "job_id": "b5401f1942104678",
+  "candidate_executable": "E:\\DW\\IW8\\data\\workstation-builds\\build-workstation-b5401f1942104678\\game_dx12_ship_replay_recompiled.exe",
+  "candidate_sha256": "8b6cce4a6dcd879e22a31cdd384823b09e00b550280e1612e69696736cab54a9",
+  "candidate_bytes": 101031936,
+  "build_report": {
+    "path": "data/workstation-builds/build-workstation-b5401f1942104678/build-report.json",
+    "sha256": "fabffe8aa53ad35a3d28497f2dd32ad2a30e12997d8acf80a7ac808518310edc"
+  },
+  "source_snapshot": {
+    "path": "data/remaining-ab-native-rest-20261010/compiler-snapshot-receipt.json",
+    "sha256": "70c89f063786e881814d3063f7303a6ece139e07a64a98fd6d79d7b2d0f125ae"
+  },
+  "generated_bindings": {
+    "path": "data/compiler-snapshot-1791617240937543800/generated/ab-rest-integration.json",
+    "sha256": "38b37974474e89a282867a696c94b34ede32778a775626de2e76fcbfff5b1f16"
+  },
+  "native_imports": 12,
+  "source": {
+    "path": "integration/replay/DW_ABTestingEnroll.cpp",
+    "sha256": "ae0d1475119f2be491b38e00c78f14bc3b5d80c38636bae70bb4f541f93083d3"
+  },
+  "compiled_object": {
+    "path": "data/workstation-builds/build-workstation-b5401f1942104678/DW_ABTestingEnroll.obj",
+    "sha256": "5255544ef1d1925295d8824360647868937a54ac28f70bdfa97d06bf78da4ce1"
+  },
+  "verification": {
+    "path": "data/workstation-builds/build-workstation-b5401f1942104678/verification-report.json",
+    "sha256": "ca58465f7a60f4652cd9d91fd90e326673b0e0ed099c97f634c2615399656690"
+  },
+  "relocation_audit": {
+    "path": "data/workstation-builds/build-workstation-b5401f1942104678/relocation-audit.json",
+    "sha256": "310538e50459cb4e53a161190039dcb70b834a9a3c7c9a3c0ed4de75127d8b09"
+  },
+  "proofs": {
+    "compiled-writer-proof.json": {
+      "path": "data/remaining-ab-native-rest-20261010/compiled-writer-proof.json",
+      "sha256": "fa7b30d935a46548d98bd45cfaf4c91606dc173810a009eb2e86bbf9c6a7c5d1"
+    },
+    "linked-writer-proof.json": {
+      "path": "data/remaining-ab-native-rest-20261010/linked-writer-proof.json",
+      "sha256": "6aeab4a6364cf743904b984cc59c0a714bf642b7fe45c700aec65bf57532f754"
+    },
+    "linked-client.json": {
+      "path": "data/remaining-ab-native-rest-20261010/linked-client.json",
+      "sha256": "e2225a1790598e3c308b41b5d4817e33ed78485b05e71ad9d6827283df700581"
+    },
+    "linked-ownership.json": {
+      "path": "data/remaining-ab-native-rest-20261010/linked-ownership.json",
+      "sha256": "e818d43b40220270306414337daeff5f4601dc03d0287bf8a525bf62c153c116"
+    },
+    "linked-updater.json": {
+      "path": "data/remaining-ab-native-rest-20261010/linked-updater.json",
+      "sha256": "d7d439450fc63c3a92ea2dc81de4774218d14c15323accf7aee1e61b90d1750f"
+    }
+  },
+  "source_differences_from_shipping": [
+    {
+      "source": "src/DW_ABTestingEnroll.cpp",
+      "previous_sha256": null,
+      "new_sha256": "ae0d1475119f2be491b38e00c78f14bc3b5d80c38636bae70bb4f541f93083d3"
+    },
+    {
+      "source": "src/DW_ExecutableUpdate.cpp",
+      "previous_sha256": "5a7fd6dfc3e59aa3e4aba574ce1c52935d1842d5ed6f45d7196d72c04caa0b95",
+      "new_sha256": "6e13ecb3a1fa22e896cd32900fab5142d3b627b0a0f5d059050cd2dd9327e2a8"
+    },
+    {
+      "source": "src/DW_PlayerDataPath.cpp",
+      "previous_sha256": null,
+      "new_sha256": "0d2ca47a5eff6ce33b951c140462119458fa6fa24175c1db85eb29136694b576"
+    },
+    {
+      "source": "src/ScrPlace_EndFrame.cpp",
+      "previous_sha256": "3e1e70c6ff51fa759a9b2ec328a51a027a3fe8cb3880ec070a99a846778ad94e",
+      "new_sha256": "049a97c202d947dd17a9c11989ee9c003baff7fc7701e5e220a392eb1cfbaccd"
+    }
+  ],
+  "unchanged_shipping_executable": "E:\\IW8\\Builds\\1.20-replay\\game_dx12_ship_replay_dw.exe",
+  "unchanged_shipping_sha256": "80277fed1fe1488310ff271fc1af21272e2bc4ea453e5179312bc0d80f57494d",
+  "deployed": false,
+  "updater_published": false,
+  "game_launched": false,
+  "live_rest_task_completion_verified": false,
+  "remaining_gates": [
+    "Review the separately authored Documents/Replay player-data-path replacement included by the current saved source tree",
+    "Verify compatibility with existing local settings/profile consumers before production promotion",
+    "Native AB REST transport and response callback completion remain separate from the original validator VM",
+    "Broader missing backend DTOs, gameplay earning and lifetime/session ownership remain open"
+  ],
+  "recorder_sha256": "815aab857460c635de233737bd34fd5264b3a37b5962a03ec5fe559f5b8d5370"
+}

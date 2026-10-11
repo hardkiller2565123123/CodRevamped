@@ -1,0 +1,134 @@
+{
+  "schema": 1,
+  "generated_utc": "2026-10-06T12:48:59.931639+00:00",
+  "target_image_sha256": "68fb1cbcb2924182724004039de55a4c50152bb6561803c4898b7930b38132f0",
+  "native_runtime_verified": false,
+  "vtable_success_bindings": [
+    {
+      "vtable": 5409220112,
+      "slot": 1,
+      "handler": 5403583088
+    },
+    {
+      "vtable": 5409220440,
+      "slot": 1,
+      "handler": 5403585536
+    },
+    {
+      "vtable": 5409220608,
+      "slot": 1,
+      "handler": 5403587152
+    }
+  ],
+  "rejected_alias": {
+    "candidate": "bdSetUserRegulationPreferenceResponse::handleReplySuccess",
+    "candidate_va": 5396887904,
+    "actual_bound_handler": 5403585536,
+    "reason": "Candidate is unrelated engine code and absent from the real response vtable"
+  },
+  "functions": [
+    {
+      "va": 5403581760,
+      "candidate_alias": "bdFetchRegulationsRequest::restSerializeRequest",
+      "exported_size": 330,
+      "target_bytes_sha256": "f36ff24662cc7cd0f65d50ebc96ecbf4b22fc043194ff0813b64f3fb4d4a83b1"
+    },
+    {
+      "va": 5403584192,
+      "candidate_alias": "bdSetUserRegulationPreferenceRequest::restSerializeRequest",
+      "exported_size": 651,
+      "target_bytes_sha256": "e46222162fa1207e1949ed67536e459887fa6328c35c7db68e55a70c826a07d3"
+    },
+    {
+      "va": 5403585936,
+      "candidate_alias": "bdGetUserRegulationPreferenceRequest::restSerializeRequest",
+      "exported_size": 395,
+      "target_bytes_sha256": "3765912142268b7ae33d2bfc03d650b3ca5272f00c0dc69dc885dee331ef132e"
+    },
+    {
+      "va": 5403582144,
+      "candidate_alias": "bdRegulation::deserializeFromJSON",
+      "exported_size": 117,
+      "target_bytes_sha256": "6a09193ada64a2be3dca6d83ec821a43a988cbc7c8e1b90c199c9e2c8c84792b"
+    },
+    {
+      "va": 5403583568,
+      "candidate_alias": "q_bdRegulationPreference_deserializeFromJSON",
+      "exported_size": 319,
+      "target_bytes_sha256": "8223bfedd0cbf8de334544e8dd1880838f58f021136a0e37a458d9a1b032d317"
+    },
+    {
+      "va": 5403583088,
+      "candidate_alias": "bdFetchRegulationsResponse::handleReplySuccess",
+      "exported_size": 358,
+      "target_bytes_sha256": "e14e0a92ac78a5fb83d5524f75d507abf5f3c60845f84b7bb434dcb7232f2ada"
+    },
+    {
+      "va": 5403585536,
+      "candidate_alias": "sub_142142C00",
+      "exported_size": 123,
+      "target_bytes_sha256": "18293f91be12262a11376899d2b69dcd39909df3b8c3fb6adf80b9beb3845a83"
+    },
+    {
+      "va": 5403587152,
+      "candidate_alias": "bdGetUserRegulationPreferenceResponse::handleReplySuccess",
+      "exported_size": 357,
+      "target_bytes_sha256": "4604071a5dc5a5293d2d1af785c2ff78b0642030317ea2081e8c470890195b69"
+    },
+    {
+      "va": 5385903008,
+      "candidate_alias": "Online_Regulations::FetchRegulationEnforcementComplete",
+      "exported_size": 395,
+      "target_bytes_sha256": "ff70fe6ad2f76d2af9ccf9eecca6d2f872351c699805142a89e5b3cadd3b2940"
+    },
+    {
+      "va": 5385903984,
+      "candidate_alias": "q_Online_Regulations_GetRegulationPreferenceComplete",
+      "exported_size": 322,
+      "target_bytes_sha256": "347873e40df841403c332fa4d3f5a94bfef594f59d39f9ec27e9bb8363e32ea4"
+    },
+    {
+      "va": 5385905520,
+      "candidate_alias": "q_Online_Regulations_SetRegulationPreferenceComplete",
+      "exported_size": 293,
+      "target_bytes_sha256": "0e142fcb2ab5f93e64870b6cbc7978b05cde1c7febbdce116cd1bb7054b3c953"
+    },
+    {
+      "va": 5396887904,
+      "candidate_alias": "bdSetUserRegulationPreferenceResponse::handleReplySuccess",
+      "exported_size": 119,
+      "target_bytes_sha256": "ec4cbc751bd3c80fc6d286bdf6fb3f8f71195a10ce09931830df4f2038feb66a"
+    }
+  ],
+  "reviewed_layout": {
+    "regulation": {
+      "name_capacity": 10,
+      "version_bits": 64,
+      "record_size": 24
+    },
+    "preference": {
+      "record_size": 64,
+      "client_message_version_bits": 64,
+      "value": "boolean",
+      "updated_capacity": 21,
+      "updated_timestamp_bits": 64,
+      "updated_timestamp_optional_in_reader": true
+    },
+    "responses": {
+      "record_limit": 15,
+      "error_offset": 40,
+      "count_offset": 44,
+      "records_offset": 48,
+      "fetch_key": "regulations",
+      "preferences_key": "optouts",
+      "set_success_key": "success",
+      "set_success_offset": 44
+    }
+  },
+  "request_paths": {
+    "fetch": "/v1.0/regulations/?client=...",
+    "preferences": "/v1.0/accounts/<type>/<owner>/optouts/?client=...",
+    "set_regulation_version": 0
+  },
+  "scope": "Manual exact-target schema review with real vtable/byte bindings; candidate names alone were not trusted"
+}

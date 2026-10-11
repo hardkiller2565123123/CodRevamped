@@ -1,0 +1,48 @@
+{
+  "map_tests_performed": false,
+  "game_sha256": "b0075e0dbde62758efe84e23318084608be5b3704f23c269d87254ce2aea58a8",
+  "retail_reward_rules_implemented": false,
+  "independent_scripted_loot_checks": [
+    "Replay scripted-loot HTTP proxy status/header/body and opaque scriptResponse; native constant clientData opens are separate ordered journal records and observe live publication edits/removal",
+    "Scripted-loot signed owner/title/context isolation, canonical UInt32 drop IDs, percent-decoded bounded queries, JSON/header duplicates and malformed requests rejected without mutation",
+    "Whole scripted-loot publication/receipt schema validation, disabled/time filtering, corrupt-state errors, response raw/escaped native buffer bounds and live disk publication",
+    "Scripted-loot owner journal persists across a real server restart; a new native opening appends its next ID and uses current publication"
+  ],
+  "target_response_reader": "0x14213F0A0",
+  "game_recompiled": false,
+  "native_scripted_loot_task_completion_observed": false,
+  "server_sha256": "d29c854f1f898223eb6f1293a7698f0e75102d934c81e51de929739e85f5ca33",
+  "native_constant_client_data_is_retry_identity": false,
+  "evidence": [
+    {
+      "file": "data/lobby-verification.json",
+      "sha256": "7a36f5a7689240782010c76a1f1a8aac9c9e9881717fc5fec52b3ad58807e3cc"
+    },
+    {
+      "file": "data/native-backend-menu-verification.json",
+      "sha256": "92a93061c90c1bca3c8545d73affc1a42a54437659917835ce01cc6214b72fe3"
+    },
+    {
+      "file": "data/runtime-scripted-loot-native-menu.json",
+      "sha256": "e0042e87a8bb88e72c554be806e5f430c8a1076323fd03e12c6846b799fe7bbf"
+    },
+    {
+      "file": "data/native-loot-open-game-caller.json",
+      "sha256": "b73fe1991cb0203d92c23533436bdef3c365f94290424ffdfacdecbc7bbb0df9"
+    }
+  ],
+  "target_request_writer": "0x14213EDC0",
+  "target_task_constructor": "0x142139BB0",
+  "target_game_caller": "0x14103E3C0",
+  "independent_protocol_checks": 149,
+  "schema": 1,
+  "recorded_utc": "2026-10-05T16:45:47.8077414Z",
+  "native_menu_verified": true,
+  "coverage": {
+    "task_routes": 140,
+    "registered_handlers": 131,
+    "known_target_tasks_without_handler": 9
+  },
+  "full_backend_verified": false,
+  "native_passing_fences": 27
+}

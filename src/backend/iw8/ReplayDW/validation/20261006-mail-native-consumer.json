@@ -1,0 +1,37 @@
+{
+  "schema": 1,
+  "created_utc": "2026-10-06T08:39:16.792208+00:00",
+  "passed": true,
+  "game_sha256": "b326981a9718cedbc05228d40bef8b2adcd6be89307b2cde7d8e878a3ca67885",
+  "server_sha256": "af43d46e2638504bc022c208142592eb6edeb2ac63b435a8d1febf3b20862567",
+  "compiler_job": "436f999a3d444276",
+  "engine_recompiled": false,
+  "suite_grouped_checks": 226,
+  "native_game_mail_callback_verified": true,
+  "native_mail_header_and_body_completion_verified": true,
+  "native_mail_deletion_and_idle_return_verified": true,
+  "native_processing_done_buffer_clear_verified": true,
+  "payload_hash_captured_before_processing_clear": false,
+  "application_mail_handlers_verified": false,
+  "native_startup_fences_passed": 27,
+  "separate_fixture_identity_used": true,
+  "friendship_created": false,
+  "map_or_match_test_performed": false,
+  "two_network_gameplay_verified": false,
+  "complete_backend_verified": false,
+  "native_ui_limit": "Terms of Agreement screen remained unaccepted",
+  "observations": {
+    "data\\native-mail-before-20261006.json": "a7fa9dc590fe6f94c694f6cd69713bee0e3c19878f1f366911456ad5330babdc",
+    "data\\native-mail-after-20261006.json": "9aad35ab69530cc5525bea0e23d1924e18d9f89b328eacb21d8d9f51ddc53378",
+    "data\\native-mail-consumed-20261006.json": "2d333d2b8e82a4908e29dbd0e000c70d4a90a860c1e8ebe7491ba490fdc67a5d",
+    "data\\native-mail-diagnostic-20261006.json": "348fecf12f7edf34f47eb7645b58e3472d63c8cf9d92821315e266d1f847bfe5"
+  },
+  "source_sha256": {
+    "tools/observe-game.py": "4ff50eec04e218cc40093fd001724a9bffae9dfd6dbbd65bdef540dfd510479d",
+    "tools/native-mail-test.py": "5930777e9a219cc3710580ace48c6425f29d107aeb7b246b486144808c072928"
+  },
+  "original_target_evidence_sha256": {
+    "data/native-engine-mail-manager-20261006.json": "a9f943c14126d4bdad0df95e6b052f770c51d83420eb8fee9750e2ef9e5d5a3f",
+    "data/native-game-mail-headers-wrapper-20261006.json": "7dce994767256f4e5dcb1f39409bcbd91fa406f9babf56cd91af31c63af17936"
+  }
+}

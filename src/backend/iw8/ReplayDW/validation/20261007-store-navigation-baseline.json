@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "generated_utc": "2026-10-07T13:20:07.138273+00:00",
+  "branch": "codex/dw-remaining-services",
+  "baseline_main_commit": "16a858b",
+  "backend_sha256": "26e8b34b93de4842f70636e8e37c7f08f5fd723372cb6562d4690179fd30641b",
+  "game_sha256": "b09a9ba25f733960dd1f8c569f566979804c2a1a247a9753e2c6e7a50556c138",
+  "single_game_pid": 20740,
+  "single_instance_testing": true,
+  "native_store_navigation_succeeded": false,
+  "observed_blocker": "MPStoreMenu.lua calls MenuBuilder.BuildRegisteredType and raises attempt to call a nil value; UI returns to Play",
+  "debug_evidence": {
+    "path": "data/remaining-store-20261007/debug.jsonl",
+    "sha256": "f4f4e948080ebebcb8f991705ba943a0d9d01356a6c7da02880f3cf7d12e0d2e"
+  },
+  "first_store_error_utc": "2026-10-07T13:15:57.953471+00:00",
+  "missing_widget_identity_verified": false,
+  "publisher_store_contract_verified": false,
+  "backend_store_error_assumed": false
+}

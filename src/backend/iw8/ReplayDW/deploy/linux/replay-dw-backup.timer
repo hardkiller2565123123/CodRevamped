@@ -1,0 +1,10 @@
+[Unit]
+Description=Daily Replay DW state backup
+
+[Timer]
+OnCalendar=*-*-* 08:00:00 UTC
+Persistent=true
+RandomizedDelaySec=120
+
+[Install]
+WantedBy=timers.target

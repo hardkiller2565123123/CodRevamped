@@ -1,0 +1,127 @@
+{
+  "schema": 1,
+  "passed": true,
+  "target_image_sha256": "68fb1cbcb2924182724004039de55a4c50152bb6561803c4898b7930b38132f0",
+  "source": {
+    "path": "E:\\IW8\\Builds\\1.20-replay\\zone\\ui.ff",
+    "bytes": 53805192,
+    "sha256": "4fab8e3e6bbbb89cb4714731bf3999096486cd6dabafe8dc3d9d7a064c3929e9",
+    "header": {
+      "magic": "IWffa100",
+      "header_version": 11,
+      "xfile_version": 4065,
+      "compression": 1,
+      "encryption": 0,
+      "transient_type": 0
+    },
+    "header_signature_marker": "IWffs100",
+    "signature_block_sha256": "53615f89fb27f768618c7ac81544fcc6a85c49bf068fe04083e524246c003bab",
+    "observed_replay_revisions": [
+      4045,
+      4047,
+      4053,
+      4065,
+      4083,
+      4085,
+      4087
+    ],
+    "revision_seen_in_observed_set": true,
+    "patches": [
+      {
+        "path": "E:\\IW8\\Builds\\1.20-replay\\zone\\ui.fp",
+        "extension": ".fp",
+        "header_version": 6,
+        "previous": {
+          "magic": "IWffa100",
+          "header_version": 11,
+          "xfile_version": 4065,
+          "compression": 1,
+          "encryption": 0,
+          "transient_type": 0
+        },
+        "target": {
+          "magic": "IWffa100",
+          "header_version": 11,
+          "xfile_version": 4087,
+          "compression": 1,
+          "encryption": 0,
+          "transient_type": 0
+        },
+        "previous_layout": {
+          "decoded_size": 127663633,
+          "block_sizes": [
+            0,
+            4147472,
+            672,
+            0,
+            0,
+            285385,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "target_layout": {
+          "decoded_size": 138034527,
+          "block_sizes": [
+            0,
+            3102800,
+            736,
+            0,
+            0,
+            342276,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "previous_header_hex": "49576666613130300b000000e10f00000100000000003503082629170000000011fe9b0700000000ac95000000000000000000000000000010493f0000000000a00200000000000000000000000000000000000000000000c95a04000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "target_header_hex": "49576666613130300b000000f70f0000010000000000890347fe5ed2000000005f3d3a0800000000fab0000000000000000000000000000050582f0000000000e00200000000000000000000000000000000000000000000043905000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "header_only_zero_payload": false,
+        "bytes": 9011528,
+        "sha256": "4133b20367566a2c021540839fdebb0fa412c95c9125f0d49e1a79e87b29df27"
+      }
+    ],
+    "final_header": {
+      "magic": "IWffa100",
+      "header_version": 11,
+      "xfile_version": 4087,
+      "compression": 1,
+      "encryption": 0,
+      "transient_type": 0,
+      "decoded_size": 138034527,
+      "block_sizes": [
+        0,
+        3102800,
+        736,
+        0,
+        0,
+        342276,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "header_only_zero_payload_chain": false
+  },
+  "body_sha256": "1ee032225ffa4c42488ba138680255a4c7ebc593efa7426f09ed9be47dde59d5",
+  "native_walk_sha256": "b24d97272303191398ad445684f3f31fce5cb63dc6b0612b228ffdc4e7b8242e",
+  "native_export_index_sha256": "60ef79eb8d4a68bee72bc72a839f1ed20f8406960e0f51625f4f96a970792795",
+  "tables": [
+    {
+      "name": "mp/achievementenginerefs.csv",
+      "path": "validation/assets/replay120-achievementenginerefs.csv",
+      "sha256": "45a80d0059bcb44e37c6f09fcee7b1795b13fb4b965a07b3857c9fd18f1d4526",
+      "asset_index": 7560,
+      "type_id": 54
+    }
+  ],
+  "scope": "Current Replay UI FF/FP, complete original native reader walk and typed StringTable export; no other-build table substituted",
+  "native_game_execution_verified": false
+}

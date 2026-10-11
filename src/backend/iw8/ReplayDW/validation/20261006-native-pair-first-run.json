@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "private_build_job": "93b6a2d4f0be47a0",
+  "game_sha256": "2f80e1f92c3c4e53383a6c4f4943726c701fc3427975473da816c94b8cbaead5",
+  "server_sha256": "9d65291ea8732de9faedbb8183bc7e2c3aab55d28a856549406b9ad58e9c4a4f",
+  "simultaneous_processes": true,
+  "root_game_working_directory": "E:\\IW8\\Builds\\1.20-replay",
+  "different_native_xuids": true,
+  "different_native_platform_ids": true,
+  "platform_auth": [
+    2,
+    2
+  ],
+  "native_profile": [
+    2,
+    2
+  ],
+  "native_dw_connected": [
+    true,
+    true
+  ],
+  "native_passing_fences": [
+    27,
+    17
+  ],
+  "distinct_native_home_paths": [
+    "E:\\DW\\IW8\\data\\native-pair-20261006\\alpha\\home",
+    "E:\\DW\\IW8\\data\\native-pair-20261006\\bravo\\home"
+  ],
+  "native_relay_states": [
+    3,
+    3
+  ],
+  "second_process_error": "Required file 'toc1.dcache' is locked by another process. Please unlock and try again.",
+  "private_crash_archive_sha256": "513dda648b291d44183b24adb2075140affde6c250baec2ceca052a19e1db054",
+  "native_two_game_join_verified": false,
+  "native_cache_isolation_verified": false,
+  "resolution": "The subsequent private build routes only the four DCache leaves through the original path and handle owners; simultaneous native retest and party join passed.",
+  "subsequent_resolution_receipt": "validation/20261006-native-pair-party-profile.json"
+}

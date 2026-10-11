@@ -1,0 +1,247 @@
+{
+  "schema": 1,
+  "generated_utc": "2026-10-06T13:10:36.263796+00:00",
+  "audit_tool_sha256": "4b5f1df682e60daa787624e18af5ed78a3a156901217a5bf14281750d075279a",
+  "target_image_sha256": "68fb1cbcb2924182724004039de55a4c50152bb6561803c4898b7930b38132f0",
+  "native_runtime_verified": false,
+  "vtable_bindings": [
+    {
+      "vtable": 5409225976,
+      "slot": 1,
+      "handler": 5403605424
+    },
+    {
+      "vtable": 5406611120,
+      "slot": 1,
+      "handler": 5403606208
+    }
+  ],
+  "functions": [
+    {
+      "va": 5403605104,
+      "candidate_alias": "sub_142147870",
+      "exported_size": 162,
+      "target_bytes_sha256": "bab41f996ed97cedce8bbac40a35463d39ce7d9d4f289940688c33852e8c0c69",
+      "direct_calls": [
+        "0x1420f6400",
+        "0x1420f64f0"
+      ],
+      "literal_strings": []
+    },
+    {
+      "va": 5403605424,
+      "candidate_alias": "bdGetCrossPlatformUsernamesRequest::restSerializeRequest",
+      "exported_size": 748,
+      "target_bytes_sha256": "d2122d5b3f7b03e2da617caef68180590438b4a0401188c72efb2df1c6c77028",
+      "direct_calls": [
+        "0x1421ccef0",
+        "0x1420fca50",
+        "0x1420fc920",
+        "0x1420fcb10",
+        "0x142151db0",
+        "0x1421519e0",
+        "0x142151db0",
+        "0x1421519d0",
+        "0x142151db0",
+        "0x1421519d0",
+        "0x142151db0",
+        "0x1421519d0",
+        "0x142151db0",
+        "0x1421519d0",
+        "0x142151db0",
+        "0x142152530",
+        "0x142152530",
+        "0x1420fc930",
+        "0x1420fc8b0",
+        "0x142152f30",
+        "0x1420fc8c0",
+        "0x14211e600",
+        "0x1420fcb10",
+        "0x142151d40",
+        "0x1420fcb10",
+        "0x142151cc0",
+        "0x1420fcb10",
+        "0x142151d40",
+        "0x1420fcb10",
+        "0x1421f6cc0",
+        "0x142152290",
+        "0x142151ae0",
+        "0x1421ccf60"
+      ],
+      "literal_strings": [
+        "/{api_version}/users/",
+        "Users",
+        "client",
+        "context",
+        "get_usernames",
+        "social-service",
+        "titleID",
+        "users"
+      ]
+    },
+    {
+      "va": 5403606208,
+      "candidate_alias": "sub_142147CC0",
+      "exported_size": 526,
+      "target_bytes_sha256": "3bdbd5e57413cdfc56b31dc82d1f26cda14123ba16321688669fe0b7abb5b984",
+      "direct_calls": [
+        "0x1420e4290",
+        "0x1421536c0",
+        "0x1420e4290",
+        "0x1420e4440",
+        "0x1420e4290",
+        "0x1421f6cc0",
+        "0x1420e5280",
+        "0x1420e5a60",
+        "0x1420e5480",
+        "0x1420e5480",
+        "0x1420f9ee0",
+        "0x1420fa790",
+        "0x1420fa120",
+        "0x1420fa0d0",
+        "0x1420ebb50",
+        "0x1420e42b0",
+        "0x1420e42b0",
+        "0x1420e42b0",
+        "0x1421ccf60"
+      ],
+      "literal_strings": [
+        "accountType",
+        "userID",
+        "username",
+        "users"
+      ]
+    },
+    {
+      "va": 5403648656,
+      "candidate_alias": "bdRESTURI::encodeArrayElement",
+      "exported_size": 193,
+      "target_bytes_sha256": "375b9039502400b19a93946db61b8602150b6199f8b431eef01d55a859ca3772",
+      "direct_calls": [
+        "0x140f6d700",
+        "0x142151e50",
+        "0x1421ccf60"
+      ],
+      "literal_strings": [
+        "%s-%I64u"
+      ]
+    },
+    {
+      "va": 5386003552,
+      "candidate_alias": "q_UsernameResolver<1>_Send",
+      "exported_size": 805,
+      "target_bytes_sha256": "e27bfdf451ce1dbb82fe7e9211aecb5943af5ecc7bb1887ca2cb729626e1df19",
+      "direct_calls": [
+        "0x1421ccef0",
+        "0x1420eba30",
+        "0x1420ff530",
+        "0x1420fa000",
+        "0x140f6b490",
+        "0x140f6b820",
+        "0x1420f8ac0",
+        "0x1420f6400",
+        "0x14107e9a0",
+        "0x1420f6ae0",
+        "0x1420f6a90",
+        "0x142147870",
+        "0x140f6b490",
+        "0x140f6b2d0",
+        "0x140f6f890",
+        "0x1413cc870",
+        "0x1413cc640",
+        "0x1412b0820",
+        "0x1412b0570",
+        "0x140e52160",
+        "0x1420fc3f0",
+        "0x140e52160",
+        "0x140f04720",
+        "0x1412b0570",
+        "0x140f04720",
+        "0x1421ccf60"
+      ],
+      "literal_strings": []
+    },
+    {
+      "va": 5397249504,
+      "candidate_alias": "sub_141B37DE0",
+      "exported_size": 846,
+      "target_bytes_sha256": "4bfeefcf6c55fca3553b479aff167eddc1271fc082cdce76b2f4b2c0e73264fe",
+      "direct_calls": [
+        "0x1421ccef0",
+        "0x1420eba30",
+        "0x1420ff530",
+        "0x1420fa000",
+        "0x140f6b490",
+        "0x140f6b820",
+        "0x1420f8ac0",
+        "0x1420f6400",
+        "0x14107e9a0",
+        "0x1420f6ae0",
+        "0x1420f6a90",
+        "0x142147870",
+        "0x140f6b490",
+        "0x140f6b2d0",
+        "0x140f6f890",
+        "0x1413cc870",
+        "0x1413cc640",
+        "0x1412b0820",
+        "0x1412b0570",
+        "0x140e52160",
+        "0x1420fc3f0",
+        "0x140e52160",
+        "0x140f04720",
+        "0x1412b0570",
+        "0x140f04720",
+        "0x1421ccf60"
+      ],
+      "literal_strings": []
+    },
+    {
+      "va": 5397247472,
+      "candidate_alias": "sub_141B375F0",
+      "exported_size": 575,
+      "target_bytes_sha256": "5d6933af9fc5ddc89bb5577d5f92a34587eda7089bfae6485f0e046c5e213851",
+      "direct_calls": [
+        "0x14107ea30",
+        "0x14107e7a0",
+        "0x140d66c50",
+        "0x1412b0820",
+        "0x140f04650",
+        "0x141b37de0",
+        "0x140d66c20",
+        "0x141b36c50",
+        "0x140f04720"
+      ],
+      "literal_strings": []
+    }
+  ],
+  "request": {
+    "service": "social-service",
+    "resource": "Users",
+    "operation": "get_usernames",
+    "method": "GET",
+    "path": "/v1/users/",
+    "query": [
+      "context (numeric title)",
+      "client",
+      "titleID",
+      "users (accountType-ID CSV)"
+    ],
+    "max_users": 200,
+    "encoded_users_buffer": 4096
+  },
+  "response": {
+    "users_array": "userID UInt64, accountType string capacity 10, username string capacity 97",
+    "capacity": 200,
+    "first_record_offset": 40,
+    "record_stride": 144,
+    "count_offset": 28840,
+    "object_size": 28848
+  },
+  "rejected_alias": {
+    "candidate": "bdGetCrossPlatformUsernamesResponse::scalar deleting destructor",
+    "candidate_va": 5403820704,
+    "reason": "Uses vtable 0x1426AA938 and size 0x240; absent from the real engine resolver response table"
+  },
+  "scope": "Target byte/vtable/request/reader/engine allocation research; live task completion is a separate gate"
+}

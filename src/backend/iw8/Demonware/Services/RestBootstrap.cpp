@@ -137,27 +137,27 @@ namespace revamped::iw8::demonware
                 ContainsAscii(payload, payloadBytes, "DW-Objectstore-ObjectIDs"))
                 return RestBootstrapKind::PublisherObjectMetadataGet;
 
-            // Retail social bootstrap asks for the current user's clan memberships
-            // even when the player is not in a clan.  A terminal HTTP 404 keeps
-            // the request FIFO aligned but leaves the generated clan client in
-            // an error state.  Return an empty successful collection instead.
+            // Retail asks for clan memberships even when the user is not in a
+            // clan. A 404 leaves the generated clan REST client in an error
+            // state, while an empty members array is a valid local/offline
+            // result.
             if (ContainsAscii(payload, payloadBytes, "MembersResource") &&
                 ContainsAscii(payload, payloadBytes, "get_memberships") &&
                 ContainsAscii(payload, payloadBytes, "/v1/users/clans/"))
                 return RestBootstrapKind::ClanMembershipsGet;
 
-            // Existing UNO accounts query two-factor status during frontend
-            // bootstrap.  Retail's generated response uses the exact JSON field
-            // name TFAEnabled; local/offline accounts intentionally have no TFA.
+            // Existing UNO accounts query two-factor state during frontend
+            // bootstrap. Local preservation accounts intentionally do not use
+            // TFA, so return the stock boolean field as false.
             if (ContainsAscii(payload, payloadBytes, "UserResource") &&
                 ContainsAscii(payload, payloadBytes, "getTfaStatus") &&
                 ContainsAscii(payload, payloadBytes, "/tfa/"))
                 return RestBootstrapKind::UserTfaStatusGet;
 
-            // Steam store bootstrap requests the first-party SKU mapping through
-            // Exchange.  The local preservation backend does not manufacture
-            // platform purchases, so a valid empty firstPartySKUs array is the
-            // neutral successful result.
+            // Steam storefront bootstrap asks Exchange for first-party SKU
+            // mappings. Offline/local mode has no platform purchases to map,
+            // so an empty firstPartySKUs array is the neutral successful
+            // response.
             if (ContainsAscii(payload, payloadBytes, "first_party_skus") &&
                 ContainsAscii(payload, payloadBytes, "get_first_party_skus") &&
                 ContainsAscii(payload, payloadBytes, "/v2/exchange/first_party_skus/"))
@@ -418,6 +418,23 @@ namespace revamped::iw8::demonware
                 return true;
             }
 
+            // Retail requests these two Raven objects by their hashed/numeric
+            // publisher names during frontend bootstrap. Returning per-object
+            // NotFound leaves that publisher-object stage unresolved and the
+            // client requests them again on later bootstrap passes.
+            //
+            // Their exact production payload is not required by the local
+            // preservation backend. Supply a valid neutral JSON object so the
+            // native ObjectStore pipeline gets a real metadata hit + HTTP
+            // content object and can complete the request normally.
+            if (name == "12114594447999834387" ||
+                name == "371105840287708794")
+            {
+                content = "{}";
+                contentType = "application/json; charset=utf-8";
+                return true;
+            }
+
             return false;
         }
 
@@ -527,27 +544,371 @@ namespace revamped::iw8::demonware
                 "],\"errors\":[" + errors + "]}";
         }
 
-        std::string BuildRestObjectStoreNotFoundBody(const std::uint8_t* payload, std::size_t payloadBytes)
+        struct RestStoredUserObject
+        {
+            std::string owner;
+            std::string name;
+            std::string contentBase64;
+            std::string checksum;
+            std::string objectVersion;
+            std::uint64_t contentLength = 0;
+            std::int64_t created = 0;
+            std::int64_t modified = 0;
+        };
+
+        std::mutex g_restUserObjectMutex;
+        std::vector<RestStoredUserObject> g_restUserObjects;
+
+        std::uint64_t RestBase64DecodedLength(const std::string& value)
+        {
+            if (value.empty())
+                return 0;
+
+            std::size_t useful = value.size();
+            while (useful && (value[useful - 1u] == '\r' ||
+                              value[useful - 1u] == '\n' ||
+                              value[useful - 1u] == ' ' ||
+                              value[useful - 1u] == '\t'))
+            {
+                --useful;
+            }
+
+            std::size_t padding = 0;
+            if (useful && value[useful - 1u] == '=')
+            {
+                ++padding;
+                if (useful > 1u && value[useful - 2u] == '=')
+                    ++padding;
+            }
+
+            if (useful < padding)
+                return 0;
+
+            return static_cast<std::uint64_t>((useful / 4u) * 3u - padding);
+        }
+
+        bool ExtractRestJsonObjectArray(const std::uint8_t* payload,
+            std::size_t payloadBytes, const char* fieldName,
+            std::vector<std::string>& objects)
+        {
+            objects.clear();
+            if (!payload || !payloadBytes || !fieldName || !*fieldName)
+                return false;
+
+            const std::string marker = std::string("\"") + fieldName + "\"";
+            const auto* begin = payload;
+            const auto* end = payload + payloadBytes;
+            const auto* markerPos = std::search(
+                begin, end,
+                reinterpret_cast<const std::uint8_t*>(marker.data()),
+                reinterpret_cast<const std::uint8_t*>(marker.data()) + marker.size());
+            if (markerPos == end)
+                return false;
+
+            const auto* arrayPos = std::find(
+                markerPos + marker.size(), end, static_cast<std::uint8_t>('['));
+            if (arrayPos == end)
+                return false;
+
+            const auto* cursor = arrayPos + 1u;
+            while (cursor < end)
+            {
+                while (cursor < end &&
+                       (*cursor == ',' || *cursor == ' ' || *cursor == '\r' ||
+                        *cursor == '\n' || *cursor == '\t'))
+                {
+                    ++cursor;
+                }
+
+                if (cursor == end)
+                    return false;
+                if (*cursor == ']')
+                    return true;
+                if (*cursor != '{')
+                    return false;
+
+                const auto* objectStart = cursor;
+                bool inString = false;
+                bool escaped = false;
+                int depth = 0;
+
+                for (; cursor < end; ++cursor)
+                {
+                    const char ch = static_cast<char>(*cursor);
+
+                    if (inString)
+                    {
+                        if (escaped)
+                            escaped = false;
+                        else if (ch == '\\')
+                            escaped = true;
+                        else if (ch == '"')
+                            inString = false;
+                        continue;
+                    }
+
+                    if (ch == '"')
+                    {
+                        inString = true;
+                        continue;
+                    }
+
+                    if (ch == '{')
+                        ++depth;
+                    else if (ch == '}')
+                    {
+                        --depth;
+                        if (depth == 0)
+                        {
+                            ++cursor;
+                            break;
+                        }
+                    }
+                }
+
+                if (depth != 0)
+                    return false;
+
+                objects.emplace_back(
+                    reinterpret_cast<const char*>(objectStart),
+                    static_cast<std::size_t>(cursor - objectStart));
+
+                if (objects.size() > 64u)
+                    return false;
+            }
+
+            return false;
+        }
+
+        bool ExtractLargeQuotedJsonValue(const std::string& object,
+            const char* key, std::string& value)
+        {
+            value.clear();
+            if (!key || !*key)
+                return false;
+
+            const std::string needle = std::string("\"") + key + "\"";
+            std::size_t pos = object.find(needle);
+            if (pos == std::string::npos)
+                return false;
+
+            pos = object.find(':', pos + needle.size());
+            if (pos == std::string::npos)
+                return false;
+
+            pos = object.find('"', pos + 1u);
+            if (pos == std::string::npos)
+                return false;
+            ++pos;
+
+            bool escaped = false;
+            while (pos < object.size())
+            {
+                const char ch = object[pos++];
+
+                if (escaped)
+                {
+                    // The content field is base64 in current IW8 requests and
+                    // normally contains no JSON escapes, but preserve ordinary
+                    // escaped characters for robustness.
+                    value.push_back(ch);
+                    escaped = false;
+                    continue;
+                }
+
+                if (ch == '\\')
+                {
+                    escaped = true;
+                    continue;
+                }
+
+                if (ch == '"')
+                    return true;
+
+                if (static_cast<unsigned char>(ch) < 0x20u)
+                    return false;
+
+                value.push_back(ch);
+
+                // Retail's DDL blobs are much larger than the 256-byte limit of
+                // ExtractQuotedJsonValue(), so allow a full ObjectStore-sized
+                // payload while still bounding malformed input.
+                if (value.size() > 65536u)
+                    return false;
+            }
+
+            return false;
+        }
+
+        bool StoreRestUserObjectsFromPut(const std::uint8_t* payload,
+            std::size_t payloadBytes)
+        {
+            std::vector<std::string> uploaded;
+            if (!ExtractRestJsonObjectArray(payload, payloadBytes, "objects", uploaded) ||
+                uploaded.empty())
+            {
+                return false;
+            }
+
+            std::vector<RestStoredUserObject> parsed;
+            parsed.reserve(uploaded.size());
+
+            constexpr std::int64_t now = 1760000000ll;
+
+            for (const std::string& objectJson : uploaded)
+            {
+                RestStoredUserObject object;
+
+                // Object contents are base64 DDL blobs and regularly exceed
+                // 256 bytes. ExtractQuotedJsonValue() is intentionally capped
+                // at 256 for small metadata/query fields, so use the large
+                // bounded extractor for content.
+                if (!ExtractLargeQuotedJsonValue(objectJson, "content", object.contentBase64) ||
+                    !ExtractQuotedJsonValue(objectJson, "name", object.name) ||
+                    !ExtractQuotedJsonValue(objectJson, "owner", object.owner))
+                {
+                    std::printf(
+                        "[DW-REST-OBJECTSTORE] PUT parse=failed reason=object-fields "
+                        "objectBytes=%zu\n",
+                        objectJson.size());
+                    return false;
+                }
+
+                // The client-generated first-run objects generally carry an empty
+                // checksum. Generate deterministic local metadata for the later
+                // GET so bdObjectStoreMetadata::deserializeFromJSON receives every
+                // required field.
+                object.checksum = RestPublisherDigest32(object.contentBase64);
+                object.objectVersion = RestPublisherDigest32(
+                    object.owner + std::string(1u, '\0') +
+                    object.name + std::string(1u, '\0') +
+                    object.checksum);
+                object.contentLength = RestBase64DecodedLength(object.contentBase64);
+                object.created = now;
+                object.modified = now;
+
+                parsed.emplace_back(std::move(object));
+            }
+
+            std::lock_guard<std::mutex> lock(g_restUserObjectMutex);
+
+            for (RestStoredUserObject& object : parsed)
+            {
+                bool replaced = false;
+                for (RestStoredUserObject& existing : g_restUserObjects)
+                {
+                    if (existing.owner == object.owner && existing.name == object.name)
+                    {
+                        object.created = existing.created ? existing.created : object.created;
+                        existing = object;
+                        replaced = true;
+                        break;
+                    }
+                }
+
+                if (!replaced)
+                    g_restUserObjects.emplace_back(object);
+
+                std::printf(
+                    "[DW-REST-OBJECTSTORE] PUT owner=%s name=%s bytes=%llu "
+                    "persisted=yes replacing=%s\n",
+                    object.owner.c_str(),
+                    object.name.c_str(),
+                    static_cast<unsigned long long>(object.contentLength),
+                    replaced ? "yes" : "no");
+            }
+
+            std::printf(
+                "[DW-REST-OBJECTSTORE] resource=VectorizedUserObjectsResource/put_objects "
+                "response=success stored=%zu persistedTotal=%zu validationTokens=0 "
+                "mode=local-session-store\n",
+                parsed.size(), g_restUserObjects.size());
+
+            return true;
+        }
+
+        std::string BuildRestStoredUserObjectJson(
+            const RestStoredUserObject& object, std::size_t requestIndex)
+        {
+            return std::string("{\"requestIndex\":") + std::to_string(requestIndex) +
+                ",\"metadata\":{" +
+                "\"name\":\"" + JsonEscapeRest(object.name) + "\"," +
+                "\"owner\":\"" + JsonEscapeRest(object.owner) + "\"," +
+                "\"checksum\":\"" + JsonEscapeRest(object.checksum) + "\"," +
+                "\"objectVersion\":\"" + JsonEscapeRest(object.objectVersion) + "\"," +
+                "\"expiresOn\":0," +
+                "\"created\":" + std::to_string(object.created) + "," +
+                "\"modified\":" + std::to_string(object.modified) + "," +
+                "\"acl\":\"private\"," +
+                "\"contentLength\":" + std::to_string(object.contentLength) + "," +
+                "\"context\":\"5800\"," +
+                "\"category\":null}," +
+                "\"content\":\"" + JsonEscapeRest(object.contentBase64) + "\"}";
+        }
+
+        std::string BuildRestObjectStoreUserBody(
+            const std::uint8_t* payload, std::size_t payloadBytes)
         {
             std::vector<std::pair<std::string, std::string>> objectIds;
-            if (!ExtractRestObjectStoreIds(payload, payloadBytes, objectIds))
+            if (!ExtractRestObjectStoreIds(payload, payloadBytes, objectIds) ||
+                objectIds.empty())
+            {
                 return {};
+            }
 
-            std::string json = "{\"objects\":[],\"errors\":[";
+            std::string objects;
+            std::string errors;
+            std::size_t hitCount = 0;
+            std::size_t missCount = 0;
+            std::size_t persistedCount = 0;
+
+            std::lock_guard<std::mutex> lock(g_restUserObjectMutex);
+            persistedCount = g_restUserObjects.size();
+
             for (std::size_t i = 0; i < objectIds.size(); ++i)
             {
-                if (i)
-                    json.push_back(',');
-                json += "{\"requestIndex\":" + std::to_string(i) +
-                    ",\"owner\":\"" + JsonEscapeRest(objectIds[i].first) +
-                    "\",\"name\":\"" + JsonEscapeRest(objectIds[i].second) +
-                    "\",\"error\":\"Error:ClientError:NotFound\"}";
-            }
-            json += "]}";
+                const std::string& owner = objectIds[i].first;
+                const std::string& name = objectIds[i].second;
 
-            std::printf("[DW-REST-OBJECTSTORE] resource=VectorizedUserObjectsResource/get_objects requested=%zu response=canonical-not-found fresh-account=yes\n",
-                objectIds.size());
-            return json;
+                const RestStoredUserObject* found = nullptr;
+                for (const RestStoredUserObject& object : g_restUserObjects)
+                {
+                    if (object.owner == owner && object.name == name)
+                    {
+                        found = &object;
+                        break;
+                    }
+                }
+
+                if (found)
+                {
+                    if (!objects.empty())
+                        objects.push_back(',');
+                    objects += BuildRestStoredUserObjectJson(*found, i);
+                    ++hitCount;
+                }
+                else
+                {
+                    if (!errors.empty())
+                        errors.push_back(',');
+                    errors +=
+                        "{\"requestIndex\":" + std::to_string(i) +
+                        ",\"owner\":\"" + JsonEscapeRest(owner) + "\"," +
+                        "\"name\":\"" + JsonEscapeRest(name) + "\"," +
+                        "\"error\":\"Error:ClientError:NotFound\"}";
+                    ++missCount;
+                }
+            }
+
+            std::printf(
+                "[DW-REST-OBJECTSTORE] resource=VectorizedUserObjectsResource/get_objects "
+                "requested=%zu hit=%zu miss=%zu persisted=%zu "
+                "response=%s\n",
+                objectIds.size(), hitCount, missCount, persistedCount,
+                hitCount ? "stored-user-objects" : "fresh-account-not-found");
+
+            return std::string("{\"objects\":[") + objects +
+                "],\"errors\":[" + errors + "]}";
         }
 
         std::string RestBootstrapBody(RestBootstrapKind kind,
@@ -669,9 +1030,6 @@ namespace revamped::iw8::demonware
                 return BuildRestPublisherMetadataBody(payload, payloadBytes);
 
             case RestBootstrapKind::ClanMembershipsGet:
-                // The Retail clan REST response exposes its collection as
-                // `members`.  Empty is the correct local/offline state for a
-                // pre-created account that has not joined a clan.
                 std::printf(
                     "[DW-REST-CLANS] resource=MembersResource/get_memberships "
                     "response=success members=0 mode=local-offline\n");
@@ -690,14 +1048,14 @@ namespace revamped::iw8::demonware
                 return "{\"firstPartySKUs\":[]}";
 
             case RestBootstrapKind::ObjectStoreGetUserObjects:
-                return BuildRestObjectStoreNotFoundBody(payload, payloadBytes);
+                return BuildRestObjectStoreUserBody(payload, payloadBytes);
 
             case RestBootstrapKind::ObjectStorePutUserObjects:
-                // Do not fabricate server-validation tokens in the local/offline
-                // backend.  The stock parser accepts these required arrays empty,
-                // and OnStatsWriteComplete explicitly cleans up successfully when
-                // validationTokens.size() == 0.
-                std::printf("[DW-REST-OBJECTSTORE] resource=VectorizedUserObjectsResource/put_objects response=success validationTokens=0 mode=local-offline\n");
+                // Learn the exact DDL/stat objects Retail creates on its first
+                // local run. This keeps a reconnect from looking like a brand-new
+                // account and repeating the entire stats initialization path.
+                if (!StoreRestUserObjectsFromPut(payload, payloadBytes))
+                    return {};
                 return "{\"objects\":[],\"errors\":[],\"validationTokens\":[]}";
 
             default:

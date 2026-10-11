@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "passed": true,
+  "observed_utc": "2026-10-06T09:01:05.869456+00:00",
+  "server_sha256": "e3275fd3ca2412f74f55e8aff759997d3ed1051ffd77e8f6a7b1144dd8b4401e",
+  "game_sha256": "b326981a9718cedbc05228d40bef8b2adcd6be89307b2cde7d8e878a3ca67885",
+  "protocol_groups": 231,
+  "tournament_join_checks": [
+    "Tournament search enforces actual party tokens, owned enrollment, same published team, team-size bounds and incompatible-search rejection without mutation",
+    "Exact event-2009 search-ID/bracket envelope reaches both registered party members before acceptance; durable search/index transaction, retry identity and per-connection idle deduplication",
+    "Native join acknowledgement and readiness consume the newly returned formation search without seeded acceptance, with subsequent event-2010 state updates",
+    "Both native cancel and shutdown revoke delayed tournament joins, and replacement searches retire the previous token before publishing the new index",
+    "Corrupt tournament search indexes fail closed; expired searches cannot emit a changed bracket through the idle publisher"
+  ],
+  "accepted_enrollment_seeded": false,
+  "native_game_join_callback_verified": false,
+  "automatic_team_formation_implemented": false,
+  "playable_tournament_verified": false,
+  "two_network_gameplay_verified": false,
+  "source_sha256": {
+    "src/tournament_services.cpp": "56ca5098ea09837d7090359e092089b2c34ea67b039a373b1c13fa6b295cbf66",
+    "src/matchmaking_store.cpp": "355562a25fa901fa969e7f9d3115a10d1a6227e87acfcc1c60385824cad67434",
+    "src/lobby.cpp": "0567d35ee3b4a3064dacc831934d8d19554db86b1574fac498e637e4acb238cd",
+    "tools/tournament_join_fixtures.py": "dec3b5b151038f9c30a804cb8f3e496a07833218ac41b043c6e818b0af3ad982"
+  },
+  "scope": "Authenticated formation searches and exact event-2009 joins verified with two encrypted clients. Native startup/reconnect is separate; no map test."
+}

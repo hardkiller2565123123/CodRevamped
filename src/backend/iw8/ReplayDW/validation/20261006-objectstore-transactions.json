@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "created_utc": "2026-10-06T06:52:35.534929+00:00",
+  "server_sha256": "6522a2c5a41cc059e35f231f829f3d8250037621e27ac1be4ac02cd749297a6c",
+  "game_sha256": "b326981a9718cedbc05228d40bef8b2adcd6be89307b2cde7d8e878a3ca67885",
+  "engine_recompiled": false,
+  "suite_grouped_checks": 202,
+  "covered_checks": [
+    "object-store vector uploads retain a flushed complete intent after a real second-file failure; native reads reject partial profile windows",
+    "object-store recovery preflights full owner/title/context/name/content/checksum/tag layouts and rejects corrupt or duplicate intents before any replacement",
+    "object-store recovery publishes one complete mixed uno/bnet owner window, preserves exact metadata/versions/tags and remains idempotent",
+    "object-store upload validates the complete native task boundary before preparing any durable object intent",
+    "object-store upload and recovery reject Windows case-alias destinations before preparing or publishing a duplicate file",
+    "object-store prepared profile windows recover across process restart under the same authenticated account without losing snapshots or rotating versions"
+  ],
+  "native_startup_reconnect_receipt": "validation\\20261006-objectstore-native-reconnect.json",
+  "native_startup_reconnect_receipt_sha256": "53920c0749bd8bb856154d28d6336b2a9b482f9fb5d94cb42872dbcf955f60e0",
+  "lobby_verification_sha256": "49aa9d1cded957e7fec4d93a45cb8e96d7eedbda02122f29865596dd17fda748",
+  "source_sha256": {
+    "src/objectstore_services.cpp": "f6aad5152a913fe100fe1562be055fb1a20f980c61894660fc25ded203ac84d4",
+    "tools/objectstore_transaction_fixtures.py": "ba4b4721db4f1d34dd4c43cea675833cc4f16847fc95f93003427aca8458ecba",
+    "tools/test-lobby.py": "c3eb2924226335157296317564a5addcb8fd4a57d47fb07e4059cec169b37bd8"
+  },
+  "native_profile_failure_recovery_verified": false,
+  "native_public_menu_join_verified": false,
+  "two_network_gameplay_verified": false,
+  "map_or_match_test_performed": false,
+  "complete_backend_verified": false,
+  "native_ui_limit": "Terms of Agreement screen remained unaccepted"
+}

@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "verified_at": "2026-10-06T12:00:33.306314+00:00",
+  "passed": true,
+  "server_sha256": "0348f5747a4b48ef0167b70269bfb9bc885f5f715e7a6746e64fcb91e14dd111",
+  "game_sha256": "b326981a9718cedbc05228d40bef8b2adcd6be89307b2cde7d8e878a3ca67885",
+  "pid": 8060,
+  "scope": "Native channel creation and event-24/25 membership callbacks in one root-folder game",
+  "native_channel": 14531669828824058703,
+  "native_category": "chat",
+  "native_chat_type": 3,
+  "separate_existing_test_peer": 76561201025253031,
+  "positive_native_member_callback_verified": true,
+  "native_channel_create_completion_verified": true,
+  "checks": [
+    "Game-owned native private-party create completion installed the actual channel and host member",
+    "Real authenticated peer subscription event 24 added the named member to the native chat pool",
+    "Owned peer unsubscribe event 25 removed the member from the native chat pool",
+    "Same-session rejoin restored native membership, and last-socket disconnect removed it again"
+  ],
+  "observations": {
+    "created": {
+      "path": "E:\\DW\\IW8\\data\\native-channel-created-20261006.json",
+      "sha256": "941f17b6cd442091e8840ac542b5848a95667094f470e21514af061ca477cc67"
+    },
+    "joined": {
+      "path": "E:\\DW\\IW8\\data\\20261006-channel-native-membership-observations\\joined.json",
+      "sha256": "bc704e99dce082cbd1d1ff25ac3dc1df20cc80bb1876f838a795e6fbb638b69a"
+    },
+    "unsubscribed": {
+      "path": "E:\\DW\\IW8\\data\\20261006-channel-native-membership-observations\\unsubscribed.json",
+      "sha256": "26991ba0c90c36c7c79a25ce7ec9080591c183d4e52dd3406d8f0b2cafc3d9de"
+    },
+    "rejoined": {
+      "path": "E:\\DW\\IW8\\data\\20261006-channel-native-membership-observations\\rejoined.json",
+      "sha256": "2c2108e321185755cd2bb718268ebc2f63eddc6d9b762e86cef89eb2628299eb"
+    },
+    "disconnected": {
+      "path": "E:\\DW\\IW8\\data\\20261006-channel-native-membership-observations\\disconnected.json",
+      "sha256": "6a89d1b56b85893988eba60c5565b5a4b9411b8bf721c0f1448a642bdb2cf9dd"
+    }
+  },
+  "source_sha256": {
+    "tools/observe-game.py": "b3576660b32fccba111ccd0f552fff7301f8147e23415c79a36cd514ffe5c4b3",
+    "tools/native-channel-test.py": "4143191065e5c59e980d34006a771f78f1757ac4f89fee82269bfe99e725e74f"
+  },
+  "friendship_or_profile_created": false,
+  "native_channel_message_verified": false,
+  "two_network_multiplayer_verified": false
+}

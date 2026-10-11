@@ -1,0 +1,107 @@
+{
+  "schema": 1,
+  "passed": true,
+  "target_image_sha256": "68fb1cbcb2924182724004039de55a4c50152bb6561803c4898b7930b38132f0",
+  "method": "Original PE bytes plus read-only live LuaFile/StringTable export from hash-verified compiled Replay",
+  "functions": [
+    {
+      "va": "0x14106c550",
+      "size": 794,
+      "bytes_sha256": "b29975edf6a45f1e5f5fb10f8a5dd39bba682f5410b7053b451598333283f280",
+      "meaning": "root publisher download reserves 2048 bytes"
+    },
+    {
+      "va": "0x1419f8710",
+      "size": 279,
+      "bytes_sha256": "e5dc208bd5169e573bc904abcad0f6038cbf801e68af8c45d7fe2fd5650be52e",
+      "meaning": "native root JSON decoder reads layoutType as signed int"
+    },
+    {
+      "va": "0x14106cc20",
+      "size": 850,
+      "bytes_sha256": "8b14204e534a05d9853629eb4223203814f39ae3869a0b3f6a9dbd069ae919b6",
+      "meaning": "root category names select separate publisher objects"
+    },
+    {
+      "va": "0x141ac5c20",
+      "size": 1859,
+      "bytes_sha256": "4b52ffdb970e1c4fe473dca62fce182e3710a7ccbd7b161ee5161918bb93a986",
+      "meaning": "complete category and item JSON to Lua table conversion"
+    },
+    {
+      "va": "0x141b3d260",
+      "size": 1434,
+      "bytes_sha256": "a77b4b3a2119c52d6f732bdb3abec2b46a71a54ec082a37560fc9aff33708f13",
+      "meaning": "native marketplace SKU purchase selection"
+    },
+    {
+      "va": "0x141b3d090",
+      "size": 452,
+      "bytes_sha256": "7e5626a25bc566799ce2b4ef3029df072e16849ce5043967625c09032a514bf4",
+      "meaning": "native purchase completion and inventory/currency refresh"
+    },
+    {
+      "va": "0x141b3db20",
+      "size": 948,
+      "bytes_sha256": "e83bfcd7251252a8fb3b2012c7d80f6016e62c8c2f1d91beab5d47d9f3b19793",
+      "meaning": "bundle visible and hidden inventory grants"
+    },
+    {
+      "va": "0x14107bb50",
+      "size": 850,
+      "bytes_sha256": "c131ddbcf4e5fcd9ad44b1757bae862f220cbfb11c8d36b1fb6519def1787606",
+      "meaning": "Native publisher iterator uses 64-byte name and 128-byte value buffers"
+    }
+  ],
+  "lua_assets": [
+    {
+      "index": 1,
+      "name": "luashared/csvutils.lua",
+      "size": 51682,
+      "strip": 1,
+      "sha256": "2c3f1a84963364b8e984be93508f50bc515b14769ea5f500a66b129d9f3650aa"
+    },
+    {
+      "index": 668,
+      "name": "ui/frontend/mpstorebillboardlist.lua",
+      "size": 26959,
+      "strip": 1,
+      "sha256": "0257ad2263cda2bc92f204e3f0698fdf74bfade73e5dcb57e52f447bda298f98"
+    },
+    {
+      "index": 669,
+      "name": "ui/frontend/mpstoremenu.lua",
+      "size": 997,
+      "strip": 1,
+      "sha256": "a10ecea2e5bb4b8e068156dfce8805b6ef250b892b75134b2f283f975a88e858"
+    },
+    {
+      "index": 2077,
+      "name": "ui/menubuilder.lua",
+      "size": 2393,
+      "strip": 1,
+      "sha256": "55417311241c52a5b5c38e00eaf3f5c38465e57dec60561d1384c4dbbeaedc9e"
+    }
+  ],
+  "bundle_table_export_sha256": "cbf0e8b3e5f7fcb8e06746695e42c8904f37d2db91c8e54d88670bd27024686f",
+  "root_layouts": {
+    "billboard_list": 3,
+    "billboard_grid": 4
+  },
+  "visible_items": {
+    "count_column": 13,
+    "first_column": 14,
+    "maximum": 10
+  },
+  "hidden_items": {
+    "count_column": 24,
+    "first_column": 25,
+    "maximum": 10
+  },
+  "native_store_opened_with_layout_3": true,
+  "native_purchase_completion_verified": false,
+  "full_backend_completed": false,
+  "native_publisher_value_payload_capacity": 127,
+  "observed_truncation_caused_partial_bundle_id": true,
+  "populated_store_browsing_verified": false
+}

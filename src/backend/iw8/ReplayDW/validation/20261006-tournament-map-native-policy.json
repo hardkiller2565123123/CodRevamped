@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "passed": true,
+  "observed_utc": "2026-10-06T10:46:50.563499+00:00",
+  "server_sha256": "87855532543586649d6f42e1da8111841816719ed4b559b8d1f2840ecaa1de88",
+  "game_sha256": "b326981a9718cedbc05228d40bef8b2adcd6be89307b2cde7d8e878a3ca67885",
+  "original_replay_sha256": "68fb1cbcb2924182724004039de55a4c50152bb6561803c4898b7930b38132f0",
+  "compiled_backend_matches_original_x64_selector_cases": 32,
+  "native_publisher_map_strings_applied": 4,
+  "publisher_minor_revision": 1,
+  "policy_sha256": "e4f7841946ad3337ffaf8677eff7ef8f99570139c8a989d1680035f4a4d3a66a",
+  "pools": [
+    [
+      "mp_shipment"
+    ],
+    [
+      "mp_shipment"
+    ],
+    [
+      "mp_shipment"
+    ],
+    [
+      "mp_shipment"
+    ]
+  ],
+  "same_game_process_backend_restart_and_dw_restart_verified": true,
+  "native_publisher_values_stable_after_restart": true,
+  "native_memory_writes_used": false,
+  "native_tournament_round_callbacks_verified": false,
+  "playable_tournament_verified": false,
+  "map_or_match_test_performed": false,
+  "two_network_gameplay_verified": false,
+  "complete_backend_verified": false,
+  "reference": {
+    "data\\native-tournament-map-reference-20261006.json": "181312620b3dec0cf04d4f3d9b4eba9872afcfdcf365e4f7d087fb2b27396fe0"
+  },
+  "observations": {
+    "data\\native-map-before-20261006.json": "dd5817daf4ee7bce5f68610551be5414cf5e0cf6eb3a2e619050626b65fb515f",
+    "data\\native-map-after-20261006.json": "e1a1a9feee5a33ab7d2e3b12c3b4e00e9f666111309164794e2ef85768c72560",
+    "data\\native-map-stable-20261006.json": "3ce30f508e0bda97256e0ed09a1ac546c54b4e5a379914ce42b98d35ad6f47bf"
+  },
+  "scope": "Original x64 selector and actual backend objects agree; unchanged Replay applied native publisher map strings before and after same-process reconnect. No native round gameplay claim."
+}

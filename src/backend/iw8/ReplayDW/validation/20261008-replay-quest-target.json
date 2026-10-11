@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "target_image_sha256": "68fb1cbcb2924182724004039de55a4c50152bb6561803c4898b7930b38132f0",
+  "functions": [
+    {
+      "va": "0x1410627a0",
+      "size": 692,
+      "bytes_sha256": "47c7d7333eb51dcfecc941ec60607694c844d153d64efd5eb127d560da267f05",
+      "literals": [
+        "ALL",
+        "BR",
+        "CP",
+        "ch_quest%d_stage%d",
+        "quest_challenges.csv"
+      ]
+    },
+    {
+      "va": "0x1410625a0",
+      "size": 498,
+      "bytes_sha256": "98a699a3b90007a4aab8e22a36f831e5b79942da1e11527f89777755d3357309",
+      "literals": [
+        "%lu",
+        "quest_challenges.csv"
+      ]
+    },
+    {
+      "va": "0x1410643e0",
+      "size": 760,
+      "bytes_sha256": "3c3c302db62d9194690b20ce60d5bbcc9a118d74959e0b4731ba81fb55a79768",
+      "literals": [
+        "%u",
+        "OnlineQuests::StartQuest",
+        "immediate",
+        "quest_activation_failed"
+      ]
+    },
+    {
+      "va": "0x141064060",
+      "size": 451,
+      "bytes_sha256": "058a08a118d3dc64abbe39a768e7008d708475943d7e49458fd7aebb69b1b0fd",
+      "literals": [
+        "immediate",
+        "quest_activated"
+      ]
+    }
+  ],
+  "native_loader_observation_sha256": "a75932c590c3ff7e32c0031bb1cf3846fb1468f397269a8ded9739c888cf547e",
+  "native_table_observation_sha256": "09d837de414752bd9e5c3618475d41cc6d80a3d607f25440300d57477a6ee34f",
+  "native_mission_groups": 32,
+  "native_stage_count": 232,
+  "scope": "Original-byte literal/layout inspection plus read-only initialized native loader and StringTable observations; no modeled or inferred event rules",
+  "native_callback_verified": false
+}

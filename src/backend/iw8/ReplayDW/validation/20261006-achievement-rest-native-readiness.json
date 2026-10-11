@@ -1,0 +1,81 @@
+{
+  "schema": 1,
+  "generated_utc": "2026-10-06T20:47:36.649423+00:00",
+  "passed": true,
+  "backend_sha256": "c614ff0b5340442ff2540343cc16de82ed3c3a7530f103db288e5f4b597b3e55",
+  "unchanged_shipping_game_sha256": "bdc091d35dc57f29c10ce14a4552467a5ce0d8c0d881d287ec31f09fc7ee9e18",
+  "build_receipt": {
+    "path": "data/backend-snapshot-1791318129923847500/build-receipt.json",
+    "sha256": "52929a3373c4458e0401c796c7988ee9502bedb096ec184383be5abc58b1df0a"
+  },
+  "protocol_evidence": {
+    "path": "data/lobby-verification.json",
+    "sha256": "7e318200aa02b028f6eff37f7b98b5a0034c8ec0ab0984c94f743601ad208fe5"
+  },
+  "protocol_groups": 291,
+  "account_protocol_checks": [
+    "Four native account routes bind exact Replay methods/paths/body layouts; foreign sessions and invalid or ambiguous credential fields cannot mutate existing player identities",
+    "Optional email credentials attach to the stable signed player without provisioning; salted PBKDF2-SHA256 matches an independent implementation and exact upgrade retries preserve durable files and grants",
+    "Native UNO ID/access/refresh token triples are distinct per live session; link and Umbrella updates persist owner-bound state and credential changes revoke grants across all sessions without changing account IDs",
+    "Failed intent publication changes neither the account document nor the platform profile and cannot issue success or new grants",
+    "Same-process publication recovery revokes the old grant before authorization is checked; a stale token cannot overwrite recovered credentials and another owner's username lookup remains available",
+    "A real account-document/profile split interruption recovers through server initialization; credential hashes, name and stable IDs survive restart, old grants expire and current UNO access tokens authorize native rename"
+  ],
+  "target_contract_evidence": {
+    "path": "validation/20261006-native-account-auth-layout.json",
+    "sha256": "f13eb6389ba3e97e1b17924c8f616143bf5452d86e7d027dedc349e9ba9637f4"
+  },
+  "native_startup": {
+    "game_sha256": "73ded44317c35d6efcfeb9ca9f5fa03a20f73e41926e6ea3a0d6c94423db7644",
+    "native_online_status": 2,
+    "native_fences_passing": 27,
+    "native_logged_in": true,
+    "network_error": 0,
+    "relay_state": 3,
+    "friends_empty": true,
+    "same_game_process": true,
+    "evidence": [
+      {
+        "path": "data/native-achievement-rest-20261006/alpha/startup.json",
+        "sha256": "d9ce8f066ba283be2797bd97971bae48c96c3502717482c812d606f51250cd04"
+      },
+      {
+        "path": "data/native-achievement-rest-20261006/alpha/stable.json",
+        "sha256": "ea9d6301c1f27908c69eb0d93f62f6cbe03c58b041a77e46b75eb5e423fb5b05"
+      }
+    ]
+  },
+  "account_menu_callbacks_verified": false,
+  "native_crossplay_login_selected": false,
+  "main_exe_ini_identity_preserved": true,
+  "game_recompile_performed": false,
+  "owned_root_test_artifacts_removed": true,
+  "map_test_performed": false,
+  "cross_network_gameplay_verified": false,
+  "full_backend_complete": false,
+  "achievement_rest": {
+    "target_contract_evidence": {
+      "path": "validation/20261006-achievement-rest-layout.json",
+      "sha256": "627275f43bfaa2a1f63427862097678bb14aaaf8a9e9a534583f58d40aea6d01"
+    },
+    "protocol_checks": [
+      "Shared Replay achievement REST envelope binds the exact batch path, JSON acceptance and context/client/titleID query; aliases, foreign query titles, duplicate keys and malformed encoding cannot publish events",
+      "Achievement REST root, single-user/multi-user account fields and event/value objects reject ambiguous JSON and unknown layout fields before durable retry or event mutation"
+    ],
+    "original_callbacks_vm_passed": true,
+    "native_game_event_callback_verified": true,
+    "native_single_user_callback_verified": true,
+    "native_multi_user_callback_verified": false,
+    "native_event_requests": 2,
+    "native_callback_evidence": [
+      {
+        "path": "data/native-achievement-rest-20261006/alpha/event-completion.json",
+        "sha256": "0676cfc808ea2c3351d91f487ae8d2929fd0e481fb4b1fd4ac5a3621a7ecb0db"
+      },
+      {
+        "path": "data/native-achievement-rest-20261006/alpha/after-event.json",
+        "sha256": "8f035bf20d62b030b1a4e1e3e6c7afe24b32e4c1ffd91e5b1b16aadf69ef003d"
+      }
+    ]
+  }
+}

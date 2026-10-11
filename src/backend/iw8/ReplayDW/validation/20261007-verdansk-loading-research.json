@@ -1,0 +1,22 @@
+{
+  "schema": 1,
+  "scope": "Original Replay collision modes and installed Verdansk package availability",
+  "original_executable_sha256": "68fb1cbcb2924182724004039de55a4c50152bb6561803c4898b7930b38132f0",
+  "setter_original_va": "0x140D6B7D0",
+  "setter_native_bytes": "890d5ebdf504c3",
+  "registered_map_name_va": "0x145CC7538",
+  "mode_global_va": "0x145CC7534",
+  "combined_package": "zone/mp_donetsk_cg_ls_tr.ff",
+  "combined_package_present": false,
+  "numbered_collision_tiles": 1024,
+  "numbered_indices_complete": true,
+  "numbered_total_bytes": 589193216,
+  "main_world_bytes": 364593288,
+  "server_world_bytes": 43679880,
+  "native_mode_1": "Per-tile budgeted collision scheduler",
+  "native_mode_2": "Combined large-scale collision package",
+  "fix": "DW-only Verdansk mode-2 requests fall back to native mode 1 when combined package is absent and a numbered tile exists",
+  "native_game_verified": false,
+  "crash_cause_confirmed": false,
+  "remaining": "Owner two-client BR load, streamed world/collision traversal and exact fatal-message capture if loading still fails"
+}

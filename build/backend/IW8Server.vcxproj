@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
@@ -52,14 +52,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;WIN32_LEAN_AND_MEAN;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(CodRevampedRoot)src\backend\iw8;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(CodRevampedRoot)src\backend\iw8;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Data;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\ABTesting;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Account;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Achievements;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\AntiCheat;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\BattlePass;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Channels;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Clans;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Content;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Counters;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Engagement;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Identity;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Inventory;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Leaderboards;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Mail;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Marketplace;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Matchmaking;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\ObjectStore;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Playlists;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\QoS;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Quests;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Regulation;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Relay;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\REST;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Scheduled;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Social;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Startup;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Teams;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Tournaments;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src;$(CodRevampedRoot)src\backend\iw8\ReplayDW;$(CodRevampedRoot)src\backend\iw8\ReplayDW\third_party;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Ws2_32.lib;Winhttp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Bcrypt.lib;Ws2_32.lib;Winhttp.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -70,16 +70,16 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;WIN32_LEAN_AND_MEAN;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(CodRevampedRoot)src\backend\iw8;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(CodRevampedRoot)src\backend\iw8;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Data;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\ABTesting;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Account;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Achievements;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\AntiCheat;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\BattlePass;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Channels;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Clans;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Content;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Counters;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Engagement;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Identity;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Inventory;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Leaderboards;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Mail;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Marketplace;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Matchmaking;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\ObjectStore;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Playlists;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\QoS;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Quests;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Regulation;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Relay;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\REST;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Scheduled;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Social;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Startup;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Teams;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Tournaments;$(CodRevampedRoot)src\backend\iw8\ReplayDW\src;$(CodRevampedRoot)src\backend\iw8\ReplayDW;$(CodRevampedRoot)src\backend\iw8\ReplayDW\third_party;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Ws2_32.lib;Winhttp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Bcrypt.lib;Ws2_32.lib;Winhttp.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -109,6 +109,7 @@
     <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Common\Logging\Log.cpp" />
     <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Common\Protocol\Protocol.cpp" />
     <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Demonware\DemonwareTaskRouter.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Demonware\ReplayDwServiceBridge.cpp" />
     <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Demonware\Internal\JsonObjectStoreParsing.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
@@ -271,6 +272,53 @@
     <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\Web\WebAuthService.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\ABTesting\abtesting_services.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Account\account_services.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Achievements\achievement_services.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Achievements\achievement_store.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\AntiCheat\anticheat_services.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\bandwidth.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\BattlePass\battlepass_services.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Channels\channel_services.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Channels\channel_store.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Clans\clan_services.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Content\content_services.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Counters\counter_services.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\crypto.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\crypto_provider.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Engagement\engagement_services.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\host_os.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Identity\identity_rest_services.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Identity\identity_services.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Inventory\inventory_validation_services.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Leaderboards\leaderboard_services.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\lobby.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Mail\mail_services.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Marketplace\marketplace_services.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Matchmaking\matchmaking_services.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Matchmaking\matchmaking_store.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\network.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\ObjectStore\objectstore_services.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\platform.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\platform_account_store.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\platform_resources.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Playlists\playlist_catalog.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\QoS\qos_provider.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\QoS\qos_services.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Quests\quest_services.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Regulation\regulation_services.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Relay\relay_provider.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Relay\relay_services.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\REST\rest_services.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Scheduled\scheduled_services.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\services.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Social\social_services.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Startup\startup_services.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Teams\team_services.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Tournaments\tournament_map_policy.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Tournaments\tournament_services.cpp" />
+  </ItemGroup>
+  <ItemGroup>
     <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Bgs\Auth\ExternalChallenge.h" />
     <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Bgs\BgsDispatcher.h" />
     <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Bgs\BgsRpc.h" />
@@ -343,6 +391,72 @@
     <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Web\Public\PostLsgDiagnostics.h" />
     <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Web\TlsWebRequest.h" />
     <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\Web\WebAuthService.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\bandwidth.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\crypto.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\crypto_provider.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\executable_updates.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\host_os.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\lobby.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\network.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\operator_controls.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\platform.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\platform_account_store.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\platform_resources.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\protobuf.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\public_dashboard.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\services.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\traffic_kdf.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Core\wire.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Data\gunsmith_rank_unlock_data.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Data\leaderboard_row.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Data\progression_ranks.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Data\replay_challenge_game_type.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Data\replay_kill_data.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Data\replay_kill_event.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Data\replay_kill_target.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Data\replay_objective_event.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Data\replay_quest_data.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Data\weapon_progression_data.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\ABTesting\abtesting_services.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Account\account_services.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Achievements\achievement_services.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Achievements\achievement_store.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\AntiCheat\anticheat_services.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\BattlePass\battlepass_services.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Channels\channel_services.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Channels\channel_store.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Clans\clan_services.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Content\content_services.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Counters\counter_services.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Engagement\engagement_services.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Identity\identity_rest_services.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Identity\identity_services.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Inventory\inventory_validation_services.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Leaderboards\leaderboard_services.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Mail\mail_services.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Marketplace\marketplace_services.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Matchmaking\matchmaking_services.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Matchmaking\matchmaking_store.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\ObjectStore\objectstore_services.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Playlists\playlist_catalog.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\QoS\qos_provider.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\QoS\qos_services.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Quests\quest_services.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\REST\rest_services.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Regulation\regulation_services.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Relay\relay_provider.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Relay\relay_services.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Scheduled\scheduled_services.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Social\social_services.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Startup\startup_services.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Teams\team_services.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Tournaments\tournament_map_policy.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\Services\Tournaments\tournament_services.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\shared_protocol\dw_client_identity.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\shared_protocol\dw_platform_protocol.h" />
+    <ClInclude Include="$(CodRevampedRoot)src\backend\iw8\ReplayDW\src\shared_protocol\dw_update_protocol.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

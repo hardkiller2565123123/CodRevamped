@@ -1,0 +1,162 @@
+{
+  "schema": 1,
+  "recorded_utc": "2026-10-06T18:35:02.265406+00:00",
+  "original_executable_sha256": "68fb1cbcb2924182724004039de55a4c50152bb6561803c4898b7930b38132f0",
+  "research_tool_sha256": "473d510c12b0cfa117a0fdb6bb685fbfc8d01c1da7a19f01b06a1559af173790",
+  "functions": [
+    {
+      "address": "0x141b316f0",
+      "window_bytes": 832,
+      "window_sha256": "1938795b396a968bd7b1b66bdbac3915e823abd4d4088e27281caf0aa8fe79b5"
+    },
+    {
+      "address": "0x140f3d950",
+      "window_bytes": 128,
+      "window_sha256": "85edae8a3e78fc6a43044e62281a5b93642f34cce039490a75cc51f78fa0cefd"
+    },
+    {
+      "address": "0x140f3e160",
+      "window_bytes": 416,
+      "window_sha256": "0c61bf816a04e91ecf1849753ea01847eea00c1984b78409a88b2614fa7721e7"
+    },
+    {
+      "address": "0x140f3a9f0",
+      "window_bytes": 576,
+      "window_sha256": "512703e389e03b14b913174dc924e98da271782e4a3c96fcba1d2ef6edb347e8"
+    }
+  ],
+  "verified_fields": {
+    "message_recipient_offset": 8,
+    "owning_chat_pointer_offset": 560
+  },
+  "exact_target_callers": [
+    {
+      "caller": "0x140f3d950",
+      "recipient_argument": "zero",
+      "instructions": [
+        {
+          "address": "0x140f3d95f",
+          "instruction": "mov rbx, rdx"
+        },
+        {
+          "address": "0x140f3d962",
+          "instruction": "mov dword ptr [rsp + 0x28], 2"
+        },
+        {
+          "address": "0x140f3d96a",
+          "instruction": "mov qword ptr [rsp + 0x20], r9"
+        },
+        {
+          "address": "0x140f3d96f",
+          "instruction": "mov esi, r8d"
+        },
+        {
+          "address": "0x140f3d972",
+          "instruction": "lea r9, [rip + 0x17d8d97]"
+        },
+        {
+          "address": "0x140f3d979",
+          "instruction": "mov rcx, rbx"
+        },
+        {
+          "address": "0x140f3d97c",
+          "instruction": "xor r8d, r8d"
+        },
+        {
+          "address": "0x140f3d97f",
+          "instruction": "xor edx, edx"
+        },
+        {
+          "address": "0x140f3d981",
+          "instruction": "call 0x141b316f0"
+        }
+      ]
+    },
+    {
+      "caller": "0x140f3e160",
+      "recipient_argument": "zero",
+      "instructions": [
+        {
+          "address": "0x140f3e237",
+          "instruction": "mov rcx, rax"
+        },
+        {
+          "address": "0x140f3e23a",
+          "instruction": "call 0x141b38620"
+        },
+        {
+          "address": "0x140f3e23f",
+          "instruction": "mov dword ptr [rsp + 0x28], 2"
+        },
+        {
+          "address": "0x140f3e247",
+          "instruction": "lea r9, [rsp + 0x40]"
+        },
+        {
+          "address": "0x140f3e24c",
+          "instruction": "xor r8d, r8d"
+        },
+        {
+          "address": "0x140f3e24f",
+          "instruction": "mov qword ptr [rsp + 0x20], rbp"
+        },
+        {
+          "address": "0x140f3e254",
+          "instruction": "mov rdx, r14"
+        },
+        {
+          "address": "0x140f3e257",
+          "instruction": "mov rcx, rbx"
+        },
+        {
+          "address": "0x140f3e25a",
+          "instruction": "call 0x141b316f0"
+        }
+      ]
+    },
+    {
+      "caller": "0x140f3a9f0",
+      "recipient_argument": "local XUID result",
+      "instructions": [
+        {
+          "address": "0x140f3ab7f",
+          "instruction": "mov rcx, rax"
+        },
+        {
+          "address": "0x140f3ab82",
+          "instruction": "call 0x14107ea90"
+        },
+        {
+          "address": "0x140f3ab87",
+          "instruction": "mov r9, r12"
+        },
+        {
+          "address": "0x140f3ab8a",
+          "instruction": "mov dword ptr [rsp + 0x28], 2"
+        },
+        {
+          "address": "0x140f3ab92",
+          "instruction": "mov r8, rax"
+        },
+        {
+          "address": "0x140f3ab95",
+          "instruction": "mov qword ptr [rsp + 0x20], rbx"
+        },
+        {
+          "address": "0x140f3ab9a",
+          "instruction": "mov rdx, rsi"
+        },
+        {
+          "address": "0x140f3ab9d",
+          "instruction": "mov rcx, rbp"
+        },
+        {
+          "address": "0x140f3aba0",
+          "instruction": "call 0x141b316f0"
+        }
+      ]
+    }
+  ],
+  "channel_id_equality_is_a_valid_message_invariant": false,
+  "source_oracle_addresses_used": false
+}

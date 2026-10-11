@@ -1,0 +1,137 @@
+{
+  "passed": true,
+  "target_image_sha256": "68fb1cbcb2924182724004039de55a4c50152bb6561803c4898b7930b38132f0",
+  "source": {
+    "path": "E:\\IW8\\Builds\\1.20-replay\\zone\\common_br_mp.ff",
+    "bytes": 27689096,
+    "sha256": "b5fcd70116db8848b20de60dec4ef4234c4183ad13667aab456de415569c6229",
+    "header": {
+      "magic": "IWffa100",
+      "header_version": 11,
+      "xfile_version": 4078,
+      "compression": 1,
+      "encryption": 0,
+      "transient_type": 0
+    },
+    "header_signature_marker": "IWffs100",
+    "signature_block_sha256": "e7e6c7ac7af73961e2757e6a8dc1a0c24fd4d3ab9c6c5ab5460ed4ca3bdc278a",
+    "observed_replay_revisions": [
+      4045,
+      4047,
+      4053,
+      4065,
+      4083,
+      4085,
+      4087
+    ],
+    "revision_seen_in_observed_set": false,
+    "patches": [
+      {
+        "path": "E:\\IW8\\Builds\\1.20-replay\\zone\\common_br_mp.fp",
+        "extension": ".fp",
+        "header_version": 6,
+        "previous": {
+          "magic": "IWffa100",
+          "header_version": 11,
+          "xfile_version": 4078,
+          "compression": 1,
+          "encryption": 0,
+          "transient_type": 0
+        },
+        "target": {
+          "magic": "IWffa100",
+          "header_version": 11,
+          "xfile_version": 4087,
+          "compression": 1,
+          "encryption": 0,
+          "transient_type": 0
+        },
+        "previous_layout": {
+          "decoded_size": 49279374,
+          "block_sizes": [
+            0,
+            1086224,
+            230464,
+            0,
+            0,
+            26333965,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "target_layout": {
+          "decoded_size": 59007060,
+          "block_sizes": [
+            0,
+            2499680,
+            254944,
+            0,
+            0,
+            29510957,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "previous_header_hex": "49576666613130300b000000ee0f0000010000000080a6016794d20f00ae87028ef1ef02000000001430000000000000000000000000000010931000000000004084030000000000000000000000000000000000000000000dd391010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "target_header_hex": "49576666613130300b000000f70f00000100000000c0e501e333d761004fab025460840300000000033500000000000000000000000000006024260000000000e0e3030000000000000000000000000000000000000000002d4dc2010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "header_only_zero_payload": false,
+        "bytes": 6570312,
+        "sha256": "7b1da08abbb070d3a561175a38a5e2c906ed8f191ea15dfc9cec751514ca1cb5"
+      }
+    ],
+    "final_header": {
+      "magic": "IWffa100",
+      "header_version": 11,
+      "xfile_version": 4087,
+      "compression": 1,
+      "encryption": 0,
+      "transient_type": 0,
+      "decoded_size": 59007060,
+      "block_sizes": [
+        0,
+        2499680,
+        254944,
+        0,
+        0,
+        29510957,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "header_only_zero_payload_chain": false
+  },
+  "body_sha256": "8c8239b99c79d37b1c8022cf35efa5907a8cf4238eb237ba40a170dfe02ba493",
+  "native_walk_key": "9bf7865c43c4d8adb9ef9d022f3a0fc12f5196cf184baec5fdf4c4c0ece72073",
+  "native_walk_receipt_path": "data/remaining-br-context-20261010/common-br-native-walk.json",
+  "native_walk_receipt_sha256": "4b5ed9e0c2d7b55029af4299f7f17c598d7656bdaf25534c5dbf2ba957f9115a",
+  "export_index_sha256": "e6a7349d2ca260f058ad4b448df93ca8defa9572de58c499ce4930f7792f0ee9",
+  "tables": [
+    {
+      "name": "mp/brmissions.csv",
+      "path": "validation/assets/replay120-brmissions.csv",
+      "sha256": "ed41731780679656fd3f3ff3c52fbc790d6f84da0868a2da856f7b5aea8c8163",
+      "type_id": 54,
+      "asset_index": 1477,
+      "rank": 10
+    },
+    {
+      "name": "mp/brkioskpurchases.csv",
+      "path": "validation/assets/replay120-brkioskpurchases.csv",
+      "sha256": "b2e69accad8bc1c5820d50cfec71be81f3b585c4d14f17e52759325fba816f70",
+      "type_id": 54,
+      "asset_index": 1470,
+      "rank": 3
+    }
+  ],
+  "native_game_execution_verified": false,
+  "scope": "Current Replay common_br_mp native-reader walk and complete typed StringTable export; contract and kiosk IDs belong to this build, not a different-build dump"
+}

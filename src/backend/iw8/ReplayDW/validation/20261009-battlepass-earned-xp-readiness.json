@@ -1,0 +1,164 @@
+{
+  "schema": 1,
+  "passed": true,
+  "generated_utc": "2026-10-09T10:30:06.561669+00:00",
+  "full_backend_completed": false,
+  "scope": "Earned Battle Pass implementation, target producer execution, focused fixtures, native login/cache restoration and zero-award Shipment roundtrip",
+  "server_sha256": "1f4ad24b1cea894fd19a95e8577ea121abfd5c9785d9aa16fef3751824881a71",
+  "executable_sha256": "80277fed1fe1488310ff271fc1af21272e2bc4ea453e5179312bc0d80f57494d",
+  "game_recompile_required": false,
+  "compiled": {
+    "linux_linked": true,
+    "windows_changed_unit_w4_wx": true,
+    "windows_object_sha256": "93092d94b34d41c34bb3dadf38c2b696b69f2937b0ab8791e0112b517d238ffb",
+    "retained_object_count": 44,
+    "changed_objects": {
+      "battlepass_services.cpp": "a2b26fbaf61ffdbb9d85668cc48171c8c29b7cbf0acf0cd0fc025c138c9d0e0c"
+    }
+  },
+  "verified": {
+    "battlepass_groups": 16,
+    "startup_and_host_groups": 123,
+    "native_startup_fences": 27,
+    "root_game_folder": true,
+    "one_game_instance": true,
+    "native_season3_xp": 5258879,
+    "native_season3_tier": 42,
+    "short_shipment_roundtrips": 2,
+    "positive_native_earned_xp": false,
+    "synthetic_events_submitted_as_game_account": false,
+    "native_cache_memory_written": false,
+    "full_map_policy_restored": true
+  },
+  "com_optimized": {
+    "default": 1,
+    "native_value": 1,
+    "range": [
+      0,
+      2
+    ],
+    "source": {
+      "path": "integration/replay/Com_Optimized.cpp",
+      "sha256": "f3f7a909e68c669f145475285c34ce01e914c58729bc84de70017ccef4eadb27"
+    },
+    "compiled_source": {
+      "path": "data/compiler-snapshot-1791521839529560700/src/Com_Optimized.cpp",
+      "sha256": "f3f7a909e68c669f145475285c34ce01e914c58729bc84de70017ccef4eadb27"
+    },
+    "profiles": {
+      "0": "off",
+      "1": "preserve scene appearance",
+      "2": "experimental low-detail/reflection optimizations"
+    }
+  },
+  "deployed_backend": {
+    "pid": 189255,
+    "active": "active",
+    "substate": "running",
+    "executable": "/opt/replay-dw/releases/20261009-1f4ad24b1cea/iw8-dw-server",
+    "process_executable": "/opt/replay-dw/releases/20261009-1f4ad24b1cea/iw8-dw-server",
+    "sha256": "1f4ad24b1cea894fd19a95e8577ea121abfd5c9785d9aa16fef3751824881a71",
+    "process_sha256": "1f4ad24b1cea894fd19a95e8577ea121abfd5c9785d9aa16fef3751824881a71",
+    "host": "162.243.115.160",
+    "verified_live_process": true,
+    "remote": true
+  },
+  "evidence": [
+    {
+      "path": "data/remaining-services-20261009/linux-earned-bp-r4-build.json",
+      "sha256": "ab21cea26ec4a16dadc2016b9f85b98cfdc4bda6391e5fea9c34107e1ac88a5a"
+    },
+    {
+      "path": "data/remaining-services-20261009/linux-earned-bp-r4-battlepass.json",
+      "sha256": "1a213d8442c4593c6dad2317ea06428cc388c2378c8cef3e73c0e9d77427ba35"
+    },
+    {
+      "path": "data/remaining-services-20261009/linux-earned-bp-r4-startup.json",
+      "sha256": "41471c3089c5fffc4d90598c55a21fd4c094152fb56c78a096afe521697f5c39"
+    },
+    {
+      "path": "data/remaining-services-20261009/linux-earned-bp-r4-tools.json",
+      "sha256": "6ebe66344cc4cc5b7430b3f4aea5f9ccea0b0783ebd8adc8c008ddf26cd9d02a"
+    },
+    {
+      "path": "data/remaining-services-20261009/linux-earned-bp-r4-deployment.json",
+      "sha256": "5b097729f9d78d30e3f0535ceb3330cd8a168c64c1d067a4c425863d83b36009"
+    },
+    {
+      "path": "data/remaining-services-20261009/earned-bp-r4-source.json",
+      "sha256": "0c93b07d491219f5b96b3f773af9e8e0f2ffc96f262abdfa53419d6bf5684edc"
+    },
+    {
+      "path": "data/remaining-services-20261009/native-earned-bp-lobby.json",
+      "sha256": "5d8dc4d0fd2273420eb8f57becbd0750e9726a3af2e3e07512e452c509b487cf"
+    },
+    {
+      "path": "data/remaining-services-20261009/native-earned-bp-match.json",
+      "sha256": "43b6c57a02081a3ec11dae0a42649d0ffea03627d565aa572c832472649e98b4"
+    },
+    {
+      "path": "data/remaining-services-20261009/earned-bp-server-before-states.json",
+      "sha256": "cd2abcd2aaefd1ca910763d7ac1cd982f4b9b59dfccd4f897e18c86137b097dd"
+    },
+    {
+      "path": "data/remaining-services-20261009/earned-bp-server-before-events.json",
+      "sha256": "25ac0dbab45225e75e66c32e86754440b5f6bbdb76562c68bb5e520d54cbc452"
+    },
+    {
+      "path": "data/remaining-services-20261009/earned-bp-server-final-states.json",
+      "sha256": "cd2abcd2aaefd1ca910763d7ac1cd982f4b9b59dfccd4f897e18c86137b097dd"
+    },
+    {
+      "path": "data/remaining-services-20261009/earned-bp-server-final-events.json",
+      "sha256": "1fb89b125fb0850551510fd746f93122796763e24db62eb8f7f1b385e8d43934"
+    },
+    {
+      "path": "data/remaining-services-20261009/earned-bp-policy-restored.json",
+      "sha256": "601744c150a4a38a4d827cc72067ed86b10ec178dd6f3fc660fd5527f19b03a4"
+    },
+    {
+      "path": "data/remaining-services-20261009/backend-coverage-earned-bp-r4.json",
+      "sha256": "94dcb013aeefb930e5f1591401386989ab840e3d71e48f7be57803fc80cb32dc"
+    },
+    {
+      "path": "data/remaining-services-20261009/backend-coverage-earned-bp-r4.txt",
+      "sha256": "5468bccf5d7a0878ec25e4b6a5a1782547aace04a0e1e56690a06baee02b4250"
+    },
+    {
+      "path": "validation/20261009-battlepass-earned-xp-target.json",
+      "sha256": "862b329003112912a47fe916a0c049d6a0675024713b280fe13a01570fc8578e"
+    }
+  ],
+  "sources": [
+    {
+      "path": "src/battlepass_services.cpp",
+      "sha256": "cbfaba5ab3e7566bba5b6522f20b5fbc8cbfde237c6407e6e691eae93523d819"
+    },
+    {
+      "path": "tools/test-replay-battlepass.py",
+      "sha256": "8bb62796e73539855d13d2110ef19b58b6904f623d55a7ba1189f36ae46c8f32"
+    },
+    {
+      "path": "tools/research-battlepass-xp-target.py",
+      "sha256": "b6e2b9b51630305e56cc788bf48ad1bbf94168eed19df90c3eebb063d5c3b8c0"
+    },
+    {
+      "path": "tools/native_battlepass.py",
+      "sha256": "08d92e589eafb7e6b9bba0f174ec27d127ec16967c3f1eacad1b567ce662b429"
+    },
+    {
+      "path": "tools/observe-game.py",
+      "sha256": "923b9af2b7f0ca9ac737214456264411434c018e149a0a0788ef8e6a394b55ed"
+    },
+    {
+      "path": "tools/inventory-backend-coverage.py",
+      "sha256": "912aaa7e4aa048aabdb681d9f679df4696760b74ad93f940df2952a397cb2c7f"
+    }
+  ],
+  "remaining": [
+    "Positive game-issued mp_addxp Battle Pass award and tier-completion UI consumption",
+    "Earned mission predicates and reward rules",
+    "50/22, 58/22, 193/9, 193/10, 193/12 and 193/24 target response bindings",
+    "Remaining indirect SDK/REST request and native callback validation"
+  ]
+}

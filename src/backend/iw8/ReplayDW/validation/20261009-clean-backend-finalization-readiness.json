@@ -1,0 +1,170 @@
+{
+  "schema": 1,
+  "passed": true,
+  "recorded_utc": "2026-10-09T22:56:19.252606+00:00",
+  "scope": "Clean backend release, orphan tournament retirement, protocol persistence and root-game native startup",
+  "full_backend_completed": false,
+  "server_sha256": "9c9e495eb74728a1fd67cb29eedf72b59e8677da1e7342e136ac296f3da4d316",
+  "windows_server_sha256": "546e5d111b2990a63102c9ee3e82b7ea7e9fd11d4c0b63596418c73aca3db49e",
+  "game_sha256": "80277fed1fe1488310ff271fc1af21272e2bc4ea453e5179312bc0d80f57494d",
+  "game_recompile_required": false,
+  "compiled_translation_units_per_platform": 45,
+  "retained_object_count": 0,
+  "protocol_groups_per_platform": 304,
+  "battlepass_groups_per_platform": 16,
+  "native_startup_fences": 27,
+  "mission_management_groups_per_platform": 14,
+  "cached_mission_stages": 232,
+  "mission_earning_rules_reconstructed": false,
+  "native_com_optimized": 1,
+  "native_main_menu_rendered": true,
+  "game_instances_launched": 1,
+  "map_matches_launched": 0,
+  "owner_confirmation_progression": true,
+  "owner_confirmation_scope": "Owner confirmed progression; no earned-progression game run repeated in this iteration",
+  "known_target_routes": 140,
+  "registered_handlers": 134,
+  "missing_target_routes": [
+    {
+      "service": 50,
+      "task": 22,
+      "domain": "content streaming"
+    },
+    {
+      "service": 58,
+      "task": 22,
+      "domain": "content streaming"
+    },
+    {
+      "service": 193,
+      "task": 9,
+      "domain": "object store"
+    },
+    {
+      "service": 193,
+      "task": 10,
+      "domain": "object store"
+    },
+    {
+      "service": 193,
+      "task": 12,
+      "domain": "object store"
+    },
+    {
+      "service": 193,
+      "task": 24,
+      "domain": "object store"
+    }
+  ],
+  "other_open_scopes": [
+    "Unreconstructed mission earning predicates and conditional rewards",
+    "Unclassified indirect/virtual and REST bindings",
+    "Per-method native result callbacks beyond the recorded scoped proofs"
+  ],
+  "deployment": {
+    "pid": 204752,
+    "active": "active",
+    "substate": "running",
+    "executable": "/opt/replay-dw/releases/20261009-9c9e495eb747/iw8-dw-server",
+    "process_executable": "/opt/replay-dw/releases/20261009-9c9e495eb747/iw8-dw-server",
+    "sha256": "9c9e495eb74728a1fd67cb29eedf72b59e8677da1e7342e136ac296f3da4d316",
+    "process_sha256": "9c9e495eb74728a1fd67cb29eedf72b59e8677da1e7342e136ac296f3da4d316",
+    "host": "162.243.115.160",
+    "verified_live_process": true,
+    "remote": true
+  },
+  "evidence": [
+    {
+      "path": "data/remaining-services-20261009/clean-finalization-r6-source.json",
+      "sha256": "1585bed22be11927e2f4ada188ab9e608e7f9e6f94336b92068c8a59889b7bfd"
+    },
+    {
+      "path": "data/remaining-services-20261009/linux-clean-finalization-r6-build.json",
+      "sha256": "22f2e2226d5c3ed86768773837bd704ad7e09a227d87cd9514916e78db93ba96"
+    },
+    {
+      "path": "data/remaining-services-20261009/windows-clean-finalization-r6-build.json",
+      "sha256": "e813c8fdcb3c4fd5056cf8233b95c3befad84a8b3d951281431e5d27079331d9"
+    },
+    {
+      "path": "data/remaining-services-20261009/linux-clean-finalization-r6-protocol.json",
+      "sha256": "c891968e5d52c8f4e4c7b57a37bd3913c5db1adb6ae571dd17b906488245cb49"
+    },
+    {
+      "path": "data/remaining-services-20261009/windows-clean-finalization-r6-protocol.json",
+      "sha256": "31819f0843b03135c299ddb8b73c6e568fbbda2ad6c2d68618cfd63393fc5ea7"
+    },
+    {
+      "path": "data/remaining-services-20261009/linux-clean-finalization-r6-battlepass.json",
+      "sha256": "822d58312c32f6801b36744794f7330c2b09a1da4ba640d6bf5e917346e788d1"
+    },
+    {
+      "path": "data/remaining-services-20261009/windows-clean-finalization-r6-battlepass.json",
+      "sha256": "559967e1804c5de0715d7a4743ba75e24b2246eada10d550ba1b727509991ad4"
+    },
+    {
+      "path": "data/remaining-services-20261009/linux-clean-finalization-r6-offline-startup.json",
+      "sha256": "519e77209271ca743f2fc26e2c4b0893de8c689c5ffdb8510f1128cc05584cf5"
+    },
+    {
+      "path": "data/remaining-services-20261009/linux-clean-finalization-r6-deployment.json",
+      "sha256": "e371352490ae1e9401271eb613e4384feed47b0ce34ae5b46b281d3d89e2e15d"
+    },
+    {
+      "path": "data/remaining-services-20261009/linux-clean-finalization-r6-tools.json",
+      "sha256": "56e2a853b4fcf72e3c7ad99dc79b53d171f3e34fc5b02f8834d59bdc3ea63649"
+    },
+    {
+      "path": "data/remaining-services-20261009/native-clean-finalization-r6-startup-dvars.json",
+      "sha256": "c020b3c5937b390e4cdfeaf8b7a79ad613b788bb473fe14359fab372ad02d3d5"
+    },
+    {
+      "path": "data/remaining-services-20261009/native-clean-finalization-r6-quit.jpg",
+      "sha256": "0e5dc9d53dfa68e2431d296f0ecfaec916614bf3ed7db86eb6f20d298a9eb70a"
+    },
+    {
+      "path": "data/remaining-services-20261009/native-clean-finalization-r6-quit.jpg.json",
+      "sha256": "50606872ed7f73679a62bc691e447dafdecc17dd67df4c71e78c7774299d836c"
+    },
+    {
+      "path": "data/remaining-services-20261009/backend-coverage-clean-finalization-r6.json",
+      "sha256": "032129894cc26086cd029f5f54d7fca0046a34973c93fc47aa8dc7acaf04d337"
+    },
+    {
+      "path": "data/remaining-services-20261009/backend-coverage-clean-finalization-r6.txt",
+      "sha256": "03d52508c24f3c00189c2feb83589d7b0a98164f09c5e38d4d3fa35e00ac3e05"
+    },
+    {
+      "path": "data/remaining-services-20261009/retained-r5-validation-failure.log",
+      "sha256": "d754ce09ca2523f4d74284732f3620f0f9ff1cc74fd4016c393d8753fa9f3ba9"
+    },
+    {
+      "path": "data/remaining-services-20261009/windows-clean-finalization-r6-quests.json",
+      "sha256": "e5aca6f5c977c8d32278917d6844a7f01cf5fe76beefce094867ed76f335acf5"
+    },
+    {
+      "path": "data/remaining-services-20261009/linux-clean-finalization-r6-quests.json",
+      "sha256": "38e2eb3032e9d537baac9ffb0766a64e324b6045869ce4dc93efe9ac34b62808"
+    },
+    {
+      "path": "data/remaining-services-20261009/clean-finalization-r6-quest-tools.json",
+      "sha256": "55ff6a37460e884c7e05729da7e0c1ef7b494a95fcaf1b9e73626ef4eb146fb7"
+    },
+    {
+      "path": "validation/20261009-clean-backend-linux-offline-startup.json",
+      "sha256": "745fab8d4bc5b918f10d7ff89adaf0632076b6a30b586e1e2f86e17813f30260"
+    },
+    {
+      "path": "validation/20261009-clean-backend-windows-offline-startup.json",
+      "sha256": "5d4475b2bde156ee6438d6d826564b121ba37ae5cd6f8722dd881f1a1c61f41c"
+    },
+    {
+      "path": "validation/20261009-native-task-arithmetic-inventory.json",
+      "sha256": "0542d0f7777dc3f63af40976e8be270e905a301f9e3804bdd76fb755d3069eb7"
+    },
+    {
+      "path": "validation/20261008-replay-quest-rewards-assets.json",
+      "sha256": "450f1be78c5fabbea750d9c47f51021c389c1cd42ded958ada5fb6f7de3bfce2"
+    }
+  ]
+}

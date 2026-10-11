@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "passed": true,
+  "checks": [
+    "player and weapon deltas commit with one receipt and distinct native notifications",
+    "accepted retry refreshes both absolute snapshots without duplicate XP or rank-up actions",
+    "shipped variant 43 and base 15 share one weapon record and native rank thresholds",
+    "identical XP values on separate weapons are not coalesced together; idle duplicates stop",
+    "unknown weapon IDs and native UInt32 overflow reject the complete player/weapon batch",
+    "kind filters and pagination include native weapon snapshots without removing camo states",
+    "REST native report envelope preserves the weapon notification",
+    "all 51 shipped base weapons fit native 64-slot capacity; empty developer tables cap at rank zero",
+    "high UInt32 XP bits are retained, per-weapon rank is capped and overflow cannot wrap the profile",
+    "reconnect independently catches up the player and every weapon without task retries",
+    "backend restart retains all weapon records and republishes them to the new authenticated writer"
+  ],
+  "server_sha256": "1b4370e65972f5000db6686799be668a946303d0d190c370a3a4b2eecd73eef9",
+  "fixture_directory": "E:\\DW\\IW8\\data\\weapon-progression-fixture-1791415086273892400",
+  "native_game_verified": false
+}

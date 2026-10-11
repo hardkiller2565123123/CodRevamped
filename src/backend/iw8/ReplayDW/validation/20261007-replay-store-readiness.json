@@ -1,0 +1,81 @@
+{
+  "schema": 1,
+  "passed": true,
+  "recorded_utc": "2026-10-07T16:25:39.901833+00:00",
+  "host": "162.243.115.160",
+  "server_sha256": "1204ee4c01c42463ffe78554a4d8da92062b4de2b1ed1f90dd9112fe269a3bfb",
+  "game_sha256": "b09a9ba25f733960dd1f8c569f566979804c2a1a247a9753e2c6e7a50556c138",
+  "game_recompiled": false,
+  "branch": "codex/dw-remaining-services",
+  "native_startup_verified": true,
+  "native_fences_passing": 27,
+  "native_store_browsing_verified": true,
+  "native_stock_bundle_preview_verified": true,
+  "native_free_purchase_completion_verified": true,
+  "native_free_purchase_bundle": 400060,
+  "native_ownership_persists_after_game_and_backend_restart": true,
+  "native_paid_purchase_verified": false,
+  "paid_purchase_wire_verified": true,
+  "store_catalog_skus": 264,
+  "visible_categories": 4,
+  "native_value_payload_capacity": 127,
+  "publisher_revision": 3,
+  "full_backend_completed": false,
+  "remaining_store_domains": [
+    "first-party products",
+    "Battle Pass offers",
+    "sale variants",
+    "smart discounts"
+  ],
+  "evidence": [
+    {
+      "path": "data/store-backend-20261007/linux-final-contract.json",
+      "sha256": "1b52a539dacac0dcac3cdd487fc3b5ee0fa73bb4d66c3a72bc128239424ded4f"
+    },
+    {
+      "path": "data/store-backend-20261007/public-buffer-protocol.json",
+      "sha256": "87b6eb03be5faaa7f96c5b626db2403efc9d8ac685179462a38ac1a2841468fa"
+    },
+    {
+      "path": "data/store-backend-20261007/windows-buffer-contract.json",
+      "sha256": "932c858e0a3e40a304e291aab317d73ed03ce0210d5cd0e324351edba50a7ae4"
+    },
+    {
+      "path": "data/store-backend-20261007/final-startup.json",
+      "sha256": "1fd101178df25253f4b921184979187d8df97e779eb06bd0871fd718c160b1f3"
+    },
+    {
+      "path": "data/store-backend-20261007/final-store.json",
+      "sha256": "7cd2e1450fee47ccbe8e34f893002a4d7016cb59f493f98416f1ff3d783e1af4"
+    },
+    {
+      "path": "data/store-backend-20261007/native-durable-grants.json",
+      "sha256": "39158f0d9c0587868c8606c39fde3d45cc244a1672058c1f36c8bcc35a79ae80"
+    },
+    {
+      "path": "data/store-backend-20261007/publication-final-deployment.json",
+      "sha256": "41d51cbe0b434efcc4ff5cc9ae80062ee46e4d95366e7a8ebbb9d61a3aae0dee"
+    },
+    {
+      "path": "data/store-backend-20261007/native-store.jpg",
+      "sha256": "14c18299a92bbe80049e754f5970fe497308f4101f47127b44070c7f6295af02"
+    },
+    {
+      "path": "data/store-backend-20261007/native-operator-preview.jpg",
+      "sha256": "c1cab6929f824c340bbcf4ee2f87df777c1d048f5b94f1f49a750489cd833af3"
+    },
+    {
+      "path": "data/store-backend-20261007/debug.jsonl",
+      "sha256": "7e353c729473af718d4b393b3964d2c2f445514fca251593b57dba995b372429"
+    },
+    {
+      "path": "data/store-backend-20261007/final-debug.jsonl",
+      "sha256": "10eb5ed8cc9b2b6300c171b4dfbda43a500035f15b85c4de4ca98a8732592e30"
+    }
+  ],
+  "prior_domain_regression": {
+    "path": "data/store-backend-20261007/linux-protocol.json",
+    "sha256": "4a5d6563097ca9ff3eec5eb9007a76b17813692f72a03a9342851ca92182fdb2"
+  },
+  "regression_scope": "298 checks on prior b77b5b backend; final native-buffer correction covered by nine focused contract checks plus native/public verification"
+}

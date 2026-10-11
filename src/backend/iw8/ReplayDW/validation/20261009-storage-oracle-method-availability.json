@@ -1,0 +1,83 @@
+{
+  "schema": 1,
+  "generated_utc": "2026-10-09T08:22:09.2700768Z",
+  "passed": true,
+  "full_backend_completed": false,
+  "scope": "Reference PDB type declarations and exact qualified-name global function symbols. No Replay method or wire binding is claimed.",
+  "tool_sha256": "e4dbcf7f05ce74dc9998acf92744c5b9c4b9e28ad7d3990f24b39bebed254cfe",
+  "compiled_tool_sha256": "10a4f56a21efe61b11d68df5293a7b4ddedfe74838ca71fd38181aef86a26d80",
+  "build": "/std:c++20 /W4 /WX /EHsc; Windows x64 DIA",
+  "oracle": {
+    "pdb": "E:\\1-game-test\\1-game_test.pdb",
+    "sha256": "845b9d28be81b3b6bcc9fe0cca8efc44b18f64dafaffca72c7f2607f0412b76d",
+    "guid": "{910A7F7F-2DB0-4028-966A-F6BF38DD3ACC}",
+    "age": 1
+  },
+  "method_inventory": [
+    {
+      "type": "bdObjectStoreListPublisherObjectsByCategoryResponse",
+      "type_match_count": 1,
+      "declared_methods": 24,
+      "declarations_with_emitted_name_candidates": 0,
+      "target_binding_verified": false
+    },
+    {
+      "type": "bdObjectStoreListUserObjectsByCategoryResponse",
+      "type_match_count": 1,
+      "declared_methods": 21,
+      "declarations_with_emitted_name_candidates": 0,
+      "target_binding_verified": false
+    },
+    {
+      "type": "bdLiveStreamingFileMetaData",
+      "type_match_count": 1,
+      "declared_methods": 18,
+      "declarations_with_emitted_name_candidates": 0,
+      "target_binding_verified": false
+    },
+    {
+      "type": "bdObjectStoreCompleteUploadSessionResponse",
+      "type_match_count": 1,
+      "declared_methods": 20,
+      "declarations_with_emitted_name_candidates": 7,
+      "target_binding_verified": false
+    }
+  ],
+  "positive_control": {
+    "method": "bdObjectStoreCompleteUploadSessionResponse::deserialize",
+    "linked_name_candidates": [
+      {
+        "oracle_rva": 57669728,
+        "size": 380
+      }
+    ]
+  },
+  "missing_type_returns_exit_code": 5,
+  "nonvirtual_pure_property": null,
+  "method_vtable_offsets_inferred": false,
+  "overload_bindings_inferred": false,
+  "evidence": [
+    {
+      "path": "data/remaining-services-20261009/oracle-methods-bdObjectStoreListPublisherObjectsByCategoryResponse.json",
+      "sha256": "049a6e1999e70d26f0dab48637f6f6a71984a65b8a800b23f4597de846fc4cc2"
+    },
+    {
+      "path": "data/remaining-services-20261009/oracle-methods-bdObjectStoreListUserObjectsByCategoryResponse.json",
+      "sha256": "43720666f24eaa3561d08f851d8388ef233c42eb9f494faa2f44a188cc251046"
+    },
+    {
+      "path": "data/remaining-services-20261009/oracle-methods-bdLiveStreamingFileMetaData.json",
+      "sha256": "fe4064ae5ddeea1d6f28a7961f66ffa7e1fd53cd0c0688944b65665ceff03397"
+    },
+    {
+      "path": "data/remaining-services-20261009/oracle-methods-bdObjectStoreCompleteUploadSessionResponse.json",
+      "sha256": "21642704e625b1d73eb5b293f500a91a05ccc9889b95e2815b95217851b9f066"
+    }
+  ],
+  "limitations": [
+    "Missing exact-name function symbols do not prove absence of inlined, folded, renamed or otherwise emitted code.",
+    "Oracle addresses are not Replay addresses.",
+    "Inherited methods are reported separately by owner type; they do not establish a derived response parser.",
+    "Category-list, extended streaming and large-upload Replay result bindings remain unresolved."
+  ]
+}

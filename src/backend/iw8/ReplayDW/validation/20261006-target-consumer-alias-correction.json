@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "original_executable_sha256": "68fb1cbcb2924182724004039de55a4c50152bb6561803c4898b7930b38132f0",
+  "original_function_address": "0x1420F1890",
+  "growing_database_label": "bdObjectStoreCompleteUploadSessionsResponse::deserialize",
+  "raw_function_sha256": "53406b89064d51a32be3a908cbcde6922f8312ad3c6cb41646586d0cb1932d6d",
+  "raw_function_bytes": 128,
+  "raw_direct_calls": [
+    {
+      "address": "0x1420f18b6",
+      "target": "0x1420f3a70"
+    },
+    {
+      "address": "0x1420f18c6",
+      "target": "0x1420f3d20"
+    },
+    {
+      "address": "0x1420f18e4",
+      "target": "0x1420f3c60"
+    },
+    {
+      "address": "0x1420f18f8",
+      "target": "0x1420f3b40"
+    }
+  ],
+  "raw_twenty_byte_arguments": [
+    {
+      "address": "0x1420f18a8",
+      "instruction": "mov r8d, 0x14"
+    },
+    {
+      "address": "0x1420f18cb",
+      "instruction": "mov dword ptr [rsp + 0x20], 0x14"
+    }
+  ],
+  "nul_terminated_key_occurrences": {
+    "sessionID": 0,
+    "uploadUrl": 0,
+    "uploadURL": 0,
+    "uploadSessionCompletions": 0,
+    "finalContentLength": 0,
+    "bdObjectStoreCompleteUpload": 0,
+    "bdLiveStreamingFileMetaData": 0
+  },
+  "conclusion": "This named function is not proof of an object-store completion reader. No upload JSON field parsing is present in this function.",
+  "missing_native_response_contracts": [
+    "50/22",
+    "58/22",
+    "193/9",
+    "193/10",
+    "193/12",
+    "193/24"
+  ],
+  "source_oracle_is_not_target_layout_proof": true,
+  "generic_success_handler_added": false
+}

@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "generated_utc": "2026-10-07T01:50:48.5798928Z",
+  "passed": true,
+  "passed_scope": "Compilation, focused protocol checks, deployed image and backend startup health; native gameplay remains pending",
+  "backend_sha256": "9fd5ed296f48b447558a74544e78b8c8b4a45b6c0bf8601678155fcb60eb8680",
+  "unchanged_shipping_game_sha256": "bdc091d35dc57f29c10ce14a4552467a5ce0d8c0d881d287ec31f09fc7ee9e18",
+  "build_receipt": {
+    "path": "data/backend-snapshot-1791337132787533400/build-receipt.json",
+    "sha256": "bd4d7606dd802596b696e3738bbabe629cc96a0d6c3925ebc11805cba16cddbf"
+  },
+  "protocol_evidence": {
+    "path": "data/backend-validation-1791337500489830600/data/team-policy-verification.json",
+    "sha256": "e6e1c29b52b7cb217e338a906d98d758a7f5a527b953a14c5bbbc6bdf89f1b8c"
+  },
+  "protocol_groups": 8,
+  "frozen_fixture_inputs": {
+    "path": "data/backend-validation-1791337500489830600/fixture-inputs.json",
+    "sha256": "138e9186c158227d7b820623602c165a1d19c405874de92fa5015373f1d3ad56"
+  },
+  "staged_readiness": {
+    "path": "validation/20261006-staged-partition-invitation-readiness.json",
+    "sha256": "0dc41aba3f49e140f08ebe0de12b5bba29784e8b968b3325e3235d8ed34e262d"
+  },
+  "deployed": true,
+  "server_restart_performed": true,
+  "server_process_verified": {
+    "sha256": "9fd5ed296f48b447558a74544e78b8c8b4a45b6c0bf8601678155fcb60eb8680",
+    "executable": "E:\\DW\\IW8\\build\\Release\\iw8-dw-server.exe",
+    "pid": 11788,
+    "creation_utc": "2026-10-07T01:50:01.4422800Z"
+  },
+  "backend_health": {
+    "server": "iw8-dw",
+    "native_auth": true,
+    "platform_auth": true,
+    "local_qos_enabled": true,
+    "native_tasks": true,
+    "relay_enabled": true
+  },
+  "native_startup": {
+    "evidence": [],
+    "pending": true,
+    "passed": false
+  },
+  "native_waiting_fix_verified": false,
+  "native_invite_display_verified": false,
+  "native_two_player_matchmaking_verified": false,
+  "cross_network_gameplay_verified": false,
+  "full_backend_complete": false,
+  "game_recompile_performed": false,
+  "game_interactions_performed_after_owner_hold": false,
+  "local_matchmaking_policy": {
+    "path": "data/playlists/5800/policy.json",
+    "sha256": "70c6eb966816054e7e426eca21caf0206062a59482a33e383d43a38034d3e874"
+  },
+  "next_gate": "Owner reconnects the existing profiles, tests invitation display, then enters two-player Shipment Quick Play."
+}

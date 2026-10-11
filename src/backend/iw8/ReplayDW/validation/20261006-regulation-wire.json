@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "verified_utc": "2026-10-06T12:53:32.956413+00:00",
+  "passed": true,
+  "server_sha256": "3b24b08f70c8592fdc624478607043d23d78ad0a5662a61acc8d337a1a91d51e",
+  "scope": "Isolated encrypted native-wire regulation publication and owner preference domain; no game launched by fixtures",
+  "checks": [
+    "Regulation publication uses the exact native name/UInt64-version array; absent publication is unavailable and fresh preference reads create no implicit privacy choice",
+    "Native optouts DTO includes regulation/client-message UInt64s, real boolean and matching UTC/timestamp; signed account aliases share only the owner's choices and exact retries do not rewrite them",
+    "Complete regulation request layout rejects duplicate/trailing JSON, floats, malformed booleans, long names, account/path/query ambiguity and unsupported methods without mutating choices",
+    "Whole persisted regulation publications/preferences reject corrupt ownership, duplicate/overflowing records, invalid numeric/time/boolean layouts; failed atomic writes publish no success and an owned retry saves the real changed preference",
+    "Account-owned regulation preference and its native UTC/UInt64 DTO survive backend process restart with exact retry idempotence"
+  ],
+  "grouped_suite_checks": 257,
+  "fixture_receipt": "data/lobby-verification.json",
+  "fixture_receipt_sha256": "4d4578e2c85578104c0b91a2d338d1aa9a3f0768e78e19ed44405f9c3e9803fb",
+  "native_regulation_callback_verified": false,
+  "owner_live_privacy_choices_changed": false,
+  "source_sha256": {
+    "src/regulation_services.cpp": "daa63ef00fdfb0fe20f5ff953c3a45f22199c1c5e34af2948288b8715bf56be1",
+    "src/regulation_services.h": "fd846ed38285c76f9402ee7060ab4a2e8db78476e1e0f8c161c814d3831b9ad3",
+    "src/rest_services.cpp": "31c7c30342fce0c53a17ba6ce4797d8382f40849ee68c8786789011675d61894",
+    "tools/regulation_fixtures.py": "94becee3133b430cc97764913e0b0c92326ec56e8e2168e8e162cc8ccd051e83"
+  }
+}

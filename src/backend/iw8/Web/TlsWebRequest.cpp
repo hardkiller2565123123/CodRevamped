@@ -97,8 +97,25 @@ namespace revamped::iw8
                     }
                     else if (objectName == "store_v2.json")
                     {
-                        localBody = "{\"categories\":[]}";
+                        // Keep the legacy 1.20 object body identical to the metadata
+                        // advertised by PublisherObjectStore.cpp.  Returning an empty
+                        // 17-byte body while metadata reports the 47-byte store layout
+                        // leaves the stock frontend with no category datasource.
+                        localBody = kStoreLayoutBody;
                         localLabel = "local ObjectStore publisher store_v2.json";
+                        localContentType = "application/json; charset=utf-8";
+                        localBodyKind = "local-publisher-json";
+                        hasLocalBody = true;
+                    }
+                    else if (objectName == "12114594447999834387" ||
+                             objectName == "371105840287708794")
+                    {
+                        // Exact Raven numeric objects requested by Steam Retail
+                        // during frontend bootstrap. Metadata is synthesized by
+                        // RestBootstrap.cpp; serve the matching neutral object
+                        // here so bdHTTP can complete the content download.
+                        localBody = "{}";
+                        localLabel = "local ObjectStore publisher retail bootstrap object";
                         localContentType = "application/json; charset=utf-8";
                         localBodyKind = "local-publisher-json";
                         hasLocalBody = true;

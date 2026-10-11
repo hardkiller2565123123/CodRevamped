@@ -1,0 +1,78 @@
+{
+  "schema": 1,
+  "passed": true,
+  "recorded_utc": "2026-10-06T22:11:32.786264+00:00",
+  "server_sha256": "f3bbe6529dc3ff22672c08ffd5cb76aecf88a2f90a88e296e05c20de032fe2e2",
+  "game_sha256": "73ded44317c35d6efcfeb9ca9f5fa03a20f73e41926e6ea3a0d6c94423db7644",
+  "tournament_source_sha256": "1f04aefdaacd2b0a13516609346f987131629fb1c43bd99ae82fd075c8351392",
+  "observer_source_sha256": "6e082783a333795bba1da8c0b89a8330d6a61e5347327eb0042c4a2c469062b6",
+  "recorder_source_sha256": "6a5c48c56e1d4fa91368cad293be830ead861229aca19ed78a8d70619e1120fa",
+  "native_receiver_same_game_and_backend_processes": true,
+  "native_update_parser_verified": true,
+  "native_disband_callback_verified": true,
+  "native_state_cleared": true,
+  "native_startup_fences_passed": 27,
+  "native_registration_verified": false,
+  "native_registration_response_callback_verified": true,
+  "native_registration_enrollment_was_seeded": true,
+  "native_join_assignment_verified": false,
+  "accepted_membership_seeded": true,
+  "bracket_membership_seeded": true,
+  "real_machine_registered_fixture_accounts": 7,
+  "backend_only_fixture": true,
+  "native_map_started": false,
+  "native_allocated_round_retirement_verified": false,
+  "protocol_allocated_round_retirement_verified": true,
+  "native_two_network_gameplay_verified": false,
+  "exact_fixture_restoration_verified": true,
+  "protected_shipping_files_unchanged": true,
+  "independent_protocol_checks": 294,
+  "lifecycle_groups": [
+    "Managed forming publication unavailability atomically retires owned searches/lobbies, preserves unrelated competitions and actual result journals, clears readiness, sends native event-2012 once, recovers interrupted publication and prevents stale ID resurrection",
+    "Managed playing publication unavailability atomically retires owned searches/lobbies, preserves unrelated competitions and actual result journals, clears readiness, sends native event-2012 once, recovers interrupted publication and prevents stale ID resurrection",
+    "Managed expired publication unavailability atomically retires owned searches/lobbies, preserves unrelated competitions and actual result journals, clears readiness, sends native event-2012 once, recovers interrupted publication and prevents stale ID resurrection"
+  ],
+  "evidence": [
+    {
+      "file": "data\\native-tournament-retirement-20261006\\alpha\\online.json",
+      "sha256": "518551f96c0c87d30a6b9b8ff046b53150df47f8a5ca633a212932c62726a734"
+    },
+    {
+      "file": "data\\native-tournament-retirement-20261006\\alpha\\consumed.json",
+      "sha256": "98212a009a4acfc19cbae43e07e06f78ddb9c94b3f84242f94b33cdc4b205a60"
+    },
+    {
+      "file": "data\\native-tournament-retirement-20261006\\alpha\\cleared.json",
+      "sha256": "fa47ce8ac21b2adfe8a3d58e34935cdef6bd4c637a95c34c8016111c799eab01"
+    },
+    {
+      "file": "data\\native-tournament-retirement-20261006\\alpha\\after-signup.json",
+      "sha256": "72dcd3fb4668ee92ca2caaa0b7e100af82d4c876d32267755d4333854b67ea59"
+    },
+    {
+      "file": "data\\native-tournament-retirement-20261006\\publication.json",
+      "sha256": "78cd8e7a5e1a4348936997ad8fbaf663cc2c84273e41d8dd3080914c40be6dda"
+    },
+    {
+      "file": "data\\native-tournament-retirement-20261006\\terminal.json",
+      "sha256": "b7ce8132bf46f90513e6ea66d19c87bbfdab2a3ca1208160def656b649bf41f4"
+    },
+    {
+      "file": "data\\native-tournament-retirement-20261006\\withdraw-log.txt",
+      "sha256": "3f891cd3d0b4cc6a726846764e34b13821e954e37bd5b998b1d1d055f585cee9"
+    },
+    {
+      "file": "data\\native-tournament-retirement-20261006\\protected-files.json",
+      "sha256": "2c78932b2c28113e29976908464c08f1c0f2ef62a708970f1adda0a438f442d3"
+    },
+    {
+      "file": "data\\backend-build-latest.json",
+      "sha256": "20b327c99aeeb61a4345bb07ac73d157f89c875a9f0791c78e573257b8dabddd"
+    },
+    {
+      "file": "data\\lobby-verification.json",
+      "sha256": "661a0a47a75b41bca4c1db3dedab8dcac5139bf48404e24247bcef78a9907cdb"
+    }
+  ],
+  "scope": "Current backend managed-publication retirement and original native registration-response/update/disband receivers. Enrollment, acceptance and PLAYING bracket membership were explicitly seeded using real registered accounts. Fresh native enrollment, join assignment, match allocation and WAN gameplay are separate gates."
+}

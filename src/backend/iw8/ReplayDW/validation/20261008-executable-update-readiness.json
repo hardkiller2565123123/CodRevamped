@@ -1,0 +1,35 @@
+{
+  "schema": 1,
+  "passed": true,
+  "game_sha256": "7ceaf1967a926c94986937106a706d6257582a224184822c0231c44f985aa678",
+  "game_job": "942699db867140ef",
+  "server_sha256": "b419953bff1bedf56d05a43feb86c989dd60258e79a7ae0c505e7292a2984881",
+  "host": "162.243.115.160",
+  "native_fences_passing": 27,
+  "native_fences_total": 27,
+  "owner_launched_process": 6576,
+  "read_only_observation": true,
+  "current_release_check": "signed reply reports current; no restart requested",
+  "native_popup_replace_relaunch_verified": false,
+  "live_changes_held_for_owner_playtest": true,
+  "observation": {
+    "path": "data/executable-updater-20261008-v2/playtest-readiness.json",
+    "sha256": "695682a97178af577ece33bf8b4639e2695d5aedaf53af9870aa7da6e2adc4bd"
+  },
+  "helper_sha256": "1c610cd4ceff2d75b47210db3452afd7a47d06efa98e791dba63988f76e8141d",
+  "publication": {
+    "published": true,
+    "release": 4,
+    "latest": "7ceaf1967a926c94986937106a706d6257582a224184822c0231c44f985aa678",
+    "supported_older_releases": 3,
+    "catalog_sha256": "e3c96554dbfa5a45a30b154edb6100d0a839347fdd70c1746639cbc32c251153"
+  },
+  "full_backend_completed": false,
+  "private_candidate": {
+    "job": "b682882ba8264eae",
+    "sha256": "6b4b84f7a7647f2afb1c7cbc97bc2a23e8280a1a03ed33d35a4bf5f01fed50be",
+    "compiled_and_verified": true,
+    "published": false,
+    "deployed": false
+  }
+}

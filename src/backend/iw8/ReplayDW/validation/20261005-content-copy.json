@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "recorded_utc": "2026-10-05T14:47:50.3300456Z",
+  "server_sha256": "02c74bc0e02495962d4f1c612580df972af0087dca0d4d4bc5f8154e6e344678",
+  "game_sha256": "b0075e0dbde62758efe84e23318084608be5b3704f23c269d87254ce2aea58a8",
+  "game_recompiled": false,
+  "independent_protocol_checks": 136,
+  "independent_content_copy_checks": [
+    "Full native bdURL/pre-copy destination/size DTO, two-part COPY, retry, exact Destination, header/body/range and corrupt-blob rejection without advancing staging",
+    "Replay full post-copy request, atomic signed ownership/metadata/tags/origin/source counter, whole-file and summary preservation, owner denial, malformed rollback and idempotent conflict checking",
+    "Durable copy receipts survive newer same-slot replacement without rollback/double-counting; public user copy selects task20 and creates only the signed target owner's file",
+    "Expiring COPY capabilities, corrupt receipt/storage rejection, UInt32 source counter overflow and failed-commit rollback",
+    "Content-copy completed/incomplete HTTP staging and receipts survive process restart; single-part commit and retry after source removal preserve newer slots"
+  ],
+  "native_menu_verified": true,
+  "native_passing_fences": 27,
+  "native_content_copy_completion_observed": false,
+  "source_oracle_only_preparation_routes": [
+    "50/15",
+    "50/20"
+  ],
+  "full_backend_verified": false,
+  "map_tests_performed": false,
+  "coverage": {
+    "task_routes": 139,
+    "registered_handlers": 128,
+    "known_target_tasks_without_handler": 11
+  },
+  "scope": "Independent COPY/commit/ownership/restart validation plus fresh native Multiplayer menu/startup validation; no positive native copy callback claim."
+}

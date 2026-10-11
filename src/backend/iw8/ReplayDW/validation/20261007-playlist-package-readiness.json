@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "generated_utc": "2026-10-07T12:28:28.846875+00:00",
+  "passed": true,
+  "passed_scope": "Fresh backend compilation and bounded playlist/native-wire contracts",
+  "backend_sha256": "fbff2f7d05921761bfad0c6fd289157b2e30086969d9aae9e1888b4205374f05",
+  "unchanged_shipping_game_sha256": "b09a9ba25f733960dd1f8c569f566979804c2a1a247a9753e2c6e7a50556c138",
+  "build_receipt": {
+    "path": "data/subsystem-integration-20261007/backend-build.json",
+    "sha256": "902b8870865b474f44fd1ff7fb4d806c6c4f4424731a543816533a10b5394ae9"
+  },
+  "protocol_evidence": {
+    "path": "data/backend-validation-1791375473831617900/data/team-policy-verification.json",
+    "sha256": "1984533c81e9fd579aa2d3698ffbdae5628e5ebdcc5303242cb8e772cd403115"
+  },
+  "playlist_protocol_evidence": {
+    "path": "data/backend-validation-1791375473831617900/data/playlist-wire-verification.json",
+    "sha256": "ceaec00c5dc5d3b03ee733f5315c398db81094e32c47575bfc6eca88cce5fa53"
+  },
+  "compiled_selector_evidence": {
+    "path": "data/playlist-contract-verification.json",
+    "sha256": "4e47f940fec4cc7adf67b9c3c7857b9def536561661c79c826d5cbdf17f33929"
+  },
+  "package_inventory": {
+    "path": "data/playlists/5800/packages.json",
+    "sha256": "7033d9d236a73c2f8bfb45d5d9c1924feea8d9b5b148e28644f2f3c8000e49a1"
+  },
+  "protocol_checks": 15,
+  "playlists_checked": 63,
+  "eligible_playlists": 44,
+  "installed_main_packages": 12,
+  "native_startup": {
+    "passed": false,
+    "pending": true,
+    "evidence": []
+  },
+  "game_runs_performed": false,
+  "native_map_load_verified": false,
+  "transient_completeness_verified": false,
+  "full_backend_complete": false,
+  "source_scope": "Committed snapshot; unrelated dirty sources excluded"
+}

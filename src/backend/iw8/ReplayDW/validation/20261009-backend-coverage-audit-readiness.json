@@ -1,0 +1,64 @@
+{
+  "schema": 1,
+  "passed": true,
+  "generated_utc": "2026-10-09T09:06:38.997778+00:00",
+  "full_backend_completed": false,
+  "scope": "Repair original call ownership and register-preservation audit; regenerate the ledger against the current compiled Linux backend source and binary. No native callback completion is inferred.",
+  "server_sha256": "312a8f7f53cbf776738afcad9ada668ab80f754447b972ce43fea588e5b7a1e5",
+  "compiled_source_root": "data/remaining-services-20261009/source-cache-r3",
+  "counts": {
+    "task_routes": 140,
+    "registered_handlers": 134,
+    "known_target_tasks_without_handler": 6
+  },
+  "original_byte_task_routes": 123,
+  "rest_builder_transfers": 54,
+  "rest_builder_identities_verified": 54,
+  "rest_service_operation_bindings_verified": 24,
+  "negative_ownership_cases_passed": 2,
+  "native_game_started_this_turn": false,
+  "game_or_server_binary_changed": false,
+  "sources": {
+    "tools/inventory-backend-coverage.py": "4858f739ba00a5d6fc4167ed11648f6e6d1b11995b2bb123390c263a7220f93c",
+    "tools/inventory-native-rest.py": "7679f84c3920800f004284f29c959736183489b3b96820e78a6728e841dd44bc",
+    "tools/inventory-native-task-bytes.py": "aa60202f0444c23826ca5c1a9be1c98ea87ce996d6929c45614291698e88f610",
+    "tools/test-native-task-bytes.py": "35f8f698b7b2e549437fe21474fe17d01032bfa3287ec4f64af59806d7a4b86f",
+    "tools/research-stack-probe-target.py": "59b34b5b6c3ada4a97333eaf03ef3b6cf70405e10e1ddb3df79fb69be4560f79"
+  },
+  "evidence": [
+    {
+      "path": "data/remaining-services-20261009/backend-coverage-current.json",
+      "sha256": "e1a7afd2295388d6b46d923cce4edc371f9f702fe35b3bbf7857825bced1858e"
+    },
+    {
+      "path": "data/remaining-services-20261009/backend-coverage-current.txt",
+      "sha256": "fbaf52501af847f8238401d7e07c012eb33fb38bb5823e434bcb4a6ca276b198"
+    },
+    {
+      "path": "data/remaining-services-20261009/ledger-negative-cases/verification.json",
+      "sha256": "122d3037ccbb0bb5c9d8ff46882d6a1eaa74f19deeb859e3f317003323f77948"
+    },
+    {
+      "path": "validation/20261009-native-rest-chained-inventory.json",
+      "sha256": "d225198995a3a21816cee307aa19504784d7bd68abb5725265c6257481c55e29"
+    },
+    {
+      "path": "validation/20261009-native-task-stack-probe-inventory.json",
+      "sha256": "e0b6eff1a61af75f024450f335b3cd19eb9f39928ef630c8f51ce65554ad03ed"
+    },
+    {
+      "path": "validation/20261009-native-stack-probe.json",
+      "sha256": "5d49b6959ddd7c2ce7da68f024653cc11e6a96c0a13561b1c2333c02a8d20f0f"
+    },
+    {
+      "path": "data/remaining-services-20261009/cache-r3-source.json",
+      "sha256": "13be6c6ee51760028bbf309e3228f29da8a416a1253ab818de74eb255d59c3bc"
+    }
+  ],
+  "remaining": [
+    "50/22 and 58/22 extended/live streaming response contract.",
+    "193/9 and 193/10 category response bindings.",
+    "193/12 and 193/24 large upload completion bindings.",
+    "Indirect/inlined request paths, condition feasibility and full native callback validation."
+  ]
+}

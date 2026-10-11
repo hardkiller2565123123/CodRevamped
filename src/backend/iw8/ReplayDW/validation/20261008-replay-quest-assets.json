@@ -1,0 +1,1650 @@
+{
+  "schema": 1,
+  "source": "E:\\replay-compiler\\evidence\\workstation-stringtable-actsexport-fixed\\mw19replay\\code_post_gfx\\mw19replay\\code_post_gfx\\assets\\stringtable\\quest_challenges.csv.707.csv",
+  "source_sha256": "6baa466886da0f8a58f26b2da31dca04cdf43aff5fe20c45391f858ea729f8cd",
+  "native_asset": "quest_challenges.csv",
+  "native_rows": 447,
+  "native_game_sha256": "638dab82f069be51f6450f9ed2744f0b049d34642c0b67ae30cde01b53ea16e5",
+  "native_pid": 9776,
+  "native_observation_sha256": "09d837de414752bd9e5c3618475d41cc6d80a3d607f25440300d57477a6ee34f",
+  "all_native_rows_match": true,
+  "supported_mission_stages": 232,
+  "header_sha256": "b728f3c00bdb45161b31efc482ed5736885aceee2097ffe4f9da8e7116ef228e",
+  "supported_modes": [
+    "ALL",
+    "BR",
+    "CP"
+  ],
+  "excluded_modes": [
+    "OPERATOR",
+    "INTEL",
+    "PS4"
+  ],
+  "completion_rules_reconstructed": false,
+  "quests": [
+    {
+      "id": 1500,
+      "target": 1,
+      "category": 0,
+      "name": "ch_quest001_stage001",
+      "description": "CHALLENGE/LAUNCH_QUEST_1_STEP_1"
+    },
+    {
+      "id": 1501,
+      "target": 5,
+      "category": 0,
+      "name": "ch_quest001_stage002",
+      "description": "CHALLENGE/LAUNCH_QUEST_1_STEP_2"
+    },
+    {
+      "id": 1502,
+      "target": 1,
+      "category": 0,
+      "name": "ch_quest001_stage003",
+      "description": "CHALLENGE/LAUNCH_QUEST_1_STEP_3"
+    },
+    {
+      "id": 1503,
+      "target": 3,
+      "category": 0,
+      "name": "ch_quest001_stage004",
+      "description": "CHALLENGE/LAUNCH_QUEST_1_STEP_4"
+    },
+    {
+      "id": 1504,
+      "target": 1,
+      "category": 0,
+      "name": "ch_quest001_stage005",
+      "description": "CHALLENGE/LAUNCH_QUEST_1_STEP_5"
+    },
+    {
+      "id": 1505,
+      "target": 35,
+      "category": 0,
+      "name": "ch_quest002_stage001",
+      "description": "CHALLENGE/LAUNCH_QUEST_2_STEP_1"
+    },
+    {
+      "id": 1506,
+      "target": 35,
+      "category": 0,
+      "name": "ch_quest002_stage002",
+      "description": "CHALLENGE/LAUNCH_QUEST_2_STEP_2"
+    },
+    {
+      "id": 1507,
+      "target": 35,
+      "category": 0,
+      "name": "ch_quest002_stage003",
+      "description": "CHALLENGE/LAUNCH_QUEST_2_STEP_3"
+    },
+    {
+      "id": 1508,
+      "target": 35,
+      "category": 0,
+      "name": "ch_quest002_stage004",
+      "description": "CHALLENGE/LAUNCH_QUEST_2_STEP_4"
+    },
+    {
+      "id": 1509,
+      "target": 30,
+      "category": 0,
+      "name": "ch_quest002_stage005",
+      "description": "CHALLENGE/LAUNCH_QUEST_2_STEP_5"
+    },
+    {
+      "id": 1510,
+      "target": 30,
+      "category": 0,
+      "name": "ch_quest002_stage006",
+      "description": "CHALLENGE/LAUNCH_QUEST_2_STEP_6"
+    },
+    {
+      "id": 1511,
+      "target": 3,
+      "category": 0,
+      "name": "ch_quest003_stage001",
+      "description": "CHALLENGE/LAUNCH_QUEST_3_STEP_1"
+    },
+    {
+      "id": 1512,
+      "target": 30,
+      "category": 0,
+      "name": "ch_quest003_stage002",
+      "description": "CHALLENGE/LAUNCH_QUEST_3_STEP_2"
+    },
+    {
+      "id": 1513,
+      "target": 10,
+      "category": 0,
+      "name": "ch_quest003_stage003",
+      "description": "CHALLENGE/LAUNCH_QUEST_3_STEP_3"
+    },
+    {
+      "id": 1514,
+      "target": 50,
+      "category": 0,
+      "name": "ch_quest003_stage004",
+      "description": "CHALLENGE/LAUNCH_QUEST_3_STEP_4"
+    },
+    {
+      "id": 1515,
+      "target": 15,
+      "category": 0,
+      "name": "ch_quest003_stage005",
+      "description": "CHALLENGE/LAUNCH_QUEST_3_STEP_5"
+    },
+    {
+      "id": 1516,
+      "target": 60,
+      "category": 0,
+      "name": "ch_quest003_stage006",
+      "description": "CHALLENGE/LAUNCH_QUEST_3_STEP_6"
+    },
+    {
+      "id": 1517,
+      "target": 20,
+      "category": 0,
+      "name": "ch_quest003_stage007",
+      "description": "CHALLENGE/LAUNCH_QUEST_3_STEP_7"
+    },
+    {
+      "id": 1545,
+      "target": 30,
+      "category": 0,
+      "name": "ch_quest004_stage001",
+      "description": "CHALLENGE/LAUNCH_QUEST_4_STEP_1"
+    },
+    {
+      "id": 1546,
+      "target": 25,
+      "category": 0,
+      "name": "ch_quest004_stage002",
+      "description": "CHALLENGE/LAUNCH_QUEST_4_STEP_2"
+    },
+    {
+      "id": 1547,
+      "target": 30,
+      "category": 0,
+      "name": "ch_quest004_stage003",
+      "description": "CHALLENGE/LAUNCH_QUEST_4_STEP_3"
+    },
+    {
+      "id": 1548,
+      "target": 25,
+      "category": 0,
+      "name": "ch_quest004_stage004",
+      "description": "CHALLENGE/LAUNCH_QUEST_4_STEP_4"
+    },
+    {
+      "id": 1549,
+      "target": 20,
+      "category": 0,
+      "name": "ch_quest004_stage005",
+      "description": "CHALLENGE/LAUNCH_QUEST_4_STEP_5"
+    },
+    {
+      "id": 1550,
+      "target": 20,
+      "category": 0,
+      "name": "ch_quest004_stage006",
+      "description": "CHALLENGE/LAUNCH_QUEST_4_STEP_6"
+    },
+    {
+      "id": 1551,
+      "target": 30,
+      "category": 0,
+      "name": "ch_quest004_stage007",
+      "description": "CHALLENGE/LAUNCH_QUEST_4_STEP_7"
+    },
+    {
+      "id": 1552,
+      "target": 20,
+      "category": 0,
+      "name": "ch_quest004_stage008",
+      "description": "CHALLENGE/LAUNCH_QUEST_4_STEP_8"
+    },
+    {
+      "id": 1553,
+      "target": 25,
+      "category": 0,
+      "name": "ch_quest005_stage001",
+      "description": "CHALLENGE/LAUNCH_QUEST_5_STEP_1"
+    },
+    {
+      "id": 1554,
+      "target": 30,
+      "category": 0,
+      "name": "ch_quest005_stage002",
+      "description": "CHALLENGE/LAUNCH_QUEST_5_STEP_2"
+    },
+    {
+      "id": 1555,
+      "target": 25,
+      "category": 0,
+      "name": "ch_quest005_stage003",
+      "description": "CHALLENGE/LAUNCH_QUEST_5_STEP_3"
+    },
+    {
+      "id": 1556,
+      "target": 20,
+      "category": 0,
+      "name": "ch_quest005_stage004",
+      "description": "CHALLENGE/LAUNCH_QUEST_5_STEP_4"
+    },
+    {
+      "id": 1557,
+      "target": 25,
+      "category": 0,
+      "name": "ch_quest005_stage005",
+      "description": "CHALLENGE/LAUNCH_QUEST_5_STEP_5"
+    },
+    {
+      "id": 1558,
+      "target": 2500,
+      "category": 0,
+      "name": "ch_quest005_stage006",
+      "description": "CHALLENGE/LAUNCH_QUEST_5_STEP_6"
+    },
+    {
+      "id": 1559,
+      "target": 25,
+      "category": 0,
+      "name": "ch_quest005_stage007",
+      "description": "CHALLENGE/LAUNCH_QUEST_5_STEP_7"
+    },
+    {
+      "id": 1560,
+      "target": 25,
+      "category": 0,
+      "name": "ch_quest005_stage008",
+      "description": "CHALLENGE/LAUNCH_QUEST_5_STEP_8"
+    },
+    {
+      "id": 1561,
+      "target": 60,
+      "category": 0,
+      "name": "ch_quest006_stage001",
+      "description": "CHALLENGE/LAUNCH_QUEST_6_STEP_1"
+    },
+    {
+      "id": 1562,
+      "target": 35,
+      "category": 0,
+      "name": "ch_quest006_stage002",
+      "description": "CHALLENGE/LAUNCH_QUEST_6_STEP_2"
+    },
+    {
+      "id": 1563,
+      "target": 75,
+      "category": 0,
+      "name": "ch_quest006_stage003",
+      "description": "CHALLENGE/LAUNCH_QUEST_6_STEP_3"
+    },
+    {
+      "id": 1564,
+      "target": 15,
+      "category": 0,
+      "name": "ch_quest006_stage004",
+      "description": "CHALLENGE/LAUNCH_QUEST_6_STEP_4"
+    },
+    {
+      "id": 1565,
+      "target": 60,
+      "category": 0,
+      "name": "ch_quest006_stage005",
+      "description": "CHALLENGE/LAUNCH_QUEST_6_STEP_5"
+    },
+    {
+      "id": 1566,
+      "target": 30,
+      "category": 0,
+      "name": "ch_quest006_stage006",
+      "description": "CHALLENGE/LAUNCH_QUEST_6_STEP_6"
+    },
+    {
+      "id": 1567,
+      "target": 25,
+      "category": 0,
+      "name": "ch_quest006_stage007",
+      "description": "CHALLENGE/LAUNCH_QUEST_6_STEP_7"
+    },
+    {
+      "id": 1568,
+      "target": 2,
+      "category": 0,
+      "name": "ch_quest007_stage001",
+      "description": "CHALLENGE/LAUNCH_QUEST_7_STEP_1"
+    },
+    {
+      "id": 1569,
+      "target": 75,
+      "category": 0,
+      "name": "ch_quest007_stage002",
+      "description": "CHALLENGE/LAUNCH_QUEST_7_STEP_2"
+    },
+    {
+      "id": 1570,
+      "target": 5,
+      "category": 0,
+      "name": "ch_quest007_stage003",
+      "description": "CHALLENGE/LAUNCH_QUEST_7_STEP_3"
+    },
+    {
+      "id": 1571,
+      "target": 20,
+      "category": 0,
+      "name": "ch_quest007_stage004",
+      "description": "CHALLENGE/LAUNCH_QUEST_7_STEP_4"
+    },
+    {
+      "id": 1572,
+      "target": 20,
+      "category": 0,
+      "name": "ch_quest007_stage005",
+      "description": "CHALLENGE/LAUNCH_QUEST_7_STEP_5"
+    },
+    {
+      "id": 1573,
+      "target": 20,
+      "category": 0,
+      "name": "ch_quest007_stage006",
+      "description": "CHALLENGE/LAUNCH_QUEST_7_STEP_6"
+    },
+    {
+      "id": 1574,
+      "target": 5,
+      "category": 0,
+      "name": "ch_quest007_stage007",
+      "description": "CHALLENGE/LAUNCH_QUEST_7_STEP_7"
+    },
+    {
+      "id": 1575,
+      "target": 25,
+      "category": 0,
+      "name": "ch_quest007_stage008",
+      "description": "CHALLENGE/LAUNCH_QUEST_7_STEP_8"
+    },
+    {
+      "id": 1576,
+      "target": 40,
+      "category": 0,
+      "name": "ch_quest007_stage009",
+      "description": "CHALLENGE/LAUNCH_QUEST_7_STEP_9"
+    },
+    {
+      "id": 1577,
+      "target": 10,
+      "category": 0,
+      "name": "ch_quest007_stage010",
+      "description": "CHALLENGE/LAUNCH_QUEST_7_STEP_10"
+    },
+    {
+      "id": 1578,
+      "target": 5,
+      "category": 0,
+      "name": "ch_quest007_stage011",
+      "description": "CHALLENGE/LAUNCH_QUEST_7_STEP_11"
+    },
+    {
+      "id": 1579,
+      "target": 10,
+      "category": 0,
+      "name": "ch_quest007_stage012",
+      "description": "CHALLENGE/LAUNCH_QUEST_7_STEP_12"
+    },
+    {
+      "id": 1580,
+      "target": 10,
+      "category": 0,
+      "name": "ch_quest008_stage001",
+      "description": "CHALLENGE/LAUNCH_QUEST_8_STEP_1"
+    },
+    {
+      "id": 1581,
+      "target": 10,
+      "category": 0,
+      "name": "ch_quest008_stage002",
+      "description": "CHALLENGE/LAUNCH_QUEST_8_STEP_2"
+    },
+    {
+      "id": 1582,
+      "target": 1,
+      "category": 0,
+      "name": "ch_quest008_stage003",
+      "description": "CHALLENGE/LAUNCH_QUEST_8_STEP_3"
+    },
+    {
+      "id": 1583,
+      "target": 5,
+      "category": 0,
+      "name": "ch_quest008_stage004",
+      "description": "CHALLENGE/LAUNCH_QUEST_8_STEP_4"
+    },
+    {
+      "id": 1584,
+      "target": 3,
+      "category": 0,
+      "name": "ch_quest008_stage005",
+      "description": "CHALLENGE/LAUNCH_QUEST_8_STEP_5"
+    },
+    {
+      "id": 1585,
+      "target": 1,
+      "category": 0,
+      "name": "ch_quest008_stage006",
+      "description": "CHALLENGE/LAUNCH_QUEST_8_STEP_6"
+    },
+    {
+      "id": 1586,
+      "target": 1,
+      "category": 0,
+      "name": "ch_quest008_stage007",
+      "description": "CHALLENGE/LAUNCH_QUEST_8_STEP_7"
+    },
+    {
+      "id": 1587,
+      "target": 10,
+      "category": 0,
+      "name": "ch_quest009_stage001",
+      "description": "CHALLENGE/LAUNCH_QUEST_9_STEP_1"
+    },
+    {
+      "id": 1588,
+      "target": 30,
+      "category": 0,
+      "name": "ch_quest009_stage002",
+      "description": "CHALLENGE/LAUNCH_QUEST_9_STEP_2"
+    },
+    {
+      "id": 1589,
+      "target": 75,
+      "category": 0,
+      "name": "ch_quest009_stage003",
+      "description": "CHALLENGE/LAUNCH_QUEST_9_STEP_3"
+    },
+    {
+      "id": 1590,
+      "target": 5,
+      "category": 0,
+      "name": "ch_quest009_stage004",
+      "description": "CHALLENGE/LAUNCH_QUEST_9_STEP_4"
+    },
+    {
+      "id": 1591,
+      "target": 30,
+      "category": 0,
+      "name": "ch_quest009_stage005",
+      "description": "CHALLENGE/LAUNCH_QUEST_9_STEP_5"
+    },
+    {
+      "id": 1592,
+      "target": 75,
+      "category": 0,
+      "name": "ch_quest009_stage006",
+      "description": "CHALLENGE/LAUNCH_QUEST_9_STEP_6"
+    },
+    {
+      "id": 1593,
+      "target": 3,
+      "category": 0,
+      "name": "ch_quest009_stage007",
+      "description": "CHALLENGE/LAUNCH_QUEST_9_STEP_7"
+    },
+    {
+      "id": 1594,
+      "target": 35,
+      "category": 0,
+      "name": "ch_quest010_stage001",
+      "description": "CHALLENGE/LAUNCH_QUEST_10_STEP_1"
+    },
+    {
+      "id": 1595,
+      "target": 10,
+      "category": 0,
+      "name": "ch_quest010_stage002",
+      "description": "CHALLENGE/LAUNCH_QUEST_10_STEP_2"
+    },
+    {
+      "id": 1596,
+      "target": 70,
+      "category": 0,
+      "name": "ch_quest010_stage003",
+      "description": "CHALLENGE/LAUNCH_QUEST_10_STEP_3"
+    },
+    {
+      "id": 1597,
+      "target": 35,
+      "category": 0,
+      "name": "ch_quest010_stage004",
+      "description": "CHALLENGE/LAUNCH_QUEST_10_STEP_4"
+    },
+    {
+      "id": 1598,
+      "target": 70,
+      "category": 0,
+      "name": "ch_quest010_stage005",
+      "description": "CHALLENGE/LAUNCH_QUEST_10_STEP_5"
+    },
+    {
+      "id": 1599,
+      "target": 15,
+      "category": 0,
+      "name": "ch_quest010_stage006",
+      "description": "CHALLENGE/LAUNCH_QUEST_10_STEP_6"
+    },
+    {
+      "id": 1600,
+      "target": 10,
+      "category": 0,
+      "name": "ch_quest010_stage007",
+      "description": "CHALLENGE/LAUNCH_QUEST_10_STEP_7"
+    },
+    {
+      "id": 1601,
+      "target": 10,
+      "category": 0,
+      "name": "ch_quest010_stage008",
+      "description": "CHALLENGE/LAUNCH_QUEST_10_STEP_8"
+    },
+    {
+      "id": 1602,
+      "target": 25,
+      "category": 0,
+      "name": "ch_quest010_stage009",
+      "description": "CHALLENGE/LAUNCH_QUEST_10_STEP_9"
+    },
+    {
+      "id": 1624,
+      "target": 30,
+      "category": 0,
+      "name": "ch_quest002_stage007",
+      "description": "CHALLENGE/LAUNCH_QUEST_2_STEP_7"
+    },
+    {
+      "id": 10000,
+      "target": 5,
+      "category": 0,
+      "name": "ch_quest026_stage001",
+      "description": "CHALLENGE/SEASON_1_QUEST_1_STEP_1"
+    },
+    {
+      "id": 10001,
+      "target": 50,
+      "category": 0,
+      "name": "ch_quest026_stage002",
+      "description": "CHALLENGE/SEASON_1_QUEST_1_STEP_2"
+    },
+    {
+      "id": 10002,
+      "target": 75,
+      "category": 0,
+      "name": "ch_quest026_stage003",
+      "description": "CHALLENGE/SEASON_1_QUEST_1_STEP_3"
+    },
+    {
+      "id": 10003,
+      "target": 100,
+      "category": 0,
+      "name": "ch_quest026_stage004",
+      "description": "CHALLENGE/SEASON_1_QUEST_1_STEP_4"
+    },
+    {
+      "id": 10004,
+      "target": 20,
+      "category": 0,
+      "name": "ch_quest026_stage005",
+      "description": "CHALLENGE/SEASON_1_QUEST_1_STEP_5"
+    },
+    {
+      "id": 10005,
+      "target": 90,
+      "category": 0,
+      "name": "ch_quest026_stage006",
+      "description": "CHALLENGE/SEASON_1_QUEST_1_STEP_6"
+    },
+    {
+      "id": 10006,
+      "target": 50,
+      "category": 0,
+      "name": "ch_quest026_stage007",
+      "description": "CHALLENGE/SEASON_1_QUEST_1_STEP_7"
+    },
+    {
+      "id": 10007,
+      "target": 15,
+      "category": 0,
+      "name": "ch_quest026_stage008",
+      "description": "CHALLENGE/SEASON_1_QUEST_1_STEP_8"
+    },
+    {
+      "id": 10008,
+      "target": 30,
+      "category": 0,
+      "name": "ch_quest026_stage009",
+      "description": "CHALLENGE/SEASON_1_QUEST_1_STEP_9"
+    },
+    {
+      "id": 10009,
+      "target": 3,
+      "category": 0,
+      "name": "ch_quest027_stage001",
+      "description": "CHALLENGE/SEASON_1_QUEST_2_STEP_1"
+    },
+    {
+      "id": 10010,
+      "target": 3,
+      "category": 0,
+      "name": "ch_quest027_stage002",
+      "description": "CHALLENGE/SEASON_1_QUEST_2_STEP_2"
+    },
+    {
+      "id": 10011,
+      "target": 5,
+      "category": 0,
+      "name": "ch_quest027_stage003",
+      "description": "CHALLENGE/SEASON_1_QUEST_2_STEP_3"
+    },
+    {
+      "id": 10012,
+      "target": 10,
+      "category": 0,
+      "name": "ch_quest027_stage004",
+      "description": "CHALLENGE/SEASON_1_QUEST_2_STEP_4"
+    },
+    {
+      "id": 10013,
+      "target": 25,
+      "category": 0,
+      "name": "ch_quest027_stage005",
+      "description": "CHALLENGE/SEASON_1_QUEST_2_STEP_5"
+    },
+    {
+      "id": 10014,
+      "target": 50,
+      "category": 0,
+      "name": "ch_quest027_stage006",
+      "description": "CHALLENGE/SEASON_1_QUEST_2_STEP_6"
+    },
+    {
+      "id": 10015,
+      "target": 25,
+      "category": 0,
+      "name": "ch_quest027_stage007",
+      "description": "CHALLENGE/SEASON_1_QUEST_2_STEP_7"
+    },
+    {
+      "id": 10016,
+      "target": 25,
+      "category": 0,
+      "name": "ch_quest028_stage001",
+      "description": "CHALLENGE/SEASON_1_QUEST_3_STEP_1"
+    },
+    {
+      "id": 10017,
+      "target": 25,
+      "category": 0,
+      "name": "ch_quest028_stage002",
+      "description": "CHALLENGE/SEASON_1_QUEST_3_STEP_2"
+    },
+    {
+      "id": 10018,
+      "target": 10,
+      "category": 0,
+      "name": "ch_quest028_stage003",
+      "description": "CHALLENGE/SEASON_1_QUEST_3_STEP_3"
+    },
+    {
+      "id": 10019,
+      "target": 15,
+      "category": 0,
+      "name": "ch_quest028_stage004",
+      "description": "CHALLENGE/SEASON_1_QUEST_3_STEP_4"
+    },
+    {
+      "id": 10020,
+      "target": 25,
+      "category": 0,
+      "name": "ch_quest028_stage005",
+      "description": "CHALLENGE/SEASON_1_QUEST_3_STEP_5"
+    },
+    {
+      "id": 10021,
+      "target": 10,
+      "category": 0,
+      "name": "ch_quest028_stage006",
+      "description": "CHALLENGE/SEASON_1_QUEST_3_STEP_6"
+    },
+    {
+      "id": 10022,
+      "target": 5,
+      "category": 0,
+      "name": "ch_quest028_stage007",
+      "description": "CHALLENGE/SEASON_1_QUEST_3_STEP_7"
+    },
+    {
+      "id": 10023,
+      "target": 20,
+      "category": 0,
+      "name": "ch_quest028_stage008",
+      "description": "CHALLENGE/SEASON_1_QUEST_3_STEP_8"
+    },
+    {
+      "id": 10024,
+      "target": 15,
+      "category": 0,
+      "name": "ch_quest028_stage009",
+      "description": "CHALLENGE/SEASON_1_QUEST_3_STEP_9"
+    },
+    {
+      "id": 10032,
+      "target": 50,
+      "category": 0,
+      "name": "ch_quest030_stage001",
+      "description": "CHALLENGE/SEASON_2_QUEST_1_STEP_1"
+    },
+    {
+      "id": 10033,
+      "target": 10,
+      "category": 0,
+      "name": "ch_quest030_stage002",
+      "description": "CHALLENGE/SEASON_2_QUEST_1_STEP_2"
+    },
+    {
+      "id": 10034,
+      "target": 50,
+      "category": 0,
+      "name": "ch_quest030_stage003",
+      "description": "CHALLENGE/SEASON_2_QUEST_1_STEP_3"
+    },
+    {
+      "id": 10035,
+      "target": 30,
+      "category": 0,
+      "name": "ch_quest030_stage004",
+      "description": "CHALLENGE/SEASON_2_QUEST_1_STEP_4"
+    },
+    {
+      "id": 10036,
+      "target": 10,
+      "category": 0,
+      "name": "ch_quest030_stage005",
+      "description": "CHALLENGE/SEASON_2_QUEST_1_STEP_5"
+    },
+    {
+      "id": 10037,
+      "target": 10,
+      "category": 0,
+      "name": "ch_quest030_stage006",
+      "description": "CHALLENGE/SEASON_2_QUEST_1_STEP_6"
+    },
+    {
+      "id": 10038,
+      "target": 50,
+      "category": 0,
+      "name": "ch_quest031_stage001",
+      "description": "CHALLENGE/SEASON_2_QUEST_2_STEP_1"
+    },
+    {
+      "id": 10039,
+      "target": 50,
+      "category": 0,
+      "name": "ch_quest031_stage002",
+      "description": "CHALLENGE/SEASON_2_QUEST_2_STEP_2"
+    },
+    {
+      "id": 10040,
+      "target": 50,
+      "category": 0,
+      "name": "ch_quest031_stage003",
+      "description": "CHALLENGE/SEASON_2_QUEST_2_STEP_3"
+    },
+    {
+      "id": 10041,
+      "target": 15,
+      "category": 0,
+      "name": "ch_quest031_stage004",
+      "description": "CHALLENGE/SEASON_2_QUEST_2_STEP_4"
+    },
+    {
+      "id": 10042,
+      "target": 15,
+      "category": 0,
+      "name": "ch_quest031_stage005",
+      "description": "CHALLENGE/SEASON_2_QUEST_2_STEP_5"
+    },
+    {
+      "id": 10043,
+      "target": 75,
+      "category": 0,
+      "name": "ch_quest031_stage006",
+      "description": "CHALLENGE/SEASON_2_QUEST_2_STEP_6"
+    },
+    {
+      "id": 10044,
+      "target": 25,
+      "category": 0,
+      "name": "ch_quest032_stage001",
+      "description": "CHALLENGE/SEASON_2_QUEST_3_STEP_1"
+    },
+    {
+      "id": 10045,
+      "target": 10,
+      "category": 0,
+      "name": "ch_quest032_stage002",
+      "description": "CHALLENGE/SEASON_2_QUEST_3_STEP_2"
+    },
+    {
+      "id": 10046,
+      "target": 30,
+      "category": 0,
+      "name": "ch_quest032_stage003",
+      "description": "CHALLENGE/SEASON_2_QUEST_3_STEP_3"
+    },
+    {
+      "id": 10047,
+      "target": 25,
+      "category": 0,
+      "name": "ch_quest032_stage004",
+      "description": "CHALLENGE/SEASON_2_QUEST_3_STEP_4"
+    },
+    {
+      "id": 10048,
+      "target": 30,
+      "category": 0,
+      "name": "ch_quest032_stage005",
+      "description": "CHALLENGE/SEASON_2_QUEST_3_STEP_5"
+    },
+    {
+      "id": 10049,
+      "target": 1,
+      "category": 0,
+      "name": "ch_quest032_stage006",
+      "description": "CHALLENGE/SEASON_2_QUEST_3_STEP_6"
+    },
+    {
+      "id": 10057,
+      "target": 100,
+      "category": 4,
+      "name": "ch_quest034_stage001",
+      "description": "CHALLENGE/SEASON_2_QUEST_5_STEP_1"
+    },
+    {
+      "id": 10058,
+      "target": 50,
+      "category": 4,
+      "name": "ch_quest034_stage002",
+      "description": "CHALLENGE/SEASON_2_QUEST_5_STEP_2"
+    },
+    {
+      "id": 10059,
+      "target": 20,
+      "category": 4,
+      "name": "ch_quest034_stage003",
+      "description": "CHALLENGE/SEASON_2_QUEST_5_STEP_3"
+    },
+    {
+      "id": 10060,
+      "target": 10,
+      "category": 4,
+      "name": "ch_quest034_stage004",
+      "description": "CHALLENGE/SEASON_2_QUEST_5_STEP_4"
+    },
+    {
+      "id": 10061,
+      "target": 50,
+      "category": 4,
+      "name": "ch_quest034_stage005",
+      "description": "CHALLENGE/SEASON_2_QUEST_5_STEP_5"
+    },
+    {
+      "id": 10062,
+      "target": 4,
+      "category": 4,
+      "name": "ch_quest034_stage006",
+      "description": "CHALLENGE/SEASON_2_QUEST_5_STEP_6"
+    },
+    {
+      "id": 10063,
+      "target": 100,
+      "category": 4,
+      "name": "ch_quest059_stage001",
+      "description": "CHALLENGE/SEASON_3_QUEST_4_STEP_1"
+    },
+    {
+      "id": 10064,
+      "target": 25,
+      "category": 4,
+      "name": "ch_quest059_stage002",
+      "description": "CHALLENGE/SEASON_3_QUEST_4_STEP_2"
+    },
+    {
+      "id": 10065,
+      "target": 75,
+      "category": 4,
+      "name": "ch_quest059_stage003",
+      "description": "CHALLENGE/SEASON_3_QUEST_4_STEP_3"
+    },
+    {
+      "id": 10066,
+      "target": 50,
+      "category": 4,
+      "name": "ch_quest059_stage004",
+      "description": "CHALLENGE/SEASON_3_QUEST_4_STEP_4"
+    },
+    {
+      "id": 10067,
+      "target": 25,
+      "category": 4,
+      "name": "ch_quest059_stage005",
+      "description": "CHALLENGE/SEASON_3_QUEST_4_STEP_5"
+    },
+    {
+      "id": 10068,
+      "target": 25,
+      "category": 4,
+      "name": "ch_quest059_stage006",
+      "description": "CHALLENGE/SEASON_3_QUEST_4_STEP_6"
+    },
+    {
+      "id": 10069,
+      "target": 125,
+      "category": 4,
+      "name": "ch_quest059_stage007",
+      "description": "CHALLENGE/SEASON_3_QUEST_4_STEP_7"
+    },
+    {
+      "id": 10130,
+      "target": 10,
+      "category": 0,
+      "name": "ch_quest075_stage001",
+      "description": "CHALLENGE/SEASON_3_QUEST_1_STEP_1"
+    },
+    {
+      "id": 10131,
+      "target": 10,
+      "category": 0,
+      "name": "ch_quest075_stage002",
+      "description": "CHALLENGE/SEASON_3_QUEST_1_STEP_2"
+    },
+    {
+      "id": 10132,
+      "target": 5,
+      "category": 0,
+      "name": "ch_quest075_stage003",
+      "description": "CHALLENGE/SEASON_3_QUEST_1_STEP_3"
+    },
+    {
+      "id": 10133,
+      "target": 5,
+      "category": 0,
+      "name": "ch_quest075_stage004",
+      "description": "CHALLENGE/SEASON_3_QUEST_1_STEP_4"
+    },
+    {
+      "id": 10134,
+      "target": 30,
+      "category": 0,
+      "name": "ch_quest075_stage005",
+      "description": "CHALLENGE/SEASON_3_QUEST_1_STEP_5"
+    },
+    {
+      "id": 10135,
+      "target": 5,
+      "category": 0,
+      "name": "ch_quest075_stage006",
+      "description": "CHALLENGE/SEASON_3_QUEST_1_STEP_6"
+    },
+    {
+      "id": 10136,
+      "target": 3,
+      "category": 0,
+      "name": "ch_quest076_stage001",
+      "description": "CHALLENGE/SEASON_3_QUEST_2_STEP_1"
+    },
+    {
+      "id": 10137,
+      "target": 5,
+      "category": 0,
+      "name": "ch_quest076_stage002",
+      "description": "CHALLENGE/SEASON_3_QUEST_2_STEP_2"
+    },
+    {
+      "id": 10138,
+      "target": 3,
+      "category": 0,
+      "name": "ch_quest076_stage003",
+      "description": "CHALLENGE/SEASON_3_QUEST_2_STEP_3"
+    },
+    {
+      "id": 10139,
+      "target": 2,
+      "category": 0,
+      "name": "ch_quest076_stage004",
+      "description": "CHALLENGE/SEASON_3_QUEST_2_STEP_4"
+    },
+    {
+      "id": 10140,
+      "target": 3,
+      "category": 0,
+      "name": "ch_quest076_stage005",
+      "description": "CHALLENGE/SEASON_3_QUEST_2_STEP_5"
+    },
+    {
+      "id": 10141,
+      "target": 3,
+      "category": 0,
+      "name": "ch_quest076_stage006",
+      "description": "CHALLENGE/SEASON_3_QUEST_2_STEP_6"
+    },
+    {
+      "id": 50000,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest035_stage001",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_1_STEP_1"
+    },
+    {
+      "id": 50001,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest035_stage002",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_1_STEP_2"
+    },
+    {
+      "id": 50003,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest035_stage003",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_1_STEP_3"
+    },
+    {
+      "id": 50005,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest035_stage004",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_1_STEP_4"
+    },
+    {
+      "id": 50006,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest035_stage005",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_1_STEP_5"
+    },
+    {
+      "id": 50007,
+      "target": 15,
+      "category": 1,
+      "name": "ch_quest035_stage006",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_1_STEP_6"
+    },
+    {
+      "id": 50008,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest035_stage007",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_1_STEP_7"
+    },
+    {
+      "id": 50009,
+      "target": 5,
+      "category": 1,
+      "name": "ch_quest035_stage008",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_1_STEP_8"
+    },
+    {
+      "id": 50010,
+      "target": 10,
+      "category": 1,
+      "name": "ch_quest035_stage009",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_1_STEP_9"
+    },
+    {
+      "id": 50011,
+      "target": 6,
+      "category": 1,
+      "name": "ch_quest035_stage010",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_1_STEP_10"
+    },
+    {
+      "id": 50012,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest036_stage001",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_2_STEP_1"
+    },
+    {
+      "id": 50013,
+      "target": 2,
+      "category": 1,
+      "name": "ch_quest036_stage002",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_2_STEP_2"
+    },
+    {
+      "id": 50014,
+      "target": 2,
+      "category": 1,
+      "name": "ch_quest036_stage003",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_2_STEP_3"
+    },
+    {
+      "id": 50015,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest036_stage004",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_2_STEP_4"
+    },
+    {
+      "id": 50016,
+      "target": 3,
+      "category": 1,
+      "name": "ch_quest036_stage005",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_2_STEP_5"
+    },
+    {
+      "id": 50017,
+      "target": 3,
+      "category": 1,
+      "name": "ch_quest036_stage006",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_2_STEP_6"
+    },
+    {
+      "id": 50018,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest036_stage007",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_2_STEP_7"
+    },
+    {
+      "id": 50019,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest037_stage001",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_3_STEP_1"
+    },
+    {
+      "id": 50020,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest037_stage002",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_3_STEP_2"
+    },
+    {
+      "id": 50021,
+      "target": 5,
+      "category": 1,
+      "name": "ch_quest037_stage003",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_3_STEP_3"
+    },
+    {
+      "id": 50022,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest037_stage004",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_3_STEP_4"
+    },
+    {
+      "id": 50023,
+      "target": 3,
+      "category": 1,
+      "name": "ch_quest037_stage005",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_3_STEP_5"
+    },
+    {
+      "id": 50024,
+      "target": 6,
+      "category": 1,
+      "name": "ch_quest037_stage006",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_3_STEP_6"
+    },
+    {
+      "id": 50025,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest037_stage007",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_3_STEP_7"
+    },
+    {
+      "id": 50026,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest038_stage001",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_4_STEP_1"
+    },
+    {
+      "id": 50027,
+      "target": 3,
+      "category": 1,
+      "name": "ch_quest038_stage002",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_4_STEP_2"
+    },
+    {
+      "id": 50028,
+      "target": 2,
+      "category": 1,
+      "name": "ch_quest038_stage003",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_4_STEP_3"
+    },
+    {
+      "id": 50029,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest038_stage004",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_4_STEP_4"
+    },
+    {
+      "id": 50030,
+      "target": 3,
+      "category": 1,
+      "name": "ch_quest038_stage005",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_4_STEP_5"
+    },
+    {
+      "id": 50031,
+      "target": 10,
+      "category": 1,
+      "name": "ch_quest038_stage006",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_4_STEP_6"
+    },
+    {
+      "id": 50032,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest038_stage007",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_4_STEP_7"
+    },
+    {
+      "id": 50033,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest039_stage001",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_5_STEP_1"
+    },
+    {
+      "id": 50034,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest039_stage002",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_5_STEP_2"
+    },
+    {
+      "id": 50035,
+      "target": 2,
+      "category": 1,
+      "name": "ch_quest039_stage003",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_5_STEP_3"
+    },
+    {
+      "id": 50036,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest039_stage004",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_5_STEP_4"
+    },
+    {
+      "id": 50037,
+      "target": 3,
+      "category": 1,
+      "name": "ch_quest039_stage005",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_5_STEP_5"
+    },
+    {
+      "id": 50038,
+      "target": 5,
+      "category": 1,
+      "name": "ch_quest039_stage006",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_5_STEP_6"
+    },
+    {
+      "id": 50039,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest039_stage007",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_5_STEP_7"
+    },
+    {
+      "id": 50040,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest040_stage001",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_6_STEP_1"
+    },
+    {
+      "id": 50041,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest040_stage002",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_6_STEP_2"
+    },
+    {
+      "id": 50042,
+      "target": 15,
+      "category": 1,
+      "name": "ch_quest040_stage003",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_6_STEP_3"
+    },
+    {
+      "id": 50043,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest040_stage004",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_6_STEP_4"
+    },
+    {
+      "id": 50044,
+      "target": 3,
+      "category": 1,
+      "name": "ch_quest040_stage005",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_6_STEP_5"
+    },
+    {
+      "id": 50045,
+      "target": 2,
+      "category": 1,
+      "name": "ch_quest040_stage006",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_6_STEP_6"
+    },
+    {
+      "id": 50046,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest040_stage007",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_6_STEP_7"
+    },
+    {
+      "id": 50047,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest041_stage001",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_7_STEP_1"
+    },
+    {
+      "id": 50048,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest041_stage002",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_7_STEP_2"
+    },
+    {
+      "id": 50049,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest041_stage003",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_7_STEP_3"
+    },
+    {
+      "id": 50050,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest041_stage004",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_7_STEP_4"
+    },
+    {
+      "id": 50051,
+      "target": 3,
+      "category": 1,
+      "name": "ch_quest041_stage005",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_7_STEP_5"
+    },
+    {
+      "id": 50052,
+      "target": 2,
+      "category": 1,
+      "name": "ch_quest041_stage006",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_7_STEP_6"
+    },
+    {
+      "id": 50053,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest041_stage007",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_7_STEP_7"
+    },
+    {
+      "id": 50054,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest042_stage001",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_8_STEP_1"
+    },
+    {
+      "id": 50055,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest042_stage002",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_8_STEP_2"
+    },
+    {
+      "id": 50056,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest042_stage003",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_8_STEP_3"
+    },
+    {
+      "id": 50057,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest042_stage004",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_8_STEP_4"
+    },
+    {
+      "id": 50058,
+      "target": 3,
+      "category": 1,
+      "name": "ch_quest042_stage005",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_8_STEP_5"
+    },
+    {
+      "id": 50059,
+      "target": 20,
+      "category": 1,
+      "name": "ch_quest042_stage006",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_8_STEP_6"
+    },
+    {
+      "id": 50060,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest042_stage007",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_8_STEP_7"
+    },
+    {
+      "id": 50061,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest043_stage001",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_9_STEP_1"
+    },
+    {
+      "id": 50062,
+      "target": 3,
+      "category": 1,
+      "name": "ch_quest043_stage002",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_9_STEP_2"
+    },
+    {
+      "id": 50063,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest043_stage003",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_9_STEP_3"
+    },
+    {
+      "id": 50064,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest043_stage004",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_9_STEP_4"
+    },
+    {
+      "id": 50065,
+      "target": 3,
+      "category": 1,
+      "name": "ch_quest043_stage005",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_9_STEP_5"
+    },
+    {
+      "id": 50066,
+      "target": 15,
+      "category": 1,
+      "name": "ch_quest043_stage006",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_9_STEP_6"
+    },
+    {
+      "id": 50067,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest043_stage007",
+      "description": "CHALLENGE/BR_SEASON_2_QUEST_9_STEP_7"
+    },
+    {
+      "id": 50068,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest056_stage001",
+      "description": "CHALLENGE/BR_DAILY_PORT_PATROL_DESC"
+    },
+    {
+      "id": 50069,
+      "target": 15,
+      "category": 1,
+      "name": "ch_quest056_stage002",
+      "description": "CHALLENGE/BR_DAILY_EASY_MONEY_DESC"
+    },
+    {
+      "id": 50070,
+      "target": 6,
+      "category": 1,
+      "name": "ch_quest056_stage003",
+      "description": "CHALLENGE/BR_DAILY_WELL_PROTECTED_DESC"
+    },
+    {
+      "id": 50071,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest056_stage004",
+      "description": "CHALLENGE/BR_DAILY_AIRFIELD_ASCENDENCY_DESC"
+    },
+    {
+      "id": 50072,
+      "target": 3,
+      "category": 1,
+      "name": "ch_quest056_stage005",
+      "description": "CHALLENGE/BR_DAILY_MISSION_FOCUSED_DESC"
+    },
+    {
+      "id": 50073,
+      "target": 2,
+      "category": 1,
+      "name": "ch_quest056_stage006",
+      "description": "CHALLENGE/BR_DAILY_EXECUTIONER_DESC"
+    },
+    {
+      "id": 50074,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest056_stage007",
+      "description": "CHALLENGE/BR_DAILY_BEST_OF_THE_BEST_DESC"
+    },
+    {
+      "id": 50075,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest057_stage001",
+      "description": "CHALLENGE/BR_DAILY_TRAINYARD_TYRANT_DESC"
+    },
+    {
+      "id": 50076,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest057_stage002",
+      "description": "CHALLENGE/BR_DAILY_IN_CHARGE_OF_THE_YARD_DESC"
+    },
+    {
+      "id": 50077,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest057_stage003",
+      "description": "CHALLENGE/BR_DAILY_BOUNCEBACKALICIOUS_DESC"
+    },
+    {
+      "id": 50078,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest057_stage004",
+      "description": "CHALLENGE/BR_DAILY_FARM_FATALITY_DESC"
+    },
+    {
+      "id": 50079,
+      "target": 3,
+      "category": 1,
+      "name": "ch_quest057_stage005",
+      "description": "CHALLENGE/BR_DAILY_MISSION_FOCUSED_DESC"
+    },
+    {
+      "id": 50080,
+      "target": 2,
+      "category": 1,
+      "name": "ch_quest057_stage006",
+      "description": "CHALLENGE/BR_DAILY_HOMMICIDAL_VEHICLE_DESC"
+    },
+    {
+      "id": 50081,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest057_stage007",
+      "description": "CHALLENGE/BR_DAILY_BEST_OF_THE_BEST_DESC"
+    },
+    {
+      "id": 50082,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest058_stage001",
+      "description": "CHALLENGE/BR_DAILY_TELEVISION_TRIUMPH_DESC"
+    },
+    {
+      "id": 50083,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest058_stage002",
+      "description": "CHALLENGE/BR_DAILY_CRUSHING_WITH_COMMONS_DESC"
+    },
+    {
+      "id": 50084,
+      "target": 10,
+      "category": 1,
+      "name": "ch_quest058_stage003",
+      "description": "CHALLENGE/BR_DAILY_TREASURE_HUNTER_DESC"
+    },
+    {
+      "id": 50085,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest058_stage004",
+      "description": "CHALLENGE/BR_DAILY_GULAG_GOVERNOR_DESC"
+    },
+    {
+      "id": 50086,
+      "target": 3,
+      "category": 1,
+      "name": "ch_quest058_stage005",
+      "description": "CHALLENGE/BR_DAILY_MISSION_FOCUSED_DESC"
+    },
+    {
+      "id": 50087,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest058_stage006",
+      "description": "CHALLENGE/BR_DAILY_VEHICULAR_HOMMICIDE_DESC"
+    },
+    {
+      "id": 50088,
+      "target": 1,
+      "category": 1,
+      "name": "ch_quest058_stage007",
+      "description": "CHALLENGE/BR_DAILY_BEST_OF_THE_BEST_DESC"
+    }
+  ]
+}

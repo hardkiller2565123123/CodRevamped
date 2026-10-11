@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "full_backend_complete": false,
+  "client_compile_passed": true,
+  "game_sha256": "80277fed1fe1488310ff271fc1af21272e2bc4ea453e5179312bc0d80f57494d",
+  "server_sha256": "6f6932ea1ee51ef1d381b030c02914f4e8a68cd347f6708dd21e41516329e128",
+  "full_image_release": 14,
+  "com_optimized_default": 1,
+  "source_branch": "codex/dw-remaining-services",
+  "commits": [
+    "814b12a",
+    "731fd75"
+  ],
+  "client_gates": {
+    "workstation-job.json": "041790c12a471c235b9ae8b44abd1d5c31a5d025fc87d2b0372b769ac6bd2e89",
+    "compiler-snapshot-receipt.json": "81b85c1e21c22b15fe7aabe77ea1ca4a5887a23a4483806a284495a191f1f1d7",
+    "linked-client.json": "79041103fafc298b96a02e9f02dcbc9d4d1b950bd728f12b9fbbe5732d560555",
+    "linked-ownership.json": "58645f608d0c6157cd598bf126acb89785c8c9544a8f40a6246cf3cc55e330f4",
+    "linked-updater.json": "60c992954b06bdf63a277adecf914a2d43e23cbeee7b3741844ee364fa79d7cf",
+    "linked-controls.json": "0b560c4d23510fdc8a6a66d5e7a128f7216c35ca64f98ec29195aa4ed0cbf274",
+    "linked-bots.json": "33f99170c8600061e471a797deec625590d6bb9356b647446f408f89ef5378fd"
+  },
+  "battlepass_native_evidence": "data/full-exe-update-20261008/native-r3-battlepass.json",
+  "remaining_scope": "Category object-store listings, large-upload completion and multipart-download routes still require exact Replay contracts; indirect and unclassified REST audit gaps remain. A broader transaction fixture also failed before the new host-control checks; it remains an open audit item.",
+  "host_command_persistent_native_test_pending": false,
+  "host_command_native_evidence": "data/full-exe-update-20261008/native-fill-command-verification.json"
+}

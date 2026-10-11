@@ -1,0 +1,1168 @@
+{
+  "schema": 1,
+  "generated_utc": "2026-10-06T12:31:52.598605+00:00",
+  "inventory_tool_sha256": "7375a965fb32159908975f29328ba9dcf14646a60c88883c6066b3f5b1ee30e8",
+  "target_image_sha256": "68fb1cbcb2924182724004039de55a4c50152bb6561803c4898b7930b38132f0",
+  "target_database": "E:\\IW8\\Builds\\1.20-replay\\game_dx12_ship_replay.exe.sqlite",
+  "target_database_changed": false,
+  "exported_functions": 94922,
+  "scope": "Direct compiled REST service/resource builder calls with bounded entry CFG; indirect/inlined builders and native consumption remain open",
+  "full_rest_audit_complete": false,
+  "calls": [
+    {
+      "function": "bdGetCrossPlatformUserSearchRequest::restSerializeRequest",
+      "function_address": 5403298736,
+      "call_address": 5403298794,
+      "builder": "service",
+      "target": 5403298384,
+      "arguments": [
+        "umbrella"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "bdGetCrossPlatformUserSearchRequest::restSerializeRequest",
+      "function_address": 5403298736,
+      "call_address": 5403298862,
+      "builder": "resource_operation",
+      "target": 5403298096,
+      "arguments": [
+        "UserResource",
+        "usernamesearch"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "bdABTestingEnrollRequest::restSerializeRequest",
+      "function_address": 5403311696,
+      "call_address": 5403312019,
+      "builder": "resource_operation",
+      "target": 5403298096,
+      "arguments": [
+        "abtesting",
+        "enroll"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "bdRenameCrossPlatformUserRequest::restSerializeRequest",
+      "function_address": 5403312688,
+      "call_address": 5403312739,
+      "builder": "service",
+      "target": 5403298384,
+      "arguments": [
+        "uno"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "bdRenameCrossPlatformUserRequest::restSerializeRequest",
+      "function_address": 5403312688,
+      "call_address": 5403312832,
+      "builder": "resource_operation",
+      "target": 5403298096,
+      "arguments": [
+        "UserResource",
+        "renameUsername"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "bdUpgradeAnonUnoAccRequest::restSerializeRequest",
+      "function_address": 5403314944,
+      "call_address": 5403315002,
+      "builder": "service",
+      "target": 5403298384,
+      "arguments": [
+        "uno"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "bdUpgradeAnonUnoAccRequest::restSerializeRequest",
+      "function_address": 5403314944,
+      "call_address": 5403315095,
+      "builder": "resource_operation",
+      "target": 5403298096,
+      "arguments": [
+        "UnoRes",
+        "updatesecuredfields"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "bdReportEventsRequest::restSerializeRequest",
+      "function_address": 5403322976,
+      "call_address": 5403323123,
+      "builder": "resource_operation",
+      "target": 5403298096,
+      "arguments": [
+        "user_events",
+        "report_user_events_batch"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "sub_14212E5F0",
+      "function_address": 5403502064,
+      "call_address": 5403502113,
+      "builder": "service",
+      "target": 5403298384,
+      "arguments": [
+        "presence"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "sub_14212E5F0",
+      "function_address": 5403502064,
+      "call_address": 5403502156,
+      "builder": "resource_operation",
+      "target": 5403298096,
+      "arguments": [
+        "UserPresence",
+        "set_user_presence"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "bdGetUsersPresenceRequestV3::restSerializeRequest",
+      "function_address": 5403503008,
+      "call_address": 5403503069,
+      "builder": "service",
+      "target": 5403298384,
+      "arguments": [
+        "social-service"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "bdGetUsersPresenceRequestV3::restSerializeRequest",
+      "function_address": 5403503008,
+      "call_address": 5403503338,
+      "builder": "resource_operation",
+      "target": 5403298096,
+      "arguments": [
+        "UsersPresence",
+        "get_users_presence"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "bdSubscribeToUsersPresenceRequestV3::restSerializeRequest",
+      "function_address": 5403504208,
+      "call_address": 5403504237,
+      "builder": "service",
+      "target": 5403298384,
+      "arguments": [
+        "presence"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "bdSubscribeToUsersPresenceRequestV3::restSerializeRequest",
+      "function_address": 5403504208,
+      "call_address": 5403504280,
+      "builder": "resource_operation",
+      "target": 5403298096,
+      "arguments": [
+        "UsersPresence",
+        "subscribe_to_users"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "bdUnsubscribeFromUsersPresenceRequest::restSerializeRequest",
+      "function_address": 5403505520,
+      "call_address": 5403505576,
+      "builder": "service",
+      "target": 5403298384,
+      "arguments": [
+        "presence"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "bdUnsubscribeFromUsersPresenceRequest::restSerializeRequest",
+      "function_address": 5403505520,
+      "call_address": 5403505619,
+      "builder": "resource_operation",
+      "target": 5403298096,
+      "arguments": [
+        "UsersPresence",
+        "unsubscribe_from_users"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "bdSendFriendInvitationsRequest::restSerializeRequest",
+      "function_address": 5403536992,
+      "call_address": 5403537021,
+      "builder": "service",
+      "target": 5403298384,
+      "arguments": [
+        "friends"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "bdSendFriendInvitationsRequest::restSerializeRequest",
+      "function_address": 5403536992,
+      "call_address": 5403537064,
+      "builder": "resource_operation",
+      "target": 5403298096,
+      "arguments": [
+        "Friends",
+        "invite_friend"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "bdGetPendingFriendsRequest::restSerializeRequest",
+      "function_address": 5403538272,
+      "call_address": 5403538301,
+      "builder": "service",
+      "target": 5403298384,
+      "arguments": [
+        "social-service"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "bdGetPendingFriendsRequest::restSerializeRequest",
+      "function_address": 5403538272,
+      "call_address": 5403538344,
+      "builder": "resource_operation",
+      "target": 5403298096,
+      "arguments": [
+        "Friends",
+        "get_pending_friend_requests"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "bdRejectFriendRequest::restSerializeRequest",
+      "function_address": 5403539328,
+      "call_address": 5403539356,
+      "builder": "service",
+      "target": 5403298384,
+      "arguments": [
+        "friends"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "bdRejectFriendRequest::restSerializeRequest",
+      "function_address": 5403539328,
+      "call_address": 5403539399,
+      "builder": "resource_operation",
+      "target": 5403298096,
+      "arguments": [
+        "Friends",
+        "reject_friend_request"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "bdGetFriendsRequest::restSerializeRequest",
+      "function_address": 5403540224,
+      "call_address": 5403540252,
+      "builder": "service",
+      "target": 5403298384,
+      "arguments": [
+        "social-service"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "bdGetFriendsRequest::restSerializeRequest",
+      "function_address": 5403540224,
+      "call_address": 5403540295,
+      "builder": "resource_operation",
+      "target": 5403298096,
+      "arguments": [
+        "Friends",
+        "get_friends"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "bdCreateUserListRequest::restSerializeRequest",
+      "function_address": 5403541552,
+      "call_address": 5403541580,
+      "builder": "service",
+      "target": 5403298384,
+      "arguments": [
+        "userlists"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "bdCreateUserListRequest::restSerializeRequest",
+      "function_address": 5403541552,
+      "call_address": 5403541623,
+      "builder": "resource_operation",
+      "target": 5403298096,
+      "arguments": [
+        "UserLists",
+        "create_user_list"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "bdUpdateUsersInUserListRequest::restSerializeRequest",
+      "function_address": 5403543040,
+      "call_address": 5403543099,
+      "builder": "service",
+      "target": 5403298384,
+      "arguments": [
+        "userlists"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "bdUpdateUsersInUserListRequest::restSerializeRequest",
+      "function_address": 5403543040,
+      "call_address": 5403543142,
+      "builder": "resource_operation",
+      "target": 5403298096,
+      "arguments": [
+        "UserLists",
+        "add_or_update_users_in_user_list"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "bdRemoveUsersFromUserListRequest::restSerializeRequest",
+      "function_address": 5403544752,
+      "call_address": 5403544811,
+      "builder": "service",
+      "target": 5403298384,
+      "arguments": [
+        "userlists"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "bdRemoveUsersFromUserListRequest::restSerializeRequest",
+      "function_address": 5403544752,
+      "call_address": 5403544854,
+      "builder": "resource_operation",
+      "target": 5403298096,
+      "arguments": [
+        "UserLists",
+        "remove_users_from_user_list"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "bdGetUserListRequest::restSerializeRequest",
+      "function_address": 5403546208,
+      "call_address": 5403546237,
+      "builder": "service",
+      "target": 5403298384,
+      "arguments": [
+        "social-service"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "bdGetUserListRequest::restSerializeRequest",
+      "function_address": 5403546208,
+      "call_address": 5403546280,
+      "builder": "resource_operation",
+      "target": 5403298096,
+      "arguments": [
+        "UserLists",
+        "get_user_list"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "bdFetchRegulationsRequest::restSerializeRequest",
+      "function_address": 5403581760,
+      "call_address": 5403581818,
+      "builder": "service",
+      "target": 5403298384,
+      "arguments": [
+        "umbrella"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "bdFetchRegulationsRequest::restSerializeRequest",
+      "function_address": 5403581760,
+      "call_address": 5403581958,
+      "builder": "resource_operation",
+      "target": 5403298096,
+      "arguments": [
+        "Regulations",
+        "fetchRegulations"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "bdSetUserRegulationPreferenceRequest::restSerializeRequest",
+      "function_address": 5403584192,
+      "call_address": 5403584253,
+      "builder": "service",
+      "target": 5403298384,
+      "arguments": [
+        "umbrella"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "bdSetUserRegulationPreferenceRequest::restSerializeRequest",
+      "function_address": 5403584192,
+      "call_address": 5403584427,
+      "builder": "resource_operation",
+      "target": 5403298096,
+      "arguments": [
+        "Regulations",
+        "setUserPreference"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "bdGetUserRegulationPreferenceRequest::restSerializeRequest",
+      "function_address": 5403585936,
+      "call_address": 5403585991,
+      "builder": "service",
+      "target": 5403298384,
+      "arguments": [
+        "umbrella"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "bdGetUserRegulationPreferenceRequest::restSerializeRequest",
+      "function_address": 5403585936,
+      "call_address": 5403586137,
+      "builder": "resource_operation",
+      "target": 5403298096,
+      "arguments": [
+        "Regulations",
+        "getUserPreference"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "bdObjectStoreListPublisherObjectsByCategoryRequest::restSerializeRequest",
+      "function_address": 5403593968,
+      "call_address": 5403594045,
+      "builder": "service",
+      "target": 5403298384,
+      "arguments": [
+        null
+      ],
+      "literal_arguments_resolved": false
+    },
+    {
+      "function": "bdObjectStoreListPublisherObjectsByCategoryRequest::restSerializeRequest",
+      "function_address": 5403593968,
+      "call_address": 5403594075,
+      "builder": "resource_operation",
+      "target": 5403298096,
+      "arguments": [
+        "ObjectsResourcePublishers",
+        "get_metadata"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "bdObjectStoreGetUserObjectsVectorizedRequest::restSerializeRequest",
+      "function_address": 5403598304,
+      "call_address": 5403598407,
+      "builder": "service",
+      "target": 5403298384,
+      "arguments": [
+        null
+      ],
+      "literal_arguments_resolved": false
+    },
+    {
+      "function": "bdObjectStoreGetUserObjectsVectorizedRequest::restSerializeRequest",
+      "function_address": 5403598304,
+      "call_address": 5403598529,
+      "builder": "resource_operation",
+      "target": 5403298096,
+      "arguments": [
+        "ObjectsVectorizedResourceUsers",
+        "get_objects"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "bdObjectStoreUploadUserObjectsVectorizedRequest::restSerializeRequest",
+      "function_address": 5403602528,
+      "call_address": 5403602653,
+      "builder": "service",
+      "target": 5403298384,
+      "arguments": [
+        null
+      ],
+      "literal_arguments_resolved": false
+    },
+    {
+      "function": "bdObjectStoreUploadUserObjectsVectorizedRequest::restSerializeRequest",
+      "function_address": 5403602528,
+      "call_address": 5403602853,
+      "builder": "resource_operation",
+      "target": 5403298096,
+      "arguments": [
+        "ObjectsVectorizedResourceUsers",
+        "put_objects"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "bdGetCrossPlatformUsernamesRequest::restSerializeRequest",
+      "function_address": 5403605424,
+      "call_address": 5403605485,
+      "builder": "service",
+      "target": 5403298384,
+      "arguments": [
+        "social-service"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "bdGetCrossPlatformUsernamesRequest::restSerializeRequest",
+      "function_address": 5403605424,
+      "call_address": 5403605754,
+      "builder": "resource_operation",
+      "target": 5403298096,
+      "arguments": [
+        "Users",
+        "get_usernames"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "q_bdAchievementsEngineRestRequest_addCommonParams",
+      "function_address": 5403661680,
+      "call_address": 5403661711,
+      "builder": "service",
+      "target": 5403298384,
+      "arguments": [
+        "ae.demonware.net"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "bdAuthenticateCrossPlatformUserRequest::restSerializeRequest",
+      "function_address": 5403733840,
+      "call_address": 5403733866,
+      "builder": "service",
+      "target": 5403298384,
+      "arguments": [
+        "uno"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "bdAuthenticateCrossPlatformUserRequest::restSerializeRequest",
+      "function_address": 5403733840,
+      "call_address": 5403733975,
+      "builder": "resource_operation",
+      "target": 5403298096,
+      "arguments": [
+        "UserResource",
+        "authenticateUser"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "bdCrossPlatformLinkUserRequest::restSerializeRequest",
+      "function_address": 5403736000,
+      "call_address": 5403736058,
+      "builder": "service",
+      "target": 5403298384,
+      "arguments": [
+        "umbrella"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "bdCrossPlatformLinkUserRequest::restSerializeRequest",
+      "function_address": 5403736000,
+      "call_address": 5403736151,
+      "builder": "resource_operation",
+      "target": 5403298096,
+      "arguments": [
+        "UserResource",
+        "linkUser"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "bdUpgradeUmbrellaRequest::restSerializeRequest",
+      "function_address": 5403737984,
+      "call_address": 5403738036,
+      "builder": "service",
+      "target": 5403298384,
+      "arguments": [
+        "umbrella"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "bdUpgradeUmbrellaRequest::restSerializeRequest",
+      "function_address": 5403737984,
+      "call_address": 5403738129,
+      "builder": "resource_operation",
+      "target": 5403298096,
+      "arguments": [
+        "Umbrella",
+        "updateUmbrellaAccount"
+      ],
+      "literal_arguments_resolved": true
+    },
+    {
+      "function": "bdReportUserEventsRequest::restSerializeRequest",
+      "function_address": 5403746560,
+      "call_address": 5403746707,
+      "builder": "resource_operation",
+      "target": 5403298096,
+      "arguments": [
+        "user_events",
+        "report_user_events_batch"
+      ],
+      "literal_arguments_resolved": true
+    }
+  ],
+  "requests": [
+    {
+      "function": "bdGetCrossPlatformUserSearchRequest::restSerializeRequest",
+      "function_address": 5403298736,
+      "services": [
+        "umbrella"
+      ],
+      "resource_operations": [
+        [
+          "UserResource",
+          "usernamesearch"
+        ]
+      ],
+      "service_operation_binding_resolved": true,
+      "builder_calls": [
+        5403298794,
+        5403298862
+      ],
+      "native_response_verified": false
+    },
+    {
+      "function": "bdABTestingEnrollRequest::restSerializeRequest",
+      "function_address": 5403311696,
+      "services": [],
+      "resource_operations": [
+        [
+          "abtesting",
+          "enroll"
+        ]
+      ],
+      "service_operation_binding_resolved": false,
+      "builder_calls": [
+        5403312019
+      ],
+      "native_response_verified": false
+    },
+    {
+      "function": "bdRenameCrossPlatformUserRequest::restSerializeRequest",
+      "function_address": 5403312688,
+      "services": [
+        "uno"
+      ],
+      "resource_operations": [
+        [
+          "UserResource",
+          "renameUsername"
+        ]
+      ],
+      "service_operation_binding_resolved": true,
+      "builder_calls": [
+        5403312739,
+        5403312832
+      ],
+      "native_response_verified": false
+    },
+    {
+      "function": "bdUpgradeAnonUnoAccRequest::restSerializeRequest",
+      "function_address": 5403314944,
+      "services": [
+        "uno"
+      ],
+      "resource_operations": [
+        [
+          "UnoRes",
+          "updatesecuredfields"
+        ]
+      ],
+      "service_operation_binding_resolved": true,
+      "builder_calls": [
+        5403315002,
+        5403315095
+      ],
+      "native_response_verified": false
+    },
+    {
+      "function": "bdReportEventsRequest::restSerializeRequest",
+      "function_address": 5403322976,
+      "services": [],
+      "resource_operations": [
+        [
+          "user_events",
+          "report_user_events_batch"
+        ]
+      ],
+      "service_operation_binding_resolved": false,
+      "builder_calls": [
+        5403323123
+      ],
+      "native_response_verified": false
+    },
+    {
+      "function": "sub_14212E5F0",
+      "function_address": 5403502064,
+      "services": [
+        "presence"
+      ],
+      "resource_operations": [
+        [
+          "UserPresence",
+          "set_user_presence"
+        ]
+      ],
+      "service_operation_binding_resolved": true,
+      "builder_calls": [
+        5403502113,
+        5403502156
+      ],
+      "native_response_verified": false
+    },
+    {
+      "function": "bdGetUsersPresenceRequestV3::restSerializeRequest",
+      "function_address": 5403503008,
+      "services": [
+        "social-service"
+      ],
+      "resource_operations": [
+        [
+          "UsersPresence",
+          "get_users_presence"
+        ]
+      ],
+      "service_operation_binding_resolved": true,
+      "builder_calls": [
+        5403503069,
+        5403503338
+      ],
+      "native_response_verified": false
+    },
+    {
+      "function": "bdSubscribeToUsersPresenceRequestV3::restSerializeRequest",
+      "function_address": 5403504208,
+      "services": [
+        "presence"
+      ],
+      "resource_operations": [
+        [
+          "UsersPresence",
+          "subscribe_to_users"
+        ]
+      ],
+      "service_operation_binding_resolved": true,
+      "builder_calls": [
+        5403504237,
+        5403504280
+      ],
+      "native_response_verified": false
+    },
+    {
+      "function": "bdUnsubscribeFromUsersPresenceRequest::restSerializeRequest",
+      "function_address": 5403505520,
+      "services": [
+        "presence"
+      ],
+      "resource_operations": [
+        [
+          "UsersPresence",
+          "unsubscribe_from_users"
+        ]
+      ],
+      "service_operation_binding_resolved": true,
+      "builder_calls": [
+        5403505576,
+        5403505619
+      ],
+      "native_response_verified": false
+    },
+    {
+      "function": "bdSendFriendInvitationsRequest::restSerializeRequest",
+      "function_address": 5403536992,
+      "services": [
+        "friends"
+      ],
+      "resource_operations": [
+        [
+          "Friends",
+          "invite_friend"
+        ]
+      ],
+      "service_operation_binding_resolved": true,
+      "builder_calls": [
+        5403537021,
+        5403537064
+      ],
+      "native_response_verified": false
+    },
+    {
+      "function": "bdGetPendingFriendsRequest::restSerializeRequest",
+      "function_address": 5403538272,
+      "services": [
+        "social-service"
+      ],
+      "resource_operations": [
+        [
+          "Friends",
+          "get_pending_friend_requests"
+        ]
+      ],
+      "service_operation_binding_resolved": true,
+      "builder_calls": [
+        5403538301,
+        5403538344
+      ],
+      "native_response_verified": false
+    },
+    {
+      "function": "bdRejectFriendRequest::restSerializeRequest",
+      "function_address": 5403539328,
+      "services": [
+        "friends"
+      ],
+      "resource_operations": [
+        [
+          "Friends",
+          "reject_friend_request"
+        ]
+      ],
+      "service_operation_binding_resolved": true,
+      "builder_calls": [
+        5403539356,
+        5403539399
+      ],
+      "native_response_verified": false
+    },
+    {
+      "function": "bdGetFriendsRequest::restSerializeRequest",
+      "function_address": 5403540224,
+      "services": [
+        "social-service"
+      ],
+      "resource_operations": [
+        [
+          "Friends",
+          "get_friends"
+        ]
+      ],
+      "service_operation_binding_resolved": true,
+      "builder_calls": [
+        5403540252,
+        5403540295
+      ],
+      "native_response_verified": false
+    },
+    {
+      "function": "bdCreateUserListRequest::restSerializeRequest",
+      "function_address": 5403541552,
+      "services": [
+        "userlists"
+      ],
+      "resource_operations": [
+        [
+          "UserLists",
+          "create_user_list"
+        ]
+      ],
+      "service_operation_binding_resolved": true,
+      "builder_calls": [
+        5403541580,
+        5403541623
+      ],
+      "native_response_verified": false
+    },
+    {
+      "function": "bdUpdateUsersInUserListRequest::restSerializeRequest",
+      "function_address": 5403543040,
+      "services": [
+        "userlists"
+      ],
+      "resource_operations": [
+        [
+          "UserLists",
+          "add_or_update_users_in_user_list"
+        ]
+      ],
+      "service_operation_binding_resolved": true,
+      "builder_calls": [
+        5403543099,
+        5403543142
+      ],
+      "native_response_verified": false
+    },
+    {
+      "function": "bdRemoveUsersFromUserListRequest::restSerializeRequest",
+      "function_address": 5403544752,
+      "services": [
+        "userlists"
+      ],
+      "resource_operations": [
+        [
+          "UserLists",
+          "remove_users_from_user_list"
+        ]
+      ],
+      "service_operation_binding_resolved": true,
+      "builder_calls": [
+        5403544811,
+        5403544854
+      ],
+      "native_response_verified": false
+    },
+    {
+      "function": "bdGetUserListRequest::restSerializeRequest",
+      "function_address": 5403546208,
+      "services": [
+        "social-service"
+      ],
+      "resource_operations": [
+        [
+          "UserLists",
+          "get_user_list"
+        ]
+      ],
+      "service_operation_binding_resolved": true,
+      "builder_calls": [
+        5403546237,
+        5403546280
+      ],
+      "native_response_verified": false
+    },
+    {
+      "function": "bdFetchRegulationsRequest::restSerializeRequest",
+      "function_address": 5403581760,
+      "services": [
+        "umbrella"
+      ],
+      "resource_operations": [
+        [
+          "Regulations",
+          "fetchRegulations"
+        ]
+      ],
+      "service_operation_binding_resolved": true,
+      "builder_calls": [
+        5403581818,
+        5403581958
+      ],
+      "native_response_verified": false
+    },
+    {
+      "function": "bdSetUserRegulationPreferenceRequest::restSerializeRequest",
+      "function_address": 5403584192,
+      "services": [
+        "umbrella"
+      ],
+      "resource_operations": [
+        [
+          "Regulations",
+          "setUserPreference"
+        ]
+      ],
+      "service_operation_binding_resolved": true,
+      "builder_calls": [
+        5403584253,
+        5403584427
+      ],
+      "native_response_verified": false
+    },
+    {
+      "function": "bdGetUserRegulationPreferenceRequest::restSerializeRequest",
+      "function_address": 5403585936,
+      "services": [
+        "umbrella"
+      ],
+      "resource_operations": [
+        [
+          "Regulations",
+          "getUserPreference"
+        ]
+      ],
+      "service_operation_binding_resolved": true,
+      "builder_calls": [
+        5403585991,
+        5403586137
+      ],
+      "native_response_verified": false
+    },
+    {
+      "function": "bdObjectStoreListPublisherObjectsByCategoryRequest::restSerializeRequest",
+      "function_address": 5403593968,
+      "services": [],
+      "resource_operations": [
+        [
+          "ObjectsResourcePublishers",
+          "get_metadata"
+        ]
+      ],
+      "service_operation_binding_resolved": false,
+      "builder_calls": [
+        5403594045,
+        5403594075
+      ],
+      "native_response_verified": false
+    },
+    {
+      "function": "bdObjectStoreGetUserObjectsVectorizedRequest::restSerializeRequest",
+      "function_address": 5403598304,
+      "services": [],
+      "resource_operations": [
+        [
+          "ObjectsVectorizedResourceUsers",
+          "get_objects"
+        ]
+      ],
+      "service_operation_binding_resolved": false,
+      "builder_calls": [
+        5403598407,
+        5403598529
+      ],
+      "native_response_verified": false
+    },
+    {
+      "function": "bdObjectStoreUploadUserObjectsVectorizedRequest::restSerializeRequest",
+      "function_address": 5403602528,
+      "services": [],
+      "resource_operations": [
+        [
+          "ObjectsVectorizedResourceUsers",
+          "put_objects"
+        ]
+      ],
+      "service_operation_binding_resolved": false,
+      "builder_calls": [
+        5403602653,
+        5403602853
+      ],
+      "native_response_verified": false
+    },
+    {
+      "function": "bdGetCrossPlatformUsernamesRequest::restSerializeRequest",
+      "function_address": 5403605424,
+      "services": [
+        "social-service"
+      ],
+      "resource_operations": [
+        [
+          "Users",
+          "get_usernames"
+        ]
+      ],
+      "service_operation_binding_resolved": true,
+      "builder_calls": [
+        5403605485,
+        5403605754
+      ],
+      "native_response_verified": false
+    },
+    {
+      "function": "q_bdAchievementsEngineRestRequest_addCommonParams",
+      "function_address": 5403661680,
+      "services": [
+        "ae.demonware.net"
+      ],
+      "resource_operations": [],
+      "service_operation_binding_resolved": false,
+      "builder_calls": [
+        5403661711
+      ],
+      "native_response_verified": false
+    },
+    {
+      "function": "bdAuthenticateCrossPlatformUserRequest::restSerializeRequest",
+      "function_address": 5403733840,
+      "services": [
+        "uno"
+      ],
+      "resource_operations": [
+        [
+          "UserResource",
+          "authenticateUser"
+        ]
+      ],
+      "service_operation_binding_resolved": true,
+      "builder_calls": [
+        5403733866,
+        5403733975
+      ],
+      "native_response_verified": false
+    },
+    {
+      "function": "bdCrossPlatformLinkUserRequest::restSerializeRequest",
+      "function_address": 5403736000,
+      "services": [
+        "umbrella"
+      ],
+      "resource_operations": [
+        [
+          "UserResource",
+          "linkUser"
+        ]
+      ],
+      "service_operation_binding_resolved": true,
+      "builder_calls": [
+        5403736058,
+        5403736151
+      ],
+      "native_response_verified": false
+    },
+    {
+      "function": "bdUpgradeUmbrellaRequest::restSerializeRequest",
+      "function_address": 5403737984,
+      "services": [
+        "umbrella"
+      ],
+      "resource_operations": [
+        [
+          "Umbrella",
+          "updateUmbrellaAccount"
+        ]
+      ],
+      "service_operation_binding_resolved": true,
+      "builder_calls": [
+        5403738036,
+        5403738129
+      ],
+      "native_response_verified": false
+    },
+    {
+      "function": "bdReportUserEventsRequest::restSerializeRequest",
+      "function_address": 5403746560,
+      "services": [],
+      "resource_operations": [
+        [
+          "user_events",
+          "report_user_events_batch"
+        ]
+      ],
+      "service_operation_binding_resolved": false,
+      "builder_calls": [
+        5403746707
+      ],
+      "native_response_verified": false
+    }
+  ],
+  "unresolved": []
+}

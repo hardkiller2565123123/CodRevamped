@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "passed": true,
+  "scope": "Durable whole pooled-file uploads with native task/HTTP restart recovery",
+  "source": {
+    "path": "data/pooled-upload-20261008-v2/source.json",
+    "sha256": "35fa65b8e510f51c60040df2748c40cd35b31aef1ab2b91bbda09de3523f27a5"
+  },
+  "cpp_inputs": 95,
+  "changed_from_live": [
+    "src/content_services.cpp",
+    "src/tournament_services.cpp"
+  ],
+  "changed_in_this_iteration": [
+    "src/content_services.cpp"
+  ],
+  "windows_server_sha256": "13ac35e981f8b61978a3b310c669ae6a598056ed92de5c4f77e2a99e88863c79",
+  "linux_server_sha256": "f9fe2b7086f6c41fab87e6e6fa63a9cfe7b1a06022b1fef4023a939d52aebc46",
+  "compilation": "Changed C++ compiled and server freshly linked; retained objects have a verified frozen source cohort and recorded hashes",
+  "protocol_evidence": [
+    {
+      "path": "data/pooled-upload-20261008-v2/windows-durability.json",
+      "sha256": "d7d7c08c23fffe30b09ade0fbadf2782957d3b742169afaf4e179eb590e313aa",
+      "groups": 23
+    },
+    {
+      "path": "data/pooled-upload-20261008-v2/linux-durability.json",
+      "sha256": "40fc7f0fba90b43531b97a1269aa67aa874cc1399c1514b1924428b945d7b2fa",
+      "groups": 23
+    }
+  ],
+  "groups_per_platform": 23,
+  "native_game_verified": false,
+  "full_backend_completed": false,
+  "deployed": false,
+  "deployment_hold_reason": "Two active players on the primary server; preserve their current session",
+  "unchanged_primary": {
+    "pid": 54878,
+    "sha256": "34964efd76220b894fff7c5fe89924e7a9a961139676424aaa4cfd7763d83969",
+    "online_players": 2,
+    "transport_connections": 3
+  },
+  "operational_limits": [
+    "16 MiB per HTTP file",
+    "128 prepared pooled sessions per title",
+    "600-second capability lease",
+    "64 MiB combined pooled/multipart staging per title"
+  ],
+  "native_layout": "58/5 retains bdURL URL/UInt16 location/server filename/UInt64 file ID; 58/6 retains UInt64 file ID result",
+  "br_loading_failure": "User observed a possible fastfile failure; exact message unavailable. Numbered collision-tile fallback exists in the installed game, but BR loading crash remains unconfirmed and unresolved."
+}

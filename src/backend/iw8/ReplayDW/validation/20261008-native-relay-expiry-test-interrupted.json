@@ -1,0 +1,36 @@
+{
+  "schema": 1,
+  "pending": false,
+  "game_pid": 18264,
+  "game_sha256": "638dab82f069be51f6450f9ed2744f0b049d34642c0b67ae30cde01b53ea16e5",
+  "backend_pid": 87281,
+  "backend_sha256": "78a2fb203957e382df60a432772035c529adb08b898d177c7559c4d1ad3c02bf",
+  "launched_utc": "2026-10-08T07:08:49.7073859Z",
+  "original_admission_expires_utc": "2026-10-08T08:08:55+00:00",
+  "native_expiry_crossing_verified": false,
+  "required_observation": "same native route/key and advancing UDP keepalives after original admission expiry, with signed platform renewal and no reauthentication",
+  "outcome": "invalidated_by_backend_process_restart_before_original_deadline",
+  "restart_observed_utc": "2026-10-08T08:02:14+00:00",
+  "replacement_backend_pid": 90406,
+  "evidence": [
+    {
+      "path": "data/relay-continuity-20261008/native-before-renewal.json",
+      "sha256": "d72a9cb0df0fbe05b76554ad92eb3ee14f159abd744877e9ec1b0cc1cad3a552"
+    },
+    {
+      "path": "data/relay-continuity-20261008/native-after-renewal.json",
+      "sha256": "640518a599561180750b434b88421ca57e1c1c4006d0c6e1c33b8a8a6dd56523"
+    },
+    {
+      "path": "data/relay-continuity-20261008/interrupted-native-launch.json",
+      "sha256": "531701f1cba9dac339cd291bbaed21b09fcd400d0f4622a2a6256ff20f3519f2"
+    },
+    {
+      "path": "data/relay-continuity-20261008/long-runtime.json",
+      "sha256": "f4cda6410848a7986cac7d29cf0afdef5cda8bb31646477d60db756301cf58c1"
+    }
+  ],
+  "passed": false,
+  "original_admission_expiry_crossing_verified": false,
+  "source": "Unchanged binary was stopped/restarted before its deadline; native renewal explicitly reported session unavailable"
+}

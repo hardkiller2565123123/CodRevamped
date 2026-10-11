@@ -1,0 +1,316 @@
+{
+  "passed": true,
+  "tool_sha256": "1aa5f2982e550b62f235bf50dd8a632d61e1019bac0227022acf2d1d02d6ee2b",
+  "sources": [
+    {
+      "path": "data/remaining-match-outcomes-20261010/common_base_mp/10793.gsc",
+      "sha256": "0216b80630157832c757d5ea423e11e0578cd67e6978372297480e851192ad95"
+    },
+    {
+      "path": "data/remaining-match-outcomes-20261010/common_base_mp/10793.gscbin",
+      "sha256": "f5811637b282e755343b5ab02ae721c1aaf3cef0ac3bfd0cd7f79ea75f66c262"
+    },
+    {
+      "path": "data/remaining-match-outcomes-20261010/producer-recovery.json",
+      "sha256": "51f9ddcac8e90ce2e37f48bb9cf9215bf32f286ccc04ce0e9f9a24b010d85c55"
+    }
+  ],
+  "decoder": {
+    "path": "E:\\replay-compiler\\tools\\workstation_asset_codecs.py",
+    "sha256": "2176f004de4cc3acb8b15fbb61f22e45ffc64c386475244e2c801ea14b42cc73"
+  },
+  "bytecode_sha256": "405fcd318419cf5ddf94ffd731aae74443f06ef524b78d2239096c3d6d931f98",
+  "weapon_table": {
+    "path": "E:\\replay-compiler\\evidence\\workstation-stringtable-actsexport-fixed\\mw19replay\\code_post_gfx\\mw19replay\\code_post_gfx\\assets\\stringtable\\loot\\weapon_ids.csv.235.csv",
+    "sha256": "266c8607dc9ed42bd382d8b32d03c0ed4230435e5537df5239c858d005e46019"
+  },
+  "m19_weapon_id": 2,
+  "gametype_table": {
+    "path": "E:\\replay-compiler\\evidence\\workstation-stringtable-actsexport-fixed\\mw19replay\\code_post_gfx\\mw19replay\\code_post_gfx\\assets\\stringtable\\mp\\gametypestable.csv.325.csv",
+    "sha256": "cb1401b3c09c3b22c6ad8b8eccba0bd6a17a3a974847e6cadc8274fdf336062f"
+  },
+  "mode_descriptions": [
+    {
+      "mode": "war",
+      "key": "LUA_MENU_MP/WAR",
+      "value": "Team Deathmatch",
+      "path": "data/workstation-cache/fastfiles/rwt-localize-readback-0u3txpf6/mw19replay/eng_code_post_gfx/assets/localize/lua_menu_mp/war.12322.json",
+      "sha256": "3adc34d5f11c209ce7655e83f08c44240d685f44a4d43c7d0fa59a87d1aeac6c"
+    },
+    {
+      "mode": "cyber",
+      "key": "LUA_MENU_MP/CYBER",
+      "value": "Cyber Attack",
+      "path": "data/workstation-cache/fastfiles/rwt-localize-readback-0u3txpf6/mw19replay/eng_code_post_gfx/assets/localize/lua_menu_mp/cyber.9886.json",
+      "sha256": "af638539924472751540e1d57efb4932882d69ef43496bb14c680873721a0b56"
+    },
+    {
+      "mode": "dom",
+      "key": "LUA_MENU_MP/DOMINATION",
+      "value": "Domination",
+      "path": "data/workstation-cache/fastfiles/rwt-localize-readback-0u3txpf6/mw19replay/eng_code_post_gfx/assets/localize/lua_menu_mp/domination.10034.json",
+      "sha256": "519f1ce698a752b279f5e311403c0a8f2e5aedc67ac7f43c9aebd2d5dfdfabf7"
+    },
+    {
+      "mode": "sd",
+      "key": "LUA_MENU_MP/SD",
+      "value": "Search and Destroy",
+      "path": "data/workstation-cache/fastfiles/rwt-localize-readback-0u3txpf6/mw19replay/eng_code_post_gfx/assets/localize/lua_menu_mp/sd.11914.json",
+      "sha256": "3eaa34ee9c1980bf8d67b8016a11b6b70c853515c0b118a46de2b4f2c5937273"
+    },
+    {
+      "mode": "hq",
+      "key": "LUA_MENU_MP/HQ",
+      "value": "Headquarters",
+      "path": "data/workstation-cache/fastfiles/rwt-localize-readback-0u3txpf6/mw19replay/eng_code_post_gfx/assets/localize/lua_menu_mp/hq.10262.json",
+      "sha256": "62cff5aaa2833f7101a6e8a650e91503cdf197bcddfde95a9c8555099edb8e98"
+    },
+    {
+      "mode": "arena",
+      "key": "LUA_MENU_MP/ARENA",
+      "value": "Gunfight",
+      "path": "data/workstation-cache/fastfiles/rwt-localize-readback-0u3txpf6/mw19replay/eng_code_post_gfx/assets/localize/lua_menu_mp/arena.9567.json",
+      "sha256": "8552687d31cefe74c2a7202437a5fd6a73db1ec5bfb59c1ea1eab5971872c93f"
+    }
+  ],
+  "modes": [
+    {
+      "name": "dm",
+      "value": 5,
+      "original_offset": 2448,
+      "original_bytes_hex": "1605"
+    },
+    {
+      "name": "war",
+      "value": 6,
+      "original_offset": 2464,
+      "original_bytes_hex": "1606"
+    },
+    {
+      "name": "sd",
+      "value": 7,
+      "original_offset": 2480,
+      "original_bytes_hex": "1607"
+    },
+    {
+      "name": "dom",
+      "value": 8,
+      "original_offset": 2496,
+      "original_bytes_hex": "1608"
+    },
+    {
+      "name": "conf",
+      "value": 9,
+      "original_offset": 2512,
+      "original_bytes_hex": "1609"
+    },
+    {
+      "name": "sr",
+      "value": 10,
+      "original_offset": 2528,
+      "original_bytes_hex": "160a"
+    },
+    {
+      "name": "grind",
+      "value": 11,
+      "original_offset": 2544,
+      "original_bytes_hex": "160b"
+    },
+    {
+      "name": "ball",
+      "value": 12,
+      "original_offset": 2560,
+      "original_bytes_hex": "160c"
+    },
+    {
+      "name": "infect",
+      "value": 13,
+      "original_offset": 2576,
+      "original_bytes_hex": "160d"
+    },
+    {
+      "name": "tjugg",
+      "value": 14,
+      "original_offset": 2592,
+      "original_bytes_hex": "160e"
+    },
+    {
+      "name": "gun",
+      "value": 15,
+      "original_offset": 2608,
+      "original_bytes_hex": "160f"
+    },
+    {
+      "name": "grnd",
+      "value": 16,
+      "original_offset": 2624,
+      "original_bytes_hex": "1610"
+    },
+    {
+      "name": "siege",
+      "value": 17,
+      "original_offset": 2640,
+      "original_bytes_hex": "1611"
+    },
+    {
+      "name": "koth",
+      "value": 18,
+      "original_offset": 2656,
+      "original_bytes_hex": "1612"
+    },
+    {
+      "name": "ctf",
+      "value": 19,
+      "original_offset": 2672,
+      "original_bytes_hex": "1613"
+    },
+    {
+      "name": "dd",
+      "value": 20,
+      "original_offset": 2688,
+      "original_bytes_hex": "1614"
+    },
+    {
+      "name": "tdef",
+      "value": 21,
+      "original_offset": 2704,
+      "original_bytes_hex": "1615"
+    },
+    {
+      "name": "front",
+      "value": 22,
+      "original_offset": 2720,
+      "original_bytes_hex": "1616"
+    },
+    {
+      "name": "cmd",
+      "value": 23,
+      "original_offset": 2736,
+      "original_bytes_hex": "1617"
+    },
+    {
+      "name": "br",
+      "value": 24,
+      "original_offset": 2752,
+      "original_bytes_hex": "1618"
+    },
+    {
+      "name": "arena",
+      "value": 25,
+      "original_offset": 2768,
+      "original_bytes_hex": "1619"
+    },
+    {
+      "name": "cyber",
+      "value": 26,
+      "original_offset": 2784,
+      "original_bytes_hex": "161a"
+    },
+    {
+      "name": "rush",
+      "value": 27,
+      "original_offset": 2800,
+      "original_bytes_hex": "161b"
+    },
+    {
+      "name": "esc",
+      "value": 28,
+      "original_offset": 2816,
+      "original_bytes_hex": "161c"
+    },
+    {
+      "name": "vip",
+      "value": 29,
+      "original_offset": 2832,
+      "original_bytes_hex": "161d"
+    },
+    {
+      "name": "btm",
+      "value": 30,
+      "original_offset": 2848,
+      "original_bytes_hex": "161e"
+    },
+    {
+      "name": "rugby",
+      "value": 31,
+      "original_offset": 2864,
+      "original_bytes_hex": "161f"
+    },
+    {
+      "name": "arm",
+      "value": 32,
+      "original_offset": 2880,
+      "original_bytes_hex": "1620"
+    },
+    {
+      "name": "mtmc",
+      "value": 33,
+      "original_offset": 2896,
+      "original_bytes_hex": "1621"
+    },
+    {
+      "name": "snatch",
+      "value": 34,
+      "original_offset": 2912,
+      "original_bytes_hex": "1622"
+    },
+    {
+      "name": "hq",
+      "value": 35,
+      "original_offset": 2928,
+      "original_bytes_hex": "1623"
+    },
+    {
+      "name": "defcon",
+      "value": 36,
+      "original_offset": 2944,
+      "original_bytes_hex": "1624"
+    },
+    {
+      "name": "pill",
+      "value": 37,
+      "original_offset": 2960,
+      "original_bytes_hex": "1625"
+    },
+    {
+      "name": "blitz",
+      "value": 38,
+      "original_offset": 2976,
+      "original_bytes_hex": "1626"
+    },
+    {
+      "name": "brm",
+      "value": 39,
+      "original_offset": 2992,
+      "original_bytes_hex": "1627"
+    },
+    {
+      "name": "hvt",
+      "value": 40,
+      "original_offset": 3008,
+      "original_bytes_hex": "1628"
+    },
+    {
+      "name": "trial",
+      "value": 41,
+      "original_offset": 3024,
+      "original_bytes_hex": "1629"
+    },
+    {
+      "name": "cp_survival",
+      "value": 42,
+      "original_offset": 3040,
+      "original_bytes_hex": "162a"
+    },
+    {
+      "name": "cp_wave_sv",
+      "value": 43,
+      "original_offset": 3056,
+      "original_bytes_hex": "162b"
+    }
+  ],
+  "generated": "src/replay_challenge_game_type.h",
+  "generated_sha256": "342867c072211523fc73550649703edf4c466178ff85e494680a23e36c2d533b",
+  "native_game_execution_verified": false,
+  "scope": "Unique decoded native GetByte operand sequence agrees with the retained initializer"
+}

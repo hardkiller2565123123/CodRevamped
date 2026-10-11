@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "observed_utc": "2026-10-06T14:31:05.150202+00:00",
+  "passed": true,
+  "game_sha256": "b326981a9718cedbc05228d40bef8b2adcd6be89307b2cde7d8e878a3ca67885",
+  "server_sha256": "0f1ad0a9846dfc4832427c418588015438659830cccb7adc89ebfcc5bc556f09",
+  "native_game_owned_name_search_and_outgoing_invitation": true,
+  "native_peer_acceptance_callback": true,
+  "accepted_friendship_persisted_across_backend_and_dw_restart": true,
+  "native_revocation_callback_and_empty_handoff_lists": true,
+  "diagnostic_peer_only": true,
+  "human_profile_or_initial_friendship_created": false,
+  "map_or_match_test_performed": false,
+  "two_native_game_or_remote_network_test_performed": false,
+  "full_backend_complete": false,
+  "source_sha256": {
+    "src/social_services.cpp": "8c172fede650cb399ff4944b3e8ae96a4e65380a752df8f83e5baed3ceadc5dd",
+    "src/rest_services.cpp": "82ce04c03a4550f8918bc0cbbefa837c73d9e8c52096c52b78b52364ddc4bea5",
+    "tools/observe-game.py": "72345f75158f1606f8ed652c6d9895d137be341c64d41b1ef4b1a86835d372fd",
+    "tools/record-native-friend-store-proof.py": "44b15c8ddf89fab29b28ef5745d173cb4d6fde3418d94270f0c310e14a41c00e"
+  },
+  "reconnect_proof": {
+    "path": "validation\\20261006-friend-store-native-reconnect.json",
+    "sha256": "fe3b6c4e86d273272deb7ed471e1d62b399aed12ca5aca95ef9231138fe97c15"
+  },
+  "observations": {
+    "before": "3fbaeb1bd4bee18a1219e93ecfd0a441b81af351f2f8f7bfdb977469feaf12c2",
+    "outgoing": "b65307ff14c024a9ebd751ff97c6106139290816723a28946174c522251bb2c1",
+    "accepted": "29bef2db2d4db2fafb47160071c21cd3763d9cbe548801138070c2598c08cf94",
+    "reconnected": "68299fb504bcbb12a1c851fadba1db85279606c94f760f4e35331093b739f80b",
+    "removed": "3c4b79e72885e94b3705a25224cec357875eb079f62eb2a5524f71be2ca88f03"
+  }
+}

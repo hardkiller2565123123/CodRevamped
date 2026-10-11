@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "passed": true,
+  "scope": "Isolated Windows build and original native dispatcher/reward-reader checks; deployment held during owner playtest",
+  "windows_server_sha256": "f3fed93658d0928ef501a5969691521f9bad08a16cf8566533865d89138b5cba",
+  "cpp_input_count": 94,
+  "source_archive_sha256": "627eb617147d87428c92b55c4505ee5f4ba2a01e8a0662fe64bd6d80c45a8a00",
+  "focused_progression_groups": 27,
+  "original_dispatcher_cases": 8,
+  "original_reward_cache_cases": 8,
+  "corrected_type": "ACHIEVEMENT",
+  "original_lowercase_type_rejected": true,
+  "protocol_evidence": [
+    {
+      "path": "data/achievement-dispatch-backend-20261007/windows-weapons.json",
+      "sha256": "645f5ee2508ffa1a5206106c91f8d9206e486d8dece86b2b0d549f4a9641f891"
+    },
+    {
+      "path": "data/achievement-dispatch-backend-20261007/windows-retry.json",
+      "sha256": "7d7c0a26f60fd3f3a320843b501ad2cd836612b4901a2030a2f3e1766be85c1b"
+    },
+    {
+      "path": "data/achievement-dispatch-backend-20261007/windows-catchup.json",
+      "sha256": "b21216de836b28b0457afb48bf51b7f15b8b2760438780e159c183aafa9efeca"
+    }
+  ],
+  "research_evidence": [
+    {
+      "path": "validation/20261007-achievement-dispatch-target.json",
+      "sha256": "e40017351f242d48ef36de34f1a99c70d73831872e0abb8d9d13df95b63d07b8"
+    },
+    {
+      "path": "validation/20261007-gunsmith-rewards-target.json",
+      "sha256": "064fa44990e308f274b07bef0d15a6e10b7917f36b3090657e9e8b6562010c63"
+    },
+    {
+      "path": "validation/20261007-gunsmith-progression-assets.json",
+      "sha256": "63ae4f335f986f85905bc8dfa3f93223b3fc7ae02259566f2e5d9d8d3da22974"
+    }
+  ],
+  "linux_compile_passed": false,
+  "linux_compile_attempted": false,
+  "server_restarted": false,
+  "deployed": false,
+  "game_recompiled": false,
+  "game_runs_performed": false,
+  "native_game_verified": false,
+  "full_backend_completed": false,
+  "held_live_server_sha256": "16f7efe4a7471436457f0f3cfe376a5d11e0adc609cceb6fcbfc876179bcfe4d",
+  "next_deployment_gate": "Owner finishes multiplayer playtest; compile/verify Linux binary before controlled deployment",
+  "reward_graph": {
+    "weapons": 51,
+    "blocks": 3610,
+    "rank_items": 2921,
+    "challenges": 685,
+    "negative_gate_rows": 62,
+    "backend_rewards_implemented": false
+  }
+}

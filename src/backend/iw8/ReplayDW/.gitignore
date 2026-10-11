@@ -1,0 +1,12 @@
+/build/
+/data/
+/replay-workstation/
+/.vscode/
+/.tooling/
+__pycache__/
+*.pyc
+*.pending
+*.log
+*.user
+
+/.toolchains/

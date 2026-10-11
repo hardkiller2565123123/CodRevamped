@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "passed": true,
+  "checks": [
+    "matching retry refreshes absolute XP without another award or rank-up toast",
+    "old accepted request refreshes the current total rather than rolling the client back",
+    "altered retry cannot change progression or emit a reward notification",
+    "REST retry of a binary accepted UUID refreshes the same snapshot without a second event",
+    "new REST-earned XP reaches the native rank-up notification and its retry retains the full domain delivery without another award",
+    "evicted hot receipt remains retryable and refreshes current XP through the validated archive",
+    "interrupted commit survives process/session restart and its retry restores the missing absolute update once XP is recovered",
+    "ordinary event retries do not manufacture progression, and iw8 updates retain their original context"
+  ],
+  "server_sha256": "1b4370e65972f5000db6686799be668a946303d0d190c370a3a4b2eecd73eef9",
+  "native_game_verified": false,
+  "fixture": "E:\\DW\\IW8\\data\\progression-retry-fixture-1791415295891599900"
+}

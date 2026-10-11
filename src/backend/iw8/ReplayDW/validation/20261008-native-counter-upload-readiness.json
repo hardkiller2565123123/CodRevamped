@@ -1,0 +1,69 @@
+{
+  "schema": 1,
+  "passed": true,
+  "generated_utc": "2026-10-08T08:23:55.354391+00:00",
+  "server_sha256": "78a2fb203957e382df60a432772035c529adb08b898d177c7559c4d1ad3c02bf",
+  "game_sha256": "638dab82f069be51f6450f9ed2744f0b049d34642c0b67ae30cde01b53ea16e5",
+  "backend_pid": 87281,
+  "game_pid": 18264,
+  "native_counter_upload_completion_verified": true,
+  "native_compensating_signed_upload_verified": true,
+  "native_counter_read_completion_verified": false,
+  "counter_id": 6,
+  "counter_name": "global_minutes",
+  "temporary_increment": 1,
+  "temporary_increment_reversed": true,
+  "write_interval_restored_minutes": 15,
+  "native_service_log": [
+    "2026-10-08T07:47:43Z TASK service=23 task=1 operation=global-counter-increments-persisted error=0 results=0",
+    "2026-10-08T07:49:26Z TASK service=23 task=1 operation=global-counter-increments-persisted error=0 results=0"
+  ],
+  "scope": "Stock incrementcounter and periodic writer sent positive and negative signed values; native pending records and remote tasks retired, durable aggregate returned to its exact baseline. Task 23/2 download remains unverified.",
+  "evidence": [
+    {
+      "path": "data/relay-continuity-20261008/native-counter-queued.json",
+      "sha256": "65780d6d4fc8762b6066c01026fe2bcc3cd60208ffa215801e3a2a65a6dbf557"
+    },
+    {
+      "path": "data/relay-continuity-20261008/native-counter-uploaded.json",
+      "sha256": "e1fa8a1166b68240cb21eec65db0ae3e1b87af87789aecb0be9c238b96ac3fb6"
+    },
+    {
+      "path": "data/relay-continuity-20261008/native-counter-compensated.json",
+      "sha256": "86189163cf71fd24c3c138b53fb94c4c9e347ee4a391402a886d7ddcaa3a5fce"
+    },
+    {
+      "path": "data/relay-continuity-20261008/native-counter-restored.json",
+      "sha256": "b6d9449146b00b0a928d60aaf9a2b83ba18e0431939e30c2ed2b5a81037e6c7f"
+    },
+    {
+      "path": "data/relay-continuity-20261008/deployment.json",
+      "sha256": "121a51c10d45ad8fb4a4fba0a325f24c703f802901ec665c1175e4d435aa4402"
+    },
+    {
+      "path": "data/relay-continuity-20261008/native-launch.json",
+      "sha256": "531701f1cba9dac339cd291bbaed21b09fcd400d0f4622a2a6256ff20f3519f2"
+    },
+    {
+      "path": "data/relay-continuity-20261008/counter-store-before.json",
+      "sha256": "a63a017f89064e30d8d52e2eec28ca1f3cd0ed283597eb017f2cb705eee741cf"
+    },
+    {
+      "path": "data/relay-continuity-20261008/counter-store-uploaded.json",
+      "sha256": "43a5b233eebacab052baa080c9c160cb4540816e5a22c706444dba322d78bab9"
+    },
+    {
+      "path": "data/relay-continuity-20261008/counter-store-restored.json",
+      "sha256": "a63a017f89064e30d8d52e2eec28ca1f3cd0ed283597eb017f2cb705eee741cf"
+    },
+    {
+      "path": "tools/record-native-counter-upload.py",
+      "sha256": "dc4929ee6ab02b2234abc7bd3e0d51e08147cfcd36daadd209f90268398d3468"
+    },
+    {
+      "path": "tools/observe-game.py",
+      "sha256": "9195eb741f087a21a3601ec3ce7c5ceedc592b6a9b2052e15c860b1ae67de9d6"
+    }
+  ],
+  "full_backend_complete": false
+}

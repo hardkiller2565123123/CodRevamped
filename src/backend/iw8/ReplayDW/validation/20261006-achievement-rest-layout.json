@@ -1,0 +1,789 @@
+{
+  "schema": 1,
+  "generated_utc": "2026-10-06T20:28:37.744294+00:00",
+  "audit_tool_sha256": "4b10277d9e635b221d995b53f77c088bef8713b381226496dd503b4f7fee7a6a",
+  "target_image_sha256": "68fb1cbcb2924182724004039de55a4c50152bb6561803c4898b7930b38132f0",
+  "functions": [
+    {
+      "va": 5403322976,
+      "candidate_alias": "bdReportEventsRequest::restSerializeRequest",
+      "size": 784,
+      "bytes_sha256": "187b14aa72da4630adc05af886165a8c75a0de77c4af08ba316ac72597552071",
+      "direct_calls": [
+        5384886016,
+        5403205104,
+        5403205216,
+        5403206128,
+        5403206608,
+        5403206704,
+        5403208320,
+        5403208992,
+        5403209280,
+        5403234320,
+        5403273184,
+        5403273200,
+        5403297712,
+        5403298080,
+        5403298096,
+        5403298576,
+        5403325456,
+        5403630208,
+        5403648864,
+        5403661680,
+        5404151648,
+        5404327024,
+        5404423984
+      ],
+      "rip_references": [
+        5409113800,
+        5409190352,
+        5409199136,
+        5409199148,
+        5409204176,
+        5409204208,
+        5409204224,
+        5409204248,
+        5409204256,
+        5409204280,
+        5409695504,
+        5463426040
+      ],
+      "literal_strings": [
+        "%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x",
+        "/v2/user-events/$batch/",
+        "accountType",
+        "events",
+        "idempotentRequestID",
+        "report_user_events_batch",
+        "titleID",
+        "userEvents",
+        "userID",
+        "user_events"
+      ],
+      "immediates": [
+        0,
+        1,
+        16,
+        25,
+        37,
+        272,
+        1347375956,
+        5384886016,
+        5403205104,
+        5403205216,
+        5403206128,
+        5403206608,
+        5403206704,
+        5403208320,
+        5403208992,
+        5403209280,
+        5403234320,
+        5403273184,
+        5403273200,
+        5403297712,
+        5403298080,
+        5403298096,
+        5403298576,
+        5403323066,
+        5403323189,
+        5403323197,
+        5403323199,
+        5403323632,
+        5403323664,
+        5403323723,
+        5403323725,
+        5403325456,
+        5403630208,
+        5403648864,
+        5403661680,
+        5404151648,
+        5404327024,
+        5404423984
+      ]
+    },
+    {
+      "va": 5403746560,
+      "candidate_alias": "bdReportUserEventsRequest::restSerializeRequest",
+      "size": 670,
+      "bytes_sha256": "ad2e36adfaa7eafd57616fea29cfce493b99f3fc3de7ea9a17ed7ee097d89150",
+      "direct_calls": [
+        5384886016,
+        5403205216,
+        5403206128,
+        5403206608,
+        5403206704,
+        5403208320,
+        5403208992,
+        5403234320,
+        5403297712,
+        5403298080,
+        5403298096,
+        5403298576,
+        5403630208,
+        5403648864,
+        5403661680,
+        5403745136,
+        5404151648,
+        5404327024,
+        5404423984
+      ],
+      "rip_references": [
+        5409190352,
+        5409204176,
+        5409204208,
+        5409204224,
+        5409204248,
+        5409204256,
+        5409204280,
+        5409695504,
+        5463426040
+      ],
+      "literal_strings": [
+        "%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x",
+        "/v2/user-events/$batch/",
+        "idempotentRequestID",
+        "report_user_events_batch",
+        "titleID",
+        "userEvents",
+        "user_events"
+      ],
+      "immediates": [
+        0,
+        1,
+        16,
+        25,
+        37,
+        272,
+        1347375956,
+        5384886016,
+        5403205216,
+        5403206128,
+        5403206608,
+        5403206704,
+        5403208320,
+        5403208992,
+        5403234320,
+        5403297712,
+        5403298080,
+        5403298096,
+        5403298576,
+        5403630208,
+        5403648864,
+        5403661680,
+        5403745136,
+        5403746650,
+        5403746773,
+        5403746781,
+        5403746783,
+        5403747124,
+        5403747158,
+        5403747160,
+        5403747173,
+        5403747195,
+        5404151648,
+        5404327024,
+        5404423984
+      ]
+    },
+    {
+      "va": 5403661680,
+      "candidate_alias": "q_bdAchievementsEngineRestRequest_addCommonParams",
+      "size": 283,
+      "bytes_sha256": "f018faf0ac498391b7c8f97be8547b4b7b4122aa4b61d2f1f984db31aa2bd850",
+      "direct_calls": [
+        5403297968,
+        5403298384,
+        5403298576,
+        5403647168,
+        5403647296,
+        5403650704,
+        5403651888,
+        5404327024
+      ],
+      "rip_references": [
+        5406550768,
+        5409204248,
+        5409232264,
+        5409232288,
+        5409872464
+      ],
+      "literal_strings": [
+        "DW-ABToken",
+        "ae.demonware.net",
+        "client",
+        "context",
+        "titleID"
+      ],
+      "immediates": [
+        1,
+        32,
+        94,
+        4096,
+        5403297968,
+        5403298384,
+        5403298576,
+        5403647168,
+        5403647296,
+        5403650704,
+        5403651888,
+        5403661842,
+        5403661844,
+        5403661893,
+        5403661945,
+        5404327024
+      ]
+    },
+    {
+      "va": 5403325456,
+      "candidate_alias": "sub_142103410",
+      "size": 297,
+      "bytes_sha256": "c985e073487c4d56cf3d8a46f0483309150598460568d1d30d781cc9a457648b",
+      "direct_calls": [
+        5403205792,
+        5403206128,
+        5403206704,
+        5403208320,
+        5403209280,
+        5404327024
+      ],
+      "rip_references": [
+        5406582392,
+        5408595628,
+        5409861600
+      ],
+      "literal_strings": [
+        "name",
+        "timestamp",
+        "values"
+      ],
+      "immediates": [
+        1,
+        6,
+        32,
+        5403205792,
+        5403206128,
+        5403206704,
+        5403208320,
+        5403209280,
+        5403325549,
+        5403325571,
+        5403325627,
+        5403325629,
+        5403325639,
+        5403325686,
+        5403325688,
+        5403325698,
+        5403325730,
+        5403325732,
+        5404327024
+      ]
+    },
+    {
+      "va": 5403745136,
+      "candidate_alias": "bdUserAchievementEvents::serialize__Atlas_36FB4E0",
+      "size": 371,
+      "bytes_sha256": "b8e56486dd936116316f656982583874071c9839353fca5f42a2f03f55e80dc2",
+      "direct_calls": [
+        5403205216,
+        5403206128,
+        5403206608,
+        5403206704,
+        5403208320,
+        5403209280,
+        5403273184,
+        5403273200,
+        5403325456
+      ],
+      "rip_references": [
+        5368709120,
+        5406255080,
+        5406282168,
+        5406287652,
+        5406639684,
+        5406639688,
+        5406639692,
+        5409113800,
+        5409199136,
+        5409199148,
+        5409242872,
+        5409242880,
+        5409242904,
+        5409984416
+      ],
+      "literal_strings": [
+        "accountType",
+        "bnet",
+        "events",
+        "firstPartyAccountType",
+        "firstPartyUserID",
+        "platform",
+        "ps4",
+        "steam",
+        "switch",
+        "unknown",
+        "userID",
+        "we",
+        "xb1"
+      ],
+      "immediates": [
+        -107,
+        1,
+        8,
+        32,
+        5403205216,
+        5403206128,
+        5403206608,
+        5403206704,
+        5403208320,
+        5403209280,
+        5403273184,
+        5403273200,
+        5403325456,
+        5403745376,
+        5403745383,
+        5403745424,
+        5403745455,
+        5403745484,
+        5403745486
+      ]
+    },
+    {
+      "va": 5403672560,
+      "candidate_alias": "sub_142157FF0",
+      "size": 33,
+      "bytes_sha256": "a54c9d85b8f577038fd8585249ce19c4bc7fbefae0863547b1166639db76f1a5",
+      "direct_calls": [
+        5403309360
+      ],
+      "rip_references": [
+        5409233344
+      ],
+      "literal_strings": [],
+      "immediates": [
+        32,
+        5403309360
+      ]
+    },
+    {
+      "va": 5403743936,
+      "candidate_alias": "bdReportUserEventsResponse::bdReportUserEventsResponse",
+      "size": 50,
+      "bytes_sha256": "ce5ceeea187dd7d63ca133f003e5fb455ea545db31d798bd2681c574f77d6df1",
+      "direct_calls": [
+        5403309360
+      ],
+      "rip_references": [
+        5409242744
+      ],
+      "literal_strings": [],
+      "immediates": [
+        0,
+        32,
+        5403309360
+      ]
+    },
+    {
+      "va": 5403672688,
+      "candidate_alias": "sub_142158070",
+      "size": 486,
+      "bytes_sha256": "57a40124884e7c3e93f1dae73e48d9e1970bf7fb5b61b3d00ad6023e46c1cb6d",
+      "direct_calls": [
+        5403174848,
+        5403198096,
+        5403198128,
+        5403198528,
+        5403198976,
+        5403199776,
+        5403202288,
+        5403202688,
+        5403309600,
+        5403410464,
+        5403653824,
+        5403656608,
+        5404151648
+      ],
+      "rip_references": [
+        5406611040,
+        5409233376,
+        5409861600,
+        5409861916,
+        5463426040
+      ],
+      "literal_strings": [
+        "allSucceeded",
+        "error",
+        "name",
+        "results"
+      ],
+      "immediates": [
+        0,
+        1,
+        129,
+        344,
+        12502,
+        5403174848,
+        5403198096,
+        5403198128,
+        5403198528,
+        5403198976,
+        5403199776,
+        5403202288,
+        5403202688,
+        5403309600,
+        5403410464,
+        5403653824,
+        5403656608,
+        5403672794,
+        5403672796,
+        5403672864,
+        5403672866,
+        5403672906,
+        5403672908,
+        5403672954,
+        5403672956,
+        5403673009,
+        5403673011,
+        5403673070,
+        5403673074,
+        5403673111,
+        5403673138,
+        5403673140,
+        5404151648
+      ]
+    },
+    {
+      "va": 5403744096,
+      "candidate_alias": "sub_142169760",
+      "size": 693,
+      "bytes_sha256": "14158058ad8a243fe6d100e30ba0c756f1322b66798bda1c8d8916e18f259d79",
+      "direct_calls": [
+        5403174848,
+        5403198096,
+        5403198128,
+        5403198528,
+        5403198976,
+        5403199776,
+        5403202288,
+        5403202688,
+        5403204288,
+        5403309600,
+        5403410464,
+        5403653824,
+        5403656608,
+        5404151648
+      ],
+      "rip_references": [
+        5406611040,
+        5409233376,
+        5409856240,
+        5409861600,
+        5409861916,
+        5463426040
+      ],
+      "literal_strings": [
+        "allSucceeded",
+        "error",
+        "name",
+        "results",
+        "status"
+      ],
+      "immediates": [
+        1,
+        64,
+        129,
+        360,
+        12502,
+        12506,
+        12507,
+        5403174848,
+        5403198096,
+        5403198128,
+        5403198528,
+        5403198976,
+        5403199776,
+        5403202288,
+        5403202688,
+        5403204288,
+        5403309600,
+        5403410464,
+        5403653824,
+        5403656608,
+        5403744202,
+        5403744204,
+        5403744293,
+        5403744295,
+        5403744320,
+        5403744362,
+        5403744364,
+        5403744433,
+        5403744435,
+        5403744487,
+        5403744489,
+        5403744538,
+        5403744554,
+        5403744558,
+        5403744579,
+        5403744590,
+        5403744635,
+        5403744637,
+        5403744669,
+        5403744726,
+        5403744747,
+        5403744750,
+        5404151648
+      ]
+    },
+    {
+      "va": 5404151648,
+      "candidate_alias": "j___security_check_cookie",
+      "size": 33,
+      "bytes_sha256": "b3ad9214d16630c341fb631525d4c716af9c64188c7dd173019434064eb0aac2",
+      "direct_calls": [],
+      "rip_references": [
+        5463426040
+      ],
+      "literal_strings": [],
+      "immediates": [
+        16,
+        65535,
+        5404151672,
+        5404151676,
+        5404151736
+      ]
+    },
+    {
+      "va": 5403309360,
+      "candidate_alias": "bdRESTResponse::bdRESTResponse",
+      "size": 26,
+      "bytes_sha256": "9900bc530bbf047e8fa9d84113e603602d183e74e05e39d780517b9b3a5d4436",
+      "direct_calls": [],
+      "rip_references": [
+        5409202336
+      ],
+      "literal_strings": [],
+      "immediates": []
+    },
+    {
+      "va": 5403174848,
+      "candidate_alias": "q_bdLoginStatus::endLoginTimer",
+      "size": 21,
+      "bytes_sha256": "930d174ae2485ba00d7916b6a8f8fc3adacec495c52b4b82fc5f9a9ed392da72",
+      "direct_calls": [],
+      "rip_references": [],
+      "literal_strings": [],
+      "immediates": []
+    }
+  ],
+  "bindings": [
+    {
+      "constructor": 5403672560,
+      "vtable": 5409233344,
+      "success": 5403672688
+    },
+    {
+      "constructor": 5403743936,
+      "vtable": 5409242744,
+      "success": 5403744096
+    }
+  ],
+  "response": {
+    "status": 200,
+    "body": {
+      "allSucceeded": true
+    }
+  },
+  "callback_vm": {
+    "passed": true,
+    "cases": [
+      {
+        "reader": 5403672688,
+        "case": "published-success",
+        "expected": 1,
+        "returned": 1,
+        "original_constructor_executed": true,
+        "native_error_codes": [],
+        "boundary_calls": [
+          5403198096,
+          5403198128,
+          5403198976,
+          5403309360,
+          5403653824
+        ]
+      },
+      {
+        "reader": 5403672688,
+        "case": "old-empty-204",
+        "expected": 0,
+        "returned": 0,
+        "original_constructor_executed": true,
+        "native_error_codes": [
+          12502
+        ],
+        "boundary_calls": [
+          5403174848,
+          5403198096,
+          5403198128,
+          5403309360,
+          5403309600,
+          5403410464,
+          5403653824,
+          5403656608
+        ]
+      },
+      {
+        "reader": 5403672688,
+        "case": "missing-success-field",
+        "expected": 0,
+        "returned": 0,
+        "original_constructor_executed": true,
+        "native_error_codes": [
+          12502
+        ],
+        "boundary_calls": [
+          5403174848,
+          5403198096,
+          5403198128,
+          5403198976,
+          5403309360,
+          5403309600,
+          5403410464,
+          5403653824,
+          5403656608
+        ]
+      },
+      {
+        "reader": 5403672688,
+        "case": "numeric-success-field",
+        "expected": 0,
+        "returned": 0,
+        "original_constructor_executed": true,
+        "native_error_codes": [
+          12502
+        ],
+        "boundary_calls": [
+          5403174848,
+          5403198096,
+          5403198128,
+          5403198976,
+          5403309360,
+          5403309600,
+          5403410464,
+          5403653824,
+          5403656608
+        ]
+      },
+      {
+        "reader": 5403672688,
+        "case": "false-without-results",
+        "expected": 0,
+        "returned": 0,
+        "original_constructor_executed": true,
+        "native_error_codes": [
+          12502
+        ],
+        "boundary_calls": [
+          5403174848,
+          5403198096,
+          5403198128,
+          5403198528,
+          5403198976,
+          5403309360,
+          5403309600,
+          5403410464,
+          5403653824,
+          5403656608
+        ]
+      },
+      {
+        "reader": 5403744096,
+        "case": "published-success",
+        "expected": 1,
+        "returned": 1,
+        "original_constructor_executed": true,
+        "native_error_codes": [],
+        "boundary_calls": [
+          5403198096,
+          5403198128,
+          5403198976,
+          5403309360,
+          5403653824
+        ]
+      },
+      {
+        "reader": 5403744096,
+        "case": "old-empty-204",
+        "expected": 0,
+        "returned": 0,
+        "original_constructor_executed": true,
+        "native_error_codes": [
+          0
+        ],
+        "boundary_calls": [
+          5403198096,
+          5403198128,
+          5403309360,
+          5403309600,
+          5403653824
+        ]
+      },
+      {
+        "reader": 5403744096,
+        "case": "missing-success-field",
+        "expected": 0,
+        "returned": 0,
+        "original_constructor_executed": true,
+        "native_error_codes": [
+          0
+        ],
+        "boundary_calls": [
+          5403198096,
+          5403198128,
+          5403198976,
+          5403309360,
+          5403309600,
+          5403653824
+        ]
+      },
+      {
+        "reader": 5403744096,
+        "case": "numeric-success-field",
+        "expected": 0,
+        "returned": 0,
+        "original_constructor_executed": true,
+        "native_error_codes": [
+          0
+        ],
+        "boundary_calls": [
+          5403198096,
+          5403198128,
+          5403198976,
+          5403309360,
+          5403309600,
+          5403653824
+        ]
+      },
+      {
+        "reader": 5403744096,
+        "case": "false-without-results",
+        "expected": 0,
+        "returned": 0,
+        "original_constructor_executed": true,
+        "native_error_codes": [
+          0
+        ],
+        "boundary_calls": [
+          5403198096,
+          5403198128,
+          5403198528,
+          5403198976,
+          5403309360,
+          5403309600,
+          5403653824
+        ]
+      }
+    ],
+    "boundaries": "JSON deserializer operations, base constructor and diagnostics are modeled; original constructors, callbacks and security-cookie check execute unchanged"
+  },
+  "native_game_event_callback_verified": false,
+  "full_backend_complete": false
+}

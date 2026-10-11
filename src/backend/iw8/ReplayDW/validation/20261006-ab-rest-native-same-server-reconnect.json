@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "passed": true,
+  "observed_utc": "2026-10-06T16:47:15.910371+00:00",
+  "game_sha256": "bdc091d35dc57f29c10ce14a4552467a5ce0d8c0d881d287ec31f09fc7ee9e18",
+  "server_sha256": "9d65291ea8732de9faedbb8183bc7e2c3aab55d28a856549406b9ad58e9c4a4f",
+  "compiler_job": "2bf03fc2aca04d16",
+  "sources": {
+    "integration/replay/DW_LocalPlatform.cpp": "617ea3aa74c1daf431f3f888061e3ccfc63aa13f0ce8f2552253849b4bf52606",
+    "tools/observe-game.py": "401ffb650c9143adafe88d2586115a059869dfb140d07c7c00f0d8b06119f0a8",
+    "tools/record-native-same-server-reconnect.py": "5b536546c132463d004f23c0532a362cb77ed3cbc40b3a79542b040b98183f6a"
+  },
+  "same_server_and_game_process_preserved": true,
+  "native_relay_dependency_callback_fallback_count": 0,
+  "old_native_relay_authenticated_disconnect_verified": true,
+  "fresh_native_relay_token_and_udp_association_verified": true,
+  "native_account_and_profile_preserved": true,
+  "native_fences_passing": 27,
+  "native_friend_lists_completed_and_empty": true,
+  "native_relay_stability_verified": true,
+  "stable_seconds": 64.393757,
+  "keepalive_replies": 7,
+  "rejected_packets": 0,
+  "established_event": {
+    "action": "established",
+    "expires": 1791308711,
+    "init_sha256": "7449b4d74178638526e01815647e0cf8cae4cf985dcd72e6a14191d4937118e3",
+    "port": 3077,
+    "relay_id": 488684158081122003,
+    "route": 2480911726,
+    "schema": 1,
+    "time": 1791305132,
+    "title": 5800,
+    "user": 76561202200765207,
+    "verification_sha256": "0a6ac9bd78e60ab8962293e2e7ec43baa996b2ceca740af8b06b594ec3152be4"
+  },
+  "disconnected_event": {
+    "action": "disconnect",
+    "expires": 1791308647,
+    "init_sha256": "5f3c8aeff320cc369978f3d4134cb8aabd17a7d0c2253213a9c8a27bf66cd1cf",
+    "port": 3077,
+    "relay_id": 488684158081122003,
+    "route": 3668989166,
+    "schema": 1,
+    "time": 1791305111,
+    "title": 5800,
+    "user": 76561202200765207,
+    "verification_sha256": "9d84e88414a08acfb649f01a6a097d97fe5a2e315c10859b4d904b232f13115e"
+  },
+  "relay_event_clock_resolution_seconds": 1,
+  "observations": {
+    "data/native-ab-rest-20261006/active.json": "5af76319fc54d8d6e3373ea33df157450660308980b05aaeac7b5c46d28e0f4a",
+    "data/native-ab-rest-20261006/same-server-after.json": "a051b798f0c07710e413e6f595fc003c38f138e943ac8da6d3b8ad4ad706cf28",
+    "data/native-ab-rest-20261006/same-server-stable.json": "f4c71f1c55167dbee7268d6a639fddce6cb4e84bc6739fa78fec4a2c2a107f25"
+  },
+  "map_or_match_test_performed": false,
+  "two_network_party_gameplay_verified": false,
+  "complete_backend_verified": false
+}

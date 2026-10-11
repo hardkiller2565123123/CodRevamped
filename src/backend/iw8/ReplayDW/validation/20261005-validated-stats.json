@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "passed": true,
+  "recorded_utc": "2026-10-05T19:13:57.854897+00:00",
+  "server_sha256": "ed12d937ef5df8fbb073d946fe9afcfb041201b298be70297906ddfe0ec0222e",
+  "game_sha256": "b0075e0dbde62758efe84e23318084608be5b3704f23c269d87254ce2aea58a8",
+  "game_recompiled": false,
+  "service": 4,
+  "task": 14,
+  "target_constructor": "0x1421286F0",
+  "target_token_capacity": 10240,
+  "target_success_result_count": 0,
+  "trusted_local_authorization_implemented": true,
+  "owner_time_and_payload_bounds_verified": true,
+  "atomic_stats_and_receipt_verified": true,
+  "exact_retry_idempotency_verified": true,
+  "authorization_conflict_rejected": true,
+  "malformed_publication_and_receipt_rejected": true,
+  "signed_overflow_rollback_verified": true,
+  "process_restart_persistence_verified": true,
+  "retail_token_payload_reconstructed": false,
+  "native_task_14_positive_callback_verified": false,
+  "native_menu_verified": true,
+  "native_passing_fences": 27,
+  "independent_protocol_checks": 159,
+  "coverage": {
+    "task_routes": 140,
+    "registered_handlers": 133,
+    "known_target_tasks_without_handler": 7
+  },
+  "map_tests_performed": false,
+  "full_backend_verified": false,
+  "evidence": [
+    {
+      "file": "data/lobby-verification.json",
+      "sha256": "0b71060c5fceab40f826847287138bcae6d0d7de5b1d40d0891f77aa546e946c"
+    },
+    {
+      "file": "data/native-backend-menu-verification.json",
+      "sha256": "390ea980a733710ad085f67442b33835d5c760cf8d6a5c31b0d280b2182b53ae"
+    },
+    {
+      "file": "data/native-validation-token-tasks-current.json",
+      "sha256": "14c3a4e1808efaa616145b64c4f6569efdebb5a6c73ab107009220d0029df7a8"
+    },
+    {
+      "file": "data/runtime-backend-validated-stats-final.json",
+      "sha256": "e89d08a74666f3036039f8d6226331cf32c30f002c1e4e5be3a43e975120f6b2"
+    },
+    {
+      "file": "data/native-backend-validated-stats-final.jpg",
+      "sha256": "b0b0a16d4eb63bee7243c45f1af36984c11141da56ab9c79779c61be78f5e638"
+    },
+    {
+      "file": "data/build-validated-stats.log",
+      "sha256": "e665189778c9d07fd674032917567e2a55bbff83db62479b7d383b4184f1f916"
+    },
+    {
+      "file": "data/test-lobby-validated-stats.log",
+      "sha256": "c9f4c633141560fc6a56110e5b8978906b6e419bc87b150b4a4855d47e4dd35e"
+    }
+  ]
+}

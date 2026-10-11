@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "passed": true,
+  "generated_utc": "2026-10-08T04:02:44.786875+00:00",
+  "private_game_sha256": "028d1f64588725672dc19256e866d1c9ed5313767a511fe6f1375e7a9be3e288",
+  "shipping_game_sha256": "83094947cb3b9f4d9389c22253f068ace94fb6354b73fcc84d2ef6a7901b548e",
+  "shipping_compiler_job": "a6d3abdffa644c31",
+  "backend_sha256": "8a4dfc1a42d292a8fa6174dffd0877c3590be0bd1f330f1b3f9e01d6d96f4983",
+  "source_sha256": "fe2fec456117a4961bb63023ccf4ca38026dc460a0e3460bc81a3ecf2310a12d",
+  "linked_ownership_cases": 10,
+  "linked_registration_target_verified": true,
+  "native_fences_passing": 27,
+  "native_level_one_loadouts_weapons_attachments_camos_watches_operator_selection_verified": true,
+  "native_selections": [
+    "M4A1",
+    "Corvus Custom Marksman",
+    "Nightfall",
+    "Atlanta FaZe watch",
+    "Ghost"
+  ],
+  "player_xp_unchanged": 0,
+  "main_ini_preserved": true,
+  "shipping_image_native_runtime_verified": true,
+  "all_assets_individually_tested": false,
+  "known_open_issue": "The separate platform session expires after one hour without automatic renewal; long-session validation remains open.",
+  "evidence": {
+    "unlocked-barrel-equipped.jpg": {
+      "path": "data/native-management-20261008/pair/alpha/unlocked-barrel-equipped.jpg",
+      "sha256": "8d55e8a37804d7bcc4a9dc3d6b72b7d657d34b52d7f67c124819e57ef649f52d"
+    },
+    "unlocked-camouflage-equipped.jpg": {
+      "path": "data/native-management-20261008/pair/alpha/unlocked-camouflage-equipped.jpg",
+      "sha256": "a4fcc7c2383ba9d9a8a46d989420638d13048c870002a1afc4cfb9da09d1dac8"
+    },
+    "unlocked-watch-equipped.jpg": {
+      "path": "data/native-management-20261008/pair/alpha/unlocked-watch-equipped.jpg",
+      "sha256": "b257cfc6a40a3dd672ff7a845163128d0167f8b5271cacc43dc6420b68c6abc5"
+    },
+    "unlocked-operator-equipped.jpg": {
+      "path": "data/native-management-20261008/pair/alpha/unlocked-operator-equipped.jpg",
+      "sha256": "9fcfd59d2c3b5f1b1bffb42d8e8fa2e1254fd72fa024fd46c800230c11c447a6"
+    },
+    "unlock-menu-state.json": {
+      "path": "data/native-management-20261008/pair/alpha/unlock-menu-state.json",
+      "sha256": "f9a1805a56550cd4eaf7cd23013399eb6502ea2f22c4586e53971463f7e8baeb"
+    }
+  },
+  "scope": "Actual private native menu selections with unlock_all=1 and rank=0. Linked off/on ownership and real-quantity preservation checks also executed. This does not certify every asset, matches, BR, all backend domains or the normal image runtime.",
+  "shipping_native_player_xp": 869220,
+  "shipping_native_fences_passing": 27
+}

@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "passed": true,
+  "checks": [
+    "linked unlock_all=0 applies all six encoded native controls and coalesces frame polling",
+    "linked unlock_all=1 applies all six encoded native controls and coalesces frame polling",
+    "linked Verdansk hide-column override preserves other maps, tables, bounds and the native table's bytes",
+    "linked Verdansk local/custom selector advertises loaded native game types while preserving other map/default consumers",
+    "linked Verdansk collision policy uses native numbered-tile mode only for absent combined packages with a present tile; 12 cases preserve other maps, modes, disabled DW and file errors"
+  ],
+  "executable_sha256": "ce152927aa50291258ad7cf8278becf656bc0f9092fdaf87e5ee5193500cbc21",
+  "native_game_verified": false,
+  "modeled_boundaries": [
+    "Win32 loading/path/time",
+    "identity/config getters",
+    "dvar lookup/set",
+    "native row selector",
+    "Win32 file attributes/error"
+  ],
+  "tool_sha256": "45a45b60c21121a6e4fe3b324d5dc5e63e523052bc2496af94df865d67fe1a4c"
+}

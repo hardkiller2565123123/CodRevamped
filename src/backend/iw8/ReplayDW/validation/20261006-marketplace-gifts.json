@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "created_utc": "2026-10-06T07:11:33.988855+00:00",
+  "server_sha256": "f2ff2fc90f022b6446850710fbaceea03f0cd11efdd347f73a43fee7aa2b61d9",
+  "game_sha256": "b326981a9718cedbc05228d40bef8b2adcd6be89307b2cde7d8e878a3ca67885",
+  "engine_recompiled": false,
+  "suite_grouped_checks": 209,
+  "covered_checks": [
+    "gift publication opt-in, existing local accounts and boolean schema enforced before debit",
+    "mixed self/gift SKU orders debit only buyer, grant exact recipient items/currency and return native coupons with recipient owner and authenticated buyer",
+    "recipient overflow rolls back the entire multi-account intent; retry recipient changes conflict without side effects",
+    "complete journal checksum/title/owner/size/current-image validation precedes every checkpoint; damaged or conflicting intents block reads without overwriting any account",
+    "multi-account recovery handles interruption before, between and after account checkpoints and returns the original response without another debit/grant",
+    "gift disk failure retains the complete flushed intent, blocks inventory/wallet reads, then recovers both accounts and returns the exact retry without another debit or grant",
+    "fresh server process rolls forward an interrupted gift before any marketplace read/write and preserves exact owner retry despite removed offers/rules"
+  ],
+  "native_startup_reconnect_receipt": "validation\\20261006-gifts-native-reconnect.json",
+  "native_startup_reconnect_receipt_sha256": "8e7751dfea7d8f2b7757651bcc8f20b8306b3994be13163c9de509bcfc5b8703",
+  "lobby_verification_sha256": "3f4cbf52f7b2a5bc0306e6260509f142e080e54287278b55b7ccc845d6be092f",
+  "source_sha256": {
+    "src/marketplace_services.cpp": "6a8c31cfd3e3cd07391586739a2b8e827cee9e418bc73495f8d0cebdba9d6f79",
+    "tools/gift_fixtures.py": "035eb28abbbb26d108985e54f39ba46d61f72555fa215fd15a6316085edcccde",
+    "tools/purchase_fixtures.py": "d0ba0afd9eaa74bfc68f0d72dc7842853ab72ed9bf99e0d96e77630da89028a9",
+    "tools/test-lobby.py": "99235927a1c58a9c54403c66d29cd7be469c47fc413b064b104ecb9cfa293bac"
+  },
+  "native_positive_gift_callback_verified": false,
+  "native_gift_menu_verified": false,
+  "two_network_gameplay_verified": false,
+  "map_or_match_test_performed": false,
+  "complete_backend_verified": false,
+  "native_ui_limit": "Terms of Agreement screen remained unaccepted"
+}

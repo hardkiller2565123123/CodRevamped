@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "passed": true,
+  "checks": [
+    "native rank-one group grants missing ownership while retaining existing stack, metadata and balances",
+    "ordinary earned XP does not republish ownership or repeat idle reward notifications",
+    "accepted retry refreshes absolute owned quantities without duplicate grants or XP",
+    "changed ownership refreshes its native snapshot even when weapon XP is unchanged",
+    "negative-gate ammo and challenge-dependent camo tier items are not rank grants",
+    "XP and inventory share a flushed intent; blocked writes fence both reads and idle recovery completes the whole window",
+    "retry after interrupted cross-domain recovery cannot add XP or increase item quantities again",
+    "restart/reconnect preserves ownership and synchronizes each weapon exactly once"
+  ],
+  "server_sha256": "5fd57abf75163f3530852e8f3c4559aaf5fdec2ae9d4bb7f5f327103c167a341",
+  "fixture_directory": "E:\\DW\\IW8\\data\\rank-grants-fixture-1791416223000447400",
+  "native_game_verified": false
+}

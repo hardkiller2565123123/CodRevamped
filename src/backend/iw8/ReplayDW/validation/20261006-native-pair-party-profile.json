@@ -1,0 +1,125 @@
+{
+  "schema": 1,
+  "recorded_utc": "2026-10-06T18:35:02.052976+00:00",
+  "passed": true,
+  "private_build_job": "728b618c35724535",
+  "game_sha256": "73ded44317c35d6efcfeb9ca9f5fa03a20f73e41926e6ea3a0d6c94423db7644",
+  "server_sha256": "9d65291ea8732de9faedbb8183bc7e2c3aab55d28a856549406b9ad58e9c4a4f",
+  "private_test_home_source_sha256": "f02dc9aeed830669a6fcb38c4e8e920175853c21e6328bf7263f72a0b0b4e22c",
+  "compilation_gates": {
+    "unresolved_symbols": 0,
+    "relocation_audit_passed": true,
+    "private_linked_body_checks": 28,
+    "vm_os_boundaries_simulated": true
+  },
+  "root_game_working_directory": "E:\\IW8\\Builds\\1.20-replay",
+  "separate_native_profile_and_cache_paths_verified": true,
+  "cache_files": {
+    "alpha": [
+      {
+        "filename": "toc0.dcache",
+        "bytes": 984192
+      },
+      {
+        "filename": "toc1.dcache",
+        "bytes": 984192
+      },
+      {
+        "filename": "data0.dcache",
+        "bytes": 0
+      },
+      {
+        "filename": "data1.dcache",
+        "bytes": 131660
+      }
+    ],
+    "bravo": [
+      {
+        "filename": "toc0.dcache",
+        "bytes": 984192
+      },
+      {
+        "filename": "toc1.dcache",
+        "bytes": 984192
+      },
+      {
+        "filename": "data0.dcache",
+        "bytes": 0
+      },
+      {
+        "filename": "data1.dcache",
+        "bytes": 131660
+      }
+    ]
+  },
+  "distinct_automatically_created_native_identities_verified": true,
+  "seeded_friendships_used": false,
+  "native_name_search_invitation_acceptance_and_online_presence_verified": true,
+  "native_two_game_private_party_join_verified": true,
+  "native_shared_party_channel_member_and_host_callbacks_verified": true,
+  "native_party_channel": 15032754501366106795,
+  "native_local_settings_persistence_across_new_process_verified": true,
+  "native_profile_setting_restored": true,
+  "native_friend_removal_completion_and_two_client_list_cleanup_verified": true,
+  "native_startup_fences_passing_per_client": 27,
+  "evidence": {
+    "alpha": {
+      "after-cache-fix": {
+        "path": "data/native-pair-20261006/alpha/after-cache-fix.json",
+        "sha256": "a3fcedd74b2a2ce4441b71263c1eedef3f8baa06864f5386956bbb3a98284600"
+      },
+      "joined-party": {
+        "path": "data/native-pair-20261006/alpha/joined-party.json",
+        "sha256": "0ff6fe231ce36a222b55a4b15a43be7d39064062d3aa3b586f74c3f962ab2e98"
+      },
+      "cleanup": {
+        "path": "data/native-pair-20261006/alpha/cleanup.json",
+        "sha256": "348f494468cc157dabe1a3bb3be092b52867472a6eb288153099abb62bab1e51"
+      },
+      "native_party_roster_image": {
+        "path": "data/native-pair-20261006/alpha/party-roster.jpg",
+        "sha256": "0376b2e029eca8e9a40678f7fe4d5844d3746119b8a41c8b203fc15e1c9d454b"
+      }
+    },
+    "bravo": {
+      "after-cache-fix": {
+        "path": "data/native-pair-20261006/bravo/after-cache-fix.json",
+        "sha256": "ef42b76e6aa4365d68840a27d89d6acb0167a0d1320852cee33be84477c4cd15"
+      },
+      "joined-party": {
+        "path": "data/native-pair-20261006/bravo/joined-party.json",
+        "sha256": "2b8432482f7009ca95b9e90d213cb53b9adb1624e9e639e117dab64d67e79215"
+      },
+      "cleanup": {
+        "path": "data/native-pair-20261006/bravo/cleanup.json",
+        "sha256": "48b8f5ec399e0c86f4e6aa2e52f06f4c360fc6e82305116d0b401c9b55323101"
+      },
+      "native_party_roster_image": {
+        "path": "data/native-pair-20261006/bravo/party-roster.jpg",
+        "sha256": "f67dc6db5adf44d74dc60222ca37fc67d68c24178a83122761088c141ee7be0b"
+      },
+      "setting-written": {
+        "path": "data/native-pair-20261006/bravo/setting-written.json",
+        "sha256": "498a867638f3c1073c39c9947d56bed5626116538c9563af0ae90827e9950196"
+      },
+      "setting-after-restart": {
+        "path": "data/native-pair-20261006/bravo/setting-after-restart.json",
+        "sha256": "7dd9c26aead7687e78d11c6fb96440ed33e6813e72f901cd5cc32dbc5e1549ae"
+      },
+      "after-onboarding-restart": {
+        "path": "data/native-pair-20261006/bravo/after-onboarding-restart.json",
+        "sha256": "2117d719a70140448b6b1bed97ce80a3d3e4552c99ae9d08f07a6daad95d8902"
+      }
+    }
+  },
+  "multiplayer_scope": "Two real native game processes on one Windows machine, private-party membership through Social/Join Game. No map launched.",
+  "observed_open_issues": [
+    "Remove Friend confirmation displayed nil for the selected peer name",
+    "Immediate post-removal native presence subscription count remained one"
+  ],
+  "relay_peer_data_forwarding_verified": false,
+  "cross_network_gameplay_verified": false,
+  "full_backend_verified": false,
+  "shipping_executable_replaced": false,
+  "owned_root_test_artifacts_removed": true
+}

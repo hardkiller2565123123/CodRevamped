@@ -111,6 +111,12 @@ namespace
     constexpr std::uint32_t kMW120ImageSize = 0x1324B000u;
     constexpr std::uint32_t kMW120EntryPoint = 0x021CDC10u;
 
+    // Exact Replay 1.20 native ownership state. These are never touched unless
+    // the live PE fingerprint matches the exact 1.20 image above.
+    constexpr std::uintptr_t kMW120AuthRva = 0x04622910u;
+    constexpr std::uintptr_t kMW120OwnershipFieldRva = kMW120AuthRva + 0x2F4u;
+    constexpr std::uintptr_t kMW120AuthReadyByteRva = kMW120AuthRva + 0x2D0u;
+
     constexpr std::uint32_t kMW123Timestamp = 0x5EFCF351u;
     constexpr std::uint32_t kMW123ImageSize = 0x19A42C00u;
     constexpr std::uint32_t kMW123EntryPoint = 0x0493E908u;
@@ -5112,6 +5118,766 @@ namespace
         CloseHandle(pi.hProcess);
     }
 
+
+    // -------------------------------------------------------------------------
+    // Frozen MW2019 1.20 compatibility port
+    //
+    // The ReplayDW project also ships a set of replacement compilation units
+    // intended for a statically recompiled 1.20 executable.  CodRevamped does
+    // not require those source files beside the game.  The small set of
+    // replacements which must run inside the stock executable are translated
+    // here into exact-build MinHook detours.  Everything else remains
+    // server-driven through CodRevamped's native BGS/Auth3/LSG front end.
+    //
+    // IMPORTANT: every target below is scoped to the exact 1.20 fingerprint.
+    // Newer builds never execute or install these hooks.
+    // -------------------------------------------------------------------------
+
+    struct Replay120StringTable
+    {
+        const char* name;
+        std::int32_t columns;
+        std::int32_t rows;
+        std::int32_t uniqueCount;
+        std::uint32_t reserved;
+        const std::uint16_t* indices;
+        const std::uint32_t* hashes;
+        const char* const* strings;
+    };
+    static_assert(sizeof(Replay120StringTable) == 48);
+
+    volatile LONG g_replay120CompatInstalled = 0;
+
+    template <typename T>
+    T Replay120Function(const std::uintptr_t rva) noexcept
+    {
+        const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+        return reinterpret_cast<T>(base + rva);
+    }
+
+    bool Replay120CompatEnabled() noexcept
+    {
+        if (CurrentStartupCompatBuild() != StartupCompatBuild::MW120)
+            return false;
+
+        wchar_t value[8]{};
+        const DWORD length = GetEnvironmentVariableW(
+            L"CODREVAMPED_120_NATIVE_COMPAT", value, static_cast<DWORD>(std::size(value)));
+        if (length && value[0] == L'0')
+            return false;
+        return true;
+    }
+
+    bool Replay120EqualNoCase(const char* left, const char* right) noexcept
+    {
+        if (!left || !right)
+            return false;
+        for (;; ++left, ++right)
+        {
+            char a = *left;
+            char b = *right;
+            if (a >= 'A' && a <= 'Z') a = static_cast<char>(a + ('a' - 'A'));
+            if (b >= 'A' && b <= 'Z') b = static_cast<char>(b + ('a' - 'A'));
+            if (a != b)
+                return false;
+            if (!a)
+                return true;
+        }
+    }
+
+    using Replay120InviteFn =
+        std::uint64_t(__fastcall*)(void*, unsigned, const std::uint64_t*,
+                                  const std::uint64_t*, int);
+    using Replay120ChatFn =
+        void(__fastcall*)(void*, unsigned, std::uint64_t, const char*, bool);
+    using Replay120PingFn = unsigned(__fastcall*)(unsigned);
+    using Replay120StartupProbeFn = unsigned long(__fastcall*)(void*);
+    using Replay120GdiCloneFn = void(__fastcall*)();
+    using Replay120StringLookupFn =
+        const char*(__fastcall*)(const Replay120StringTable*, int, const char*, int);
+
+    Replay120InviteFn g_replay120InviteOriginal = nullptr;
+    Replay120ChatFn g_replay120ChatOriginal = nullptr;
+    Replay120PingFn g_replay120PingOriginal = nullptr;
+    Replay120StartupProbeFn g_replay120StartupProbeOriginal = nullptr;
+    Replay120GdiCloneFn g_replay120GdiCloneOriginal = nullptr;
+    Replay120StringLookupFn g_replay120StringLookupOriginal = nullptr;
+
+    std::uint64_t __fastcall Replay120InviteDetour(
+        void* manager, unsigned controller, const std::uint64_t* xuids,
+        const std::uint64_t*, int count)
+    {
+        // ReplayDW's replacement bypasses the launcher/Battle.net invitation
+        // branch and keeps the game's native Demonware serializer/task flow.
+        if (!manager || !xuids || controller >= 8 || count <= 0)
+            return 0;
+        if (count > 16)
+            count = 16;
+
+        using NativeDwInviteFn =
+            std::uint64_t(__fastcall*)(void*, unsigned, const std::uint64_t*, int);
+        const auto nativeDwInvite = Replay120Function<NativeDwInviteFn>(0x00F5C390ull);
+        ConsolePrint("[REPLAY120] routing %d invitation(s) through native DW messaging\r\n", count);
+        return nativeDwInvite ? nativeDwInvite(manager, controller, xuids, count) : 0;
+    }
+
+    void __fastcall Replay120ChatDetour(
+        void* manager, unsigned controller, std::uint64_t xuid,
+        const char* name, bool initiated)
+    {
+        if (!manager || controller >= 8 || !xuid || !name)
+            return;
+
+        using NativeChatCreateFn =
+            void*(__fastcall*)(void*, unsigned, std::uint64_t, std::uint64_t,
+                               const char*, bool);
+        const auto nativeCreate = Replay120Function<NativeChatCreateFn>(0x00F3BB20ull);
+        if (nativeCreate)
+            nativeCreate(manager, controller, xuid, xuid, name, initiated);
+    }
+
+    unsigned __fastcall Replay120PingDetour(unsigned client)
+    {
+        // Use the client's own ACK RTT.  This is the helper used for normal
+        // remote clients and avoids the listen-host "minimum remote ping" path.
+        using NativeClientPingFn = unsigned(__fastcall*)(unsigned);
+        const auto nativePing = Replay120Function<NativeClientPingFn>(0x01370C40ull);
+        return nativePing ? nativePing(client)
+                          : (g_replay120PingOriginal ? g_replay120PingOriginal(client) : 0);
+    }
+
+    unsigned long __fastcall Replay120StartupProbeDetour(void*)
+    {
+        // The original private startup worker executes a privileged MOV CR0.
+        // ReplayDW proved that the only state consumed by the parent is the
+        // allocation published through gl_14E5C2A58.  Preserve that ownership
+        // contract while omitting the invalid user-mode instruction.
+        using NativeMallocFn = void*(__fastcall*)(std::uint64_t);
+        const auto nativeMalloc = Replay120Function<NativeMallocFn>(0x0223AD14ull);
+        void* allocation = nativeMalloc ? nativeMalloc(0x20000) : nullptr;
+
+        const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+        auto* published = reinterpret_cast<std::uintptr_t*>(base + 0x0E5C2A58ull);
+        if (published)
+            *published = reinterpret_cast<std::uintptr_t>(allocation) - 4096ull;
+        return 0;
+    }
+
+    void __fastcall Replay120GdiCloneDetour()
+    {
+        // Windows' real loader has already initialized GDI.  The frozen 1.20
+        // private-image constructor tries to invoke GdiDllInitialize through
+        // loader-private state and can null-call on current Windows.
+    }
+
+    const char* __fastcall Replay120StringLookupDetour(
+        const Replay120StringTable* table, int column, const char* value, int resultColumn)
+    {
+        if (!table)
+            return "";
+        if (!table->columns || column < 0 || resultColumn < 0 ||
+            resultColumn >= table->columns)
+            return "";
+
+        using NativeFindRowFn =
+            int(__fastcall*)(const Replay120StringTable*, int, const char*);
+        const auto findRow = Replay120Function<NativeFindRowFn>(0x013E2FE0ull);
+        if (!findRow)
+            return g_replay120StringLookupOriginal
+                       ? g_replay120StringLookupOriginal(table, column, value, resultColumn)
+                       : "";
+
+        const int row = findRow(table, column, value);
+        if (row < 0 || row >= table->rows)
+            return "";
+
+        const auto cell = table->indices[row * table->columns + resultColumn];
+        if (cell >= static_cast<std::uint32_t>(table->uniqueCount))
+            return "";
+
+        // Preserve ReplayDW's Verdansk custom-game availability correction.
+        if (column == 0 && resultColumn == 28 &&
+            Replay120EqualNoCase(table->name, "mp/mapInfo.csv") &&
+            Replay120EqualNoCase(value, "mp_donetsk"))
+            return "0";
+
+        return table->strings[cell];
+    }
+
+    bool Replay120InstallHook(const char* label, const std::uintptr_t rva,
+                              void* detour, void** original) noexcept
+    {
+        const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+        if (!base || !g_liveImageSize || rva >= g_liveImageSize)
+        {
+            ConsolePrint("[REPLAY120] skip hook=%s rva=0x%llX imageSize=0x%X\r\n",
+                label, static_cast<unsigned long long>(rva), g_liveImageSize);
+            return false;
+        }
+
+        void* target = reinterpret_cast<void*>(base + rva);
+        const MH_STATUS create = MH_CreateHook(target, detour, original);
+        if (create != MH_OK && create != MH_ERROR_ALREADY_CREATED)
+        {
+            ConsolePrint("[REPLAY120] hook-create-failed label=%s rva=0x%llX status=%d\r\n",
+                label, static_cast<unsigned long long>(rva), static_cast<int>(create));
+            return false;
+        }
+
+        const MH_STATUS enable = MH_EnableHook(target);
+        if (enable != MH_OK && enable != MH_ERROR_ENABLED)
+        {
+            ConsolePrint("[REPLAY120] hook-enable-failed label=%s rva=0x%llX status=%d\r\n",
+                label, static_cast<unsigned long long>(rva), static_cast<int>(enable));
+            return false;
+        }
+
+        ConsolePrint("[REPLAY120] hook-installed label=%s rva=0x%llX\r\n",
+            label, static_cast<unsigned long long>(rva));
+        return true;
+    }
+
+    void InstallReplay120NativeCompatibility() noexcept
+    {
+        if (!Replay120CompatEnabled())
+            return;
+        if (InterlockedCompareExchange(&g_replay120CompatInstalled, 1, 0) != 0)
+            return;
+
+        const MH_STATUS init = MH_Initialize();
+        if (init != MH_OK && init != MH_ERROR_ALREADY_INITIALIZED)
+        {
+            ConsolePrint("[REPLAY120] MH_Initialize failed status=%d\r\n",
+                static_cast<int>(init));
+            InterlockedExchange(&g_replay120CompatInstalled, 0);
+            return;
+        }
+
+        unsigned installed = 0;
+        installed += Replay120InstallHook(
+            "DW_SendInvitation", 0x00F5C750ull,
+            reinterpret_cast<void*>(&Replay120InviteDetour),
+            reinterpret_cast<void**>(&g_replay120InviteOriginal)) ? 1u : 0u;
+        installed += Replay120InstallHook(
+            "DW_ChatCreate", 0x00F3BA70ull,
+            reinterpret_cast<void*>(&Replay120ChatDetour),
+            reinterpret_cast<void**>(&g_replay120ChatOriginal)) ? 1u : 0u;
+        installed += Replay120InstallHook(
+            "SV_ClientMP_GetLocalClientPing", 0x013711C0ull,
+            reinterpret_cast<void*>(&Replay120PingDetour),
+            reinterpret_cast<void**>(&g_replay120PingOriginal)) ? 1u : 0u;
+        installed += Replay120InstallHook(
+            "WindowsStartupProbe", 0x01489DA0ull,
+            reinterpret_cast<void*>(&Replay120StartupProbeDetour),
+            reinterpret_cast<void**>(&g_replay120StartupProbeOriginal)) ? 1u : 0u;
+        installed += Replay120InstallHook(
+            "GdiCloneBootstrap", 0x003061A0ull,
+            reinterpret_cast<void*>(&Replay120GdiCloneDetour),
+            reinterpret_cast<void**>(&g_replay120GdiCloneOriginal)) ? 1u : 0u;
+        installed += Replay120InstallHook(
+            "StringTableLookup", 0x013E2BA0ull,
+            reinterpret_cast<void*>(&Replay120StringLookupDetour),
+            reinterpret_cast<void**>(&g_replay120StringLookupOriginal)) ? 1u : 0u;
+
+        ConsolePrint(
+            "[REPLAY120] native compatibility installed=%u/6 "
+            "transport/auth/progression/playlists/matchmaking/inventory remain server-driven\r\n",
+            installed);
+    }
+
+
+    // -------------------------------------------------------------------------
+    // Exact MW2019 1.20 premium ownership compatibility.
+    //
+    // These two pieces used to live only in diagnostics/MW2019Diag.cpp and
+    // diagnostics/MW2019MemoryScanner.cpp. Those files are not compiled by the
+    // real MW2019 Visual Studio project, which meant the Purchase Modern
+    // Warfare gate stayed active even though the source existed.
+    //
+    // Keep this deliberately narrow:
+    //   1) advertise only IsPremiumPlayer/IsPremiumPlayerReady to Lua;
+    //   2) pin only the exact 1.20 OwnsBaseGame encoded field after auth is ready.
+    // Sign-in/fence/content/DW state remains server-driven.
+    // -------------------------------------------------------------------------
+
+    bool MW120ExactLiveBuild() noexcept
+    {
+        return CurrentStartupCompatBuild() == StartupCompatBuild::MW120 &&
+               g_liveTimestamp == kMW120Timestamp &&
+               g_liveImageSize == kMW120ImageSize &&
+               g_liveEntryPoint == kMW120EntryPoint;
+    }
+
+    bool MW120WritableRange(const void* address, std::size_t bytes) noexcept
+    {
+        if (!address || !bytes)
+            return false;
+
+        MEMORY_BASIC_INFORMATION mbi{};
+        if (VirtualQuery(address, &mbi, sizeof(mbi)) != sizeof(mbi) ||
+            mbi.State != MEM_COMMIT)
+            return false;
+
+        const DWORD protection = mbi.Protect & 0xFFu;
+        const bool writable =
+            protection == PAGE_READWRITE ||
+            protection == PAGE_WRITECOPY ||
+            protection == PAGE_EXECUTE_READWRITE ||
+            protection == PAGE_EXECUTE_WRITECOPY;
+
+        if (!writable || (mbi.Protect & (PAGE_GUARD | PAGE_NOACCESS)))
+            return false;
+
+        const auto begin = reinterpret_cast<std::uintptr_t>(address);
+        const auto end = reinterpret_cast<std::uintptr_t>(mbi.BaseAddress) + mbi.RegionSize;
+        return begin <= end && bytes <= end - begin;
+    }
+
+    std::uint32_t MW120TransformOwnership(
+        std::uint32_t value, std::uintptr_t address, std::uint32_t key) noexcept
+    {
+        std::uint32_t result = 0;
+        for (unsigned i = 0; i < 4; ++i)
+        {
+            const std::uint32_t x =
+                static_cast<std::uint32_t>(address + i) ^ key;
+            const std::uint32_t product = x * (x + 2u);
+            const std::uint32_t byte =
+                ((value >> (8u * i)) ^ product ^ (product >> 8u)) & 0xFFu;
+            result |= byte << (8u * i);
+        }
+        return result;
+    }
+
+    enum class MW120OwnershipResult
+    {
+        NotExactBuild,
+        WaitingForAuth,
+        AlreadyOwned,
+        Pinned,
+        Failed
+    };
+
+    MW120OwnershipResult MW120PinNativeOwnership(
+        bool& ownedOut, int& authStateOut, unsigned& readyByteOut) noexcept
+    {
+        ownedOut = false;
+        authStateOut = 0;
+        readyByteOut = 0;
+
+        if (!MW120ExactLiveBuild())
+            return MW120OwnershipResult::NotExactBuild;
+
+        const auto base =
+            reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+        if (!base)
+            return MW120OwnershipResult::Failed;
+
+        const auto auth = base + kMW120AuthRva;
+        const auto field = base + kMW120OwnershipFieldRva;
+
+        if (!MW120WritableRange(reinterpret_cast<const void*>(auth), 0x318u) ||
+            !MW120WritableRange(reinterpret_cast<const void*>(field), 12u))
+            return MW120OwnershipResult::Failed;
+
+        __try
+        {
+            authStateOut = *reinterpret_cast<volatile int*>(auth);
+            readyByteOut = *reinterpret_cast<volatile std::uint8_t*>(
+                base + kMW120AuthReadyByteRva);
+
+            // Exact 1.20 completed auth state.
+            if (authStateOut != 2)
+                return MW120OwnershipResult::WaitingForAuth;
+
+            const std::uint32_t key =
+                *reinterpret_cast<volatile std::uint32_t*>(field + 8u);
+            const std::uint8_t shift =
+                static_cast<std::uint8_t>(
+                    *reinterpret_cast<volatile std::uint8_t*>(field + 4u) & 31u);
+
+            const std::uint32_t encoded =
+                *reinterpret_cast<volatile std::uint32_t*>(field);
+            const std::uint32_t decoded =
+                MW120TransformOwnership(encoded, field, key);
+
+            ownedOut = ((decoded >> shift) & 1u) != 0;
+            if (ownedOut)
+                return MW120OwnershipResult::AlreadyOwned;
+
+            // Preserve every other encoded flag in this field. Flip only the
+            // ownership bit rather than replacing the whole decoded value.
+            const std::uint32_t wantedDecoded =
+                decoded | (std::uint32_t{1} << shift);
+            const std::uint32_t wantedEncoded =
+                MW120TransformOwnership(wantedDecoded, field, key);
+
+            *reinterpret_cast<volatile std::uint32_t*>(field) = wantedEncoded;
+
+            const std::uint32_t verifyEncoded =
+                *reinterpret_cast<volatile std::uint32_t*>(field);
+            const std::uint32_t verifyDecoded =
+                MW120TransformOwnership(verifyEncoded, field, key);
+
+            ownedOut = ((verifyDecoded >> shift) & 1u) != 0;
+            return ownedOut
+                ? MW120OwnershipResult::Pinned
+                : MW120OwnershipResult::Failed;
+        }
+        __except (EXCEPTION_EXECUTE_HANDLER)
+        {
+            return MW120OwnershipResult::Failed;
+        }
+    }
+
+    struct MW120LuaReg
+    {
+        const char* name;
+        int (*func)(void*);
+    };
+
+    using MW120LuaOpenLibFn =
+        void (*)(void*, const char*, const MW120LuaReg*, std::uint32_t);
+    using MW120LuaPushBooleanFn = void (*)(void*, int);
+
+    MW120LuaOpenLibFn g_mw120LuaOpenLibOriginal = nullptr;
+    MW120LuaPushBooleanFn g_mw120LuaPushBoolean = nullptr;
+    volatile LONG g_mw120PremiumHookInstalled = 0;
+    volatile LONG g_mw120OwnershipThreadStarted = 0;
+
+    bool MW120PatternByte(const char*& cursor, unsigned char& value, bool& wildcard) noexcept
+    {
+        while (*cursor == ' ')
+            ++cursor;
+
+        if (!*cursor)
+            return false;
+
+        if (*cursor == '?')
+        {
+            wildcard = true;
+            ++cursor;
+            if (*cursor == '?')
+                ++cursor;
+            return true;
+        }
+
+        auto hex = [](char c) noexcept -> int
+        {
+            if (c >= '0' && c <= '9') return c - '0';
+            if (c >= 'a' && c <= 'f') return 10 + c - 'a';
+            if (c >= 'A' && c <= 'F') return 10 + c - 'A';
+            return -1;
+        };
+
+        const int hi = hex(cursor[0]);
+        const int lo = hex(cursor[1]);
+        if (hi < 0 || lo < 0)
+            return false;
+
+        value = static_cast<unsigned char>((hi << 4) | lo);
+        wildcard = false;
+        cursor += 2;
+        return true;
+    }
+
+    std::uintptr_t MW120ScanMainImage(const char* pattern) noexcept
+    {
+        if (!pattern || !MW120ExactLiveBuild())
+            return 0;
+
+        const auto base =
+            reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+        if (!base || !g_liveImageSize)
+            return 0;
+
+        unsigned char bytes[128]{};
+        bool wildcards[128]{};
+        std::size_t count = 0;
+        const char* p = pattern;
+
+        while (*p && count < std::size(bytes))
+        {
+            unsigned char value = 0;
+            bool wildcard = false;
+            if (!MW120PatternByte(p, value, wildcard))
+                break;
+            bytes[count] = value;
+            wildcards[count] = wildcard;
+            ++count;
+        }
+
+        if (!count || count > g_liveImageSize)
+            return 0;
+
+        const auto* image = reinterpret_cast<const unsigned char*>(base);
+
+        __try
+        {
+            for (std::size_t i = 0; i + count <= g_liveImageSize; ++i)
+            {
+                bool match = true;
+                for (std::size_t j = 0; j < count; ++j)
+                {
+                    if (!wildcards[j] && image[i + j] != bytes[j])
+                    {
+                        match = false;
+                        break;
+                    }
+                }
+                if (match)
+                    return base + i;
+            }
+        }
+        __except (EXCEPTION_EXECUTE_HANDLER)
+        {
+            return 0;
+        }
+
+        return 0;
+    }
+
+    int MW120LuaReturnTrue(void* vm) noexcept
+    {
+        if (!vm || !g_mw120LuaPushBoolean)
+            return 0;
+
+        __try
+        {
+            g_mw120LuaPushBoolean(vm, 1);
+            return 1;
+        }
+        __except (EXCEPTION_EXECUTE_HANDLER)
+        {
+            return 0;
+        }
+    }
+
+    bool MW120IsPremiumPredicate(
+        const char* libName, const char* functionName) noexcept
+    {
+        if (!libName || !functionName ||
+            _stricmp(libName, "Engine") != 0)
+            return false;
+
+        return _stricmp(functionName, "CFHBIHABCB") == 0 || // IsPremiumPlayer
+               _stricmp(functionName, "ECFHDAEIDA") == 0;   // IsPremiumPlayerReady
+    }
+
+    void MW120LuaOpenLibDetour(
+        void* vm, const char* libName,
+        const MW120LuaReg* regs, std::uint32_t nup) noexcept
+    {
+        const auto original = g_mw120LuaOpenLibOriginal;
+        if (!original || !regs || !libName)
+        {
+            if (original)
+                original(vm, libName, regs, nup);
+            return;
+        }
+
+        std::size_t count = 0;
+        __try
+        {
+            while (count < 1024 && regs[count].name)
+                ++count;
+        }
+        __except (EXCEPTION_EXECUTE_HANDLER)
+        {
+            original(vm, libName, regs, nup);
+            return;
+        }
+
+        if (!count)
+        {
+            original(vm, libName, regs, nup);
+            return;
+        }
+
+        auto* copy = static_cast<MW120LuaReg*>(
+            HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY,
+                sizeof(MW120LuaReg) * (count + 1)));
+
+        if (!copy)
+        {
+            original(vm, libName, regs, nup);
+            return;
+        }
+
+        bool replaced = false;
+        __try
+        {
+            memcpy(copy, regs, sizeof(MW120LuaReg) * count);
+            for (std::size_t i = 0; i < count; ++i)
+            {
+                if (MW120IsPremiumPredicate(libName, copy[i].name))
+                {
+                    copy[i].func = &MW120LuaReturnTrue;
+                    replaced = true;
+                }
+            }
+
+            original(vm, libName, copy, nup);
+        }
+        __except (EXCEPTION_EXECUTE_HANDLER)
+        {
+            original(vm, libName, regs, nup);
+        }
+
+        HeapFree(GetProcessHeap(), 0, copy);
+
+        if (replaced)
+            ConsolePrint("[OWNERSHIP120-LUA] registered premium predicates as true\r\n");
+    }
+
+    bool InstallMW120PremiumLuaCompatibility() noexcept
+    {
+        if (!MW120ExactLiveBuild())
+            return false;
+
+        if (InterlockedCompareExchange(&g_mw120PremiumHookInstalled, 1, 0) != 0)
+            return true;
+
+        const auto luaOpenLib =
+            MW120ScanMainImage("48 89 5C 24 ? 55 56 41 56 48 83 EC ? 48 8B 41");
+        const auto pushCall =
+            MW120ScanMainImage("E8 ? ? ? ? EB ? 85 D2 78");
+
+        if (!luaOpenLib || !pushCall)
+        {
+            ConsolePrint(
+                "[OWNERSHIP120-LUA] signature resolution failed luaL_openlib=%p pushCall=%p\r\n",
+                reinterpret_cast<void*>(luaOpenLib),
+                reinterpret_cast<void*>(pushCall));
+            InterlockedExchange(&g_mw120PremiumHookInstalled, 0);
+            return false;
+        }
+
+        const auto displacement =
+            *reinterpret_cast<const std::int32_t*>(pushCall + 1);
+        const auto luaPushBoolean =
+            pushCall + 5 + static_cast<std::intptr_t>(displacement);
+
+        g_mw120LuaPushBoolean =
+            reinterpret_cast<MW120LuaPushBooleanFn>(luaPushBoolean);
+
+        const MH_STATUS init = MH_Initialize();
+        if (init != MH_OK && init != MH_ERROR_ALREADY_INITIALIZED)
+        {
+            ConsolePrint("[OWNERSHIP120-LUA] MH_Initialize failed status=%d\r\n",
+                static_cast<int>(init));
+            InterlockedExchange(&g_mw120PremiumHookInstalled, 0);
+            return false;
+        }
+
+        const MH_STATUS create = MH_CreateHook(
+            reinterpret_cast<void*>(luaOpenLib),
+            reinterpret_cast<void*>(&MW120LuaOpenLibDetour),
+            reinterpret_cast<void**>(&g_mw120LuaOpenLibOriginal));
+
+        if (create != MH_OK && create != MH_ERROR_ALREADY_CREATED)
+        {
+            ConsolePrint("[OWNERSHIP120-LUA] hook create failed status=%d\r\n",
+                static_cast<int>(create));
+            InterlockedExchange(&g_mw120PremiumHookInstalled, 0);
+            return false;
+        }
+
+        const MH_STATUS enable =
+            MH_EnableHook(reinterpret_cast<void*>(luaOpenLib));
+
+        if (enable != MH_OK && enable != MH_ERROR_ENABLED)
+        {
+            ConsolePrint("[OWNERSHIP120-LUA] hook enable failed status=%d\r\n",
+                static_cast<int>(enable));
+            InterlockedExchange(&g_mw120PremiumHookInstalled, 0);
+            return false;
+        }
+
+        ConsolePrint(
+            "[OWNERSHIP120-LUA] premium compatibility installed "
+            "predicates={IsPremiumPlayer,IsPremiumPlayerReady}\r\n");
+        return true;
+    }
+
+    DWORD WINAPI MW120OwnershipWorker(LPVOID) noexcept
+    {
+        MW120OwnershipResult last = MW120OwnershipResult::NotExactBuild;
+        int lastAuthState = -999;
+        unsigned lastReady = 0xFFFFFFFFu;
+
+        // Keep this worker alive because the game/backend can refresh the
+        // encoded entitlement field after login/profile updates.
+        for (;;)
+        {
+            if (!MW120ExactLiveBuild())
+                return 0;
+
+            bool owned = false;
+            int authState = 0;
+            unsigned readyByte = 0;
+            const auto result =
+                MW120PinNativeOwnership(owned, authState, readyByte);
+
+            if (result != last ||
+                authState != lastAuthState ||
+                readyByte != lastReady)
+            {
+                const char* resultText = "unknown";
+                switch (result)
+                {
+                case MW120OwnershipResult::NotExactBuild:
+                    resultText = "nonexact-build"; break;
+                case MW120OwnershipResult::WaitingForAuth:
+                    resultText = "waiting-auth"; break;
+                case MW120OwnershipResult::AlreadyOwned:
+                    resultText = "already-owned"; break;
+                case MW120OwnershipResult::Pinned:
+                    resultText = "pinned-owned"; break;
+                case MW120OwnershipResult::Failed:
+                    resultText = "failed"; break;
+                }
+
+                ConsolePrint(
+                    "[OWNERSHIP120-NATIVE] result=%s authState=%d "
+                    "authReady=%u ownsBaseGame=%u fieldRva=0x%llX\r\n",
+                    resultText, authState, readyByte, owned ? 1u : 0u,
+                    static_cast<unsigned long long>(kMW120OwnershipFieldRva));
+
+                last = result;
+                lastAuthState = authState;
+                lastReady = readyByte;
+            }
+
+            Sleep(1500);
+        }
+    }
+
+    void StartMW120OwnershipCompatibility() noexcept
+    {
+        if (!MW120ExactLiveBuild())
+            return;
+
+        InstallMW120PremiumLuaCompatibility();
+
+        if (InterlockedCompareExchange(
+                &g_mw120OwnershipThreadStarted, 1, 0) == 0)
+        {
+            if (HANDLE thread = CreateThread(
+                    nullptr, 0, &MW120OwnershipWorker,
+                    nullptr, 0, nullptr))
+            {
+                CloseHandle(thread);
+            }
+            else
+            {
+                InterlockedExchange(&g_mw120OwnershipThreadStarted, 0);
+                ConsolePrint("[OWNERSHIP120-NATIVE] CreateThread failed error=%lu\r\n",
+                    GetLastError());
+            }
+        }
+    }
+
     DWORD WINAPI RedirectWorker(LPVOID) noexcept
     {
         DeleteFileW(L"mw2019_redirect.log");
@@ -5133,9 +5899,30 @@ namespace
                 g_liveTimestamp, g_liveImageSize, g_liveEntryPoint,
                 StartupCompatBuildName(CurrentStartupCompatBuild()));
         }
-        QueueRetailFrontendProbe();
-        QueueRetailRuntimeDump();
-        QueueRetailOnlineLiveTrace();
+        const bool exactSteamRetail =
+            g_liveTimestamp == 0x69DD404Eu &&
+            g_liveImageSize == 0x21679200u &&
+            g_liveEntryPoint == 0x06E4931Cu;
+
+        // Exact 1.20 frontend ownership compatibility must be armed before the
+        // Engine Lua library registers its premium predicates.
+        if (MW120ExactLiveBuild())
+            StartMW120OwnershipCompatibility();
+
+        // Steam Retail stability build:
+        // keep the proxy/DNS/backend path only.  The delayed frontend scanner,
+        // runtime memory dump and live storage hook tracer are research tools
+        // and are intentionally not armed on normal Retail startup.
+        if (exactSteamRetail)
+        {
+            ConsolePrint("[RETAIL-STABLE] research scanners/probes disabled frontendProbe=off runtimeDump=off onlineLiveHooks=off\r\n");
+        }
+        else
+        {
+            QueueRetailFrontendProbe();
+            QueueRetailRuntimeDump();
+            QueueRetailOnlineLiveTrace();
+        }
         if (InterlockedCompareExchange(&g_compat123Detected, 0, 0) != 0)
         {
             const StartupCompatBuild build = CurrentStartupCompatBuild();
@@ -5235,16 +6022,16 @@ namespace
             {
                 InstallEarlyAuth3LocalSigningTrust("worker-pre-IAT");
                 InstallLocalManifestTrust();
+                InstallReplay120NativeCompatibility();
             }
             QueueLsgKey3DiskScanV79();
         }
         else if (g_liveTimestamp == 0x69DD404Eu && g_liveImageSize == 0x21679200u &&
             g_liveEntryPoint == 0x06E4931Cu)
         {
-            // Reuse the public-SPKI disk scanner for this retail build. No
-            // verifier replacement: the server checks candidates against the
-            // client's own lobby proof before accepting a key derivation.
-            QueueLsgKey3DiskScanV79();
+            // Retail stability path: do not run the LSG key candidate scanner.
+            // Retail now starts with only the proxy/DNS/backend functionality.
+            ConsolePrint("[LSG-KEY3] Retail scanner disabled; no EXE disk scan and no runtime memory scan\r\n");
         }
 
         HMODULE mainModule = GetModuleHandleW(nullptr);

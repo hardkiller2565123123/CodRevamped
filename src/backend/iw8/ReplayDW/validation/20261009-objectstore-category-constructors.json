@@ -1,0 +1,154 @@
+{
+  "passed": true,
+  "target_image_sha256": "68fb1cbcb2924182724004039de55a4c50152bb6561803c4898b7930b38132f0",
+  "methods": [
+    {
+      "address": 5403486560,
+      "end": 5403486821,
+      "task": 9,
+      "bytes_sha256": "9df1d8d04484c042c0e1761f2b6e68cedbc67a50774f236f8f42c9039873d30c"
+    },
+    {
+      "address": 5403486832,
+      "end": 5403487039,
+      "task": 10,
+      "bytes_sha256": "31d0713fdf9cab799f633ce653c44fc0a3307538db317faa13a791ead516218b"
+    }
+  ],
+  "cases": [
+    {
+      "method": 5403486560,
+      "environment": 0,
+      "null_response": false,
+      "request_offset": 464,
+      "response_offset": 8,
+      "captured": {
+        "manager": 1610637312,
+        "service": 193,
+        "task": 9,
+        "request": 1610621392,
+        "response": 1610629128,
+        "lobby": 1610641408
+      },
+      "passed": true
+    },
+    {
+      "method": 5403486560,
+      "environment": 2,
+      "null_response": false,
+      "request_offset": 464,
+      "response_offset": 8,
+      "captured": {
+        "manager": 1610637312,
+        "service": 193,
+        "task": 9,
+        "request": 1610621392,
+        "response": 1610629128,
+        "lobby": 1610641408
+      },
+      "passed": true
+    },
+    {
+      "method": 5403486560,
+      "environment": 0,
+      "null_response": true,
+      "request_offset": 464,
+      "response_offset": 8,
+      "captured": {
+        "manager": 1610637312,
+        "service": 193,
+        "task": 9,
+        "request": 1610621392,
+        "response": 0,
+        "lobby": 1610641408
+      },
+      "passed": true
+    },
+    {
+      "method": 5403486560,
+      "environment": 2,
+      "null_response": true,
+      "request_offset": 464,
+      "response_offset": 8,
+      "captured": {
+        "manager": 1610637312,
+        "service": 193,
+        "task": 9,
+        "request": 1610621392,
+        "response": 0,
+        "lobby": 1610641408
+      },
+      "passed": true
+    },
+    {
+      "method": 5403486832,
+      "environment": 0,
+      "null_response": false,
+      "request_offset": 464,
+      "response_offset": 432,
+      "captured": {
+        "manager": 1610637312,
+        "service": 193,
+        "task": 10,
+        "request": 1610621392,
+        "response": 1610629552,
+        "lobby": 1610641408
+      },
+      "passed": true
+    },
+    {
+      "method": 5403486832,
+      "environment": 2,
+      "null_response": false,
+      "request_offset": 464,
+      "response_offset": 432,
+      "captured": {
+        "manager": 1610637312,
+        "service": 193,
+        "task": 10,
+        "request": 1610621392,
+        "response": 1610629552,
+        "lobby": 1610641408
+      },
+      "passed": true
+    },
+    {
+      "method": 5403486832,
+      "environment": 0,
+      "null_response": true,
+      "request_offset": 464,
+      "response_offset": 432,
+      "captured": {
+        "manager": 1610637312,
+        "service": 193,
+        "task": 10,
+        "request": 1610621392,
+        "response": 0,
+        "lobby": 1610641408
+      },
+      "passed": true
+    },
+    {
+      "method": 5403486832,
+      "environment": 2,
+      "null_response": true,
+      "request_offset": 464,
+      "response_offset": 432,
+      "captured": {
+        "manager": 1610637312,
+        "service": 193,
+        "task": 10,
+        "request": 1610621392,
+        "response": 0,
+        "lobby": 1610641408
+      },
+      "passed": true
+    }
+  ],
+  "tool_sha256": "131fdc1cdd42d47cc04a66b08dd57ce5bee444b6d295d50cbb0d85bf03a4e72f",
+  "modeled_boundary": "startStructTask arguments and empty task output only",
+  "original_environment_setter_executed": true,
+  "native_response_reader_verified": false,
+  "native_runtime_verified": false,
+  "scope": "Publisher 193/9 response base +8; user 193/10 response base +432. Concrete response readers remain unresolved"
+}

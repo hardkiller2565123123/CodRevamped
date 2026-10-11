@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "created_utc": "2026-10-06T08:23:37.452795+00:00",
+  "server_sha256": "af43d46e2638504bc022c208142592eb6edeb2ac63b435a8d1febf3b20862567",
+  "game_sha256": "b326981a9718cedbc05228d40bef8b2adcd6be89307b2cde7d8e878a3ca67885",
+  "engine_recompiled": false,
+  "suite_grouped_checks": 226,
+  "covered_checks": [
+    "native mail notifications deliver the exact bare event 18 to the recipient after persistence and suppress duplicate idle scans without notifying the sender",
+    "native mail notifications revalidate queued rows and suppress messages already read or deleted before delivery",
+    "native mail notifications follow successful durable publication only; a real failed pending-file write emits nothing and a later accepted retry notifies",
+    "native mail notifications catch up unread offline mail on reconnect and on each independent connection without repeatedly notifying an established lease",
+    "native mail notifications expire and return timed mail during idle connections, persist one non-recursive return and notify its sender without requiring a mailbox task",
+    "native mail notifications isolate malformed contexts without blocking another valid mailbox, report storage failure and resume normal delivery after repair",
+    "native mail notifications enforce context capacity before accepting new mailbox writes while existing contexts continue to notify"
+  ],
+  "native_startup_reconnect_receipt": "validation\\20261006-mail-notifications-native-reconnect.json",
+  "native_startup_reconnect_receipt_sha256": "f1b3f97519ef5409c84fd0a74e39ac7eb518e548ff36123acbe8f49d3fac406e",
+  "lobby_verification_sha256": "95d75a818ea67e92ca6b397a17886d91d72f6c5e7080f6de3fe314538f0c9eb7",
+  "source_sha256": {
+    "src/mail_services.cpp": "dca6fe881865ea3a5d6c26b6d1ec37fcd4cf2a6d50022b5d38e43e70d5facb85",
+    "src/mail_services.h": "0a70a7f70eb56170049ed15c9fa5260577d7b76466b5dcc1a4000228634059f9",
+    "src/services.cpp": "c8fb40c3ae600a1d05bca45c8d713adbba8ec0c721e734a1f01bf7da1e408b4c",
+    "src/services.h": "20008d0b30da4725ad6c2bc1ac9c7bd9ae8c27de8ec43e40d7500c11a4304fff",
+    "src/lobby.cpp": "f34696127c57db82b65ea731519df1bd8f86b084ed295b38db6754033fb7651c",
+    "tools/mail_notification_fixtures.py": "225940ec6cd2f06e2e33b9f5ab4a4496a0677f663b23f9e940cf71be3ad02fe8",
+    "tools/test-lobby.py": "91cb26d912483b76f6cba3cba879483396ccd792cb555cc2f55b903930fbaed4"
+  },
+  "original_target_evidence_sha256": {
+    "data/native-mail-push-dispatch-20261006.json": "760a14664a55fbef626751d583b6ca14b3a7a04a12f403241ba85f03067d22ef",
+    "data/native-mail-window-20261006.json": "454899afb57b3009c3efc109494ffc4cfe77fee3a5cf4edc7da3fbf7cbc6d49e"
+  },
+  "native_bare_mail_event_implemented": true,
+  "native_game_mail_callback_verified": false,
+  "idle_mail_expiration_and_catchup_implemented": true,
+  "two_network_gameplay_verified": false,
+  "map_or_match_test_performed": false,
+  "complete_backend_verified": false,
+  "native_ui_limit": "Terms of Agreement screen remained unaccepted"
+}

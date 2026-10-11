@@ -1,0 +1,7 @@
+* text=auto eol=lf
+# Preserve the exact engine source bytes used by retained compiler receipts.
+integration/** -text whitespace=cr-at-eol
+third_party/nlohmann/LICENSE.MIT whitespace=-blank-at-eol
+
+# Hash-bound validation receipts must retain committed LF bytes.
+validation/*.json text eol=lf

@@ -1,0 +1,35 @@
+{
+  "schema": 1,
+  "verified_at": "2026-10-06T11:58:03.352776+00:00",
+  "passed": true,
+  "server_sha256": "0348f5747a4b48ef0167b70269bfb9bc885f5f715e7a6746e64fcb91e14dd111",
+  "scope": "Authenticated native channel join/leave push lifecycle and complete persistent layout",
+  "checks": [
+    "Native channel event-24 contains full typed member/channel-info DTO, real signed sender/name, subscriber count, admin, booleans and monotonic UInt32 dataVersion; owned repeat subscribe/create is idempotent",
+    "Channel membership survives another valid socket closing; last live socket departure emits exact event-25 to peers, and same-session reconnect requires a new owned subscription generation",
+    "Generation revalidation suppresses obsolete queued leave after rapid rejoin; owned category unsubscribe notifies every remaining peer with exact event-25 and removes recipient authority",
+    "Independent simultaneous channel joins retain both member deltas instead of dropping an earlier join when another account advances the aggregate dataVersion",
+    "Complete channel title/category/key/member/name/revision/generation layouts reject corrupted storage before mutation; real blocked atomic publication emits no phantom leave and an owned retry publishes it once"
+  ],
+  "suite_checks": 251,
+  "source_sha256": {
+    "src/channel_store.cpp": "851618a449db88a38da8f21ca3e132f9ab85a910fa360a1422a5e2f27dfcb478",
+    "src/channel_store.h": "c07913a81011f1a92d3de8717705e8aaac3e83d5420455c84cb58558dad566fe",
+    "src/channel_services.cpp": "6a35110733af85fc195830ad2c405bb8357bb201fac831f5c571d3d3676872df",
+    "src/channel_services.h": "144e68be8e8c21a1c6d1691e4fd390370f469534b4540146a81275922085c29d",
+    "src/services.cpp": "6251da8d5580d20b524431528434c3fa15b6fb7cecfa29c7524fca8be4f9fe2f",
+    "src/services.h": "6de09f1ad1c94bc270f9f211f236b4caf56ef55c24c312858e73240aed7e50ec",
+    "tools/channel_membership_fixtures.py": "8ed95b77e64765acf319955b6a7c1794a28fbd3d5dd55ca93a81a5dce2d1ea02",
+    "tools/record-channel-membership-proof.py": "f952c8fc8ce77586db10e144761dc7beb15eb2b08e2e12aa726936a67b9e72c2"
+  },
+  "target_build": "Replay 1.20",
+  "native_reference_addresses": {
+    "push_dispatch": "0x142122970",
+    "member_subscription_v2": "0x142120A80",
+    "channel_info_with_category": "0x1420FE9A0",
+    "event_handler": "0x1414F4A50",
+    "chat_channel_update": "0x140F3D690"
+  },
+  "positive_native_member_callback_verified": false,
+  "two_network_multiplayer_verified": false
+}

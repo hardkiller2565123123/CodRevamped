@@ -1,0 +1,10 @@
+/var/lib/replay-dw/server.log {
+    daily
+    maxsize 20M
+    rotate 7
+    compress
+    missingok
+    notifempty
+    copytruncate
+    su replay-dw replay-dw
+}

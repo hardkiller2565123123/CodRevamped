@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "passed": true,
+  "recorded_utc": "2026-10-08T06:16:01.531607+00:00",
+  "commit": "3ad0720",
+  "game_sha256": "638dab82f069be51f6450f9ed2744f0b049d34642c0b67ae30cde01b53ea16e5",
+  "windows_server_sha256": "e8336975d321b96fcbb38642c4bad11f624110fe9ad93ef9181f6c6bfa3ad21e",
+  "linux_server_sha256": "f447cfe3737b7f41ff66da6d1bef013c8ce51d72b6340b0d89ad179ffc7d8ee4",
+  "native_startup_fences_passing": 27,
+  "native_signed_renewal_verified": true,
+  "native_reauthentication_not_required": true,
+  "native_player_identity_xp_rank_preserved": true,
+  "normal_multiplayer_menu_reached": true,
+  "full_backend_completed": false,
+  "known_open_scopes": [
+    "Six missing native task contracts",
+    "Full native purchase completion",
+    "In-match/long relay credential renewal",
+    "Native dw_restart reconnects but can retain its disconnect dialog; use controlled process restarts for testing"
+  ],
+  "evidence": {
+    "source.json": {
+      "path": "data/session-lease-20261008/source.json",
+      "sha256": "4828f048d7da5504c7db875cae7e70226ae5a8dae3360f5399f40879bd51535b"
+    },
+    "linux-build.json": {
+      "path": "data/session-lease-20261008/linux-build.json",
+      "sha256": "c7f81f4d8a9d3fc141f242e8ee4ebaaede04e050bb6126137afe53dbe3ee1e25"
+    },
+    "deployment.json": {
+      "path": "data/session-lease-20261008/deployment.json",
+      "sha256": "c8a60e91cd4bd326c7cab04cffb4614273022e2971c8f95c638658da34c6a124"
+    },
+    "windows-renewal-formatted.json": {
+      "path": "data/session-lease-20261008/windows-renewal-formatted.json",
+      "sha256": "453a10817a49d65e97f522160b4047480e07ef8a194008207828c99adefc78fb"
+    },
+    "windows-lease-contract.json": {
+      "path": "data/session-lease-20261008/windows-lease-contract.json",
+      "sha256": "2818703846314c0404ef3b4f576a47f4e6b35dc59dc4ad7c19bec2283f00f5b7"
+    },
+    "windows-startup-verification.json": {
+      "path": "data/session-lease-20261008/windows-startup-verification.json",
+      "sha256": "57a3c7d3b9e0b3b8b8989951c6e6f6d66053eccfce8637cc044d8921ab91fe88"
+    },
+    "linux-renewal.json": {
+      "path": "data/session-lease-20261008/linux-renewal.json",
+      "sha256": "43eab980b67ab737e5ca7235392ac69aefc80b8fd8f858620dffc495a593cec4"
+    },
+    "linux-lease-contract.json": {
+      "path": "data/session-lease-20261008/linux-lease-contract.json",
+      "sha256": "0f6f9d2f688d5ddf532dfdd78f830808bad2e10eff2e1d7ff29a833ab1fb53fd"
+    },
+    "linux-startup-verification.json": {
+      "path": "data/session-lease-20261008/linux-startup-verification.json",
+      "sha256": "a4e006977ea615660c956c1a1f3d17f746d5ffadd747bab4f087a14cf8563822"
+    },
+    "windows-store.json": {
+      "path": "data/session-lease-20261008/windows-store.json",
+      "sha256": "97875b28a330cf3e5eeeae187f8995d634076b92cfd1366ccf77d63313db4acc"
+    },
+    "native-clean-startup.json": {
+      "path": "data/session-lease-20261008/native-clean-startup.json",
+      "sha256": "e381da35f66945d70ec71b2a82d52b5b6500a70d9e07905fd5ea6c4ae530f4aa"
+    },
+    "native-clean-mp-before-renewal.json": {
+      "path": "data/session-lease-20261008/native-clean-mp-before-renewal.json",
+      "sha256": "d6b7a8dd1f1e4daf4fed3c96ba33057745a64eea4f4dd85ec22f625850f3eb6c"
+    },
+    "native-clean-mp-after-renewal.json": {
+      "path": "data/session-lease-20261008/native-clean-mp-after-renewal.json",
+      "sha256": "f662c0604d9111a5207e621b86885b2a9719704aae3ead3352a343b22817529b"
+    },
+    "deployed-native-bundle.jpg": {
+      "path": "data/session-lease-20261008/deployed-native-bundle.jpg",
+      "sha256": "deaf23909cd9a3dd3935f848791376c44ed307e9089809e7031dda7271a9618b"
+    }
+  },
+  "source_sha256": {
+    "src/platform.cpp": "d03d982a4768604175e6bb73b6cc26cbb0043df30de6232eabef4196ace29c04",
+    "src/platform.h": "9ea4ce197a7600aa72d89ec1d9ee36f7aeb3a8f2d343bbc9acedda60716e6671",
+    "src/services.cpp": "42ab293e21badcd7b799814cdc472954ed9c2fe15e272cac990c13f3428d4ae4",
+    "src/lobby.cpp": "707e2cfa4ab9ece088642f641b4f5895427197eee4de223bf1f9bf1e5a14f0cf"
+  },
+  "native_bundle_view_after_renewal_verified": true
+}

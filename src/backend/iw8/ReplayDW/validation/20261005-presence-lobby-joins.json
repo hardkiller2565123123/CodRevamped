@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "recorded_utc": "2026-10-05T20:04:43.981744+00:00",
+  "server_sha256": "c5c840de9c52c2dc86b3942b540a0ba9f5fea997817352e838b1af4b37f6ce75",
+  "game_sha256": "b0075e0dbde62758efe84e23318084608be5b3704f23c269d87254ce2aea58a8",
+  "independent_protocol_checks": 165,
+  "presence_join_checks": [
+    "a valid full lobby rejects another signed member without changing its persisted documents",
+    "Replay presence-join fields bypass new-playlist creation; signed party tokens, target IDs and host join policy reject invalid requests without lobby mutations",
+    "native event-2001 assigned only to joining party, event-2006 sent to existing members; shared lobby revisions/host/DTLS/playlist maps and per-player matchmaking IDs preserved",
+    "presence-by-player resolves the persisted current lobby and repeated joins retain unique membership while binding the new owner search",
+    "cancelled presence searches suppress their queued join event while preserving the committed lobby update",
+    "current installed-map/playlist publication is rechecked; joining does not substitute unavailable map data"
+  ],
+  "native_multiplayer_menu_verified": true,
+  "native_passing_fences": 27,
+  "native_invitation_join_completion_verified": false,
+  "native_two_game_join_verified": false,
+  "full_backend_verified": false,
+  "engine_recompiled": false,
+  "tournament_atomic_publication_race_fixed": true,
+  "limitations": [
+    "Each matchmaking file replacement is atomic; multi-file crash consistency remains separate work.",
+    "Host migration and automatic public matchmaking fill remain unimplemented."
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "schema": 1,
+  "created_utc": "2026-10-06T05:34:41.785413+00:00",
+  "server_sha256": "b3ba9db6dc475c5f5091a49815e54aed8573e109dc9aa6669439324dcb7137ec",
+  "independent_encrypted_clients": 2,
+  "checks": [
+    "public search rejects mismatched netcode/capacity, malformed slots and invalid live-party tokens without publishing lobby/search/index changes",
+    "two independently authenticated public searches share one durable lobby; native event-2001/event-2006 retain host address/DTLS/rules and balance the joining party onto a distinct team",
+    "private and closed host lobbies never enter public matching; join-existing-only searches fail unavailable instead of creating an unrelated lobby",
+    "playing lobbies honor the native join-in-progress policy and retain the same assigned game instead of spawning a second match"
+  ],
+  "suite_grouped_checks": 186,
+  "lobby_fixture_sha256": "19afbfa02492d77d966f020f08647fcc0ede10c726b1df7df29a3bb953900f18",
+  "sources": {
+    "src\\matchmaking_services.cpp": "fb28499ffa43f16e83a1bb5be199519841a484c906d60f60b53a328c36db0f4f",
+    "tools\\public_matchmaking_fixtures.py": "af782811f840147c168e608976e2c2fbb4539dc34c89cdaffda7a63ba5feed43"
+  },
+  "native_public_search_callback_verified": false,
+  "two_network_gameplay_verified": false,
+  "maps_launched": false,
+  "complete_backend_verified": false
+}

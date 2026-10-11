@@ -1,0 +1,7 @@
+[Unit]
+Description=Consistent Replay DW state backup
+
+[Service]
+Type=oneshot
+ExecStart=/opt/replay-dw/backup-state.sh
+UMask=0077

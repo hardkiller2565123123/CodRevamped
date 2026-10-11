@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "recorded_utc": "2026-10-05T17:12:06.578127+00:00",
+  "server_sha256": "9385fd072cb349dbf6c8bb4aeb651f6748eba62a722fa2c745b39f391fc70ed4",
+  "game_sha256": "b0075e0dbde62758efe84e23318084608be5b3704f23c269d87254ce2aea58a8",
+  "game_recompiled": false,
+  "map_tests_performed": false,
+  "target_task_constructor": "0x1421366F0",
+  "target_game_request": "0x141076A10",
+  "target_native_completion": "0x141078610",
+  "target_bracket_consumer": "0x141074530",
+  "independent_protocol_checks": 153,
+  "independent_tournament_result_checks": [
+    "Replay 145/21 exact typed 256-byte JSON request, duplicate-key/type/range/terminator rejection, accepted enrollment and signed reporting-host isolation",
+    "Tournament result requires a live authenticated host lobby with both published teams; one atomic durable result, exact retry and native 14536 conflict without publication or enrollment mutation",
+    "Tournament two-child winner advancement in native global-team order, round-scoped readiness, full result-journal/publication consistency and corrupt-state preservation",
+    "Tournament result and advancement survive a real backend restart; original authenticated reporter can retry without duplicate writes or published bracket edits"
+  ],
+  "native_menu_verified": true,
+  "native_passing_fences": 27,
+  "native_result_callback_verified": false,
+  "playable_tournament_verified": false,
+  "full_backend_verified": false,
+  "coverage": {
+    "task_routes": 140,
+    "registered_handlers": 132,
+    "known_target_tasks_without_handler": 8
+  },
+  "evidence": [
+    {
+      "file": "data/lobby-verification.json",
+      "sha256": "6bbe0ee7502612b7ee40d4f1ba2edd18856424a637fcf89725168e57348911cc"
+    },
+    {
+      "file": "data/native-backend-menu-verification.json",
+      "sha256": "bd2e0674aad9c873dbd46a1de95682dd60fa0ad70445f31b1dbb58d2c0a3eb3b"
+    },
+    {
+      "file": "data/runtime-tournament-results-native-menu.json",
+      "sha256": "0f23e3f089eeec3bb3cb9c9c34bb8317d1814e0a71120274e179e2dad1472a75"
+    },
+    {
+      "file": "data/native-tournament-task21.json",
+      "sha256": "61adeb88999b64eec8d23d442b5c1b0c5186fb237e57d72c7dbb14e6f8e1ca2c"
+    },
+    {
+      "file": "data/native-tournament-result-game-symbols.json",
+      "sha256": "29bc1a48893b60d0a909794162f4bf8d6874bfac80c9d94b7de10d868c62419f"
+    },
+    {
+      "file": "data/native-tournament-bracket-consumer.json",
+      "sha256": "b744f97c6d2149fa1ae6fa6950ca55d8c4501f85958b71b7c5713d06d56fa5e6"
+    }
+  ]
+}

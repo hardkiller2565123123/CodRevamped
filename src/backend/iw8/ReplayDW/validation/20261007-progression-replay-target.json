@@ -1,0 +1,288 @@
+{
+  "schema": 1,
+  "passed": true,
+  "generated_utc": "2026-10-07T18:31:26.243048+00:00",
+  "audit_tool_sha256": "955d328429e1a5c410a9984d6756e2a5a528892c7c8fc41eb9f6fb7d03d8bce4",
+  "target_image_sha256": "68fb1cbcb2924182724004039de55a4c50152bb6561803c4898b7930b38132f0",
+  "consumer": 5385880720,
+  "functions": {
+    "0x141060490": {
+      "size": 1552,
+      "bytes_sha256": "c22a772a7c071b3abb211b648ae2fe1044c56137104c460c382ce9340fe435e1",
+      "direct_calls": [
+        5385872832,
+        5385880256,
+        5388306464,
+        5395696688,
+        5395700224,
+        5395768416,
+        5395768560,
+        5403198096,
+        5403198128,
+        5403202288,
+        5403204192
+      ]
+    },
+    "0x1421ccf60": {
+      "size": 33,
+      "bytes_sha256": "b3ad9214d16630c341fb631525d4c716af9c64188c7dd173019434064eb0aac2",
+      "direct_calls": []
+    }
+  },
+  "cases": [
+    {
+      "case": "repeated absolute snapshots",
+      "controller": 0,
+      "outcomes": [
+        {
+          "accepted": true,
+          "xp": 3500,
+          "rank": 1
+        },
+        {
+          "accepted": true,
+          "xp": 3500,
+          "rank": 1
+        },
+        {
+          "accepted": true,
+          "xp": 3500,
+          "rank": 1
+        },
+        {
+          "accepted": true,
+          "xp": 17500,
+          "rank": 4
+        }
+      ],
+      "boundary_calls": [
+        5388306464,
+        5403198096,
+        5403198128,
+        5403202288,
+        5403204192
+      ],
+      "original_consumer_executed": true,
+      "rank_up_flag": false,
+      "other_controllers_unchanged": true,
+      "ui_or_stats_calls": 0
+    },
+    {
+      "case": "repeated absolute snapshots",
+      "controller": 2,
+      "outcomes": [
+        {
+          "accepted": true,
+          "xp": 3500,
+          "rank": 1
+        },
+        {
+          "accepted": true,
+          "xp": 3500,
+          "rank": 1
+        },
+        {
+          "accepted": true,
+          "xp": 3500,
+          "rank": 1
+        },
+        {
+          "accepted": true,
+          "xp": 17500,
+          "rank": 4
+        }
+      ],
+      "boundary_calls": [
+        5388306464,
+        5403198096,
+        5403198128,
+        5403202288,
+        5403204192
+      ],
+      "original_consumer_executed": true,
+      "rank_up_flag": false,
+      "other_controllers_unchanged": true,
+      "ui_or_stats_calls": 0
+    },
+    {
+      "case": "repeated absolute snapshots",
+      "controller": 7,
+      "outcomes": [
+        {
+          "accepted": true,
+          "xp": 3500,
+          "rank": 1
+        },
+        {
+          "accepted": true,
+          "xp": 3500,
+          "rank": 1
+        },
+        {
+          "accepted": true,
+          "xp": 3500,
+          "rank": 1
+        },
+        {
+          "accepted": true,
+          "xp": 17500,
+          "rank": 4
+        }
+      ],
+      "boundary_calls": [
+        5388306464,
+        5403198096,
+        5403198128,
+        5403202288,
+        5403204192
+      ],
+      "original_consumer_executed": true,
+      "rank_up_flag": false,
+      "other_controllers_unchanged": true,
+      "ui_or_stats_calls": 0
+    },
+    {
+      "case": "unsigned absolute XP boundary",
+      "xp": 0,
+      "outcomes": [
+        {
+          "accepted": true,
+          "xp": 0,
+          "rank": 54
+        },
+        {
+          "accepted": true,
+          "xp": 0,
+          "rank": 54
+        }
+      ],
+      "boundary_calls": [
+        5388306464,
+        5403198096,
+        5403198128,
+        5403202288,
+        5403204192
+      ],
+      "original_consumer_executed": true,
+      "rank_up_flag": false,
+      "other_controllers_unchanged": true,
+      "ui_or_stats_calls": 0
+    },
+    {
+      "case": "unsigned absolute XP boundary",
+      "xp": 2147485148,
+      "outcomes": [
+        {
+          "accepted": true,
+          "xp": 2147485148,
+          "rank": 54
+        },
+        {
+          "accepted": true,
+          "xp": 2147485148,
+          "rank": 54
+        }
+      ],
+      "boundary_calls": [
+        5388306464,
+        5403198096,
+        5403198128,
+        5403202288,
+        5403204192
+      ],
+      "original_consumer_executed": true,
+      "rank_up_flag": false,
+      "other_controllers_unchanged": true,
+      "ui_or_stats_calls": 0
+    },
+    {
+      "case": "unsigned absolute XP boundary",
+      "xp": 18446744073709551615,
+      "outcomes": [
+        {
+          "accepted": true,
+          "xp": 18446744073709551615,
+          "rank": 54
+        },
+        {
+          "accepted": true,
+          "xp": 18446744073709551615,
+          "rank": 54
+        }
+      ],
+      "boundary_calls": [
+        5388306464,
+        5403198096,
+        5403198128,
+        5403202288,
+        5403204192
+      ],
+      "original_consumer_executed": true,
+      "rank_up_flag": false,
+      "other_controllers_unchanged": true,
+      "ui_or_stats_calls": 0
+    },
+    {
+      "case": "missing/invalid player progression",
+      "outcomes": [
+        {
+          "accepted": false,
+          "xp": 17,
+          "rank": 0
+        }
+      ],
+      "boundary_calls": [
+        5403198096,
+        5403198128,
+        5403204192
+      ],
+      "original_consumer_executed": true,
+      "rank_up_flag": false,
+      "other_controllers_unchanged": true,
+      "ui_or_stats_calls": 0
+    },
+    {
+      "case": "missing/invalid player progression",
+      "outcomes": [
+        {
+          "accepted": false,
+          "xp": 17,
+          "rank": 0
+        }
+      ],
+      "boundary_calls": [
+        5403198096,
+        5403198128,
+        5403202288,
+        5403204192
+      ],
+      "original_consumer_executed": true,
+      "rank_up_flag": false,
+      "other_controllers_unchanged": true,
+      "ui_or_stats_calls": 0
+    },
+    {
+      "case": "missing/invalid player progression",
+      "outcomes": [
+        {
+          "accepted": false,
+          "xp": 17,
+          "rank": 0
+        }
+      ],
+      "boundary_calls": [
+        5403198096,
+        5403198128,
+        5403204192
+      ],
+      "original_consumer_executed": true,
+      "rank_up_flag": false,
+      "other_controllers_unchanged": true,
+      "ui_or_stats_calls": 0
+    }
+  ],
+  "sqlite_access": "read-only/query-only",
+  "modeled_boundaries": "JSON constructor/object/UInt64 access/destructor and diagnostics; original consumer control flow, state stores and cookie check execute unchanged",
+  "native_game_callback_verified": false,
+  "full_backend_complete": false
+}

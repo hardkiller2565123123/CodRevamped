@@ -1,4 +1,5 @@
 #include "LsgSessionHandler.h"
+#include "../ReplayDwServiceBridge.h"
 
 namespace revamped::iw8
 {
@@ -462,6 +463,58 @@ namespace revamped::iw8
                             : nullptr;
                         RecordPostLoginTaskCensus(client.id, counter, plain, taskRequest, censusRoute);
 
+                        auto sendTaskReplyPlain = [&](const std::vector<std::uint8_t>& replyPlain,
+                                                      const char* source,
+                                                      const char* operation) -> bool
+                        {
+                            if (replyPlain.empty())
+                                return false;
+                            const std::array<std::uint8_t, 16> replySeed{
+                                0x5E,0xED,0x5E,0xED,0x5E,0xED,0x5E,0xED,
+                                0x5E,0xED,0x5E,0xED,0x5E,0xED,0x5E,0xED
+                            };
+                            std::vector<std::uint8_t> replyEncrypted;
+                            if (!BCryptAesCbcCrypt(true, client.lsgBdData + 56, replySeed.data(),
+                                    replyPlain.data(), replyPlain.size(), replyEncrypted))
+                                return false;
+
+                            std::vector<std::uint8_t> response;
+                            AppendLe32(response, 30u + static_cast<std::uint32_t>(replyEncrypted.size()));
+                            response.push_back(0xAB);
+                            response.push_back(0x85);
+                            AppendLe32(response, ++client.lsgSendCounter);
+                            response.insert(response.end(), replySeed.begin(), replySeed.end());
+                            response.insert(response.end(), replyEncrypted.begin(), replyEncrypted.end());
+
+                            std::uint8_t responseHash[20]{};
+                            if (!BCryptHmacSha1(client.lsgBdData + 20, 20, response.data(), response.size(), responseHash))
+                                return false;
+                            response.insert(response.end(), responseHash, responseHash + 8);
+                            if (!SendAllNonBlocking(client.socket, response.data(), response.size()))
+                                return false;
+                            if (config_.dumpPayloads)
+                                log::Payload(client.id, "OUT", client.localPort, client.peer, response.data(), response.size());
+                            log::Print("[LSG-ROUTE] id=%llu service=%u task=%u source=%s operation=%s replyCounter=%u bytes=%llu transaction=%u",
+                                static_cast<unsigned long long>(client.id),
+                                static_cast<unsigned>(taskRequest.serviceId),
+                                static_cast<unsigned>(taskRequest.taskId),
+                                source ? source : "unknown", operation ? operation : "",
+                                client.lsgSendCounter, static_cast<unsigned long long>(response.size()), counter);
+                            return true;
+                        };
+
+                        auto tryReplayDw = [&]() -> bool
+                        {
+                            std::vector<std::uint8_t> replayReply;
+                            std::string operation;
+                            const std::uint64_t transactionId = static_cast<std::uint64_t>(counter);
+                            if (!demonware::TryBuildReplayDwTaskReply(taskRequest.serviceId, taskRequest.taskId,
+                                    requestPayload, taskRequest.payloadBytes, transactionId, replayReply, &operation))
+                                return false;
+                            client.lsgTransactionId = transactionId;
+                            return sendTaskReplyPlain(replayReply, "ReplayDW", operation.c_str());
+                        };
+
                         if (!taskRequest.valid)
                         {
                             log::Print("[LSG-COMPAT] id=%llu secure task decode rejected reason=%s policy=DO_NOT_GUESS_RESPONSE_BYTES",
@@ -483,11 +536,14 @@ namespace revamped::iw8
                                 route->taskName ? route->taskName : "?");
                             if (route->replyPolicy == demonware::ReplyPolicy::None)
                             {
-                                log::Print("[LSG-KNOWN-UNIMPLEMENTED] id=%llu service=%u(%s) task=%u(%s) payloadBytes=%llu policy=DO_NOT_GUESS_RESPONSE_BYTES",
-                                    static_cast<unsigned long long>(client.id),
-                                    static_cast<unsigned>(taskRequest.serviceId), route->serviceName ? route->serviceName : "?",
-                                    static_cast<unsigned>(taskRequest.taskId), route->taskName ? route->taskName : "?",
-                                    static_cast<unsigned long long>(taskRequest.payloadBytes));
+                                if (!tryReplayDw())
+                                {
+                                    log::Print("[LSG-KNOWN-UNIMPLEMENTED] id=%llu service=%u(%s) task=%u(%s) payloadBytes=%llu ReplayDW=no-handler policy=DO_NOT_GUESS_RESPONSE_BYTES",
+                                        static_cast<unsigned long long>(client.id),
+                                        static_cast<unsigned>(taskRequest.serviceId), route->serviceName ? route->serviceName : "?",
+                                        static_cast<unsigned>(taskRequest.taskId), route->taskName ? route->taskName : "?",
+                                        static_cast<unsigned long long>(taskRequest.payloadBytes));
+                                }
                             }
                             else
                             {
@@ -502,15 +558,25 @@ namespace revamped::iw8
                                 if (!demonware::BuildTaskReply(*route, taskRequest, requestPayload, taskRequest.payloadBytes,
                                     transactionId, replyPlain))
                                 {
-                                    if (taskRequest.serviceId == 255u && taskRequest.taskId == 0x0Au)
+                                    if (tryReplayDw())
                                     {
-                                        log::Print("[LSG-REST] id=%llu counter=%u REST service/operation not reconstructed; no reply sent",
-                                            static_cast<unsigned long long>(client.id), counter);
+                                        log::Print("[LSG-FALLBACK] id=%llu service=%u task=%u route=%s/%s source=ReplayDW reason=legacy-serializer-unavailable",
+                                            static_cast<unsigned long long>(client.id),
+                                            static_cast<unsigned>(taskRequest.serviceId), static_cast<unsigned>(taskRequest.taskId),
+                                            route->serviceName ? route->serviceName : "?", route->taskName ? route->taskName : "?");
                                     }
-                                    log::Print("[LSG] id=%llu service=%u task=%u route=%s/%s could not serialize semantic reply",
-                                        static_cast<unsigned long long>(client.id),
-                                        static_cast<unsigned>(taskRequest.serviceId), static_cast<unsigned>(taskRequest.taskId),
-                                        route->serviceName ? route->serviceName : "?", route->taskName ? route->taskName : "?");
+                                    else
+                                    {
+                                        if (taskRequest.serviceId == 255u && taskRequest.taskId == 0x0Au)
+                                        {
+                                            log::Print("[LSG-REST] id=%llu counter=%u REST service/operation not reconstructed; no reply sent",
+                                                static_cast<unsigned long long>(client.id), counter);
+                                        }
+                                        log::Print("[LSG] id=%llu service=%u task=%u route=%s/%s could not serialize semantic reply and ReplayDW had no compatible handler",
+                                            static_cast<unsigned long long>(client.id),
+                                            static_cast<unsigned>(taskRequest.serviceId), static_cast<unsigned>(taskRequest.taskId),
+                                            route->serviceName ? route->serviceName : "?", route->taskName ? route->taskName : "?");
+                                    }
                                 }
                                 else
                                 {
@@ -568,10 +634,13 @@ namespace revamped::iw8
                         }
                         else
                         {
-                            log::Print("[LSG-UNSUPPORTED] id=%llu service=%u task=%u payloadBytes=%llu policy=DO_NOT_GUESS_RESPONSE_BYTES",
-                                static_cast<unsigned long long>(client.id),
-                                static_cast<unsigned>(taskRequest.serviceId), static_cast<unsigned>(taskRequest.taskId),
-                                static_cast<unsigned long long>(taskRequest.payloadBytes));
+                            if (!tryReplayDw())
+                            {
+                                log::Print("[LSG-UNSUPPORTED] id=%llu service=%u task=%u payloadBytes=%llu ReplayDW=no-handler policy=DO_NOT_GUESS_RESPONSE_BYTES",
+                                    static_cast<unsigned long long>(client.id),
+                                    static_cast<unsigned>(taskRequest.serviceId), static_cast<unsigned>(taskRequest.taskId),
+                                    static_cast<unsigned long long>(taskRequest.payloadBytes));
+                            }
                         }
                     }
                 }

@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "verified_at": "2026-10-06T12:03:16.315471+00:00",
+  "passed": true,
+  "server_sha256": "0348f5747a4b48ef0167b70269bfb9bc885f5f715e7a6746e64fcb91e14dd111",
+  "game_sha256": "b326981a9718cedbc05228d40bef8b2adcd6be89307b2cde7d8e878a3ca67885",
+  "pid": 8060,
+  "scope": "Native channel creation and event-24/25 membership callbacks in one root-folder game",
+  "native_channel": 9368055510236882296,
+  "native_category": "chat",
+  "native_chat_type": 3,
+  "separate_existing_test_peer": 76561201025253031,
+  "positive_native_member_callback_verified": true,
+  "native_channel_create_completion_verified": true,
+  "checks": [
+    "Game-owned native private-party create completion installed the actual channel and host member",
+    "Real authenticated peer subscription event 24 added the named member to the native chat pool",
+    "Owned peer unsubscribe event 25 removed the member from the native chat pool",
+    "Same-session rejoin restored native membership, and last-socket disconnect removed it again"
+  ],
+  "observations": {
+    "created": {
+      "path": "E:\\DW\\IW8\\data\\native-channel-created-after-restart-20261006.json",
+      "sha256": "b01a8ca18afba23faa475631756cf80ba0c0c851047af9a858da0277513b0da3"
+    },
+    "joined": {
+      "path": "E:\\DW\\IW8\\data\\20261006-channel-native-membership-after-restart-observations\\joined.json",
+      "sha256": "d65e54e10f127d598e2148cf231b5ff07c0381815f57498f657a12513a71715a"
+    },
+    "unsubscribed": {
+      "path": "E:\\DW\\IW8\\data\\20261006-channel-native-membership-after-restart-observations\\unsubscribed.json",
+      "sha256": "34a3bf3cfcc557646ed16697f6e391125cf35d459119af7a58a7d7a046a0d2d1"
+    },
+    "rejoined": {
+      "path": "E:\\DW\\IW8\\data\\20261006-channel-native-membership-after-restart-observations\\rejoined.json",
+      "sha256": "810886e946e05d73497fdc9ad29d666a2e49bdfe46523858dfb8fe809ca72164"
+    },
+    "disconnected": {
+      "path": "E:\\DW\\IW8\\data\\20261006-channel-native-membership-after-restart-observations\\disconnected.json",
+      "sha256": "f78d1c8ff4fd8b676c7d5a2a23b9ecea1c2714ef4d22b9311292b2cd1ad2a648"
+    }
+  },
+  "source_sha256": {
+    "tools/observe-game.py": "b3576660b32fccba111ccd0f552fff7301f8147e23415c79a36cd514ffe5c4b3",
+    "tools/native-channel-test.py": "4143191065e5c59e980d34006a771f78f1757ac4f89fee82269bfe99e725e74f"
+  },
+  "friendship_or_profile_created": false,
+  "native_channel_message_verified": false,
+  "two_network_multiplayer_verified": false
+}

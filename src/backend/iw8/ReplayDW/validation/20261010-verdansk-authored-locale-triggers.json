@@ -1,0 +1,408 @@
+{
+  "passed": true,
+  "complete_grammar_consumed": true,
+  "entity_count": 47545,
+  "input_bytes": 7985624,
+  "input_sha256": "96910aadd8afb834ca472777e459c8bc32c5bdd83ddbb4b775f9f249090fec42",
+  "tool_sha256": "bb8c0986b984b3bc0d2e38e111e3834d7235d7e07f72c8862645ee8dec92a01a",
+  "authored_locale_triggers": [
+    {
+      "index": 68,
+      "fields": [
+        {
+          "code": 212,
+          "value": "trigger_multiple"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?9"
+        },
+        {
+          "code": 709,
+          "value": "23296 -12288 1024"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "downtown"
+        },
+        {
+          "code": 1072,
+          "value": "locale_area_trigger"
+        }
+      ]
+    },
+    {
+      "index": 86,
+      "fields": [
+        {
+          "code": 212,
+          "value": "trigger_multiple"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?11"
+        },
+        {
+          "code": 709,
+          "value": "28672 2304 1024"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "stadium"
+        },
+        {
+          "code": 1072,
+          "value": "locale_area_trigger"
+        }
+      ]
+    },
+    {
+      "index": 87,
+      "fields": [
+        {
+          "code": 212,
+          "value": "trigger_multiple"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?12"
+        },
+        {
+          "code": 709,
+          "value": "14592 17664 1792"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "tvstation"
+        },
+        {
+          "code": 1072,
+          "value": "locale_area_trigger"
+        }
+      ]
+    },
+    {
+      "index": 88,
+      "fields": [
+        {
+          "code": 212,
+          "value": "trigger_multiple"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?13"
+        },
+        {
+          "code": 709,
+          "value": "8448 -10752 1536"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "hospital"
+        },
+        {
+          "code": 1072,
+          "value": "locale_area_trigger"
+        }
+      ]
+    },
+    {
+      "index": 90,
+      "fields": [
+        {
+          "code": 212,
+          "value": "trigger_multiple"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?15"
+        },
+        {
+          "code": 709,
+          "value": "-16896 21760 1024"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "airport"
+        },
+        {
+          "code": 1072,
+          "value": "locale_area_trigger"
+        }
+      ]
+    },
+    {
+      "index": 91,
+      "fields": [
+        {
+          "code": 212,
+          "value": "trigger_multiple"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?16"
+        },
+        {
+          "code": 709,
+          "value": "-22528 44032 4608"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "dam"
+        },
+        {
+          "code": 1072,
+          "value": "locale_area_trigger"
+        }
+      ]
+    },
+    {
+      "index": 92,
+      "fields": [
+        {
+          "code": 212,
+          "value": "trigger_multiple"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?17"
+        },
+        {
+          "code": 709,
+          "value": "-26624 -11776 1280"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "scrapyard"
+        },
+        {
+          "code": 1072,
+          "value": "locale_area_trigger"
+        }
+      ]
+    },
+    {
+      "index": 93,
+      "fields": [
+        {
+          "code": 212,
+          "value": "trigger_multiple"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?18"
+        },
+        {
+          "code": 709,
+          "value": "-12288 -12800 1280"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "trainstation"
+        },
+        {
+          "code": 1072,
+          "value": "locale_area_trigger"
+        }
+      ]
+    },
+    {
+      "index": 95,
+      "fields": [
+        {
+          "code": 212,
+          "value": "trigger_multiple"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?20"
+        },
+        {
+          "code": 709,
+          "value": "32128 38784 1024"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "quarry"
+        },
+        {
+          "code": 1072,
+          "value": "locale_area_trigger"
+        }
+      ]
+    },
+    {
+      "index": 96,
+      "fields": [
+        {
+          "code": 212,
+          "value": "trigger_multiple"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?21"
+        },
+        {
+          "code": 709,
+          "value": "52992 3072 2816"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "lumbermill"
+        },
+        {
+          "code": 1072,
+          "value": "locale_area_trigger"
+        }
+      ]
+    },
+    {
+      "index": 97,
+      "fields": [
+        {
+          "code": 212,
+          "value": "trigger_multiple"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?22"
+        },
+        {
+          "code": 709,
+          "value": "34816 -26112 2304"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 845,
+          "value": "port"
+        },
+        {
+          "code": 1072,
+          "value": "locale_area_trigger"
+        }
+      ]
+    },
+    {
+      "index": 98,
+      "fields": [
+        {
+          "code": 212,
+          "value": "trigger_multiple"
+        },
+        {
+          "code": 20186,
+          "value": "default"
+        },
+        {
+          "code": 652,
+          "value": "?23"
+        },
+        {
+          "code": 709,
+          "value": "51200 -39424 3840"
+        },
+        {
+          "code": 37683,
+          "value": "triggermodeldummydefault"
+        },
+        {
+          "code": 43991,
+          "value": "gulag"
+        },
+        {
+          "code": 1072,
+          "value": "locale_area_trigger"
+        }
+      ]
+    }
+  ],
+  "runtime_locale_ids_verified": false,
+  "scope": "Full native entity-text span; numeric and explicit literal keys preserved. Runtime locale ID assignment remains a separate contract"
+}

@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "passed": true,
+  "recorded_utc": "2026-10-09T22:40:36.951784+00:00",
+  "backend_sha256": "9c9e495eb74728a1fd67cb29eedf72b59e8677da1e7342e136ac296f3da4d316",
+  "source_sha256": {
+    "src/server.cpp": "6a506015393f676bb112ada72429a5c913bb4eefc34b86c8b9920b907a029d4b",
+    "src/services.cpp": "a216eb6b6b16b2753fd41b280efc0fa75c22244e3c7b875c05305509cca7ed0f",
+    "src/services.h": "8c998d702a152cded977cc62259a78bc952d052bbd636983a8919e77c6b481e0",
+    "src/tournament_services.cpp": "1c0baf2bf2b074d991cf11f60355ee0a353bfb0549978c1777597a8f7458eca4",
+    "src/tournament_services.h": "5589450cd385076c838952cb7a7180cdff0fa862633d4fb48df474058cc30748"
+  },
+  "test_tool_sha256": "0b3f904b4cdabc7365ff1d2d83f1aa0f5ab1ba2c5ecaea2ac988a4d16e1894f6",
+  "protocol_groups": 304,
+  "server_pid": 204532,
+  "authenticated_lobby_connections": 0,
+  "authentication_requests": 0,
+  "native_tasks": 0,
+  "real_clock_expiry": true,
+  "terminal_committed": true,
+  "readiness_cleared": true,
+  "malformed_realm_preserved": true,
+  "independent_realm_progressed": true,
+  "formation_discovered_without_tournament_realm": true,
+  "orphan_registration_and_readiness_not_fabricated": true,
+  "orphan_formation_terminal_committed": true,
+  "malformed_formation_isolated": true,
+  "noncanonical_formation_preserved": true,
+  "globally_live_orphan_formation_preserved": true,
+  "game_launched": false,
+  "receiver_membership_seeded": true,
+  "protocol_evidence": {
+    "path": "/opt/replay-dw/clean-finalization-r6-20261009/validation-source-r4/data/offline-validation/data/lobby-verification.json",
+    "sha256": "c891968e5d52c8f4e4c7b57a37bd3913c5db1adb6ae571dd17b906488245cb49"
+  },
+  "exact_source_restoration_verified": true,
+  "remote_export": {
+    "path": "data/remaining-services-20261009/linux-clean-finalization-r6-offline-startup.json",
+    "sha256": "519e77209271ca743f2fc26e2c4b0893de8c689c5ffdb8510f1128cc05584cf5"
+  },
+  "local_protocol_evidence": {
+    "path": "E:\\DW\\IW8\\data\\remaining-services-20261009\\linux-clean-finalization-r6-protocol.json",
+    "sha256": "c891968e5d52c8f4e4c7b57a37bd3913c5db1adb6ae571dd17b906488245cb49"
+  }
+}

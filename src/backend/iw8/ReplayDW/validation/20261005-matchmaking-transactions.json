@@ -1,0 +1,22 @@
+{
+  "schema": 1,
+  "recorded_utc": "2026-10-05T20:55:33.755643+00:00",
+  "server_sha256": "b344382ca944fa92b71821be1fd65d03b9a057deb06ba334898fe1b88db88ab8",
+  "game_sha256": "b0075e0dbde62758efe84e23318084608be5b3704f23c269d87254ce2aea58a8",
+  "independent_protocol_checks": 173,
+  "transaction_checks": [
+    "a real blocked index publication leaves a prepared complete transaction; matchmaking reads and token operations reject partial state without a successful assignment",
+    "transaction recovery preflights every snapshot and rejects escaping/duplicate paths, foreign titles, invalid identities/capacity, overflowing index IDs, duplicate JSON keys and malformed completion markers before mutation",
+    "live recovery rolls forward the same lobby/search/index snapshots once, retains a flushed completion marker, and does not replay an unacknowledged assignment callback",
+    "disband journals the lobby/search/index together, deduplicates shared searches and preserves a member's newer current-lobby assignment",
+    "a real blocked search publication interrupts disband after the lobby write without sending event 2002 or acknowledging a complete transaction",
+    "server startup recovers an interrupted disband before accepting connections; exact snapshots/revision survive restart without replaying old connection callbacks"
+  ],
+  "native_multiplayer_menu_verified": true,
+  "native_passing_fences": 27,
+  "native_presence_join_receipt": "validation/20261005-matchmaking-transactions-join.json",
+  "engine_recompiled": false,
+  "map_tests_performed": false,
+  "physical_power_failure_test_performed": false,
+  "full_backend_verified": false
+}

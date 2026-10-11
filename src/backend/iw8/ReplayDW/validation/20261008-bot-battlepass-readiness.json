@@ -1,0 +1,74 @@
+{
+  "schema": 1,
+  "passed": true,
+  "full_backend_complete": false,
+  "gameplay_verified": false,
+  "server_sha256": "286beae745f07b09b9e8ede2b0a126eed3c737e645a586e826aa261a6c1005f1",
+  "installed_game_sha256": "2719ed68d8c9611775cd9f22a21fecd3deed5ffeaa9d70fc95d408b956155494",
+  "candidate_game_sha256": "de1cd80d44771706d8d3fc9e0a8de20a6f0427611243fcd92baa0dde8e651ed4",
+  "candidate_job": "6a4efef1868240fb",
+  "candidate_deployed": false,
+  "unresolved_symbols": 0,
+  "relocation_audit_passed": true,
+  "proofs": {
+    "clan-bots": {
+      "path": "data/bot-battlepass-20261008/clan-bots.json",
+      "sha256": "7ee1bf09c1c29d5d8510dfa51798456334ad1dc30ece31ad0feae6d003b09291",
+      "checks": 6
+    },
+    "clan-controls": {
+      "path": "data/bot-battlepass-20261008/clan-controls.json",
+      "sha256": "748db9dd41538f01302d468d97b2dfcdd9ca625aa3a4d6185d7a571d9cbda920",
+      "checks": 8
+    },
+    "clan-reader": {
+      "path": "data/bot-battlepass-20261008/clan-reader.json",
+      "sha256": "089c7cae5b9983ea7fff16a01aa17e12eff8948d4bf28b35cee9a57fe2e0d180",
+      "checks": 32
+    },
+    "clan-client": {
+      "path": "data/bot-battlepass-20261008/clan-client.json",
+      "sha256": "75784b13a8ed76c2cc53f9141b955ca48636ab8a834c60032bd9490202616b99",
+      "checks": 5
+    },
+    "clan-ownership": {
+      "path": "data/bot-battlepass-20261008/clan-ownership.json",
+      "sha256": "e9d1b629977be8af831727ef5382701e01061c9c45b2f05ce618e4760aafdfa5",
+      "checks": 233
+    },
+    "linux-team-final": {
+      "path": "data/bot-battlepass-20261008/linux-team-final.json",
+      "sha256": "41ffa697bd9a61495ccb9fcd71bf159b868c82aa1fd282567b5cd3c120409166",
+      "checks": 12
+    },
+    "linux-store-final": {
+      "path": "data/bot-battlepass-20261008/linux-store-final.json",
+      "sha256": "9129b28dd9d532729935122beb4ceac01a682fec379e470ad02af58bb7e9f6d3",
+      "checks": 11
+    },
+    "linux-startup-final": {
+      "path": "data/bot-battlepass-20261008/linux-startup-final.json",
+      "sha256": "35b83fbb75c75e8f17572d220c8aa2cd1fe3886180eb65db7e3b6a6179e86c88",
+      "checks": 102
+    }
+  },
+  "features": [
+    "Native bot pregame models and ClientBegin assignment",
+    "BR combat groups derived from actual squads; MP team-count query ignored for BR pools",
+    "No Fill bot reservations",
+    "Zero-price Battle Pass SKUs, native lookup prices and six premium activation definitions",
+    "Bounded five-visible-character bot clan color reset",
+    "Exact reviewed Verdansk collision-reader override"
+  ],
+  "open_gates": [
+    "Combined native allocator fix is being built separately from this immutable candidate",
+    "Actual BR full-collision loading still fails on the installed image",
+    "Latest bot/Battle Pass gameplay and native purchase UI require owner playtest",
+    "Full tier XP/reward progression and unclassified SDK result contracts are not claimed complete"
+  ],
+  "live_read_only_evidence": {
+    "path": "data/bot-battlepass-20261008/owner-sv-bots.json",
+    "sha256": "3c57f60d5d80af1214ac229ff6ff45bf7eaaac0b2a03ef89ceaee8564f8483eb"
+  },
+  "supported_update_bases": 10
+}

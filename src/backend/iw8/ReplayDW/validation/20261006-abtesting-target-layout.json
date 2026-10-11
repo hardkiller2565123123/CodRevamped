@@ -1,0 +1,252 @@
+{
+  "schema": 1,
+  "generated_utc": "2026-10-06T14:53:49.146568+00:00",
+  "audit_tool_sha256": "ccc39872e09dc08ddf7ba83c2974af33f43869ae9d3c96aede17eace18793221",
+  "target_image_sha256": "68fb1cbcb2924182724004039de55a4c50152bb6561803c4898b7930b38132f0",
+  "functions": [
+    {
+      "va": 5403310160,
+      "candidate_alias": "sub_1420FF850",
+      "target_bytes_sha256": "428778e8e145d241b8787ec68e61db5cef53d6099731958aac864b20956e87fe",
+      "exported_size": 480,
+      "direct_calls": [
+        5404151536,
+        5403198096,
+        5403653824,
+        5403204416,
+        5403204192,
+        5404323008,
+        5403202688,
+        5403654720,
+        5403654720,
+        5403473296,
+        5403198096,
+        5403198528,
+        5403198096,
+        5403202176,
+        5403310864,
+        5403198128,
+        5403198128,
+        5403198128,
+        5404151648
+      ],
+      "literal_strings": [
+        "ABToken",
+        "enrollments",
+        "expiresIn"
+      ],
+      "r8d_immediates": [
+        4096
+      ]
+    },
+    {
+      "va": 5403310864,
+      "candidate_alias": "q_bdABTestingEnrollment_deserializeFromJSON",
+      "target_bytes_sha256": "e0023de2507f3c64173a18cb21b81c0bcd8100de00d3111269d134f1cfabba98",
+      "exported_size": 264,
+      "direct_calls": [
+        5403204192,
+        5403204192,
+        5403198096,
+        5403198528,
+        5403198096,
+        5403202176,
+        5403310688,
+        5403198128,
+        5403198128
+      ],
+      "literal_strings": [
+        "clientTreatments",
+        "cohortID",
+        "testID"
+      ],
+      "r8d_immediates": []
+    },
+    {
+      "va": 5403310688,
+      "candidate_alias": "bdABTestingClientTreatment::deserializeFromJSON",
+      "target_bytes_sha256": "5731502252d07922abf1465dfa6b0304ed75d671a2ada337650a18a2f3144c7f",
+      "exported_size": 114,
+      "direct_calls": [
+        5403203808,
+        5403203808,
+        5403202688
+      ],
+      "literal_strings": [
+        "endsIn",
+        "modifiers",
+        "startsIn"
+      ],
+      "r8d_immediates": []
+    },
+    {
+      "va": 5384605856,
+      "candidate_alias": "sub_140F290A0",
+      "target_bytes_sha256": "111f10c4a7b999a7a7a457090e2825b08d4c6c5faba926ac11f34088a848d5d7",
+      "exported_size": 788,
+      "direct_calls": [
+        5403198096,
+        5403204448,
+        5403204288,
+        5403202688,
+        5403198096,
+        5403198096,
+        5403198528,
+        5403199776,
+        5403204288,
+        5403202688,
+        5403204288,
+        5403202688,
+        5385999536,
+        5403198128,
+        5403198128,
+        5403198128,
+        5403198128,
+        5404151648,
+        5384606656
+      ],
+      "literal_strings": [
+        "data",
+        "key",
+        "type",
+        "value"
+      ],
+      "r8d_immediates": [
+        2147483647
+      ]
+    },
+    {
+      "va": 5384603664,
+      "candidate_alias": "sub_140F28810",
+      "target_bytes_sha256": "d8f1a12f731c64bf90ba7720430dbf74a18c7c3db44539b3fd3176ea69b9b787",
+      "exported_size": 158,
+      "direct_calls": [
+        5384542896,
+        5403310816,
+        5403311136
+      ],
+      "literal_strings": [],
+      "r8d_immediates": [
+        1,
+        1024
+      ]
+    },
+    {
+      "va": 5384604576,
+      "candidate_alias": "q_Online_AB_Testing_Enroll",
+      "target_bytes_sha256": "be62536d824fe19af0153d479dc1f2dc131cef828d1218bc2393ab0117d1782d",
+      "exported_size": 643,
+      "direct_calls": [
+        5403311424,
+        5403310640,
+        5384877200,
+        5384876256,
+        5384890096,
+        5389469808,
+        5389469248,
+        5388306464,
+        5388305776,
+        5403296752,
+        5403292976,
+        5403229008
+      ],
+      "literal_strings": [
+        "X"
+      ],
+      "r8d_immediates": [
+        8
+      ]
+    },
+    {
+      "va": 5384605280,
+      "candidate_alias": "q_Online_AB_Testing_OnEnrollComplete",
+      "target_bytes_sha256": "704bb66c69d726126d6b7f9de79a6c0f56b820ff28e79494d751ea9e6580cb32",
+      "exported_size": 572,
+      "direct_calls": [
+        5403304720,
+        5403304544,
+        5388305776,
+        5384605856,
+        5388306464,
+        5388306464,
+        5388306464,
+        5388306464,
+        5388306464,
+        5388306464,
+        5388306464,
+        5388306464,
+        5388306464,
+        5388306464,
+        5388306464
+      ],
+      "literal_strings": [
+        "X"
+      ],
+      "r8d_immediates": []
+    },
+    {
+      "va": 5403312064,
+      "candidate_alias": "q_bdABTestingEnrollRequest_serializeWithLobbyService",
+      "target_bytes_sha256": "4c4fc2582597ba5b3d8407b93846223f82f6c203808d4fa263f7d5ca7f01cff7",
+      "exported_size": 469,
+      "direct_calls": [
+        5403436544,
+        5403657872,
+        5404320928,
+        5384886016,
+        5384886016,
+        5403657936,
+        5403656912,
+        5403657328,
+        5403657840,
+        5403292976,
+        5403229008,
+        5404151648
+      ],
+      "literal_strings": [
+        "%I64u",
+        "%s/v2/users/%s-%llu/enrollments/?client=%s&context=%s",
+        "Content-Type",
+        "POST",
+        "application/json",
+        "http://abtesting"
+      ],
+      "r8d_immediates": []
+    },
+    {
+      "va": 5403548368,
+      "candidate_alias": "bdABTesting::enroll",
+      "target_bytes_sha256": "edd8cd4cc3f8f36b7b1affd60d0ac4044a6ab86bc5dbc979f36b9882389c150f",
+      "exported_size": 191,
+      "direct_calls": [
+        5403409424
+      ],
+      "literal_strings": [],
+      "r8d_immediates": []
+    }
+  ],
+  "native_engine_capacities": {
+    "enrollments": 8,
+    "client_treatments_per_enrollment": 1,
+    "modifier_buffer_bytes": 1024
+  },
+  "engine_modifier_application": "Immediate at successful enrollment; filter future and expired treatments before publication",
+  "wire_fields": {
+    "response": [
+      "expiresIn",
+      "ABToken",
+      "enrollments"
+    ],
+    "enrollment": [
+      "testID",
+      "cohortID",
+      "clientTreatments"
+    ],
+    "treatment": [
+      "startsIn",
+      "endsIn",
+      "modifiers"
+    ]
+  },
+  "native_runtime_verified": false
+}

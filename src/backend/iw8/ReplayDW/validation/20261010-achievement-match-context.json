@@ -1,0 +1,212 @@
+{
+  "passed": true,
+  "target_image_sha256": "68fb1cbcb2924182724004039de55a4c50152bb6561803c4898b7930b38132f0",
+  "tool_sha256": "3317af8509f9a1861d250c6ffb841073f6adf9131dc7c77c636a7dbadf09c028",
+  "catalog": {
+    "path": "data/compiler-snapshot-1791521839529560700/generated/function-catalog.json",
+    "sha256": "16d65dd320eea3eb19942fccc02608c4e29a6665a61587740fe19996190afcab"
+  },
+  "timestamp_setter": {
+    "function_id": "fn_919990788f9b646c",
+    "rva": 34617104,
+    "store_width": 8,
+    "member_offset": 128,
+    "code_size": 8,
+    "original_code_sha256": "8622f2826f6efe5ab35c9bf54d69faffe7f12907ed0451ac4ce31906eee8677b"
+  },
+  "native_match_getter": {
+    "function_id": "fn_2df0739feaf7a1d5",
+    "rva": 17050560,
+    "global_rva": 203941016
+  },
+  "records": [
+    {
+      "name": "OnlineChallengesManager::AddGamemode",
+      "function_id": "fn_940d620b1a425976",
+      "rva": 15940096,
+      "unwind_chunks": [
+        {
+          "begin_rva": 15940096,
+          "end_rva": 15940218,
+          "original_code_sha256": "d0f235bc96ea6f8f2da920ab0c64a952f08e39fe3b850534a6cf03672da0ef34"
+        }
+      ],
+      "timestamp_sites": [],
+      "scope": "Original direct call sequence across chained unwind chunks; branch feasibility and external callees not modeled"
+    },
+    {
+      "name": "OnlineChallengesManager::FlushEventCache",
+      "function_id": "fn_4ee4b47e76ac304d",
+      "rva": 15941776,
+      "unwind_chunks": [
+        {
+          "begin_rva": 15941776,
+          "end_rva": 15941858,
+          "original_code_sha256": "93f7dc1a3ac8d7db94e75bd560b4d5cf89a5545eeaedd4b13151717ac4ac2ea2"
+        },
+        {
+          "begin_rva": 15941858,
+          "end_rva": 15941994,
+          "original_code_sha256": "73da80657b631e4107f93dd02e7597ac6d1ea5621ae4a665b66380030603b328"
+        },
+        {
+          "begin_rva": 15941994,
+          "end_rva": 15942964,
+          "original_code_sha256": "47e328b004745064d6ba4d64ce6b233398fd9e934efaf78406271850ef0709c7"
+        },
+        {
+          "begin_rva": 15942964,
+          "end_rva": 15943024,
+          "original_code_sha256": "a2132ead2a6464fcd1d83d1b0377e5c587074038d504bada42eadb872f7b42f9"
+        },
+        {
+          "begin_rva": 15943024,
+          "end_rva": 15943074,
+          "original_code_sha256": "3a62f6ad23f7955e7701c95f829304203abc8ec9eb00d980c8fb28a2b8f02751"
+        },
+        {
+          "begin_rva": 15943074,
+          "end_rva": 15943101,
+          "original_code_sha256": "c481be064aa25b182b5669ddccbea05bea181f1edbe46ff201b053f656a26b2c"
+        }
+      ],
+      "timestamp_sites": [
+        {
+          "site": 5384651322,
+          "target": 5403326224,
+          "candidate_name": "bdAchievementEvent::setTimeStamp",
+          "preceding_direct_calls": [
+            {
+              "site": 5384651244,
+              "target": 5383952416,
+              "candidate_name": "GHandler::getHandler"
+            },
+            {
+              "site": 5384651252,
+              "target": 5386598272,
+              "candidate_name": "sub_14110F780"
+            },
+            {
+              "site": 5384651303,
+              "target": 5403324880,
+              "candidate_name": "sub_1421031D0"
+            },
+            {
+              "site": 5384651308,
+              "target": 5388248208,
+              "candidate_name": "q_LiveStorage_GetUTC"
+            }
+          ]
+        }
+      ],
+      "scope": "Original direct call sequence across chained unwind chunks; branch feasibility and external callees not modeled"
+    },
+    {
+      "name": "OnlineChallengesManager::FlushXPCache",
+      "function_id": "fn_30f5b3758e614546",
+      "rva": 15943104,
+      "unwind_chunks": [
+        {
+          "begin_rva": 15943104,
+          "end_rva": 15943162,
+          "original_code_sha256": "b9f7bd0f25220c4e016775d7c1321830b7265ce444c79fe6d593fe73fb002bc6"
+        },
+        {
+          "begin_rva": 15943162,
+          "end_rva": 15943175,
+          "original_code_sha256": "7ed8aa39a94f8776b41780409a3dafcfb890497cf61b4fadd44adfc8f73a591a"
+        },
+        {
+          "begin_rva": 15943175,
+          "end_rva": 15943215,
+          "original_code_sha256": "79add2c88b0295e1590ba780413f35a4824d3ba4f8fff4f233f854ccb2d45068"
+        },
+        {
+          "begin_rva": 15943215,
+          "end_rva": 15944329,
+          "original_code_sha256": "c4eb5f5e6765301d61ad17831a6e31dad43b0ae08d60e0dfd9aa58d08883e701"
+        },
+        {
+          "begin_rva": 15944329,
+          "end_rva": 15944384,
+          "original_code_sha256": "393a4cc19ee1bb872abd794a1079e3f5964b7dc2560b7ca8a318d356e596b4f8"
+        },
+        {
+          "begin_rva": 15944384,
+          "end_rva": 15944439,
+          "original_code_sha256": "44d012eb0869c9ebd206e0bba6d3b50074cadaa66a7b592bdf8b02e7ffd947ee"
+        },
+        {
+          "begin_rva": 15944439,
+          "end_rva": 15944465,
+          "original_code_sha256": "5edaf3621d177c7630ca3ceaf564fa49309d7e5e0528afcb793b690be5dc455b"
+        }
+      ],
+      "timestamp_sites": [
+        {
+          "site": 5384652882,
+          "target": 5403326224,
+          "candidate_name": "bdAchievementEvent::setTimeStamp",
+          "preceding_direct_calls": [
+            {
+              "site": 5384652780,
+              "target": 5403324880,
+              "candidate_name": "sub_1421031D0"
+            },
+            {
+              "site": 5384652801,
+              "target": 5403324880,
+              "candidate_name": "sub_1421031D0"
+            },
+            {
+              "site": 5384652865,
+              "target": 5403324880,
+              "candidate_name": "sub_1421031D0"
+            },
+            {
+              "site": 5384652870,
+              "target": 5388248208,
+              "candidate_name": "q_LiveStorage_GetUTC"
+            }
+          ]
+        },
+        {
+          "site": 5384653339,
+          "target": 5403326224,
+          "candidate_name": "bdAchievementEvent::setTimeStamp",
+          "preceding_direct_calls": [
+            {
+              "site": 5384653234,
+              "target": 5403324880,
+              "candidate_name": "sub_1421031D0"
+            },
+            {
+              "site": 5384653254,
+              "target": 5403324880,
+              "candidate_name": "sub_1421031D0"
+            },
+            {
+              "site": 5384653322,
+              "target": 5403324880,
+              "candidate_name": "sub_1421031D0"
+            },
+            {
+              "site": 5384653327,
+              "target": 5388248208,
+              "candidate_name": "q_LiveStorage_GetUTC"
+            }
+          ]
+        }
+      ],
+      "scope": "Original direct call sequence across chained unwind chunks; branch feasibility and external callees not modeled"
+    }
+  ],
+  "game_changed": false,
+  "native_runtime_verified": false,
+  "remaining": [
+    "Capture ownership before aggregation rather than tagging only reconstructed cache events",
+    "Prove SDK key/value capacity for every tagged path",
+    "Bind native match identity to authoritative allocation history and stable participant claims",
+    "Verify reset, departure, migration and delayed-report ordering"
+  ]
+}

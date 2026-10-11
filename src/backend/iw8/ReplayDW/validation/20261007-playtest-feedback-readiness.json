@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "passed": true,
+  "scope": "Playtest fixes: native chat text, rank inventory, encoded unlock controls, Verdansk selectors/collision policy and BR party squads",
+  "server_sha256": "34964efd76220b894fff7c5fe89924e7a9a961139676424aaa4cfd7763d83969",
+  "game_sha256": "ce152927aa50291258ad7cf8278becf656bc0f9092fdaf87e5ee5193500cbc21",
+  "compiler_job_id": "513acf47f3b74cd1",
+  "compiled_cpp_inputs": 95,
+  "changed_backend_cpp_inputs": 15,
+  "backend_wire_groups": 56,
+  "linked_backend_delivery_checks": 23,
+  "linked_client_groups": 5,
+  "verdansk_policy_cases": 12,
+  "windows_virtual_unwind_cases": 419,
+  "unresolved_symbols": 0,
+  "windows_sec_image_mapping": true,
+  "native_game_verified": false,
+  "full_backend_completed": false,
+  "deployment": {
+    "path": "data/rank-grants-backend-20261007/deployment.json",
+    "sha256": "1fd0387964fd3b41dbe64e682012ecb2c260c210b0dc6f7b0ef1ddae66502b58"
+  },
+  "backend_proofs": [
+    {
+      "path": "data/rank-grants-backend-20261007/linux-weapons.json",
+      "sha256": "8741518c7665314d9d3bb13abc00659aa2889dde201d8f1bf6e5782d1720a65d"
+    },
+    {
+      "path": "data/rank-grants-backend-20261007/linux-retry.json",
+      "sha256": "ff4e46c5e482d6ac83a2631f464a59cdcdc0af7b763fac7cf5c891f0267fc9bd"
+    },
+    {
+      "path": "data/rank-grants-backend-20261007/linux-catchup.json",
+      "sha256": "5731d3618876b74fbe157631c0b6f37a19eb6935e4cb3a180929a9e825a03d6b"
+    },
+    {
+      "path": "data/rank-grants-backend-20261007/linux-rank-grants.json",
+      "sha256": "d2f9ef1f51d7825313e688b8efcb29f51a483f9ff2ed9a1cae07a91b1935f0f4"
+    },
+    {
+      "path": "data/rank-grants-backend-20261007/linux-teams.json",
+      "sha256": "8dc848ac95ae2c9abbef3fb9a7f6c9c2738841c56581380bcb642998d4a2502f"
+    },
+    {
+      "path": "data/rank-grants-backend-20261007/linux-delivery.json",
+      "sha256": "9fa82f7cecdfaf3fd5d9f51c686a8d667a6eac604ad8628b01af00e367e6743b"
+    },
+    {
+      "path": "data/rank-grants-backend-20261007/public-protocol.json",
+      "sha256": "1df5aa4051a6aa24a3e07b35a3d359e0ccc3418efd3ddcffaa17084157a9151b"
+    },
+    {
+      "path": "data/rank-grants-backend-20261007/public-dashboard.json",
+      "sha256": "cc3f7854e0318f21429c841d28fead91d63c1d63bae6c0d2320697d9c7d9192a"
+    }
+  ],
+  "client_proof": {
+    "path": "validation/20261007-playtest-client.json",
+    "sha256": "3df9350c317e4afd46bdb921c292f46ce958f40e6dca3f619299a315e073eb8d"
+  },
+  "original_consumers": [
+    {
+      "path": "validation/20261007-achievement-dispatch-target.json",
+      "sha256": "e40017351f242d48ef36de34f1a99c70d73831872e0abb8d9d13df95b63d07b8"
+    },
+    {
+      "path": "validation/20261007-gunsmith-rewards-target.json",
+      "sha256": "064fa44990e308f274b07bef0d15a6e10b7917f36b3090657e9e8b6562010c63"
+    }
+  ],
+  "verdansk_research": {
+    "path": "validation/20261007-verdansk-loading-research.json",
+    "sha256": "66a41e07f56d14f2b1e75f51b3cecfb7ae96680d814bcd76464193578a61fb79"
+  },
+  "shipped_rank_inventory_counts": {
+    "weapon_rows": 2924,
+    "player_rows": 112,
+    "initial_items": 192
+  },
+  "limits": [
+    "No game launched in this pass: AAR animation, all unlock UI paths and Verdansk BR load/traversal need the owner playtest",
+    "Rare 2-10 FPS collapse remains undiagnosed without a recurrence or timing capture",
+    "Broader tournament fixture suite failed in unrelated retirement/recovery paths; full-suite success is not claimed",
+    "Camo/quest challenge predicates and remaining service-task contracts are outside these rank-only grants"
+  ]
+}

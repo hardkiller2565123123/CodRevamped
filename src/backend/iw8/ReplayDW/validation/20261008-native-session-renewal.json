@@ -1,0 +1,92 @@
+{
+  "schema": 1,
+  "passed": true,
+  "recorded_utc": "2026-10-08T04:58:28.822488+00:00",
+  "game_sha256": "638dab82f069be51f6450f9ed2744f0b049d34642c0b67ae30cde01b53ea16e5",
+  "compiler_job": "e9d65019c9b7461d",
+  "backend_sha256": "cbaa25911782460161a7df3272f00993dbb824f79b1fc10f225c5e4c51268574",
+  "native_signed_renewal_verified": true,
+  "native_reauthentication_not_required": true,
+  "native_player_identity_xp_rank_preserved": true,
+  "native_fences_passing": 27,
+  "native_peer_party_renewal_verified": true,
+  "automatic_hour_boundary_verified": true,
+  "full_backend_verified": false,
+  "main_ini_preserved": true,
+  "source_sha256": {
+    "src/platform.cpp": "9841a3a37a252b62ccf456f1eff131c242afb2c0b84a0adc4482a3ac18ca6fed",
+    "src/platform.h": "0cf2c14e6098b756919edab9544bf9cd2522b70a688b01feed128ed6e291f27d",
+    "integration/replay/DW_LocalPlatform.cpp": "fb3164da50492049014eff647aefa9ce0f7130d5ead4eb812fa86e9846445d8a",
+    "integration/replay/DW_LocalIdentity.cpp": "9e8aa000a0805cbe699d7911fd256045636a59cca8cbc44505268bc16a3d9bd2",
+    "integration/replay/dw_client_identity.h": "8e94375b0d270a1d46902e8ee7f46b1f5f90d570e42afb8a2e2bc2063404e24c"
+  },
+  "evidence": {
+    "renewal-before.json": {
+      "path": "data/native-management-20261008/renewal-before.json",
+      "sha256": "e225640155335628e5f6437c946fed564418dd975c5b0f3016a353ff98302b4d"
+    },
+    "renewal-after.json": {
+      "path": "data/native-management-20261008/renewal-after.json",
+      "sha256": "bec2b6e8a27a80a7fae07c296a117df7e73bed7cace17ba8754e2400390f15d0"
+    },
+    "windows-renewal.json": {
+      "path": "data/session-renewal-20261008/windows-renewal.json",
+      "sha256": "ac550bb4a607321460ee3c3aaf39315484c02bc22e0730ca1dec1a32adf5048a"
+    },
+    "linux-renewal.json": {
+      "path": "data/session-renewal-20261008/linux-renewal.json",
+      "sha256": "1a639d37220e28823fd6a95cde9a2ade73570466731198719cec0a792410d46d"
+    },
+    "windows-startup-verification.json": {
+      "path": "data/session-renewal-20261008/windows-startup-verification.json",
+      "sha256": "bdee6cbf964938c7186c3a44bdbeadf8d934dbe322aab76d67411e7c39d2f558"
+    },
+    "linux-startup-verification.json": {
+      "path": "data/session-renewal-20261008/linux-startup-verification.json",
+      "sha256": "f8961e7864c2aedd0333680ceea50b9956457b1beba2c49bc02c95ed8f283f61"
+    },
+    "identity-verification.json": {
+      "path": "data/session-renewal-20261008/identity-verification.json",
+      "sha256": "2fc316ef209d6cfae650ce8f47cb87192f8008cfc69c8729dae8f36bca682b96"
+    },
+    "deployment.json": {
+      "path": "data/session-renewal-20261008/deployment.json",
+      "sha256": "27f3ce611cbd2384f61c8693bfa894adff82436ad72197d9f8177d110cff3be6"
+    },
+    "automatic-renewal-party-before-main.json": {
+      "path": "data/native-management-20261008/automatic-renewal-party-before-main.json",
+      "sha256": "3159c2b05c84d3fca98f5779d8f15ac3d8b05518908b4cafc3c877b3db707919"
+    },
+    "automatic-renewal-party-after-main.json": {
+      "path": "data/native-management-20261008/automatic-renewal-party-after-main.json",
+      "sha256": "6e4e13f48d40d2213cf90bbcc120af7845c365fa06febed8d5ead38f732427ef"
+    },
+    "automatic-renewal-past-deadline-main.json": {
+      "path": "data/native-management-20261008/automatic-renewal-past-deadline-main.json",
+      "sha256": "3da663fd10f072a0978f20979e28c35d4091b4b8ee080d28a4c57a99b21a03d3"
+    },
+    "automatic-renewal-party-after.json": {
+      "path": "data/native-management-20261008/pair/alpha/automatic-renewal-party-after.json",
+      "sha256": "009f6177caa52fb9a6918bdb33d8ab91753ed20c8856cce7db2b056ec8b0ec0f"
+    },
+    "automatic-renewal-past-deadline.json": {
+      "path": "data/native-management-20261008/pair/alpha/automatic-renewal-past-deadline.json",
+      "sha256": "756adf5698c7c6973aedd8d28d8f27d13a4cad71672f2009e4472a0a5cc8ad0e"
+    },
+    "automatic-renewal-two-member-party.jpg": {
+      "path": "data/native-management-20261008/automatic-renewal-two-member-party.jpg",
+      "sha256": "077fc41fe8797e74db8630654b969289375f71ccf61aa691fe08ef0ad646b288"
+    }
+  },
+  "scope": "Actual root-folder game renewed automatically at five minutes before its signed deadline, with a private native peer in the same two-member party. Both remained authenticated past the original deadline; identity/XP/rank and authentication/lobby counts were preserved. This is menu-party evidence, not in-match renewal, two-network traversal or full backend completion.",
+  "generated_utc": "2026-10-08T05:54:25.394313+00:00",
+  "original_deadline_crossed_verified": true,
+  "automatic_renewal_utc": "2026-10-08T05:47:55Z",
+  "past_deadline_observed_utc": "2026-10-08T05:53:39.523182+00:00",
+  "preserved_party_id": 5313616138492870069,
+  "post_renewal_party_members": 2,
+  "full_backend_completed": false,
+  "native_udp_continuity_past_deadline_verified": false,
+  "past_deadline_relay_auth_state": 3,
+  "relay_scope_note": "The existing past-deadline snapshot proves platform/lobby/party continuity, but its native relay auth is failed (3) and UDP association is closed (0). See the separate relay continuity correction and pending native hour-boundary validation."
+}

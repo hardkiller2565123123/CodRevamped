@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "passed": true,
+  "observed_utc": "2026-10-06T10:48:59.243549+00:00",
+  "server_sha256": "87855532543586649d6f42e1da8111841816719ed4b559b8d1f2840ecaa1de88",
+  "game_sha256": "b326981a9718cedbc05228d40bef8b2adcd6be89307b2cde7d8e878a3ca67885",
+  "protocol_groups": 242,
+  "canonical_map_pool_and_revision_protection_verified": true,
+  "backend_round_map_selection_matches_original_x64_cases": 32,
+  "native_publisher_map_strings_verified": 4,
+  "eight_team_seven_match_progression_verified_by_encrypted_clients": true,
+  "native_round_callbacks_verified": false,
+  "playable_tournament_verified": false,
+  "two_network_gameplay_verified": false,
+  "complete_backend_verified": false,
+  "game_was_recompiled": false,
+  "map_or_match_test_performed": false,
+  "owner_configuration_restored_exactly": true,
+  "checks": [
+    "Canonical tournament pools publish native Replay dvar bindings with version 73 only after durable revision storage; blocked writes, trailing/duplicate JSON, malformed pools, foreign title, duplicate/oversized pools, rollback and changed content under the same revision fail before revision mutation",
+    "Tournament ready-up waits for available playlist maps and recovers one coupled bracket/enrollment/lobby/search/account-index transaction after a real blocked assignment write; retry keeps its lobby identity",
+    "Four independent ready tournament matches allocate distinct closed native lobbies with actual party search IDs, exact create/join envelopes, Replay tournament/team/round metadata and native-selected available map rules",
+    "Temporary same-session reconnect catches up the current bracket and allocated round join once through the existing idle publisher, without a new lobby or repeated native create/join callbacks",
+    "Authenticated host results advance all seven matches through an eight-team tournament; later rounds require fresh scoped readiness and retain distinct native lobby/search/index assignments without carrying forward old ready flags",
+    "Backend rounds follow Replay's 16-bit tournament-ID map slices and repeat-avoidance fallback; an active competition pins the full policy and rejects changed pools without changing its bracket"
+  ],
+  "source_sha256": {
+    "CMakeLists.txt": "dc54aa8ebf1216154cbbabf637b441495555cd77fdf416a326555e41dfdeb8d3",
+    "src/tournament_map_policy.cpp": "a147013ae7cd06df9d06fccfcb58c9cecc15fe7d5395eea1a146cc697206328e",
+    "src/tournament_map_policy.h": "9ff692ed0449d2c008bd4d218aa65ab958404e8262627bef653ba6e1b83dccfb",
+    "src/tournament_services.cpp": "86b3bbfad93ae70906b22612e4d65f2ba8036f1ef33f1b64c8b1518227969a9b",
+    "src/matchmaking_services.cpp": "223465e5ab3bec1e574313b3c647601a15f27855200f5c37add5843fd78428bf",
+    "src/matchmaking_services.h": "61b2640dea42fa81e98f8dbe55fd55a050d4df3b162a580c51204aa9d4730208",
+    "src/playlist_catalog.cpp": "f1c1f5a5b103a7b25232b60794d20a249feba2b9d46d7fb66b4ee4ffb49b4f39",
+    "src/playlist_catalog.h": "223b3d25bb71a0a7f71b7118bca61d6f55034fce31a93fc39e095254a102ded5",
+    "src/services.cpp": "47d14fe9ce017bc30db1615c383fb131a2951817fb34c3e8ec3ad5ca473abc82",
+    "tools/tournament_round_fixtures.py": "49ddf57ba175159564c00b978f7fe6683ef62b986104117814e3149d193a61e9",
+    "tools/verify-tournament-native-map-selector.py": "21782719fedc14facfe8d175101cb7087fd257f35e9c5eb4bccb1974678a1a5f",
+    "tools/tournament-map-check.cpp": "b6ed45cff492181af7d55c107c613ac62c10ec88b17700174edc0c692445cfbf",
+    "tools/build-tournament-map-check.ps1": "07a1ed59d3192f5cf7d66b05ed51b9f95f96c7b190cdc789b0bdaf7f18164235",
+    "tools/record-native-tournament-map-policy.py": "8f24d58a23d22af33e25dacaacbae3c2d273daa9f0d8739c1a42f82594980f28"
+  },
+  "evidence_sha256": {
+    "data/lobby-verification.json": "dc96eb5df23c4f27186326e1ad3cfe42d4194b9942cd5cfa0ba59409881a2b53",
+    "validation/20261006-tournament-map-native-policy.json": "fde7fb9e8d72fcb05b44309348d018bbba93a98c5d82f9e6479b45c36a914bac",
+    "validation/20261006-tournament-map-native-reconnect.json": "ca5a9e9dcdc4dfe0315cb95ad6b0603e01f40d4e4dc1a17f0d5f13724c32a61d",
+    "data/native-tournament-map-reference-20261006.json": "181312620b3dec0cf04d4f3d9b4eba9872afcfdcf365e4f7d087fb2b27396fe0"
+  },
+  "scope": "Canonical publisher/map policy, exact backend object/original instruction comparison, complete encrypted tournament rounds, native startup and same-process reconnect. Native tournament gameplay and full DW completion remain open."
+}

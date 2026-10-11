@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "created_utc": "2026-10-06T07:35:13.979865+00:00",
+  "server_sha256": "5cca1c9771e91a99d3a3095cebe9b48d781af9ff562a1c1efa5a3e39abca050e",
+  "game_sha256": "b326981a9718cedbc05228d40bef8b2adcd6be89307b2cde7d8e878a3ca67885",
+  "engine_recompiled": false,
+  "suite_grouped_checks": 213,
+  "covered_checks": [
+    "closing one of two same-key lobby connections preserves peer presence and emits no offline push",
+    "revoked idle and partial-header lobby leases retire without a task, report offline immediately and emit exactly one native presence push",
+    "a revoked keepalive cannot be echoed; another independently signed session keeps the same account online without a false offline push",
+    "replacement connection survives old-session retirement and only its last valid disconnect publishes offline"
+  ],
+  "native_startup_reconnect_receipt": "validation\\20261006-session-presence-native-reconnect.json",
+  "native_startup_reconnect_receipt_sha256": "46598e24aeeb6a05e701edaac41bc1201849396a294de0da70ad98e70dffda05",
+  "lobby_verification_sha256": "16c688839be7de9accba7656c10b55d7c5a5b7b2bcbd43b414aa9382fe385100",
+  "source_sha256": {
+    "src/lobby.h": "3c168b8460b26f40e7fe99d915815151e0a036e77a604aa2075810d7b5df35a2",
+    "src/lobby.cpp": "8f3cc51445d3378c651f075ee25fe24b5d6a7f0b858770c5a24aea65cf0d5cea",
+    "src/server.cpp": "70485a9a8d24d99a3a1bc296d1132b2d63920c08e6d415dc44cf32f63b34b571",
+    "tools/session_presence_fixtures.py": "635a4764e49ea30104f4d7761a04a5d1d1b4e9e60536e8c0ec8965a5db59899d",
+    "tools/test-lobby.py": "942466b3159029e07ffed4ad93cb8a461a992343e87d1b415162b8c9e662e0ae"
+  },
+  "native_expiry_ui_callback_verified": false,
+  "two_network_gameplay_verified": false,
+  "map_or_match_test_performed": false,
+  "complete_backend_verified": false,
+  "native_ui_limit": "Terms of Agreement screen remained unaccepted"
+}

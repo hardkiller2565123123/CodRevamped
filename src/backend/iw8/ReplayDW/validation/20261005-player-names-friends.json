@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "game_sha256": "7aac53fdb15428829d7063773ad167896f5bb218ed56741f75f272e10f7db0fd",
+  "server_sha256": "d52c76bc9e9fb9b76a74c1bbb92f89abc1d1284cb5284f4afef5b4b85ef05325",
+  "compiler_job": "3cfa71cfc983468c",
+  "native_game_verified": true,
+  "ini_name_applied_in_native_user_record": true,
+  "name_changed_back_after_full_game_restart": true,
+  "universal_and_platform_account_ids_preserved": true,
+  "native_name_search_and_outgoing_request_completed": true,
+  "peer_acceptance_refreshed_native_friend_list": true,
+  "native_incoming_request_and_acceptance_completed": true,
+  "native_removal_push_cleared_friend_and_request_lists": true,
+  "host_and_three_guests_have_distinct_persistent_ids": true,
+  "host_and_guest_friendships_and_requests_empty_for_handoff": true,
+  "native_local_settings_save_and_reload_verified": true,
+  "native_startup_fences_passed": 27,
+  "second_network_party_join_verified": false,
+  "observations": {
+    "before": "f3f1c5c342d314f16775cbb0f25ca7f658d72735999e9afc66a896010b34ea8a",
+    "outgoing": "7a58b12f0b7951a539f0e0f1247c86b3b4f1805f77cefe29092f4a730555398a",
+    "accepted": "6d4a19a563359968708c763dc06bed50dc33d17e43debc40c84789e351451e6a",
+    "incoming": "f534eb85d161c88cda2f2e34419643d169794d2fab260d7790015b4b3cefc804",
+    "accepted-native": "240442a2857d3f724c24037da2ade768ab913431ec5a317097ee4a6b98c9dce7",
+    "removed": "b4e01cb54940d0b39c015699d53972b06607b7dbb06d3455403569be2b2dc4d8",
+    "reloaded": "696028f1735da226a3d745318c88998b834d0e86a32ce37a7ef6a1f25debb49d",
+    "restored": "e1f6b25d680a1519d584844fe1eba4ff72ca7cb0d6299615f5d8f8afafdd262d"
+  },
+  "method": "Native engine-thread Social entry point, real backend tasks and read-only linked-symbol game observations"
+}

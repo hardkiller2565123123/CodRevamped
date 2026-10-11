@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "created_utc": "2026-10-06T06:26:46.322926+00:00",
+  "server_sha256": "b89557523b2ee11daaa3ee4f96694244f6917ef04ab26ffcb32a7a12d5a6a84e",
+  "game_sha256": "b326981a9718cedbc05228d40bef8b2adcd6be89307b2cde7d8e878a3ca67885",
+  "engine_recompiled": false,
+  "suite_grouped_checks": 196,
+  "independent_encrypted_clients": 2,
+  "covered_checks": [
+    "primary-slot requests reject malformed/nonmember reservations and parties exceeding capacity before any matchmaking publication",
+    "native bnet platform constraints reject invalid arrays and excluded Replay PC sessions without creating lobbies",
+    "public and presence joins count primary plus secondary slots; compatible restricted/unrestricted PC parties retain native reservation/team documents",
+    "presence reassignments update secondary reservations without double counting; native departure clears those reservations in the shared transaction",
+    "pre-reservation persisted lobbies remain compatible and acquire validated secondary reservations on assignment"
+  ],
+  "lobby_verification_sha256": "647d972bc2ea5f5a456f834cab5cd86b8470822b58acc3b925f0cb5583bf20c4",
+  "native_startup_reconnect_receipt": "validation\\20261006-constraints-native-reconnect.json",
+  "native_startup_reconnect_receipt_sha256": "93bbfe777ce9430aefc9abe46f77903139a8a49c98aa01731f07ab7470187ff0",
+  "source_sha256": {
+    "src/matchmaking_services.cpp": "4a9ddfdf48975135544ceb891002d4751223421e18b8c9210030484ea34223a3",
+    "tools/matchmaking_constraint_fixtures.py": "af41a532bd11c64f1c05fbacf7d1e8bd8f6fb9e7842c9fc09e8091bb202aa01c",
+    "tools/matchmaking_membership_fixtures.py": "7d95fe89968f427ee14e7c4e22a4e94b0826bf22238fa63d07f9393b024fc237",
+    "tools/public_matchmaking_fixtures.py": "57ea7067b5632ff0b7c6a8bf19b88c8f0051e42b66f21752c8e8fc4d00a3661a",
+    "tools/lobby_join_fixtures.py": "d1bd5bf806c7e84c46269f7cd78e25e18e483fdce950f972e4f5806e84c120be",
+    "tools/tournament_fixtures.py": "abb167343ba138680527789d833a90c5cc78717d9047473ba9a45d105d0aaabe",
+    "tools/test-lobby.py": "8075fe159f17573f7e61be281b26f331a31bd7b4f4ef997be3c1376aac2554ac"
+  },
+  "target_contract_provenance": {
+    "StartMatchmaking_primary_members_secondary_slots_platforms": "0x14104A450",
+    "GetClientPlatform_bnet_enum_2": "0x1410AE340",
+    "Platform_2_string_bnet": "0x1410AE2F0"
+  },
+  "native_secondary_slot_consumer_verified": false,
+  "native_split_screen_gameplay_verified": false,
+  "native_public_menu_join_verified": false,
+  "two_network_gameplay_verified": false,
+  "map_or_match_test_performed": false,
+  "complete_backend_verified": false,
+  "native_ui_limit": "Terms of Agreement screen remained unaccepted"
+}

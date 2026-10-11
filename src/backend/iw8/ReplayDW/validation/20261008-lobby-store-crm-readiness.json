@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "passed": true,
+  "game_sha256": "6460206e04cad1cc363c43d658da7a60732132283e306c2c97001921291ff745",
+  "server_sha256": "76824190a1fa27296e38472cf42c0aa7f1982444cb37b4a6096021069ab22309",
+  "job_id": "f7913d8ae9f141c4",
+  "gameplay_tested": false,
+  "proofs": {
+    "native_controls": {
+      "path": "data/lobby-playtest-fixes-20261008-v3/shipping-controls.json",
+      "sha256": "04116c4aa03c6a18838c5bd6dfc6eb6fe067b417253eeeb347a03bab93047038",
+      "groups": 7
+    },
+    "ownership": {
+      "path": "data/lobby-playtest-fixes-20261008-v3/shipping-ownership.json",
+      "sha256": "31f875fd2c87a556f9f64fc877615f76a6c936c0a3d659b1835093ac3310a0c6",
+      "groups": 0,
+      "cases": 233
+    },
+    "client": {
+      "path": "data/lobby-playtest-fixes-20261008-v3/shipping-client.json",
+      "sha256": "8172feafba641c55725b59638642ed2f04fadd0e63de1f4e795b98e75fe2ab5f",
+      "groups": 5
+    },
+    "lobby": {
+      "path": "data/lobby-playtest-fixes-20261008-v3/linux-team-policy.json",
+      "sha256": "686e33925c99497eb75cf8fff0bf2bee6fa3a708d9b9ead56534dee58192d70b",
+      "groups": 11
+    },
+    "activity": {
+      "path": "data/lobby-playtest-fixes-20261008-v3/linux-activity.json",
+      "sha256": "f0f940ece069084bc6b39ab8e83607b5e791fdb1e74032d45d04cfc472949139",
+      "groups": 16
+    },
+    "startup": {
+      "path": "data/lobby-playtest-fixes-20261008-v3/linux-startup.json",
+      "sha256": "55abd181c16b1c90147fdd42e69f88cddea93bfbf75bbe4073959ecdce441f16",
+      "groups": 102
+    },
+    "store": {
+      "path": "data/lobby-playtest-fixes-20261008-v3/linux-store.json",
+      "sha256": "3aba0e2d65d4bceb9c4a1147d53d44d8b0f3a9ab784f9b00f2b74dbdf4d1bfa3",
+      "groups": 9
+    },
+    "crm": {
+      "path": "data/lobby-playtest-fixes-20261008-v3/linux-crm.json",
+      "sha256": "246a3151f780e211f11e34252c8c8025edbcb92b6f4e9c27908065633ff554d6",
+      "groups": 4
+    }
+  },
+  "retained_optimization_worker_sha256": "b92c37feafdf6f909890c8bbc24702ed8a123ede5b0fda1fbd8a7b3961be581d",
+  "scope": [
+    "Custom bot count without changing playlist capacity",
+    "BR Fill Off squad reservation and native assignment publication",
+    "Quick Play selected playlist IDs",
+    "Stable category timers and zero-price native UI/backend store offers",
+    "Target-context CRM MP/BR/CP content"
+  ]
+}

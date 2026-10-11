@@ -1,0 +1,457 @@
+{
+  "schema": 1,
+  "generated_utc": "2026-10-06T13:50:54.659250+00:00",
+  "audit_tool_sha256": "fd5ed7b6c012adfd178f59600fa0e5852d2bcdb2b6c2fa7ecb8f997f1d657868",
+  "target_image_sha256": "68fb1cbcb2924182724004039de55a4c50152bb6561803c4898b7930b38132f0",
+  "native_runtime_verified": false,
+  "environment_services": [
+    "objectstore.dev.demonware.net",
+    "objectstore.cert.demonware.net",
+    "objectstore.prod.demonware.net"
+  ],
+  "functions": [
+    {
+      "va": 5403591648,
+      "candidate_alias": "q_bdObjectStoreRequestBase::getBaseRestUrl",
+      "exported_size": 81,
+      "target_bytes_sha256": "8fc38f51e84d9431a321727e7ed32383dd6ce3d9ed83ddbd25cf337b2a385e05",
+      "direct_calls": [
+        5404423984
+      ],
+      "rip_references": [
+        5463421648,
+        5463421640,
+        5463421632,
+        5409191776
+      ],
+      "literal_strings": [
+        "https://"
+      ]
+    },
+    {
+      "va": 5403596336,
+      "candidate_alias": "sub_142145630",
+      "exported_size": 278,
+      "target_bytes_sha256": "3eb5c9f1baf5800b65c470ab9157460513c535cc600d09f710bcdc0add798912",
+      "direct_calls": [
+        5403206128,
+        5403363232,
+        5403208320,
+        5403363248,
+        5403208320,
+        5404327024,
+        5403208320,
+        5404327024,
+        5403208320,
+        5403206704
+      ],
+      "rip_references": [
+        5409861600,
+        5408153420,
+        5409207536,
+        5406287312
+      ],
+      "literal_strings": [
+        "checksum",
+        "name",
+        "objectVersion",
+        "owner"
+      ]
+    },
+    {
+      "va": 5403598304,
+      "candidate_alias": "bdObjectStoreGetUserObjectsVectorizedRequest::restSerializeRequest",
+      "exported_size": 473,
+      "target_bytes_sha256": "3aaab1144d1e3367b331074b5f80c41b997d650794cbc762c851b24119305085",
+      "direct_calls": [
+        5404151536,
+        5403297984,
+        5403436544,
+        5403298080,
+        5403591648,
+        5403298384,
+        5403298576,
+        5403648864,
+        5403298576,
+        5403647168,
+        5403298576,
+        5403647168,
+        5403298096,
+        5403297968,
+        5403651888,
+        5403204976,
+        5403205584,
+        5403596336,
+        5403206608,
+        5403297968,
+        5403650704,
+        5403205040,
+        5404151648
+      ],
+      "rip_references": [
+        5463426040,
+        5409225560,
+        5409872464,
+        5406550768,
+        5409225584,
+        5409225600,
+        5409224872
+      ],
+      "literal_strings": [
+        "/v2/core/users/objects/",
+        "DW-Objectstore-ObjectIDs",
+        "ObjectsVectorizedResourceUsers",
+        "client",
+        "context",
+        "get_objects"
+      ]
+    },
+    {
+      "va": 5403602528,
+      "candidate_alias": "bdObjectStoreUploadUserObjectsVectorizedRequest::restSerializeRequest",
+      "exported_size": 954,
+      "target_bytes_sha256": "276b1831532597460a9a7d4d7d15e3fc624a561eac3ef43dc9827110d9a1d82f",
+      "direct_calls": [
+        5404151536,
+        5403297984,
+        5403436544,
+        5403591648,
+        5403298384,
+        5403369024,
+        5403366528,
+        5403298576,
+        5403648864,
+        5403298576,
+        5403647168,
+        5403298080,
+        5403298096,
+        5403297968,
+        5403651888,
+        5403297712,
+        5403206128,
+        5403205216,
+        5403298576,
+        5403648864,
+        5403298576,
+        5403647168,
+        5403298576,
+        5403647168,
+        5403206128,
+        5403368976,
+        5403368960,
+        5403234672,
+        5403208320,
+        5403369024,
+        5403367360,
+        5403369024,
+        5403366528,
+        5403369024,
+        5403367024,
+        5403206704,
+        5403206608,
+        5403206704,
+        5404151648,
+        5404151648
+      ],
+      "rip_references": [
+        5463426040,
+        5409225752,
+        5409224800,
+        5406747912,
+        5409225776,
+        5409225600,
+        5408972880,
+        5409225560,
+        5409872464,
+        5406550768,
+        5409207888,
+        5409207872,
+        5409208620
+      ],
+      "literal_strings": [
+        "/v2/core/users/objects/",
+        "/v2/users/objects/",
+        "ObjectsVectorizedResourceUsers",
+        "client",
+        "content",
+        "context",
+        "extra",
+        "metadata",
+        "objects",
+        "put_objects",
+        "tags",
+        "validationToken"
+      ]
+    },
+    {
+      "va": 5403373968,
+      "candidate_alias": "sub_14210F190",
+      "exported_size": 176,
+      "target_bytes_sha256": "c83abb9da5980b00cb69c12d17848c11fd1236bb59473ee51b7b32872a76ea5c",
+      "direct_calls": [
+        5403292896,
+        5403309360,
+        5403374880
+      ],
+      "rip_references": [
+        5409208456,
+        5406392320,
+        5406588296,
+        5409208376,
+        5409208384,
+        5409208416,
+        5409208448
+      ],
+      "literal_strings": []
+    },
+    {
+      "va": 5403377136,
+      "candidate_alias": "sub_14210FDF0",
+      "exported_size": 193,
+      "target_bytes_sha256": "241f44578898856336bf5ba774f29a2333ed6db42b5bd1c9c3e57d8634fc461c",
+      "direct_calls": [
+        5403292896,
+        5403309360,
+        5403377776,
+        5403377904
+      ],
+      "rip_references": [
+        5409208592,
+        5406392320,
+        5406588296,
+        5409208512,
+        5409208520,
+        5409208552,
+        5409208584
+      ],
+      "literal_strings": []
+    },
+    {
+      "va": 5403375712,
+      "candidate_alias": "sub_14210F860",
+      "exported_size": 600,
+      "target_bytes_sha256": "ac0bfb89380f2ec98184e1e7da2083b34d1ec666f4bf4fed81df6220b5b9cae9",
+      "direct_calls": [
+        5403198096,
+        5403653824,
+        5403204416,
+        5403198096,
+        5403198096,
+        5403198528,
+        5403198528,
+        5403198096,
+        5403202176,
+        5403203808,
+        5403370304,
+        5403370688,
+        5403198128,
+        5403198096,
+        5403202176,
+        5403203808,
+        5403369872,
+        5403370688,
+        5403198128,
+        5403198128,
+        5403198128,
+        5403198128
+      ],
+      "rip_references": [
+        5408972880,
+        5409207944,
+        5409207952,
+        5409207952
+      ],
+      "literal_strings": [
+        "errors",
+        "objects",
+        "requestIndex"
+      ]
+    },
+    {
+      "va": 5403380688,
+      "candidate_alias": "bdObjectStoreUploadUserObjectsVectorizedResponse::handleReplySuccess",
+      "exported_size": 1482,
+      "target_bytes_sha256": "e06c9fa3d856207553056468b60db57788b09753a84582691d37577a25bfa5fa",
+      "direct_calls": [
+        5404151536,
+        5403198096,
+        5403653824,
+        5403198096,
+        5403198096,
+        5403198096,
+        5403198528,
+        5403198528,
+        5403198528,
+        5403382176,
+        5403382368,
+        5403364576,
+        5403198096,
+        5403198096,
+        5403198096,
+        5403202176,
+        5403202288,
+        5403364656,
+        5403204288,
+        5403198528,
+        5403365696,
+        5403566176,
+        5403382176,
+        5403376368,
+        5403228768,
+        5403361904,
+        5403198128,
+        5403198128,
+        5403198128,
+        5403228768,
+        5403361904,
+        5403198096,
+        5403202176,
+        5403202688,
+        5403362240,
+        5403363216,
+        5403202688,
+        5403363856,
+        5403364416,
+        5403566176,
+        5403202688,
+        5403567584,
+        5403204288,
+        5403567552,
+        5403203808,
+        5403567808,
+        5403382176,
+        5403376368,
+        5403228768,
+        5403361904,
+        5403228768,
+        5403361904,
+        5403198128,
+        5403198096,
+        5403202176,
+        5403611936,
+        5403612336,
+        5403382368,
+        5403377344,
+        5403361248,
+        5403229008,
+        5403198128,
+        5403198128,
+        5403198128,
+        5403198128,
+        5403198128,
+        5404151648
+      ],
+      "rip_references": [
+        5463426040,
+        5408972880,
+        5409207944,
+        5409208600,
+        5409207872,
+        5409208620,
+        5409208620,
+        5408153420,
+        5409861600,
+        5409861916,
+        5406280508,
+        5406280508
+      ],
+      "literal_strings": [
+        "code",
+        "error",
+        "errors",
+        "metadata",
+        "name",
+        "objects",
+        "owner",
+        "tags",
+        "validationTokens"
+      ]
+    },
+    {
+      "va": 5403369872,
+      "candidate_alias": "bdObjectStoreErrorWrappedObject::deserializeErrorFromJSON",
+      "exported_size": 428,
+      "target_bytes_sha256": "7c61d1d1e53d300b6f9c207c9b4fe8e75e72ebdfc18bae9891ab8d0df75976bd",
+      "direct_calls": [
+        5403202688,
+        5404423984,
+        5403663488,
+        5403369008,
+        5403202688,
+        5403202688,
+        5403362048,
+        5403367936,
+        5404151648
+      ],
+      "rip_references": [
+        5463426040,
+        5409861916,
+        5463417224,
+        5409861600,
+        5408153420
+      ],
+      "literal_strings": [
+        "error",
+        "name",
+        "owner"
+      ]
+    }
+  ],
+  "vtable_bindings": [
+    {
+      "vtable": 5409208416,
+      "slot": 1,
+      "handler": 5403375712,
+      "constructor": 5403373968,
+      "rest_base_offset": 24
+    },
+    {
+      "vtable": 5409208552,
+      "slot": 1,
+      "handler": 5403380688,
+      "constructor": 5403377136,
+      "rest_base_offset": 24
+    }
+  ],
+  "requests": [
+    {
+      "va": 5403598304,
+      "resource": "ObjectsVectorizedResourceUsers",
+      "operation": "get_objects",
+      "method": "GET",
+      "path": "/v2/core/users/objects/",
+      "query": [
+        "client",
+        "context"
+      ],
+      "object_ids_header": "DW-Objectstore-ObjectIDs",
+      "cache_fields": [
+        "objectVersion",
+        "checksum"
+      ]
+    },
+    {
+      "va": 5403602528,
+      "resource": "ObjectsVectorizedResourceUsers",
+      "operation": "put_objects",
+      "method": "PUT",
+      "paths": [
+        "/v2/core/users/objects/",
+        "/v2/users/objects/"
+      ],
+      "query": [
+        "client",
+        "context",
+        "optional extra=validationToken"
+      ],
+      "body": "objects: content base64, metadata and optional tags"
+    }
+  ],
+  "response": {
+    "get": "objects/errors with one requestIndex per requested object",
+    "put": "objects/errors/validationTokens; metadata matched by owner/name",
+    "cache_error": "Error:ClientError:NotModified",
+    "body_capacity": 262144
+  },
+  "scope": "Exact original request writers, environment getter, response constructors/vtables/readers. Native game method completion remains a separate gate."
+}

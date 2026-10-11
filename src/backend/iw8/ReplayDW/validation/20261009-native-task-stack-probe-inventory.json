@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "passed": true,
+  "generated_utc": "2026-10-09T08:47:07.182242+00:00",
+  "target_image_sha256": "68fb1cbcb2924182724004039de55a4c50152bb6561803c4898b7930b38132f0",
+  "audit_tool_sha256": "aa60202f0444c23826ca5c1a9be1c98ea87ce996d6929c45614291698e88f610",
+  "test_tool_sha256": "35f8f698b7b2e549437fe21474fe17d01032bfa3287ec4f64af59806d7a4b86f",
+  "independent_x64_trace_cases": 31,
+  "register_preserving_stack_probe": {
+    "target": 5404151536,
+    "size": 81,
+    "bytes_sha256": "99d2cc1dbc125fe60aeb6230c1033e4ddda1e4488b7baf555c32ea70e50e79da",
+    "evidence": "validation/20261009-native-stack-probe.json"
+  },
+  "chained_unwind_ownership_resolved": true,
+  "route_count": 123,
+  "inspected_functions": 818,
+  "unwind_bounded_functions": 808,
+  "sqlite_fallback_functions": 10,
+  "state_limited_paths": 45,
+  "unresolved_paths": 141,
+  "unowned_candidate_sites": 0,
+  "text_inventory_routes": 121,
+  "text_routes_not_recovered_from_bytes": [],
+  "additional_raw_routes": [
+    [
+      29,
+      7
+    ],
+    [
+      29,
+      9
+    ]
+  ],
+  "raw_inventory": {
+    "path": "data/remaining-services-20261009/native-task-stack-probe-inventory.json",
+    "sha256": "3e8caea653af8fe00adee0fcce58364d1f44d0a137b6ba6c727612e542dfb296"
+  },
+  "original_assembly_text_used": false,
+  "database_aliases_used_for_call_resolution": false,
+  "full_method_audit_complete": false,
+  "native_completion_verified": false,
+  "scope": "Bounded potential direct calls and forwarding wrappers across primary-owned unwind chunks. Gaps and other function chunks are excluded. No indirect dispatch, stack argument, branch feasibility or native callback completion claim."
+}

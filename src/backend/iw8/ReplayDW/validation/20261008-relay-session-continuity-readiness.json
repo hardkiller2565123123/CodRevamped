@@ -1,0 +1,87 @@
+{
+  "schema": 2,
+  "passed": true,
+  "generated_utc": "2026-10-08T09:08:39.008192+00:00",
+  "backend_sha256": "78a2fb203957e382df60a432772035c529adb08b898d177c7559c4d1ad3c02bf",
+  "backend_pid": 90406,
+  "game_sha256": "638dab82f069be51f6450f9ed2744f0b049d34642c0b67ae30cde01b53ea16e5",
+  "game_pid": 25528,
+  "native_auth_and_multiplayer_frontend_verified": true,
+  "audit_tool_sha256": "af0ea7385ea977b00eccc25bb96d5cab2170299eed1f1ced21379759e623b4a5",
+  "native_relay_callback_and_server_event_correlated": true,
+  "native_udp_keepalives_verified": true,
+  "native_new_packet_rejections": 0,
+  "stable_seconds": 3155.975329,
+  "original_admission_expires_utc": "2026-10-08T09:07:04+00:00",
+  "native_original_admission_expiry_crossing_verified": true,
+  "native_in_match_renewal_verified": false,
+  "native_two_network_renewal_verified": false,
+  "native_route_and_keys_preserved": true,
+  "native_fences_passing": 27,
+  "native_reauth_not_required": true,
+  "main_identity_xp_rank_preserved": true,
+  "scope": "Original SDK auth/association callbacks, exact issuer token and UDP event match, and advancing authenticated keepalives on the deployed backend. Expiry crossing is credited only after its own gate passes.",
+  "full_backend_complete": false,
+  "evidence": [
+    {
+      "path": "data/relay-renewal-hour-20261008/native-menu-fixed-observer.json",
+      "sha256": "78bc92d9f52a641f2050ea107cbb3d25686485f7d9dd8c075c0e3347b7435948"
+    },
+    {
+      "path": "data/relay-renewal-hour-20261008/native-past-expiry.json",
+      "sha256": "ae42296cfabbb68ef8bb811ce678767f822e6951a4aed00a2ce2abbce158a3df"
+    },
+    {
+      "path": "data/relay-renewal-hour-20261008/native-issued-admission.json",
+      "sha256": "ec46617d9a9afd93f7fcea42db3f988f51ee2ad090062d2e1226f546196046d0"
+    },
+    {
+      "path": "data/relay-renewal-hour-20261008/native-transport-events.json",
+      "sha256": "917df985ac08325c7a8377e228363f17d3471c3d5f2515d222d224510ff60ba3"
+    },
+    {
+      "path": "data/relay-renewal-hour-20261008/deployment.json",
+      "sha256": "1ac591b713606c1324f309c111261211fed7d95f0e589e8135aad79711e5e6da"
+    },
+    {
+      "path": "data/relay-renewal-hour-20261008/native-launch.json",
+      "sha256": "db7042028202aeb84f308050a3846418ae85767e898f52a763faf4838b516b49"
+    },
+    {
+      "path": "data/relay-renewal-hour-20261008/native-multiplayer.jpg",
+      "sha256": "9252eca486244ef4875a45788bb3e01c54911af86845db9371fb0dbfc1d32e3d"
+    },
+    {
+      "path": "validation/20261008-relay-connected-expiry-target.json",
+      "sha256": "89d14218674cc6a94676e32bfba4ab754714cc4ac6e884b37dbf5ff50785c4f0"
+    },
+    {
+      "path": "tools/record-native-relay-continuity.py",
+      "sha256": "af0ea7385ea977b00eccc25bb96d5cab2170299eed1f1ced21379759e623b4a5"
+    },
+    {
+      "path": "data/relay-continuity-20261008/windows-continuity.json",
+      "sha256": "df1a863be9860bce28140b2711d7968b19e55fb5e0c3846265465360a9728ec5"
+    },
+    {
+      "path": "data/relay-continuity-20261008/windows-renewal.json",
+      "sha256": "a6c8474a75865a5d71b341efeedd44960822366292c9e62c39a715429fa7e03f"
+    },
+    {
+      "path": "data/relay-continuity-20261008/windows-startup-verification.json",
+      "sha256": "52845a2851645f3683a79dca59ef0affa52348fa2639658ceacb56f0e0884ca9"
+    },
+    {
+      "path": "data/relay-continuity-20261008/linux-continuity.json",
+      "sha256": "4d796f37cc23237bef5b45a4d1aa8ee282d6679ab0b9b1dc468df5c47a3e242c"
+    },
+    {
+      "path": "data/relay-continuity-20261008/linux-renewal.json",
+      "sha256": "63ad290855c6636d45df69258ef67b4607b4f4e1253c7efe628f8a63f894f7d3"
+    },
+    {
+      "path": "data/relay-continuity-20261008/linux-startup-verification.json",
+      "sha256": "b83180a297d612936ac8cb77c49f4f5b16ad7eb5cdaec68edff3d190658f9e7a"
+    }
+  ]
+}
