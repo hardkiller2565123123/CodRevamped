@@ -100,7 +100,46 @@ namespace revamped::iw8::demonware
         // normal successful task with zero result rows.
         constexpr TaskRoute kMarketplaceBalanceV2Route = {
             80u, 0x84u, "bdMarketplace", "getBalanceV2",
+            ReplyPolicy::None
+        };
+
+        constexpr TaskRoute kMarketplaceBalancesV3Route = {
+            80u, 0xF5u, "bdMarketplace", "getBalancesV3",
             ReplyPolicy::NoResultSuccess
+        };
+        constexpr TaskRoute kMarketplacePurchaseRoute = {
+            80u, 106u, "bdMarketplace", "purchase",
+            ReplyPolicy::None
+        };
+        constexpr TaskRoute kMarketplacePurchaseV4Route = {
+            80u, 125u, "bdMarketplace", "purchaseV4",
+            ReplyPolicy::None
+        };
+        constexpr TaskRoute kMarketplaceCatalogRoute = {
+            80u, 134u, "bdMarketplace", "getSkus",
+            ReplyPolicy::None
+        };
+        constexpr TaskRoute kMarketplaceRedeem1Route = {
+            123u, 1u, "bdMarketplace", "redeemCoupon",
+            ReplyPolicy::None
+        };
+        constexpr TaskRoute kMarketplaceRedeem2Route = {
+            123u, 2u, "bdMarketplace", "redeemCoupon",
+            ReplyPolicy::None
+        };
+
+        constexpr TaskRoute kAchievementUserStateRoute = {
+            125u, 9u, "bdAchievementsEngineService", "getUserState",
+            ReplyPolicy::StructAchievementsUserState
+        };
+
+        constexpr TaskRoute kProfileGetPublicRoute = {
+            8u, 1u, "bdProfiles", "getPublicInfos",
+            ReplyPolicy::NoResultSuccess, TaskSemantic::ProfilesGetPublic
+        };
+        constexpr TaskRoute kProfileSetPublicRoute = {
+            8u, 3u, "bdProfiles", "setPublicInfo",
+            ReplyPolicy::NoResultSuccess, TaskSemantic::ProfilesSetPublic
         };
 
         // Stock OpenIW8 maps service 145/task 2 to
@@ -109,6 +148,37 @@ namespace revamped::iw8::demonware
         // success completion.
         constexpr TaskRoute kSetPlayerInfoRoute = {
             145u, 2u, "bdAsyncMatchMaking", "setPlayerInfo",
+            ReplyPolicy::NoResultSuccess
+        };
+
+        // Stock OpenIW8 maps service 145/task 3 to
+        // bdAsyncMatchMaking::getMatchMakingPlayerToken.  The call binds a
+        // bdUInt64Result and sends no task arguments (the observed single zero
+        // byte is the empty legacy payload terminator).  Returning a stable
+        // non-zero local token lets the stock matchmaking/party state machine
+        // finish naturally instead of taking BD_SERVICE_NOT_AVAILABLE.
+        constexpr TaskRoute kMatchMakingPlayerTokenRoute = {
+            145u, 3u, "bdAsyncMatchMaking", "getMatchMakingPlayerToken",
+            ReplyPolicy::NoResultSuccess
+        };
+
+        // Stock OpenIW8 maps service 145/task 18 (0x12) to
+        // bdAsyncMatchMaking::startSearch.  The request is one legacy JSON
+        // string and the call binds a bdStringResult.  Returning a successful
+        // local search document prevents the stock frontend from translating
+        // BD_SERVICE_NOT_AVAILABLE into the immediate "Unable to connect to a
+        // data center" / generic Blizzard-server-lost notices.
+        constexpr TaskRoute kStartSearchRoute = {
+            145u, 18u, "bdAsyncMatchMaking", "startSearch",
+            ReplyPolicy::NoResultSuccess
+        };
+
+        // Service 0xC6/task 6 is bdMessaging::createOrSubscribeToChannel.
+        // IW8 uses it for its normal "chat" channel during online bootstrap.
+        // A local channel is enough for preservation/offline use and avoids the
+        // stock social layer treating messaging as unavailable.
+        constexpr TaskRoute kMessagingCreateOrSubscribeRoute = {
+            198u, 6u, "bdMessaging", "createOrSubscribeToChannel",
             ReplyPolicy::NoResultSuccess
         };
 
@@ -183,11 +253,38 @@ namespace revamped::iw8::demonware
                 return &kBnetReconciliationRoute;
             if (serviceId == 80u && taskId == 0x84u)
                 return &kMarketplaceBalanceV2Route;
+            if (serviceId == 80u && taskId == 0xF5u)
+                return &kMarketplaceBalancesV3Route;
+            if (serviceId == 80u && taskId == 106u)
+                return &kMarketplacePurchaseRoute;
+            if (serviceId == 80u && taskId == 125u)
+                return &kMarketplacePurchaseV4Route;
+            if (serviceId == 80u && taskId == 134u)
+                return &kMarketplaceCatalogRoute;
+            if (serviceId == 123u && taskId == 1u)
+                return &kMarketplaceRedeem1Route;
+            if (serviceId == 123u && taskId == 2u)
+                return &kMarketplaceRedeem2Route;
+
+            if (serviceId == 125u && taskId == 9u)
+                return &kAchievementUserStateRoute;
+
+            if (serviceId == 8u && taskId == 1u)
+                return &kProfileGetPublicRoute;
+            if (serviceId == 8u && taskId == 3u)
+                return &kProfileSetPublicRoute;
 
             if (serviceId == 145u && taskId == 2u)
                 return &kSetPlayerInfoRoute;
+            if (serviceId == 145u && taskId == 3u)
+                return &kMatchMakingPlayerTokenRoute;
+            if (serviceId == 145u && taskId == 18u)
+                return &kStartSearchRoute;
             if (serviceId == 145u && taskId == 20u)
                 return &kTournamentStateRoute;
+
+            if (serviceId == 198u && taskId == 6u)
+                return &kMessagingCreateOrSubscribeRoute;
 
             if (serviceId == 50u && taskId == 2u)
                 return &kContentStreamingListFilesByOwnerRoute;
@@ -822,6 +919,7 @@ namespace revamped::iw8::demonware
                 std::size_t persistedCount = 0;
                 {
                     std::lock_guard<std::mutex> lock(g_objectStoreMutex);
+                    LoadLegacyObjectStoreLocked();
                     const auto it =
                         g_objectStoreObjects.find(ObjectStoreKey(owner, name));
 
@@ -888,6 +986,7 @@ namespace revamped::iw8::demonware
             std::size_t persistedCount = 0;
             {
                 std::lock_guard<std::mutex> lock(g_objectStoreMutex);
+                LoadLegacyObjectStoreLocked();
                 for (std::size_t i = 0; i < 6u; ++i)
                 {
                     const std::string owner = kCanonicalStartupStatsOwner;
@@ -1024,6 +1123,7 @@ namespace revamped::iw8::demonware
             std::size_t persistedCount = 0;
             {
                 std::lock_guard<std::mutex> lock(g_objectStoreMutex);
+                LoadLegacyObjectStoreLocked();
 
                 for (std::size_t i = 0; i < uploadedObjects.size(); ++i)
                 {
@@ -1087,6 +1187,8 @@ namespace revamped::iw8::demonware
                         existing ? "yes" : "no");
                 }
 
+                if (!SaveLegacyObjectStoreLocked())
+                    std::printf("[DW-OBJECTSTORE-PERSIST] save failed after startup-stats PUT\n");
                 persistedCount = g_objectStoreObjects.size();
             }
 
@@ -1230,6 +1332,158 @@ namespace revamped::iw8::demonware
             return FinishLegacyTaskReply(serviceReply, replyPlain);
         }
 
+        bool BuildLocalMatchMakingPlayerTokenReply(
+            const TaskRequest& request,
+            const std::uint8_t* requestPayload,
+            std::size_t requestPayloadBytes,
+            std::uint64_t transactionId,
+            std::vector<std::uint8_t>& replyPlain)
+        {
+            // getMatchMakingPlayerToken serializes no arguments.  The IW8 1.20
+            // request decoder leaves one zero byte for the empty legacy body.
+            if (!requestPayload || requestPayloadBytes != 1u || requestPayload[0] != 0u)
+                return false;
+
+            // This token is intentionally local and opaque.  It is only an
+            // identifier consumed by the stock async-matchmaking bootstrap;
+            // no external Demonware service can redeem it.
+            constexpr std::uint64_t kLocalPlayerToken = 0x4957383132300001ull;
+
+            std::vector<std::uint8_t> serviceReply;
+            BuildLegacyTaskEnvelope(serviceReply, transactionId, request.taskId);
+            AppendTypedU32(serviceReply, 1u); // numResults
+            AppendTypedU32(serviceReply, 1u); // totalNumResults
+            AppendTypedU64(serviceReply, kLocalPlayerToken);
+
+            std::printf(
+                "[DW-MATCHMAKING] service=145 task=3 getMatchMakingPlayerToken "
+                "token=%llu response=local-success\n",
+                static_cast<unsigned long long>(kLocalPlayerToken));
+            return FinishLegacyTaskReply(serviceReply, replyPlain);
+        }
+
+        bool BuildLocalStartSearchReply(
+            const TaskRequest& request,
+            const std::uint8_t* requestPayload,
+            std::size_t requestPayloadBytes,
+            std::uint64_t transactionId,
+            std::vector<std::uint8_t>& replyPlain)
+        {
+            // OpenIW8's bdAsyncMatchMaking::startSearch writes exactly one
+            // legacy string and binds one bdStringResult.  Keep the caller's
+            // JSON opaque: validating the proven wire shape is enough here.
+            std::size_t cursor = 0u;
+            std::string searchParams;
+            if (!ReadLegacyCString(
+                    requestPayload, requestPayloadBytes, cursor, searchParams) ||
+                searchParams.empty() ||
+                (cursor != requestPayloadBytes &&
+                 !(cursor + 1u == requestPayloadBytes && requestPayload[cursor] == 0u)))
+            {
+                return false;
+            }
+
+            // Demonware async matchmaking startup replies carry a JSON status
+            // document in bdStringResult.  Use a stable local matchmaking id
+            // and an empty backoff object; both are protocol data, not client
+            // state patches.  Later server-side matchmaking events can use the
+            // same id when local lobby/session emulation is added.
+            constexpr std::uint64_t kLocalMatchmakingId = 0x4957383132300001ull;
+            const std::string json =
+                std::string("{\"matchmaking_id\":") +
+                std::to_string(kLocalMatchmakingId) +
+                ",\"backoff_timing_info\":{}}";
+
+            std::vector<std::uint8_t> serviceReply;
+            BuildLegacyTaskEnvelope(serviceReply, transactionId, request.taskId);
+            AppendTypedU32(serviceReply, 1u);
+            AppendTypedU32(serviceReply, 1u);
+            AppendTypedString(serviceReply, json);
+
+            std::printf(
+                "[DW-MATCHMAKING] service=145 task=18 startSearch "
+                "requestBytes=%zu matchmakingId=%llu response=local-success\n",
+                searchParams.size(),
+                static_cast<unsigned long long>(kLocalMatchmakingId));
+            return FinishLegacyTaskReply(serviceReply, replyPlain);
+        }
+
+        bool BuildLocalMessagingChannelReply(
+            const TaskRequest& request,
+            const std::uint8_t* requestPayload,
+            std::size_t requestPayloadBytes,
+            std::uint64_t transactionId,
+            std::vector<std::uint8_t>& replyPlain)
+        {
+            const std::uint8_t* body = nullptr;
+            std::size_t bodyBytes = 0u;
+            if (!ExtractTypedStructBody(requestPayload, requestPayloadBytes, body, bodyBytes))
+                return false;
+
+            std::string category;
+            std::uint64_t requestedChannelId = 0u;
+            std::uint64_t requestedUser = 0u;
+            const std::uint8_t* cursor = body;
+            const std::uint8_t* end = body + bodyBytes;
+            while (cursor < end)
+            {
+                PbField field{};
+                if (!NextPbField(cursor, end, field))
+                    return false;
+                if (field.tag == 1u && field.wireType == 2u)
+                {
+                    if (!field.bytes || field.bytesSize == 0u || field.bytesSize > 15u)
+                        return false;
+                    category.assign(reinterpret_cast<const char*>(field.bytes), field.bytesSize);
+                }
+                else if (field.tag == 2u && field.wireType == 0u)
+                {
+                    requestedChannelId = field.varint;
+                }
+                else if (field.tag == 3u && field.wireType == 0u)
+                {
+                    requestedUser = field.varint;
+                }
+            }
+
+            if (category.empty())
+                return false;
+
+            // createOrSubscribe permits channelID=0 to mean "create".  Give
+            // that request a deterministic local channel; an explicit non-zero
+            // ID is round-tripped unchanged.
+            const std::uint64_t channelId = requestedChannelId ? requestedChannelId : 1u;
+
+            std::vector<std::uint8_t> channelInfo;
+            channelInfo.reserve(64u);
+            // Exact bdChannelInfo StructBuffer order used by Replay/IW8:
+            //   1 category, 2 channel ID, 3 member count, 4 member limit,
+            //   5 owner, 6 password-required, 7 public flag, 8 revision.
+            AppendPbString(channelInfo, 1u, category);
+            AppendPbU64(channelInfo, 2u, channelId);
+            AppendPbU32(channelInfo, 3u, 1u);
+            AppendPbU32(channelInfo, 4u, 64u);
+            AppendPbU64(channelInfo, 5u, requestedUser ? requestedUser : 1u);
+            AppendPbBool(channelInfo, 6u, false);
+            AppendPbBool(channelInfo, 7u, false);
+            AppendPbU32(channelInfo, 8u, 1u);
+
+            std::vector<std::uint8_t> responseBody;
+            AppendPbObject(responseBody, 1u, channelInfo);
+
+            std::vector<std::uint8_t> serviceReply;
+            BuildLegacyTaskEnvelope(serviceReply, transactionId, request.taskId);
+            AppendTypedStruct(serviceReply, responseBody);
+
+            std::printf(
+                "[DW-MESSAGING] service=198 task=6 createOrSubscribeToChannel "
+                "category=%s requestedChannel=%llu channel=%llu response=local-success\n",
+                category.c_str(),
+                static_cast<unsigned long long>(requestedChannelId),
+                static_cast<unsigned long long>(channelId));
+            return FinishLegacyTaskReply(serviceReply, replyPlain);
+        }
+
         bool BuildLocalRelayClientAuthTokenReply(
             const TaskRequest& request,
             const std::uint8_t* requestPayload,
@@ -1314,7 +1568,7 @@ namespace revamped::iw8::demonware
             return FinishLegacyTaskReply(serviceReply, replyPlain);
         }
 
-        bool BuildEmptyDataCenterPreferencesReply(
+        bool BuildLocalDataCenterPreferencesReply(
             const TaskRequest& request,
             const std::uint8_t* requestPayload,
             std::size_t requestPayloadBytes,
@@ -1349,18 +1603,33 @@ namespace revamped::iw8::demonware
             AppendTypedU32(serviceReply, 1u); // one bdDataCenterPreferences result
             AppendTypedU32(serviceReply, 1u);
 
-            // bdDataCenterPreferences::deserialize calls
-            // readArrayStart(BD_BB_STRING_TYPE, ...). writeArrayStart for an
-            // empty string array is: raw(type+100), typed UInt32 byte-size=0,
-            // raw UInt32 element-count=0. readArrayEnd consumes no bytes.
+            // Stock IW8 does not only use task success here: Online_DcQos's
+            // final result also requires m_numDataCenterPreferences > 0 before
+            // Online_DcQos_GetBestDatacenterName can return a usable DC.  An
+            // empty array therefore leaves matchmaking in the native
+            // "unable to connect to a data center" path even though the DW task
+            // itself succeeded.
+            //
+            // bdDataCenterPreferences::deserialize reads an array of strings.
+            // bdByteBuffer::writeArrayStart(type=STRING,count=1,elementSize=N)
+            // serializes raw(type+100), typed UInt32 byte-size, raw UInt32 count,
+            // followed by raw NUL-terminated string bytes while array type-checking
+            // is disabled. Keep the name short enough for the stock 64-byte slot.
+            static constexpr char kLocalDatacenter[] = "revamped-local";
+            constexpr std::uint32_t kLocalDatacenterBytes =
+                static_cast<std::uint32_t>(sizeof(kLocalDatacenter));
+
             serviceReply.push_back(static_cast<std::uint8_t>(kBbString + 100u));
             serviceReply.push_back(kBbUnsignedInteger32);
-            AppendLe32(serviceReply, 0u);
-            AppendLe32(serviceReply, 0u);
+            AppendLe32(serviceReply, kLocalDatacenterBytes);
+            AppendLe32(serviceReply, 1u);
+            serviceReply.insert(serviceReply.end(),
+                reinterpret_cast<const std::uint8_t*>(kLocalDatacenter),
+                reinterpret_cast<const std::uint8_t*>(kLocalDatacenter) + sizeof(kLocalDatacenter));
 
             std::printf(
-                "[DW-DCQOS] getDataCenterPreferences users=%llu datacenters=0 response=valid-empty-array\n",
-                static_cast<unsigned long long>(count));
+                "[DW-DCQOS] getDataCenterPreferences users=%llu datacenters=1 best=%s response=local-datacenter-array\n",
+                static_cast<unsigned long long>(count), kLocalDatacenter);
             return FinishLegacyTaskReply(serviceReply, replyPlain);
         }
 
@@ -1745,6 +2014,64 @@ namespace revamped::iw8::demonware
             return FinishLegacyTaskReply(serviceReply, replyPlain);
         }
 
+        if (route.serviceId == 80u && route.taskId == 0xF5u)
+        {
+            // 1.20 bdMarketplace::getBalancesV3.  Keep this on the semantic
+            // serializer instead of ReplayDW so the response is bound to the
+            // active IW8 account rather than ReplayDW's independently generated
+            // local identity.  A fresh account has no currency rows yet.
+            const std::uint8_t* body = nullptr;
+            std::size_t bytes = 0;
+            if (!ExtractTypedStructBody(requestPayload, requestPayloadBytes, body, bytes))
+                return false;
+
+            const auto* cursor = body;
+            const auto* end = body + bytes;
+            std::string context;
+            std::uint64_t maxResults = 0;
+            bool haveContext = false;
+            bool haveMaxResults = false;
+            while (cursor < end)
+            {
+                PbField field{};
+                if (!NextPbField(cursor, end, field))
+                    return false;
+                if (field.tag == 1 && field.wireType == 2 && field.bytesSize <= 16)
+                {
+                    if (haveContext)
+                        return false;
+                    context.assign(reinterpret_cast<const char*>(field.bytes), field.bytesSize);
+                    haveContext = true;
+                }
+                else if (field.tag == 2 && field.wireType == 0)
+                {
+                    if (haveMaxResults)
+                        return false;
+                    maxResults = field.varint;
+                    haveMaxResults = true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            if (!haveContext || !haveMaxResults || context != "5800" ||
+                maxResults == 0 || maxResults > 16)
+            {
+                return false;
+            }
+
+            std::vector<std::uint8_t> response;
+            std::vector<std::uint8_t> reply;
+            BuildLegacyTaskEnvelope(reply, transactionId, request.taskId);
+            AppendTypedStruct(reply, response);
+            std::printf(
+                "[DW-MARKETPLACE] service=80 task=245 getBalancesV3 context=%s maxResults=%llu currencies=0 response=struct-empty-success account=active-iw8\n",
+                context.c_str(), static_cast<unsigned long long>(maxResults));
+            return FinishLegacyTaskReply(reply, replyPlain);
+        }
+
         if (route.serviceId == 80u && route.taskId == 69u)
         {
             // 1.20 observed request: context, page token, items-per-page.
@@ -1825,6 +2152,20 @@ namespace revamped::iw8::demonware
                 transactionId, replyPlain);
         }
 
+        if (route.serviceId == 145u && route.taskId == 3u)
+        {
+            return BuildLocalMatchMakingPlayerTokenReply(
+                request, requestPayload, requestPayloadBytes,
+                transactionId, replyPlain);
+        }
+
+        if (route.serviceId == 198u && route.taskId == 6u)
+        {
+            return BuildLocalMessagingChannelReply(
+                request, requestPayload, requestPayloadBytes,
+                transactionId, replyPlain);
+        }
+
         if (route.serviceId == 145u && route.taskId == 2u)
         {
             // setPlayerInfo carries exactly one legacy string. Preserve its
@@ -1846,6 +2187,13 @@ namespace revamped::iw8::demonware
                 playerInfo.size());
             return BuildTaskReply_Base(
                 route, request, requestPayload, requestPayloadBytes,
+                transactionId, replyPlain);
+        }
+
+        if (route.serviceId == 145u && route.taskId == 18u)
+        {
+            return BuildLocalStartSearchReply(
+                request, requestPayload, requestPayloadBytes,
                 transactionId, replyPlain);
         }
 
@@ -1878,7 +2226,7 @@ namespace revamped::iw8::demonware
 
         if (route.serviceId == 145u && route.taskId == 16u)
         {
-            return BuildEmptyDataCenterPreferencesReply(
+            return BuildLocalDataCenterPreferencesReply(
                 request, requestPayload, requestPayloadBytes,
                 transactionId, replyPlain);
         }

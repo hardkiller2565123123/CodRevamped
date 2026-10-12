@@ -36,9 +36,9 @@ namespace revamped::iw8
                     "/__revamped/objectstore/publisher/raven/";
                 static constexpr const char* kStoreLayoutBody =
                     "{\"categories\":[\"revamped_store_category.json\"]}";
-                static constexpr const char* kStoreCategoryBody = "{\"layoutType\":0}";
+                static constexpr const char* kStoreCategoryBody = "{\"layoutType\":3,\"name\":\"revamped\",\"title\":\"Revamped Store\",\"products\":[\"490001\",\"490002\",\"490003\",\"490004\"]}";
                 static constexpr const char* kInGameStoreBody =
-                    "{\"products\":{},\"categories\":{\"revamped\":{\"title\":\"Revamped Store\",\"layout\":\"normal\",\"image\":\"\",\"products\":[]}},\"store\":[\"revamped\"]}";
+                    "{\"products\":{\"490001\":{\"id\":490001,\"sku\":490001,\"xb3_product_id\":\"490001\",\"bnet_product_id\":\"490001\",\"pc_product_id\":\"490001\",\"item\":\"490001\",\"title\":\"1,000 COD Points\",\"description\":\"Free local COD Points grant\",\"image\":\"\",\"popup_image\":\"\",\"price\":0,\"currency\":20,\"free\":true,\"consumable\":true,\"entitlement\":false},\"490002\":{\"id\":490002,\"sku\":490002,\"xb3_product_id\":\"490002\",\"bnet_product_id\":\"490002\",\"pc_product_id\":\"490002\",\"item\":\"490002\",\"title\":\"5,000 COD Points\",\"description\":\"Free local COD Points grant\",\"image\":\"\",\"popup_image\":\"\",\"price\":0,\"currency\":20,\"free\":true,\"consumable\":true,\"entitlement\":false},\"490003\":{\"id\":490003,\"sku\":490003,\"xb3_product_id\":\"490003\",\"bnet_product_id\":\"490003\",\"pc_product_id\":\"490003\",\"item\":\"490003\",\"title\":\"Season 3 Battle Pass\",\"description\":\"Local Season 3 Battle Pass entitlement\",\"image\":\"\",\"popup_image\":\"\",\"price\":0,\"currency\":20,\"free\":true,\"consumable\":false,\"entitlement\":true},\"490004\":{\"id\":490004,\"sku\":490004,\"xb3_product_id\":\"490004\",\"bnet_product_id\":\"490004\",\"pc_product_id\":\"490004\",\"item\":\"490004\",\"title\":\"Revamped Starter Bundle\",\"description\":\"Local starter bundle with bonus COD Points\",\"image\":\"\",\"popup_image\":\"\",\"price\":0,\"currency\":20,\"free\":true,\"consumable\":false,\"entitlement\":true}},\"categories\":{\"revamped\":{\"title\":\"Revamped Store\",\"layout\":\"normal\",\"image\":\"\",\"products\":[\"490001\",\"490002\",\"490003\",\"490004\"]}},\"store\":[\"revamped\"]}";
                 static constexpr const char* kMetricsHost =
                     "pipes-prod-glutton.public.aws.demonware.net";
                 static constexpr const char* kMetricsPath =
@@ -97,10 +97,6 @@ namespace revamped::iw8
                     }
                     else if (objectName == "store_v2.json")
                     {
-                        // Keep the legacy 1.20 object body identical to the metadata
-                        // advertised by PublisherObjectStore.cpp.  Returning an empty
-                        // 17-byte body while metadata reports the 47-byte store layout
-                        // leaves the stock frontend with no category datasource.
                         localBody = kStoreLayoutBody;
                         localLabel = "local ObjectStore publisher store_v2.json";
                         localContentType = "application/json; charset=utf-8";
@@ -196,7 +192,7 @@ namespace revamped::iw8
                         result.host.size() - std::char_traits<char>::length(kBlizzardApiHostSuffix),
                         std::char_traits<char>::length(kBlizzardApiHostSuffix),
                         kBlizzardApiHostSuffix) == 0;
-                if (result.method == "POST" && blizzardApiHost &&
+                if ((result.method == "POST" || result.method == "GET") && blizzardApiHost &&
                     result.path == kDefaultCurrencyPath)
                 {
                     static constexpr const char* kDefaultCurrencyBody =
@@ -220,18 +216,17 @@ namespace revamped::iw8
                         result.host.c_str(),
                         result.path.c_str());
                 }
-                else if (result.method == "POST" && blizzardApiHost &&
+                else if ((result.method == "POST" || result.method == "GET") && blizzardApiHost &&
                     result.path == kSimpleCatalogPath)
                 {
-                    // The frontend only needs a structurally valid catalog to
-                    // finish Store initialization. Keep the local catalog empty
-                    // rather than inventing purchasable products.
+                    // Serve deterministic local preservation products. These rows never
+                    // contact Blizzard commerce and every local offer is free.
                     static constexpr const char* kSimpleCatalogBody =
-                        "{\"productList\":[],\"error\":null}";
+                        "{\"productList\":[{\"id\":490001,\"productId\":490001,\"name\":\"1,000 COD Points\",\"licenseAttributes\":[],\"licenses\":[{\"licenseId\":490001,\"licenseType\":1}],\"prices\":[{\"currencyAlphaCode\":\"USD\",\"currencySymbol\":\"$\",\"salePrice\":0,\"standardPrice\":0}]},{\"id\":490002,\"productId\":490002,\"name\":\"5,000 COD Points\",\"licenseAttributes\":[],\"licenses\":[{\"licenseId\":490002,\"licenseType\":1}],\"prices\":[{\"currencyAlphaCode\":\"USD\",\"currencySymbol\":\"$\",\"salePrice\":0,\"standardPrice\":0}]},{\"id\":490003,\"productId\":490003,\"name\":\"Season 3 Battle Pass\",\"licenseAttributes\":[],\"licenses\":[{\"licenseId\":490003,\"licenseType\":1}],\"prices\":[{\"currencyAlphaCode\":\"USD\",\"currencySymbol\":\"$\",\"salePrice\":0,\"standardPrice\":0}]},{\"id\":490004,\"productId\":490004,\"name\":\"Revamped Starter Bundle\",\"licenseAttributes\":[],\"licenses\":[{\"licenseId\":490004,\"licenseType\":1}],\"prices\":[{\"currencyAlphaCode\":\"USD\",\"currencySymbol\":\"$\",\"salePrice\":0,\"standardPrice\":0}]}],\"error\":null}";
 
                     result.handled = true;
                     result.statusCode = 200;
-                    result.label = "local Blizzard SimpleCatalogService empty catalog";
+                    result.label = "local Blizzard SimpleCatalogService local catalog";
                     result.response =
                         "HTTP/1.1 200 OK\r\n"
                         "Content-Type: application/json; charset=utf-8\r\n"
@@ -242,7 +237,7 @@ namespace revamped::iw8
                         "\r\n\r\n" + kSimpleCatalogBody;
 
                     log::Print(
-                        "[BNET-COMMERCE-HTTP] id=%llu host=%s path=%s status=200 products=0",
+                        "[BNET-COMMERCE-HTTP] id=%llu host=%s path=%s status=200 products=4",
                         static_cast<unsigned long long>(id),
                         result.host.c_str(),
                         result.path.c_str());

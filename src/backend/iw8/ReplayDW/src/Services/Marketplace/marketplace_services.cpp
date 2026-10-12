@@ -484,7 +484,7 @@ namespace services
             const auto context = p.text(16);
             const auto maximum = p.u32();
             p.end();
-            wire::require(context == std::to_string(id.titleId) && maximum > 0 && maximum <= 16);
+            wire::require(context == std::to_string(id.titleId) && maximum > 0 && maximum <= 20);
             const auto data = read(store(directory, id));
             Reply reply{0, {}, "legacy-balances-read"};
             for (const auto &row : data.at("balances"))
@@ -543,13 +543,96 @@ namespace services
             return std::move(out.data);
         }
 
+        Json localDefaultCatalog()
+        {
+            const auto makeSku = [](std::uint32_t id)
+            {
+                return Json{
+                    {"id", id},
+                    {"product", id},
+                    {"type", 0},
+                    {"data", ""},
+                    {"ignore_entitlements", 1},
+                    {"sale_start", 0},
+                    {"sale_end", 0},
+                    {"rental_duration", 0},
+                    {"promotional", ""},
+                    {"original", id},
+                    {"collision", 0},
+                    {"modified", 1},
+                    {"coupon_enabled", 0},
+                    {"prices", Json::array({Json{{"currency", 20}, {"amount", 0}}})},
+                    {"enabled", true}
+                };
+            };
+
+            return Json{
+                {"schema", 1},
+                {"skus", Json::array({
+                    makeSku(490001), // 1,000 COD Points
+                    makeSku(490002), // 5,000 COD Points
+                    makeSku(490003), // Season 3 Battle Pass entitlement token
+                    makeSku(490004)  // Local starter bundle
+                })}
+            };
+        }
+
+        Json localDefaultPurchaseRules()
+        {
+            return Json{
+                {"schema", 1},
+                {"rules", Json::array({
+                    Json{
+                        {"sku", 490001}, {"enabled", true},
+                        {"allow_ignore_entitlements", true},
+                        {"allow_gifting", false},
+                        {"local_any_source", true},
+                        {"maximum_quantity", 100},
+                        {"sources", Json::array({0})},
+                        {"items", Json::array()},
+                        {"currencies", Json::array({Json{{"currency", 20}, {"amount", 1000}}})}
+                    },
+                    Json{
+                        {"sku", 490002}, {"enabled", true},
+                        {"allow_ignore_entitlements", true},
+                        {"allow_gifting", false},
+                        {"local_any_source", true},
+                        {"maximum_quantity", 100},
+                        {"sources", Json::array({0})},
+                        {"items", Json::array()},
+                        {"currencies", Json::array({Json{{"currency", 20}, {"amount", 5000}}})}
+                    },
+                    Json{
+                        {"sku", 490003}, {"enabled", true},
+                        {"allow_ignore_entitlements", true},
+                        {"allow_gifting", false},
+                        {"local_any_source", true},
+                        {"maximum_quantity", 1},
+                        {"sources", Json::array({0})},
+                        {"items", Json::array({Json{{"1", 910003}, {"2", 1}}})},
+                        {"currencies", Json::array()}
+                    },
+                    Json{
+                        {"sku", 490004}, {"enabled", true},
+                        {"allow_ignore_entitlements", true},
+                        {"allow_gifting", false},
+                        {"local_any_source", true},
+                        {"maximum_quantity", 1},
+                        {"sources", Json::array({0})},
+                        {"items", Json::array({Json{{"1", 930001}, {"2", 1}}})},
+                        {"currencies", Json::array({Json{{"currency", 20}, {"amount", 500}}})}
+                    }
+                })}
+            };
+        }
+
         Json publishedCatalog(const std::filesystem::path &directory,
                               const platform::LobbyIdentity &id)
         {
             const auto path =
                 directory / "marketplace" / std::to_string(id.titleId) / "catalog.json";
             if (!std::filesystem::exists(path))
-                return nullptr;
+                return localDefaultCatalog();
             if (std::filesystem::file_size(path) > 4 * 1024 * 1024)
                 throw std::runtime_error("Marketplace catalog size invalid");
             std::ifstream in(path);
@@ -1055,14 +1138,20 @@ namespace services
             const auto catalog = publishedCatalog(directory, id);
             const auto rulesPath =
                 directory / "marketplace" / std::to_string(id.titleId) / "purchase-rules.json";
-            if (catalog.is_null() || !std::filesystem::exists(rulesPath))
-                return {108, {}, "marketplace-purchase-not-published"};
-            if (std::filesystem::file_size(rulesPath) > 4 * 1024 * 1024)
-                throw std::runtime_error("Marketplace purchase rules size invalid");
-            std::ifstream in(rulesPath);
-            if (!in)
-                throw std::runtime_error("Marketplace purchase rules read failed");
-            const auto rules = Json::parse(in);
+            Json rules;
+            if (std::filesystem::exists(rulesPath))
+            {
+                if (std::filesystem::file_size(rulesPath) > 4 * 1024 * 1024)
+                    throw std::runtime_error("Marketplace purchase rules size invalid");
+                std::ifstream in(rulesPath);
+                if (!in)
+                    throw std::runtime_error("Marketplace purchase rules read failed");
+                rules = Json::parse(in);
+            }
+            else
+            {
+                rules = localDefaultPurchaseRules();
+            }
             std::map<uint32_t, Json> definitions;
             std::map<uint32_t, Json> skus;
             for (const auto &row : catalog.at("skus"))
@@ -1204,7 +1293,8 @@ namespace services
                     if (expected != actual)
                         return {101, {}, "marketplace-expected-price-mismatch"};
                 }
-                if (std::none_of(definition.at("sources").begin(),
+                if (!definition.value("local_any_source", false) &&
+                    std::none_of(definition.at("sources").begin(),
                                  definition.at("sources").end(),
                                  [source](const auto &value)
                                  {

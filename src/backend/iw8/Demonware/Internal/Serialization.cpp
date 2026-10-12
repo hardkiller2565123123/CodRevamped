@@ -43,7 +43,7 @@ namespace revamped::iw8::demonware
             // IW8 1.20 profile bootstrap. Stock code treats a missing public
             // profile as a normal first-run condition and creates its default
             // 256-byte DDL locally. Upload then succeeds with no bound result.
-            {8u, 1u, "bdProfiles", "getPublicInfos", ReplyPolicy::LegacyProfileNotFound, TaskSemantic::ProfilesGetPublic},
+            {8u, 1u, "bdProfiles", "getPublicInfos", ReplyPolicy::NoResultSuccess, TaskSemantic::ProfilesGetPublic},
             {8u, 3u, "bdProfiles", "setPublicInfo", ReplyPolicy::NoResultSuccess, TaskSemantic::ProfilesSetPublic},
 
             // IW8 1.20 marketplace fence calls. 0xF5 has a known empty struct
@@ -51,8 +51,15 @@ namespace revamped::iw8::demonware
             // deliberately registered as known-but-unimplemented until their
             // exact native result structures are proven; never guess bytes.
             {80u, 0xF3u, "bdMarketplace", "bnetReconciliation", ReplyPolicy::None},
-            {80u, 0xF5u, "bdMarketplace", "getBalancesV3", ReplyPolicy::StructMarketplaceBalancesEmpty},
+            {80u, 0xF5u, "bdMarketplace", "getBalancesV3", ReplyPolicy::None},
             {80u, 58u, "bdMarketplace", "validateInventoryItemsToken", ReplyPolicy::None},
+            {80u, 69u, "bdMarketplace", "getInventoryItemInfo", ReplyPolicy::None},
+            {80u, 0x84u, "bdMarketplace", "getBalanceV2", ReplyPolicy::None},
+            {80u, 106u, "bdMarketplace", "purchase", ReplyPolicy::None},
+            {80u, 125u, "bdMarketplace", "purchaseV4", ReplyPolicy::None},
+            {80u, 134u, "bdMarketplace", "getSkus", ReplyPolicy::None},
+            {123u, 1u, "bdMarketplace", "redeemCoupon", ReplyPolicy::None},
+            {123u, 2u, "bdMarketplace", "redeemCoupon", ReplyPolicy::None},
 
             // Observed IW8 1.20 calls whose exact reply contracts are not yet
             // proven. Keeping them in the registry gives precise diagnostics
@@ -62,7 +69,6 @@ namespace revamped::iw8::demonware
             {4u, 14u, "bdStorage", "serverValidatedStatsWrite", ReplyPolicy::None, TaskSemantic::PlayerStatsValidatedWrite},
             {3u, 46u, "bdService3", "observedTask46", ReplyPolicy::None},
             {67u, 5u, "bdEventLog", "observedTask5", ReplyPolicy::None},
-            {80u, 125u, "bdMarketplace", "observedTask125", ReplyPolicy::None},
             {145u, 15u, "bdService145", "observedTask15", ReplyPolicy::None},
             {145u, 23u, "bdService145", "observedTask23", ReplyPolicy::None},
             {152u, 1u, "bdService152", "observedTask1", ReplyPolicy::None},

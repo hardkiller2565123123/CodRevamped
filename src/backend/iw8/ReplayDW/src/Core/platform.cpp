@@ -49,6 +49,9 @@ namespace platform
 
         Identity identity;
         std::map<std::string, Identity> profiles, clientProfiles;
+        // Runtime-only identities authenticated by CodRevamped's host LSG.
+        // Never write these into ReplayDW's signed local profile store.
+        std::map<uint64_t, std::string> hostedAccounts;
 
         struct Challenge
         {
@@ -801,6 +804,7 @@ namespace platform
                 profiles.emplace(name, profile);
             }
         clientProfiles.clear();
+        hostedAccounts.clear();
         challenges.clear();
         const auto clients = directory / "platform-client-profiles";
         std::filesystem::create_directories(clients);
@@ -1005,9 +1009,36 @@ namespace platform
         profiles.emplace(profile, result);
     }
 
+    void rememberHostedAccount(uint64_t user, const std::string &requestedName)
+    {
+        if (!user || user == UINT64_MAX)
+            return;
+
+        std::string name;
+        name.reserve((std::min)(size_t{35}, requestedName.size()));
+        for (const unsigned char c : requestedName)
+        {
+            if (name.size() >= 35)
+                break;
+            if (c >= 32 && c < 127 && c != '#' && c != '%')
+                name.push_back(static_cast<char>(c));
+        }
+        while (!name.empty() && name.front() == ' ')
+            name.erase(name.begin());
+        while (!name.empty() && name.back() == ' ')
+            name.pop_back();
+        if (name.empty())
+            name = "RevampedPlayer";
+
+        std::lock_guard lock(mutex);
+        hostedAccounts[user] = std::move(name);
+    }
+
     std::optional<std::string> accountName(uint64_t user)
     {
         std::lock_guard lock(mutex);
+        if (const auto hosted = hostedAccounts.find(user); hosted != hostedAccounts.end())
+            return hosted->second;
         recoverAccounts(user);
         if (user == identity.userId)
             return std::string(identity.name);
@@ -1062,14 +1093,27 @@ namespace platform
         recoverAccounts();
         std::vector<Account> found;
         const auto match = folded(username);
+        const auto appendAccount = [&](uint64_t userId, const std::string &displayName)
+        {
+            const auto name = folded(displayName), tag = name + "#0";
+            const bool matches =
+                prefix ? (name.starts_with(match) || tag.starts_with(match))
+                       : (name == match || tag == match);
+            if (matches && found.size() < 100 &&
+                std::none_of(found.begin(),
+                             found.end(),
+                             [userId](const Account &account)
+                             {
+                                 return account.userId == userId;
+                             }))
+                found.push_back({userId, displayName});
+        };
         const auto append = [&](const Identity &account)
         {
-            const auto name = folded(account.name), tag = name + "#0";
-            if (prefix ? (name.starts_with(match) || tag.starts_with(match))
-                       : (name == match || tag == match))
-                if (found.size() < 100)
-                    found.push_back({account.userId, account.name});
+            appendAccount(account.userId, account.name);
         };
+        for (const auto &[user, name] : hostedAccounts)
+            appendAccount(user, name);
         std::set<std::string> machineNames;
         for (const auto &[id, account] : clientProfiles)
         {

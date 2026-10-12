@@ -1,11 +1,4 @@
 #pragma once
-#include "services.h"
-
-namespace services
-{
-    std::optional<Reply> leaderboardServices(const std::filesystem::path &directory,
-                                             const platform::LobbyIdentity &identity,
-                                             uint8_t service,
-                                             uint8_t task,
-                                             wire::Reader &params);
-}
+// Compatibility include for the organized ReplayDW source tree.
+// Keep the declaration in a single physical header to avoid C2011/C2084.
+#include "Services/Leaderboards/leaderboard_services.h"

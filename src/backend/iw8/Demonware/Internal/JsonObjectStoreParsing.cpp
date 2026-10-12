@@ -63,6 +63,166 @@ namespace revamped::iw8::demonware
             return owner + std::string(1, '\0') + name;
         }
 
+        std::filesystem::path LegacyObjectStorePath()
+        {
+            return std::filesystem::current_path() / "ReplayDWData" /
+                "legacy-objectstore" / "objects.bin";
+        }
+
+        bool ReadPersistedString(
+            std::ifstream& stream, std::string& value, std::uint32_t maximum)
+        {
+            std::uint32_t length = 0;
+            stream.read(reinterpret_cast<char*>(&length), sizeof(length));
+            if (!stream || length > maximum)
+                return false;
+            value.assign(length, '\0');
+            if (length)
+                stream.read(value.data(), static_cast<std::streamsize>(length));
+            return !!stream;
+        }
+
+        void WritePersistedString(std::ofstream& stream, const std::string& value)
+        {
+            const auto length = static_cast<std::uint32_t>(value.size());
+            stream.write(reinterpret_cast<const char*>(&length), sizeof(length));
+            if (length)
+                stream.write(value.data(), static_cast<std::streamsize>(length));
+        }
+
+        bool g_legacyObjectStoreLoaded = false;
+
+        void LoadLegacyObjectStoreLocked()
+        {
+            if (g_legacyObjectStoreLoaded)
+                return;
+            g_legacyObjectStoreLoaded = true;
+
+            const auto path = LegacyObjectStorePath();
+            std::ifstream stream(path, std::ios::binary);
+            if (!stream)
+                return;
+
+            char magic[8]{};
+            stream.read(magic, sizeof(magic));
+            if (!stream || std::memcmp(magic, "CRIW8OS1", sizeof(magic)) != 0)
+            {
+                std::printf("[DW-OBJECTSTORE-PERSIST] ignored invalid legacy store file=%s\n",
+                    path.string().c_str());
+                return;
+            }
+
+            std::uint32_t count = 0;
+            stream.read(reinterpret_cast<char*>(&count), sizeof(count));
+            if (!stream || count > 8192u)
+            {
+                std::printf("[DW-OBJECTSTORE-PERSIST] ignored invalid object count file=%s\n",
+                    path.string().c_str());
+                return;
+            }
+
+            std::unordered_map<std::string, StoredObjectStoreObject> loaded;
+            loaded.reserve(count);
+            for (std::uint32_t i = 0; i < count; ++i)
+            {
+                StoredObjectStoreObject object;
+                if (!ReadPersistedString(stream, object.owner, 512u) ||
+                    !ReadPersistedString(stream, object.name, 512u) ||
+                    !ReadPersistedString(stream, object.contentBase64, 32u * 1024u * 1024u) ||
+                    !ReadPersistedString(stream, object.metadataJson, 4u * 1024u * 1024u) ||
+                    !ReadPersistedString(stream, object.objectJson, 36u * 1024u * 1024u) ||
+                    !ReadPersistedString(stream, object.checksum, 512u) ||
+                    !ReadPersistedString(stream, object.objectVersion, 512u) ||
+                    !ReadPersistedString(stream, object.context, 512u) ||
+                    !ReadPersistedString(stream, object.acl, 128u) ||
+                    !ReadPersistedString(stream, object.category, 512u))
+                {
+                    std::printf("[DW-OBJECTSTORE-PERSIST] ignored truncated legacy store file=%s\n",
+                        path.string().c_str());
+                    return;
+                }
+
+                stream.read(reinterpret_cast<char*>(&object.contentLength), sizeof(object.contentLength));
+                stream.read(reinterpret_cast<char*>(&object.expiresOn), sizeof(object.expiresOn));
+                stream.read(reinterpret_cast<char*>(&object.created), sizeof(object.created));
+                stream.read(reinterpret_cast<char*>(&object.modified), sizeof(object.modified));
+                if (!stream || object.owner.empty() || object.name.empty())
+                {
+                    std::printf("[DW-OBJECTSTORE-PERSIST] ignored invalid legacy object file=%s\n",
+                        path.string().c_str());
+                    return;
+                }
+
+                loaded[ObjectStoreKey(object.owner, object.name)] = std::move(object);
+            }
+
+            g_objectStoreObjects = std::move(loaded);
+            std::printf("[DW-OBJECTSTORE-PERSIST] loaded=%zu file=%s\n",
+                g_objectStoreObjects.size(), path.string().c_str());
+        }
+
+        bool SaveLegacyObjectStoreLocked()
+        {
+            const auto path = LegacyObjectStorePath();
+            std::error_code ec;
+            std::filesystem::create_directories(path.parent_path(), ec);
+            if (ec)
+            {
+                std::printf("[DW-OBJECTSTORE-PERSIST] create directory failed error=%s\n",
+                    ec.message().c_str());
+                return false;
+            }
+
+            auto pending = path;
+            pending += ".pending";
+
+            std::ofstream stream(pending, std::ios::binary | std::ios::trunc);
+            if (!stream)
+                return false;
+
+            stream.write("CRIW8OS1", 8);
+            const auto count = static_cast<std::uint32_t>(g_objectStoreObjects.size());
+            stream.write(reinterpret_cast<const char*>(&count), sizeof(count));
+
+            for (const auto& [key, object] : g_objectStoreObjects)
+            {
+                (void)key;
+                WritePersistedString(stream, object.owner);
+                WritePersistedString(stream, object.name);
+                WritePersistedString(stream, object.contentBase64);
+                WritePersistedString(stream, object.metadataJson);
+                WritePersistedString(stream, object.objectJson);
+                WritePersistedString(stream, object.checksum);
+                WritePersistedString(stream, object.objectVersion);
+                WritePersistedString(stream, object.context);
+                WritePersistedString(stream, object.acl);
+                WritePersistedString(stream, object.category);
+                stream.write(reinterpret_cast<const char*>(&object.contentLength), sizeof(object.contentLength));
+                stream.write(reinterpret_cast<const char*>(&object.expiresOn), sizeof(object.expiresOn));
+                stream.write(reinterpret_cast<const char*>(&object.created), sizeof(object.created));
+                stream.write(reinterpret_cast<const char*>(&object.modified), sizeof(object.modified));
+            }
+
+            stream.flush();
+            if (!stream)
+                return false;
+            stream.close();
+
+            std::filesystem::remove(path, ec);
+            ec.clear();
+            std::filesystem::rename(pending, path, ec);
+            if (ec)
+            {
+                std::printf("[DW-OBJECTSTORE-PERSIST] publish failed error=%s\n",
+                    ec.message().c_str());
+                return false;
+            }
+
+            std::printf("[DW-OBJECTSTORE-PERSIST] saved=%zu file=%s\n",
+                g_objectStoreObjects.size(), path.string().c_str());
+            return true;
+        }
+
         bool IsJsonWhitespace(char c)
         {
             return c == ' ' || c == '\t' || c == '\r' || c == '\n';

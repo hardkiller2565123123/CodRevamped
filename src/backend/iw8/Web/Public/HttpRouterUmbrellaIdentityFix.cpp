@@ -95,24 +95,36 @@ namespace revamped::iw8::web
             ",\"ticket\":\"" + JsonEscape(ticket) + "\"" +
             ",\"refreshToken\":\"revamped-local-refresh\"" +
             ",\"refreshTokenExpires\":" + std::to_string(refreshExpires) +
-            ",\"accounts\":[{\"provider\":\"uno\",\"username\":\"revamped\",\"accountID\":" +
-                std::to_string(userId) + ",\"authorized\":true}]" +
+            // `accounts` is the list of *linked provider accounts*.  Returning
+            // only provider=uno is wrong for a Battle.net PC login: stock IW8
+            // later asks Umbrella for platform-provider operations and maps
+            // SI error 180000 to bdLobbyErrorCode 0x36B1 / decimal 14001
+            // (BD_UMBRELLA_PROVIDER_UNSUPPORTED_OPERATION).  Keep UNO present
+            // for the normal FETCHING_UNO_ACCOUNT stage, but also expose the
+            // actual first-party Battle.net provider account.
+            ",\"accounts\":["
+                "{\"provider\":\"bnet\",\"username\":\"revamped\",\"accountID\":" +
+                    std::to_string(userId) + ",\"authorized\":true},"
+                "{\"provider\":\"uno\",\"username\":\"revamped\",\"accountID\":" +
+                    std::to_string(userId) + ",\"authorized\":true}"
+            "]" +
+            ",\"hasUno\":true" +
             ",\"token\":\"" + JsonEscape(ticket) + "\"" +
             ",\"crossPlatformProgressionEnabled\":true" +
             ",\"lsgEndpoint\":\"127.0.0.1\"}";
 
         result.response = BuildResponse(
             200, "OK", "application/json; charset=utf-8", responseBody);
-        result.label += " umbrellaIdentity=nonzero linkedUno=1 schema=bdUmbrellaCrossplayInfo";
+        result.label += " umbrellaIdentity=nonzero linkedProviders={bnet,uno} hasUno=true schema=bdUmbrellaCrossplayInfo";
 
         AppendAuthPipelineV58(
-            "UMBRELLA_LOCAL_IDENTITY userId=%llu accountType=bnet username=revamped linkedUno=1 ticketLen=%llu ivSeedPresent=%s schema=bdUmbrellaCrossplayInfo stateWrites=off",
+            "UMBRELLA_LOCAL_IDENTITY userId=%llu accountType=bnet username=revamped linkedProviders={bnet,uno} hasUno=true ticketLen=%llu ivSeedPresent=%s schema=bdUmbrellaCrossplayInfo stateWrites=off",
             static_cast<unsigned long long>(userId),
             static_cast<unsigned long long>(ticket.size()),
             ivSeedB64.empty() ? "no" : "yes");
 
         log::Print(
-            "[AUTH-LSG] UMBRELLA_LOCAL_IDENTITY userId=%llu accountType=bnet linkedUno=1 ticketLen=%llu ivSeedPresent=%s schema=bdUmbrellaCrossplayInfo",
+            "[AUTH-LSG] UMBRELLA_LOCAL_IDENTITY userId=%llu accountType=bnet linkedProviders={bnet,uno} hasUno=true ticketLen=%llu ivSeedPresent=%s schema=bdUmbrellaCrossplayInfo",
             static_cast<unsigned long long>(userId),
             static_cast<unsigned long long>(ticket.size()),
             ivSeedB64.empty() ? "no" : "yes");

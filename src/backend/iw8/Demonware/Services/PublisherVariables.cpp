@@ -14,41 +14,32 @@ namespace revamped::iw8::demonware
         // read at least one additional key/value entry.  Keep the payload
         // deliberately small, deterministic and string-only so every supported
         // serializer path produces the same local cache representation.
-        //
-        // Steam Retail applies non-version publisher variables to existing
-        // Dvars through the stock PublisherVariableManager.  Use that native
-        // server-controlled configuration surface instead of writing game
-        // memory or patching any client function.
-        //
-        // Local/offline backend policy:
-        //   NKTMRPRKKK=0  net_relay_enabled
-        //   NSPPTONLNP=0  online_blueprints_enabled
-        //   LKQRNQSSQS=0  online_challenge_fence_enabled
-        //   MNLNLSTSNT=0  crm_enabled
-        //   NQONKSKTLQ=0  dw_region_lookup_timeout
-        //   LNSPMQMSS=0  anticheat main-menu fence failure
-        //   MTNQMNRQML=0  publisher-variable fetch-always
-        //   MLMKNTSSSL=0  publisher-variable fetch-all-on-update
-        //   LNKRTPTKPR=0  publisher-variable refetch-on-mismatch
-        //   MROLPRPTPO=1  com_force_premium
-        //
-        // These remove optional production-only dependencies while retaining
-        // the real stock login, LSG, time, stats/ObjectStore, playlist,
-        // patch-manifest, profile and store bootstrap paths.
         constexpr const char* kEmptyPublisherVariablesJson = "{}";
         constexpr const char* kGeneralPublisherVariablesJson =
             "{"
             "\"revamped_bootstrap\":\"1\","
-            "\"NKTMRPRKKK\":\"0\","
-            "\"NSPPTONLNP\":\"0\","
-            "\"LKQRNQSSQS\":\"0\","
-            "\"MNLNLSTSNT\":\"0\","
-            "\"NQONKSKTLQ\":\"0\","
-            "\"LNSPMQMSS\":\"0\","
-            "\"MTNQMNRQML\":\"0\","
-            "\"MLMKNTSSSL\":\"0\","
-            "\"LNKRTPTKPR\":\"0\","
-            "\"MROLPRPTPO\":\"1\""
+            "\"NKTMRPRKKK\":\"0\","  // net_relay_enabled
+            "\"NSPPTONLNP\":\"0\","  // online_blueprints_enabled
+            "\"LKQRNQSSQS\":\"0\","  // online_challenge_fence_enabled
+            "\"MNLNLSTSNT\":\"0\","  // crm_enabled
+            "\"NQONKSKTLQ\":\"0\","  // dw_region_lookup_timeout
+            "\"LNSPMQMSS\":\"0\","  // anticheat main-menu fence failure
+            "\"MTNQMNRQML\":\"0\","  // publisher-variable fetch-always
+            "\"MLMKNTSSSL\":\"0\","  // publisher-variable fetch-all-on-update
+            "\"LNKRTPTKPR\":\"0\","  // publisher-variable refetch-on-mismatch
+            "\"MROLPRPTPO\":\"1\","  // com_force_premium
+            "\"LNLPTMKPT\":\"1\","  // lui_store_enabled
+            "\"LNTOKPTKS\":\"1\","  // lui_cod_points_enabled
+            "\"NRTSOTKTOS\":\"1\","  // lui_battle_pass_enabled
+            "\"LSSPPSTLQ\":\"1\","  // store bundle preview list
+            "\"LSOLLKOPQT\":\"1\","  // free bundle visibility
+            "\"LQKTNLONLP\":\"1\","   // MP private-match/menu feature gate
+            "\"NLMSQOPNMK\":\"1\","   // WZ tournament first
+            "\"LNRQKOQLNN\":\"0\","   // BR featured before promoted trial buttons
+            "\"NKOOQPNSKM\":\"1\","   // WZ squad-fill control enabled
+            "\"MNRTKTQMLS\":\"0\","   // hide WZ practice mode from public play list
+            "\"NORMPNKNK\":\"0\","   // hide WZ trials entry
+            "\"LOQQOSNQKN\":\"1\""    // WZ private/custom match enabled
             "}";
 
         const char* PublisherVariablesJsonForNamespace(const std::string& nameSpace)

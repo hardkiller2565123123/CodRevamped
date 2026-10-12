@@ -11,7 +11,7 @@ namespace revamped::iw8::demonware
         constexpr const char* kIw8StoreCategoryName = "revamped_store_category.json";
         constexpr const char* kIw8StoreLayoutJson =
             "{\"categories\":[\"revamped_store_category.json\"]}";
-        constexpr const char* kIw8StoreCategoryJson = "{\"layoutType\":0}";
+        constexpr const char* kIw8StoreCategoryJson = "{\"layoutType\":3,\"name\":\"revamped\",\"title\":\"Revamped Store\",\"products\":[\"490001\",\"490002\",\"490003\",\"490004\"]}";
         constexpr const char* kIw8StoreLayoutContentUrl =
             "https://objectstore.prod.demonware.net/__revamped/objectstore/publisher/infinityward/store_v2_warzone.json";
 
@@ -20,7 +20,7 @@ namespace revamped::iw8::demonware
         // stay on the BNet object instead of being rewritten to the Xbox file.
         constexpr const char* kIw8InGameStoreFallbackName = "ingamestore_bnet_en.json";
         constexpr const char* kIw8InGameStoreJson =
-            "{\"products\":{},\"categories\":{\"revamped\":{\"title\":\"Revamped Store\",\"layout\":\"normal\",\"image\":\"\",\"products\":[]}},\"store\":[\"revamped\"]}";
+            "{\"products\":{\"490001\":{\"id\":490001,\"sku\":490001,\"xb3_product_id\":\"490001\",\"bnet_product_id\":\"490001\",\"pc_product_id\":\"490001\",\"item\":\"490001\",\"title\":\"1,000 COD Points\",\"description\":\"Free local COD Points grant\",\"image\":\"\",\"popup_image\":\"\",\"price\":0,\"currency\":20,\"free\":true,\"consumable\":true,\"entitlement\":false},\"490002\":{\"id\":490002,\"sku\":490002,\"xb3_product_id\":\"490002\",\"bnet_product_id\":\"490002\",\"pc_product_id\":\"490002\",\"item\":\"490002\",\"title\":\"5,000 COD Points\",\"description\":\"Free local COD Points grant\",\"image\":\"\",\"popup_image\":\"\",\"price\":0,\"currency\":20,\"free\":true,\"consumable\":true,\"entitlement\":false},\"490003\":{\"id\":490003,\"sku\":490003,\"xb3_product_id\":\"490003\",\"bnet_product_id\":\"490003\",\"pc_product_id\":\"490003\",\"item\":\"490003\",\"title\":\"Season 3 Battle Pass\",\"description\":\"Local Season 3 Battle Pass entitlement\",\"image\":\"\",\"popup_image\":\"\",\"price\":0,\"currency\":20,\"free\":true,\"consumable\":false,\"entitlement\":true},\"490004\":{\"id\":490004,\"sku\":490004,\"xb3_product_id\":\"490004\",\"bnet_product_id\":\"490004\",\"pc_product_id\":\"490004\",\"item\":\"490004\",\"title\":\"Revamped Starter Bundle\",\"description\":\"Local starter bundle with bonus COD Points\",\"image\":\"\",\"popup_image\":\"\",\"price\":0,\"currency\":20,\"free\":true,\"consumable\":false,\"entitlement\":true}},\"categories\":{\"revamped\":{\"title\":\"Revamped Store\",\"layout\":\"normal\",\"image\":\"\",\"products\":[\"490001\",\"490002\",\"490003\",\"490004\"]}},\"store\":[\"revamped\"]}";
 
         constexpr const char* kIw8StoreAuthorization = "Bearer revamped-local-objectstore";
         constexpr const char* kPublisherContentUrlPrefix =

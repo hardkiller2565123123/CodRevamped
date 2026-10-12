@@ -1,15 +1,4 @@
 #pragma once
-#include "services.h"
-
-namespace services
-{
-    struct RESTRequest;
-
-    Reply abTestingEnroll(const std::filesystem::path &,
-                          const platform::LobbyIdentity &,
-                          const std::string &,
-                          std::optional<uint32_t> restVersion = std::nullopt);
-    std::optional<Reply> abTestingRest(const std::filesystem::path &,
-                                       const platform::LobbyIdentity &,
-                                       const RESTRequest &);
-} // namespace services
+// Compatibility include for the organized ReplayDW source tree.
+// Keep the declaration in a single physical header to avoid C2011/C2084.
+#include "Services/ABTesting/abtesting_services.h"

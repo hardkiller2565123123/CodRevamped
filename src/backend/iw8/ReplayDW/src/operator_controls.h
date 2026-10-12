@@ -1,18 +1,4 @@
 #pragma once
-#include "services.h"
-
-namespace services
-{
-    struct OperatorMatchStart
-    {
-        unsigned status = 409;
-        std::string message;
-        uint32_t title = 0;
-        std::vector<Delivery> deliveries;
-    };
-
-    OperatorMatchStart operatorStartMatch(const std::string &credential,
-                                          const std::string &matchToken,
-                                          bool fillBots = false,
-                                          unsigned botCount = 0);
-} // namespace services
+// Compatibility include for the organized ReplayDW source tree.
+// Keep the declaration in a single physical header to avoid C2011/C2084.
+#include "Core/operator_controls.h"

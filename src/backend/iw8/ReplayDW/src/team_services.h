@@ -1,11 +1,4 @@
 #pragma once
-#include "services.h"
-
-namespace services
-{
-    std::optional<Reply> teamServices(const std::filesystem::path &,
-                                      const platform::LobbyIdentity &,
-                                      uint8_t,
-                                      uint8_t,
-                                      wire::Reader &);
-}
+// Compatibility include for the organized ReplayDW source tree.
+// Keep the declaration in a single physical header to avoid C2011/C2084.
+#include "Services/Teams/team_services.h"

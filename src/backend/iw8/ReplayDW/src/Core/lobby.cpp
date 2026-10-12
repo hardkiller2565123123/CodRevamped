@@ -36,6 +36,7 @@ namespace lobby
             platform::LobbyIdentity identity;
             std::string sessionFingerprint;
             std::function<bool(std::span<const uint8_t>)> writer;
+            bool hostAuthenticated = false;
             uint64_t lastTournament = 0;
             uint64_t lastTournamentSearch = 0;
             bool lastTournamentJoin = false;
@@ -64,6 +65,9 @@ namespace lobby
         };
 
         std::map<std::pair<uint32_t, uint64_t>, std::map<std::string, OnlineSession>> onlineUsers;
+        // Counts native CodRevamped-hosted sessions by the same SHA-256 key
+        // fingerprint used by matchmaking token_session.
+        std::map<std::tuple<uint32_t, uint64_t, std::string>, unsigned> hostedSessions;
         void route(uint32_t title, const services::Delivery &delivery);
         void startPublicationUpdates();
 
@@ -124,7 +128,8 @@ namespace lobby
                     for (const auto &entry : endpoints)
                         if (entry.second->identity.titleId == endpoint->identity.titleId &&
                             entry.second->identity.userId == endpoint->identity.userId &&
-                            platform::valid(entry.second->identity))
+                            (entry.second->hostAuthenticated ||
+                             platform::valid(entry.second->identity)))
                             online = true;
                     if (!online)
                         try
@@ -221,7 +226,8 @@ namespace lobby
                     continue;
                 try
                 {
-                    if (endpoint->writer && platform::valid(endpoint->identity))
+                    if (endpoint->writer &&
+                        (endpoint->hostAuthenticated || platform::valid(endpoint->identity)))
                     {
                         if (!delivery.channelJoinPayload.empty() && !joined)
                         {
@@ -565,6 +571,149 @@ namespace lobby
         };
     } // namespace
 
+    void registerHostedConnection(
+        uint64_t connection,
+        const platform::LobbyIdentity &identity,
+        std::function<bool(std::span<const uint8_t>)> writer)
+    {
+        wire::require(connection && identity.titleId && identity.userId && writer);
+
+        auto endpoint = std::make_shared<PushEndpoint>();
+        endpoint->identity = identity;
+        endpoint->sessionFingerprint = wire::base64Encode(crypto::sha256(identity.key));
+        endpoint->writer = std::move(writer);
+        endpoint->hostAuthenticated = true;
+        startPublicationUpdates();
+
+        std::lock_guard lock(endpointMutex);
+        wire::require(!endpoints.contains(connection));
+        endpoints.emplace(connection, endpoint);
+        {
+            std::lock_guard presenceLock(onlineMutex);
+            auto &session =
+                onlineUsers[{identity.titleId, identity.userId}][endpoint->sessionFingerprint];
+            session.identity = identity;
+            ++session.count;
+            ++hostedSessions[
+                {identity.titleId, identity.userId, endpoint->sessionFingerprint}];
+        }
+    }
+
+    void unregisterHostedConnection(uint64_t connection)
+    {
+        std::shared_ptr<PushEndpoint> endpoint;
+        std::vector<services::Delivery> notifications;
+        {
+            std::lock_guard lock(endpointMutex);
+            const auto foundEndpoint = endpoints.find(connection);
+            if (foundEndpoint == endpoints.end() || !foundEndpoint->second->hostAuthenticated)
+                return;
+
+            endpoint = foundEndpoint->second;
+            endpoints.erase(foundEndpoint);
+
+            {
+                std::lock_guard presenceLock(onlineMutex);
+                const auto userKey =
+                    std::make_pair(endpoint->identity.titleId, endpoint->identity.userId);
+                const auto foundUser = onlineUsers.find(userKey);
+                if (foundUser != onlineUsers.end())
+                {
+                    const auto session = foundUser->second.find(endpoint->sessionFingerprint);
+                    if (session != foundUser->second.end())
+                    {
+                        if (session->second.count)
+                            --session->second.count;
+                        if (!session->second.count)
+                            foundUser->second.erase(session);
+                    }
+                    if (foundUser->second.empty())
+                        onlineUsers.erase(foundUser);
+                }
+
+                const auto hostedKey = std::make_tuple(
+                    endpoint->identity.titleId,
+                    endpoint->identity.userId,
+                    endpoint->sessionFingerprint);
+                const auto hosted = hostedSessions.find(hostedKey);
+                if (hosted != hostedSessions.end())
+                {
+                    if (hosted->second > 1)
+                        --hosted->second;
+                    else
+                        hostedSessions.erase(hosted);
+                }
+            }
+
+            bool online = false;
+            for (const auto &entry : endpoints)
+                if (entry.second->identity.titleId == endpoint->identity.titleId &&
+                    entry.second->identity.userId == endpoint->identity.userId &&
+                    (entry.second->hostAuthenticated ||
+                     platform::valid(entry.second->identity)))
+                    online = true;
+
+            if (!online)
+                try
+                {
+                    notifications =
+                        services::disconnected(endpoint->identity.titleId,
+                                               endpoint->identity.userId);
+                }
+                catch (...)
+                {
+                    ++failures;
+                }
+        }
+
+        {
+            std::lock_guard lock(endpoint->mutex);
+            endpoint->writer = {};
+            SecureZeroMemory(endpoint->identity.key.data(), endpoint->identity.key.size());
+        }
+
+        for (const auto &notification : notifications)
+            try
+            {
+                route(endpoint->identity.titleId, notification);
+            }
+            catch (...)
+            {
+                ++failures;
+            }
+    }
+
+    bool publishHostedPush(uint64_t connection, std::span<const uint8_t> payload)
+    {
+        std::shared_ptr<PushEndpoint> endpoint;
+        {
+            std::lock_guard lock(endpointMutex);
+            const auto found = endpoints.find(connection);
+            if (found == endpoints.end() || !found->second->hostAuthenticated)
+                return false;
+            endpoint = found->second;
+        }
+
+        std::lock_guard lock(endpoint->mutex);
+        try
+        {
+            if (!endpoint->writer)
+                return false;
+            if (!endpoint->writer(payload))
+            {
+                endpoint->writer = {};
+                return false;
+            }
+            return true;
+        }
+        catch (...)
+        {
+            endpoint->writer = {};
+            ++failures;
+            return false;
+        }
+    }
+
     void publishOperatorUpdates(uint32_t title, std::span<const services::Delivery> deliveries)
     {
         for (const auto &delivery : deliveries)
@@ -573,25 +722,39 @@ namespace lobby
 
     std::vector<OnlinePlayer> onlinePlayerList()
     {
-        std::vector<std::vector<platform::LobbyIdentity>> users;
+        struct Snapshot
+        {
+            platform::LobbyIdentity identity;
+            bool hosted = false;
+        };
+
+        std::vector<std::vector<Snapshot>> users;
         {
             std::lock_guard lock(onlineMutex);
             for (const auto &[key, sessions] : onlineUsers)
             {
                 auto &identities = users.emplace_back();
                 for (const auto &[fingerprint, session] : sessions)
-                    identities.push_back(session.identity);
+                {
+                    const auto hosted = hostedSessions.find(
+                        {key.first, key.second, fingerprint});
+                    identities.push_back(
+                        {session.identity,
+                         hosted != hostedSessions.end() && hosted->second != 0});
+                }
             }
         }
+
         std::vector<OnlinePlayer> players;
         for (const auto &identities : users)
-            for (const auto &identity : identities)
-                if (platform::valid(identity))
+            for (const auto &snapshot : identities)
+                if (snapshot.hosted || platform::valid(snapshot.identity))
                 {
                     players.push_back(
-                        {identity.titleId,
-                         identity.userId,
-                         platform::accountName(identity.userId).value_or(identity.name)});
+                        {snapshot.identity.titleId,
+                         snapshot.identity.userId,
+                         platform::accountName(snapshot.identity.userId)
+                             .value_or(snapshot.identity.name)});
                     break;
                 }
         return players;
@@ -604,39 +767,72 @@ namespace lobby
 
     bool online(uint32_t title, uint64_t user)
     {
-        std::vector<platform::LobbyIdentity> identities;
+        struct Snapshot
+        {
+            platform::LobbyIdentity identity;
+            bool hosted = false;
+        };
+
+        std::vector<Snapshot> identities;
         {
             std::lock_guard lock(onlineMutex);
             const auto entry = onlineUsers.find({title, user});
             if (entry != onlineUsers.end())
                 for (const auto &[fingerprint, session] : entry->second)
-                    identities.push_back(session.identity);
+                {
+                    const auto hosted = hostedSessions.find({title, user, fingerprint});
+                    identities.push_back(
+                        {session.identity,
+                         hosted != hostedSessions.end() && hosted->second != 0});
+                }
         }
-        // A registered but revoked idle socket is not an online recipient. Keep
-        // authentication outside the registry lock, as sessionOnline does.
-        return std::any_of(identities.begin(), identities.end(), platform::valid);
+        return std::any_of(
+            identities.begin(),
+            identities.end(),
+            [](const Snapshot &snapshot)
+            {
+                return snapshot.hosted || platform::valid(snapshot.identity);
+            });
     }
 
     std::optional<platform::LobbyIdentity> onlineIdentity(uint32_t title, uint64_t user)
     {
-        std::vector<platform::LobbyIdentity> identities;
+        struct Snapshot
+        {
+            platform::LobbyIdentity identity;
+            bool hosted = false;
+        };
+
+        std::vector<Snapshot> identities;
         {
             std::lock_guard lock(onlineMutex);
             const auto entry = onlineUsers.find({title, user});
             if (entry != onlineUsers.end())
                 for (const auto &[fingerprint, session] : entry->second)
-                    identities.push_back(session.identity);
+                {
+                    const auto hosted = hostedSessions.find({title, user, fingerprint});
+                    identities.push_back(
+                        {session.identity,
+                         hosted != hostedSessions.end() && hosted->second != 0});
+                }
         }
-        for (auto &identity : identities)
-            if (platform::refreshLease(identity))
-                return identity;
+
+        for (auto &snapshot : identities)
+        {
+            if (snapshot.hosted)
+                return snapshot.identity;
+            if (platform::refreshLease(snapshot.identity))
+                return snapshot.identity;
+        }
         return std::nullopt;
     }
 
-    std::optional<platform::LobbyIdentity> onlineIdentity(uint32_t title, uint64_t user,
-                                                        const std::string &fingerprint)
+    std::optional<platform::LobbyIdentity> onlineIdentity(uint32_t title,
+                                                          uint64_t user,
+                                                          const std::string &fingerprint)
     {
         std::optional<platform::LobbyIdentity> identity;
+        bool hosted = false;
         {
             std::lock_guard lock(onlineMutex);
             const auto userEntry = onlineUsers.find({title, user});
@@ -644,11 +840,18 @@ namespace lobby
             {
                 const auto session = userEntry->second.find(fingerprint);
                 if (session != userEntry->second.end())
+                {
                     identity = session->second.identity;
+                    const auto hostedEntry =
+                        hostedSessions.find({title, user, fingerprint});
+                    hosted =
+                        hostedEntry != hostedSessions.end() && hostedEntry->second != 0;
+                }
             }
         }
-        // Authentication can replace a ticket/key while the old socket is idle.
-        // Check its issuer lease too, without holding the connection registry lock.
+
+        if (identity && hosted)
+            return identity;
         if (identity && platform::refreshLease(*identity))
             return identity;
         return std::nullopt;

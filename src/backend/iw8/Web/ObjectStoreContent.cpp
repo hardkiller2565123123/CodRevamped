@@ -1,12 +1,11 @@
-#include "../LocalPublisherContent.h"
-
 namespace revamped::iw8
 {
     namespace
     {
         constexpr const char* kLocalPublisherStorePath =
             "/__revamped/objectstore/publisher/infinityward/store_v2_warzone.json";
-        constexpr const char* kLocalPublisherStoreJson = "{\"categories\":[]}";
+        constexpr const char* kLocalPublisherStoreJson =
+            "{\"categories\":[\"revamped_store_category.json\"]}";
 
         bool HandleWebAuthPlaintext(TlsSession& session, SOCKET socket, std::uint64_t id,
             const std::string& peer, const void* payload, std::size_t size)
@@ -29,25 +28,16 @@ namespace revamped::iw8
                             ? request.substr(0, headerEnd)
                             : request.substr(0, firstLineEnd);
 
-                        const std::size_t pathEnd = firstLine.find(' ', 4u);
-                        const std::string path = firstLine.rfind("GET ", 0) == 0 && pathEnd != std::string::npos
-                            ? firstLine.substr(4u, pathEnd - 4u) : std::string();
-                        const std::string prefix = localpublisher::PathPrefix;
-                        const bool manifest = localpublisher::LocalManifestEnabled() &&
-                            path.rfind(prefix, 0) == 0 &&
-                            localpublisher::IsManifest(path.substr(prefix.size()));
-                        if (path == kLocalPublisherStorePath || manifest)
+                        if (firstLine.rfind("GET ", 0) == 0 &&
+                            firstLine.find(kLocalPublisherStorePath) != std::string::npos)
                         {
-                            const std::string body = manifest
-                                ? localpublisher::ManifestBody() : kLocalPublisherStoreJson;
+                            const std::string body = kLocalPublisherStoreJson;
                             std::ostringstream response;
                             response << "HTTP/1.1 200 OK\r\n"
                                      << "Content-Type: application/json; charset=utf-8\r\n"
                                      << "Content-Length: " << body.size() << "\r\n"
                                      << "Cache-Control: no-store\r\n"
-                                     << "Accept-Ranges: bytes\r\n"
-                                     << "Connection: keep-alive\r\n"
-                                     << "Keep-Alive: timeout=5, max=8\r\n"
+                                     << "Connection: close\r\n"
                                      << "\r\n"
                                      << body;
                             const std::string wire = response.str();
@@ -63,16 +53,11 @@ namespace revamped::iw8
                             session.httpInput.clear();
                             session.webAuthHttpServed = true;
                             log::Print(
-                                "[DW-OBJECTSTORE-HTTP] id=%llu path=%s status=200 bytes=%llu body=local-publisher-content",
+                                "[DW-OBJECTSTORE-HTTP] id=%llu path=%s status=200 bytes=%llu body=local-store-layout",
                                 static_cast<unsigned long long>(id),
-                                path.c_str(),
+                                kLocalPublisherStorePath,
                                 static_cast<unsigned long long>(body.size()));
-                            // Do not raw-half-close the TCP socket here. bdHTTP's ObjectStore
-                            // streaming path is stricter than the other one-shot web calls and
-                            // can classify a TLS EOF without close_notify as a failed download
-                            // even after receiving the advertised body. Keep the TLS session
-                            // alive; Content-Length cleanly delimits the object and the client
-                            // may close or reuse the connection normally.
+                            shutdown(socket, SD_SEND);
                             return true;
                         }
                     }

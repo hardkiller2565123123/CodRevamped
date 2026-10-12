@@ -1,8 +1,209 @@
 #include "LsgSessionHandler.h"
+#include "LsgHostedSessions.h"
 #include "../ReplayDwServiceBridge.h"
+
+#include <memory>
+#include <unordered_map>
 
 namespace revamped::iw8
 {
+    namespace
+    {
+        struct HostedLsgOutbound
+        {
+            std::mutex mutex;
+            SOCKET socket = INVALID_SOCKET;
+            std::uint64_t clientId = 0;
+            std::uint16_t localPort = 0;
+            std::string peer;
+            std::array<std::uint8_t, 72> bdData{};
+            std::uint32_t sendCounter = 0;
+            bool dumpPayloads = false;
+            bool closed = false;
+        };
+
+        std::mutex g_hostedLsgMutex;
+        std::unordered_map<std::uint64_t, std::shared_ptr<HostedLsgOutbound>>
+            g_hostedLsgOutbound;
+
+        void HostedAppendLe32(
+            std::vector<std::uint8_t>& out,
+            std::uint32_t value)
+        {
+            out.push_back(static_cast<std::uint8_t>(value));
+            out.push_back(static_cast<std::uint8_t>(value >> 8));
+            out.push_back(static_cast<std::uint8_t>(value >> 16));
+            out.push_back(static_cast<std::uint8_t>(value >> 24));
+        }
+
+        void HostedAppendLe64(
+            std::vector<std::uint8_t>& out,
+            std::uint64_t value)
+        {
+            for (unsigned i = 0; i < 8; ++i)
+                out.push_back(
+                    static_cast<std::uint8_t>(value >> (i * 8u)));
+        }
+
+        std::shared_ptr<HostedLsgOutbound> FindHostedLsgOutbound(
+            std::uint64_t clientId)
+        {
+            std::lock_guard lock(g_hostedLsgMutex);
+            const auto found = g_hostedLsgOutbound.find(clientId);
+            return found == g_hostedLsgOutbound.end()
+                ? std::shared_ptr<HostedLsgOutbound>{}
+                : found->second;
+        }
+
+        void InstallHostedLsgOutbound(
+            std::uint64_t clientId,
+            SOCKET socket,
+            std::uint16_t localPort,
+            const std::string& peer,
+            const std::uint8_t* bdData,
+            std::uint32_t sendCounter,
+            bool dumpPayloads)
+        {
+            auto state = std::make_shared<HostedLsgOutbound>();
+            state->socket = socket;
+            state->clientId = clientId;
+            state->localPort = localPort;
+            state->peer = peer;
+            std::copy_n(bdData, state->bdData.size(), state->bdData.begin());
+            state->sendCounter = sendCounter;
+            state->dumpPayloads = dumpPayloads;
+
+            std::lock_guard lock(g_hostedLsgMutex);
+            g_hostedLsgOutbound[clientId] = std::move(state);
+        }
+
+        bool SendHostedLsgPlain(
+            std::uint64_t clientId,
+            std::span<const std::uint8_t> plain,
+            std::uint32_t* sentCounter = nullptr,
+            std::size_t* wireBytes = nullptr)
+        {
+            if (plain.empty() || (plain.size() & 15u) != 0u)
+                return false;
+
+            const auto state = FindHostedLsgOutbound(clientId);
+            if (!state)
+                return false;
+
+            std::lock_guard lock(state->mutex);
+            if (state->closed || state->socket == INVALID_SOCKET)
+                return false;
+
+            const std::array<std::uint8_t, 16> seed{
+                0x5E,0xED,0x5E,0xED,0x5E,0xED,0x5E,0xED,
+                0x5E,0xED,0x5E,0xED,0x5E,0xED,0x5E,0xED
+            };
+
+            std::vector<std::uint8_t> encrypted;
+            if (!BCryptAesCbcCrypt(
+                    true,
+                    state->bdData.data() + 56,
+                    seed.data(),
+                    plain.data(),
+                    plain.size(),
+                    encrypted))
+                return false;
+
+            std::vector<std::uint8_t> response;
+            HostedAppendLe32(
+                response,
+                30u + static_cast<std::uint32_t>(encrypted.size()));
+            response.push_back(0xAB);
+            response.push_back(0x85);
+            const std::uint32_t counter = ++state->sendCounter;
+            HostedAppendLe32(response, counter);
+            response.insert(response.end(), seed.begin(), seed.end());
+            response.insert(response.end(), encrypted.begin(), encrypted.end());
+
+            std::uint8_t responseHash[20]{};
+            if (!BCryptHmacSha1(
+                    state->bdData.data() + 20,
+                    20,
+                    response.data(),
+                    response.size(),
+                    responseHash))
+                return false;
+            response.insert(response.end(), responseHash, responseHash + 8);
+
+            if (!SendAllNonBlocking(
+                    state->socket, response.data(), response.size()))
+            {
+                state->closed = true;
+                return false;
+            }
+
+            if (state->dumpPayloads)
+                log::Payload(
+                    state->clientId,
+                    "OUT",
+                    state->localPort,
+                    state->peer,
+                    response.data(),
+                    response.size());
+
+            if (sentCounter)
+                *sentCounter = counter;
+            if (wireBytes)
+                *wireBytes = response.size();
+            return true;
+        }
+
+        bool SendHostedLsgMessage(
+            std::uint64_t clientId,
+            std::uint8_t type,
+            std::span<const std::uint8_t> payload,
+            std::uint32_t* sentCounter = nullptr,
+            std::size_t* wireBytes = nullptr)
+        {
+            if (payload.size() >
+                (std::numeric_limits<std::uint32_t>::max)())
+                return false;
+
+            std::vector<std::uint8_t> plain;
+            HostedAppendLe32(
+                plain, static_cast<std::uint32_t>(payload.size()));
+            plain.push_back(type);
+            plain.insert(plain.end(), payload.begin(), payload.end());
+            plain.resize(
+                (plain.size() + 15u) & ~static_cast<std::size_t>(15u),
+                0u);
+            return SendHostedLsgPlain(
+                clientId, plain, sentCounter, wireBytes);
+        }
+    }
+
+    namespace lsg
+    {
+        void RetireHostedLsgClient(std::uint64_t clientId)
+        {
+            demonware::UnregisterReplayDwLobbyClient(clientId);
+
+            std::shared_ptr<HostedLsgOutbound> state;
+            {
+                std::lock_guard lock(g_hostedLsgMutex);
+                const auto found = g_hostedLsgOutbound.find(clientId);
+                if (found != g_hostedLsgOutbound.end())
+                {
+                    state = found->second;
+                    g_hostedLsgOutbound.erase(found);
+                }
+            }
+            if (state)
+            {
+                std::lock_guard lock(state->mutex);
+                state->closed = true;
+                state->socket = INVALID_SOCKET;
+                SecureZeroMemory(
+                    state->bdData.data(), state->bdData.size());
+            }
+        }
+    }
+
     bool Server::HandleLsgTcp(Client& client, const std::uint8_t* data, std::size_t size)
     {
         if (!data || !size)
@@ -363,6 +564,56 @@ namespace revamped::iw8
                 if (config_.dumpPayloads)
                     log::Payload(client.id, "OUT", client.localPort, client.peer, response.data(), response.size());
 
+                InstallHostedLsgOutbound(
+                    client.id,
+                    client.socket,
+                    client.localPort,
+                    client.peer,
+                    client.lsgBdData,
+                    client.lsgSendCounter,
+                    config_.dumpPayloads);
+
+                constexpr std::uint64_t kIw8ReadyConnectionId =
+                    0x3713371337133713ull;
+                std::vector<std::uint8_t> connectionPayload;
+                HostedAppendLe64(
+                    connectionPayload, kIw8ReadyConnectionId);
+
+                std::uint32_t connectionCounter = 0;
+                std::size_t connectionWireBytes = 0;
+                if (!SendHostedLsgMessage(
+                        client.id,
+                        4u,
+                        std::span<const std::uint8_t>(
+                            connectionPayload.data(),
+                            connectionPayload.size()),
+                        &connectionCounter,
+                        &connectionWireBytes))
+                    return false;
+                client.lsgSendCounter = connectionCounter;
+
+                std::string replayRegistration;
+                const bool replayRegistered =
+                    demonware::RegisterReplayDwLobbyClient(
+                        client.id,
+                        frame,
+                        frameBytes,
+                        [clientId = client.id](
+                            std::span<const std::uint8_t> push)
+                        {
+                            return SendHostedLsgMessage(
+                                clientId, 2u, push);
+                        },
+                        &replayRegistration);
+
+                log::Print(
+                    "[LSG-REPLAYDW] id=%llu hostedIdentity=%s detail=%s connectionRecordCounter=%u connectionRecordBytes=%llu",
+                    static_cast<unsigned long long>(client.id),
+                    replayRegistered ? "registered" : "not-registered",
+                    replayRegistration.c_str(),
+                    connectionCounter,
+                    static_cast<unsigned long long>(connectionWireBytes));
+
                 client.lsgInput.erase(client.lsgInput.begin(), client.lsgInput.begin() + static_cast<std::ptrdiff_t>(frameBytes));
                 client.lsgStage = 2;
                 log::Print("[LSG-V78] SERVER_AUTH_DONE id=%llu auth3Serial=%llu sentBytes=%llu opcode=0x83 proofSource=%s next=EXPECT_SECURE_0x85",
@@ -469,37 +720,26 @@ namespace revamped::iw8
                         {
                             if (replyPlain.empty())
                                 return false;
-                            const std::array<std::uint8_t, 16> replySeed{
-                                0x5E,0xED,0x5E,0xED,0x5E,0xED,0x5E,0xED,
-                                0x5E,0xED,0x5E,0xED,0x5E,0xED,0x5E,0xED
-                            };
-                            std::vector<std::uint8_t> replyEncrypted;
-                            if (!BCryptAesCbcCrypt(true, client.lsgBdData + 56, replySeed.data(),
-                                    replyPlain.data(), replyPlain.size(), replyEncrypted))
+
+                            std::uint32_t replyCounter = 0;
+                            std::size_t responseBytes = 0;
+                            if (!SendHostedLsgPlain(
+                                    client.id,
+                                    std::span<const std::uint8_t>(
+                                        replyPlain.data(), replyPlain.size()),
+                                    &replyCounter,
+                                    &responseBytes))
                                 return false;
 
-                            std::vector<std::uint8_t> response;
-                            AppendLe32(response, 30u + static_cast<std::uint32_t>(replyEncrypted.size()));
-                            response.push_back(0xAB);
-                            response.push_back(0x85);
-                            AppendLe32(response, ++client.lsgSendCounter);
-                            response.insert(response.end(), replySeed.begin(), replySeed.end());
-                            response.insert(response.end(), replyEncrypted.begin(), replyEncrypted.end());
-
-                            std::uint8_t responseHash[20]{};
-                            if (!BCryptHmacSha1(client.lsgBdData + 20, 20, response.data(), response.size(), responseHash))
-                                return false;
-                            response.insert(response.end(), responseHash, responseHash + 8);
-                            if (!SendAllNonBlocking(client.socket, response.data(), response.size()))
-                                return false;
-                            if (config_.dumpPayloads)
-                                log::Payload(client.id, "OUT", client.localPort, client.peer, response.data(), response.size());
+                            client.lsgSendCounter = replyCounter;
                             log::Print("[LSG-ROUTE] id=%llu service=%u task=%u source=%s operation=%s replyCounter=%u bytes=%llu transaction=%u",
                                 static_cast<unsigned long long>(client.id),
                                 static_cast<unsigned>(taskRequest.serviceId),
                                 static_cast<unsigned>(taskRequest.taskId),
                                 source ? source : "unknown", operation ? operation : "",
-                                client.lsgSendCounter, static_cast<unsigned long long>(response.size()), counter);
+                                replyCounter,
+                                static_cast<unsigned long long>(responseBytes),
+                                counter);
                             return true;
                         };
 
@@ -507,12 +747,29 @@ namespace revamped::iw8
                         {
                             std::vector<std::uint8_t> replayReply;
                             std::string operation;
-                            const std::uint64_t transactionId = static_cast<std::uint64_t>(counter);
-                            if (!demonware::TryBuildReplayDwTaskReply(taskRequest.serviceId, taskRequest.taskId,
-                                    requestPayload, taskRequest.payloadBytes, transactionId, replayReply, &operation))
+                            const std::uint64_t transactionId =
+                                static_cast<std::uint64_t>(counter);
+                            if (!demonware::TryBuildReplayDwTaskReply(
+                                    client.id,
+                                    taskRequest.serviceId,
+                                    taskRequest.taskId,
+                                    requestPayload,
+                                    taskRequest.payloadBytes,
+                                    transactionId,
+                                    replayReply,
+                                    &operation))
                                 return false;
+
                             client.lsgTransactionId = transactionId;
-                            return sendTaskReplyPlain(replayReply, "ReplayDW", operation.c_str());
+                            if (!sendTaskReplyPlain(
+                                    replayReply,
+                                    "ReplayDW",
+                                    operation.c_str()))
+                                return false;
+
+                            demonware::PublishReplayDwPostReply(
+                                client.id, transactionId);
+                            return true;
                         };
 
                         if (!taskRequest.valid)
@@ -580,55 +837,19 @@ namespace revamped::iw8
                                 }
                                 else
                                 {
-                                    const std::array<std::uint8_t, 16> replySeed{
-                                    0x5E,0xED,0x5E,0xED,0x5E,0xED,0x5E,0xED,
-                                    0x5E,0xED,0x5E,0xED,0x5E,0xED,0x5E,0xED
-                                };
-                                std::vector<std::uint8_t> replyEncrypted;
-                                if (BCryptAesCbcCrypt(true, client.lsgBdData + 56, replySeed.data(),
-                                        replyPlain.data(), replyPlain.size(), replyEncrypted))
-                                {
-                                    std::vector<std::uint8_t> response;
-                                    AppendLe32(response, 30u + static_cast<std::uint32_t>(replyEncrypted.size()));
-                                    response.push_back(0xAB);
-                                    response.push_back(0x85);
-                                    AppendLe32(response, ++client.lsgSendCounter);
-                                    response.insert(response.end(), replySeed.begin(), replySeed.end());
-                                    response.insert(response.end(), replyEncrypted.begin(), replyEncrypted.end());
+                                    if (!sendTaskReplyPlain(
+                                            replyPlain,
+                                            "Semantic",
+                                            route->taskName ? route->taskName : ""))
+                                        return false;
 
-                                    std::uint8_t responseHash[20]{};
-                                    if (BCryptHmacSha1(client.lsgBdData + 20, 20, response.data(), response.size(), responseHash))
-                                    {
-                                        response.insert(response.end(), responseHash, responseHash + 8);
-                                        if (!SendAllNonBlocking(client.socket, response.data(), response.size()))
-                                            return false;
-                                        if (config_.dumpPayloads)
-                                            log::Payload(client.id, "OUT", client.localPort, client.peer, response.data(), response.size());
-                                        log::Print("[LSG-ROUTE] id=%llu service=%u(%s) task=%u(%s) semantic reply sent counter=%u bytes=%llu transaction=%llu",
-                                            static_cast<unsigned long long>(client.id),
-                                            static_cast<unsigned>(taskRequest.serviceId), route->serviceName ? route->serviceName : "?",
-                                            static_cast<unsigned>(taskRequest.taskId), route->taskName ? route->taskName : "?",
-                                            client.lsgSendCounter, static_cast<unsigned long long>(response.size()),
-                                            static_cast<unsigned long long>(transactionId));
-                                        AppendLsgPipelineV63("SEMANTIC_TASK_REPLY_OK id=%llu service=%u task=%u counter=%u bytes=%llu transaction=%llu next=EXPECT_LOGIN_COMPLETE_OR_READY",
-                                            static_cast<unsigned long long>(client.id),
-                                            static_cast<unsigned>(taskRequest.serviceId), static_cast<unsigned>(taskRequest.taskId),
-                                            client.lsgSendCounter, static_cast<unsigned long long>(response.size()),
-                                            static_cast<unsigned long long>(transactionId));
-                                    }
-                                    else
-                                    {
-                                        log::Print("[LSG] id=%llu semantic task reply HMAC generation failed service=%u task=%u",
-                                            static_cast<unsigned long long>(client.id),
-                                            static_cast<unsigned>(taskRequest.serviceId), static_cast<unsigned>(taskRequest.taskId));
-                                    }
-                                }
-                                else
-                                {
-                                    log::Print("[LSG] id=%llu semantic task reply AES encryption failed service=%u task=%u",
+                                    AppendLsgPipelineV63(
+                                        "SEMANTIC_TASK_REPLY_OK id=%llu service=%u task=%u counter=%u transaction=%llu next=EXPECT_LOGIN_COMPLETE_OR_READY",
                                         static_cast<unsigned long long>(client.id),
-                                        static_cast<unsigned>(taskRequest.serviceId), static_cast<unsigned>(taskRequest.taskId));
-                                }
+                                        static_cast<unsigned>(taskRequest.serviceId),
+                                        static_cast<unsigned>(taskRequest.taskId),
+                                        client.lsgSendCounter,
+                                        static_cast<unsigned long long>(transactionId));
                                 }
                             }
                         }

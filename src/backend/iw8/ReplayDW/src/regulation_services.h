@@ -1,9 +1,4 @@
 #pragma once
-#include "rest_services.h"
-
-namespace services
-{
-    std::optional<Reply> regulations(const std::filesystem::path &directory,
-                                     const platform::LobbyIdentity &identity,
-                                     const RESTRequest &request);
-}
+// Compatibility include for the organized ReplayDW source tree.
+// Keep the declaration in a single physical header to avoid C2011/C2084.
+#include "Services/Regulation/regulation_services.h"

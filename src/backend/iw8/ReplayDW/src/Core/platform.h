@@ -25,6 +25,10 @@ namespace platform
                           const std::string &profile,
                           const std::string &name);
     std::optional<std::string> accountName(uint64_t user);
+    // CodRevamped owns authentication when ReplayDW is used behind the native
+    // IW8 LSG bridge. Remember those live XUID/name pairs so social, channels,
+    // matchmaking and friend lookup can resolve other connected players.
+    void rememberHostedAccount(uint64_t user, const std::string &name);
 
     struct Account
     {

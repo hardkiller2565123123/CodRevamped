@@ -128,13 +128,21 @@ namespace
     constexpr std::uint32_t kMW128ImageSize = 0x1D02BC00u;
     constexpr std::uint32_t kMW128EntryPoint = 0x048D8F78u;
 
+    // Exact MW/Warzone 1.30 PE fingerprint from local startup logs.
+    constexpr std::uint32_t kMW130Timestamp = 0x5FD32EE5u;
+    constexpr std::uint32_t kMW130ImageSize = 0x1FB54400u;
+    constexpr std::uint32_t kMW130EntryPoint = 0x05475338u;
+    // Two observed early execute-null crashes returned to this exact RVA.
+    constexpr std::uintptr_t kMW130ObservedNullCallReturnRva = 0x0045E398u;
+
     enum class StartupCompatBuild : LONG
     {
         None = 0,
         MW116 = 116,
         MW120 = 120,
         MW123 = 123,
-        MW128 = 128
+        MW128 = 128,
+        MW130 = 130
     };
 
     constexpr DWORD kCompatMajor = 10;
@@ -1871,7 +1879,12 @@ namespace
         const LONG seen = InterlockedIncrement(&g_retailCrashSeen);
         // Keep first-chance diagnostics passive and bounded.  We deliberately
         // never consume or modify the exception/context.
-        if (seen > 64 || InterlockedCompareExchange(&g_retailCrashGuard, 1, 0) != 0)
+        // The 1.30 diagnostic path shares this passive formatter rather than
+        // installing a second VEH. Avoid flooding the file during Arxan startup.
+        const LONG limit = g_liveTimestamp == kMW130Timestamp &&
+            g_liveImageSize == kMW130ImageSize &&
+            g_liveEntryPoint == kMW130EntryPoint ? 8 : 64;
+        if (seen > limit || InterlockedCompareExchange(&g_retailCrashGuard, 1, 0) != 0)
             return EXCEPTION_CONTINUE_SEARCH;
 
         const DWORD code = info->ExceptionRecord->ExceptionCode;
@@ -2948,6 +2961,8 @@ namespace
             return StartupCompatBuild::MW123;
         if (timestamp == kMW128Timestamp && imageSize == kMW128ImageSize && entryPoint == kMW128EntryPoint)
             return StartupCompatBuild::MW128;
+        if (timestamp == kMW130Timestamp && imageSize == kMW130ImageSize && entryPoint == kMW130EntryPoint)
+            return StartupCompatBuild::MW130;
         return StartupCompatBuild::None;
     }
 
@@ -2964,6 +2979,7 @@ namespace
         case StartupCompatBuild::MW120: return "1.20";
         case StartupCompatBuild::MW123: return "1.23";
         case StartupCompatBuild::MW128: return "1.28";
+        case StartupCompatBuild::MW130: return "1.30";
         default: return "none";
         }
     }
@@ -3020,6 +3036,31 @@ namespace
         return CurrentStartupCompatBuild() == StartupCompatBuild::MW123 && !MW123DeepTraceRequested();
     }
 
+    bool MW130DeepTraceRequested() noexcept
+    {
+        char value[8]{};
+        const DWORD count = GetEnvironmentVariableA(
+            "CODREVAMPED_MW130_TRACE", value, static_cast<DWORD>(sizeof(value)));
+        return count != 0 && value[0] == '1';
+    }
+
+    bool MW130ProductionMode() noexcept
+    {
+        return CurrentStartupCompatBuild() == StartupCompatBuild::MW130 && !MW130DeepTraceRequested();
+    }
+
+    // 1.30 showed a second access violation after the known null-call recovery.
+    // Until its EXE bootstrap is understood, don't impose 1.23's Win32, registry,
+    // DPAPI and command-line shims on this unrelated build automatically.
+    // This switch is diagnostic only; other versions keep their old behavior.
+    bool MW130LegacyStartupShimsRequested() noexcept
+    {
+        char value[8]{};
+        const DWORD count = GetEnvironmentVariableA(
+            "CODREVAMPED_MW130_LEGACY_SHIMS", value, static_cast<DWORD>(sizeof(value)));
+        return count != 0 && value[0] == '1';
+    }
+
     bool UseDnsOnlyNetworkHooks() noexcept
     {
         const auto build = CurrentStartupCompatBuild();
@@ -3029,7 +3070,8 @@ namespace
         // Full transport tracing remains opt-in for research.
         return (build == StartupCompatBuild::None ||
                 build == StartupCompatBuild::MW116 ||
-                build == StartupCompatBuild::MW123) &&
+                build == StartupCompatBuild::MW123 ||
+                build == StartupCompatBuild::MW130) &&
             !FullNetworkTraceRequested();
     }
 
@@ -3161,7 +3203,8 @@ namespace
     {
         const StartupCompatBuild build = CurrentStartupCompatBuild();
         const bool versionCompatBuild =
-            build == StartupCompatBuild::MW116 || build == StartupCompatBuild::MW123;
+            build == StartupCompatBuild::MW116 || build == StartupCompatBuild::MW123 ||
+            build == StartupCompatBuild::MW130;
         if (versionCompatBuild && module && procName && IsProcNameString(procName))
         {
             HMODULE kernel32 = GetModuleHandleW(L"KERNEL32.dll");
@@ -3326,6 +3369,8 @@ namespace
             wcscat_s(exePath, exePathCount, L"mw2019_120_startup.log");
         else if (build == StartupCompatBuild::MW128)
             wcscat_s(exePath, exePathCount, L"mw2019_128_startup.log");
+        else if (build == StartupCompatBuild::MW130)
+            wcscat_s(exePath, exePathCount, L"mw2019_130_startup.log");
         else
             wcscat_s(exePath, exePathCount, L"mw2019_123_startup.log");
 
@@ -3720,13 +3765,40 @@ namespace
             return false;
         }
 
+        // For 1.30 do not bypass arbitrary null function-pointer calls.
+        // Only the exact callsite observed in two startup crashes may recover.
+        const bool mw130 = CurrentStartupCompatBuild() == StartupCompatBuild::MW130;
+        if (mw130 && returnRva != kMW130ObservedNullCallReturnRva)
+            return false;
         const LONG recovery = InterlockedIncrement(&g_compat123NullExecRecoveries);
-        if (recovery > 8)
+        if (recovery > (mw130 ? 2 : 8))
         {
             Write123StartupLog("[NULLCALL-%s] execute-null NOT recovered recovery=%ld returnRva=0x%llX reason=recovery-limit\r\n",
                 StartupCompatBuildName(CurrentStartupCompatBuild()),
                 static_cast<long>(recovery), static_cast<unsigned long long>(returnRva));
             return false;
+        }
+
+        if (mw130 && recovery == 1)
+        {
+            // Read-only diagnostic: the 16 bytes before the return address
+            // identify whether the null target came from an IAT slot, register
+            // or an encoded bootstrap thunk. Never guess and patch that target.
+            char hex[16 * 3 + 1]{};
+            bool readable = false;
+            __try
+            {
+                const auto* start = reinterpret_cast<const unsigned char*>(returnAddress - 16);
+                for (unsigned i = 0; i < 16; ++i)
+                    _snprintf_s(hex + i * 3, sizeof(hex) - i * 3, _TRUNCATE, "%02X ", start[i]);
+                readable = true;
+            }
+            __except (EXCEPTION_EXECUTE_HANDLER)
+            {
+                readable = false;
+            }
+            Write123StartupLog("[MW130-CALLSITE] returnRva=0x%llX preceding16=%s\r\n",
+                static_cast<unsigned long long>(returnRva), readable ? hex : "unreadable");
         }
 
         Write123StartupLog("[NULLCALL-%s] recovery=%ld execute-null rsp=0x%llX stackReturn=%p returnRva=0x%llX action=simulate-ret-return-zero\r\n",
@@ -3749,11 +3821,18 @@ namespace
         if (TryRecover123NullExecute(info))
             return EXCEPTION_CONTINUE_EXECUTION;
 
-        // 1.23 production mode keeps this VEH installed only because the
-        // preserved executable makes one known execute-null bootstrap call
-        // that must be recovered.  Do not perform file/module/CRT work from
-        // unrelated first-chance exceptions; that instrumentation is research
-        // only and can perturb the old runtime while it is already unwinding.
+        // The previous 1.30 build recovered execute-null at 0x45E398, then
+        // another exception reached an external "arxan bypass" dialog. Log
+        // that second fault with registers and stack, but NEVER swallow it or
+        // modify context. This is the already-existing passive crash formatter.
+        if (MW130ProductionMode())
+        {
+            if (IsCrashLikeException(info->ExceptionRecord->ExceptionCode))
+                TraceRetailCrashVectored(info);
+            return EXCEPTION_CONTINUE_SEARCH;
+        }
+
+        // Preserve 1.23's existing low-noise production exception handling.
         if (MW123ProductionMode())
             return EXCEPTION_CONTINUE_SEARCH;
 
@@ -4089,12 +4168,14 @@ namespace
 
         const bool mw116Production = build == StartupCompatBuild::MW116 && !MW116DeepTraceRequested();
         const bool mw123Production = build == StartupCompatBuild::MW123 && !MW123DeepTraceRequested();
+        const bool mw130Production = build == StartupCompatBuild::MW130 && !MW130DeepTraceRequested();
+        const bool minimalNullRecovery = mw123Production || mw130Production;
         if (!mw116Production)
         {
             g_compat123Veh = AddVectoredExceptionHandler(1, &Trace123VectoredException);
-            if (mw123Production)
-                Write123StartupLog("[MW123-PROD] minimal VEH=%s purpose=null-execute-recovery-only unrelatedExceptionLogging=off\r\n",
-                    g_compat123Veh ? "installed" : "FAILED");
+            if (minimalNullRecovery)
+                Write123StartupLog("[EARLY-PROD-%s] minimal VEH=%s purpose=null-execute-recovery-only unrelatedExceptionLogging=off\r\n",
+                    StartupCompatBuildName(build), g_compat123Veh ? "installed" : "FAILED");
             else
                 Write123StartupLog("[BOOT] vectored exception trace=%s\r\n", g_compat123Veh ? "installed" : "FAILED");
         }
@@ -4104,21 +4185,35 @@ namespace
             Write123StartupLog("[MW116-PROD] intrusive startup tracing disabled: VEH=off threadSuspend=off exitIATHooks=off console=off\r\n");
         }
 
+        if (build == StartupCompatBuild::MW130)
+        {
+            WriteRetailCrashLog("\r\n[MW130-CRASH-TRACE] session-start fingerprint=%08X/%08X/%08X same-VEH=yes passive-followup=yes\r\n",
+                timestamp, imageSize, entryPoint);
+            if (!MW130LegacyStartupShimsRequested())
+            {
+                Write123StartupLog("[MW130-ISOLATION] pre-entry OS/launcher/registry/DPAPI/dialog IAT shims disabled; original game bootstrap untouched; observed nullcall recovery and DNS routing retained\r\n");
+                return;
+            }
+            Write123StartupLog("[MW130-ISOLATION] opt-in legacy 1.23-style startup shims enabled; crash comparison mode\r\n");
+        }
+
         unsigned versionPatched = 0;
         versionPatched += PatchImport(mainModule, "KERNEL32.dll", "GetVersion", reinterpret_cast<void*>(&CompatGetVersion)) ? 1u : 0u;
         versionPatched += PatchImport(mainModule, "KERNEL32.dll", "GetVersionExA", reinterpret_cast<void*>(&CompatGetVersionExA)) ? 1u : 0u;
         versionPatched += PatchImport(mainModule, "KERNEL32.dll", "VerifyVersionInfoA", reinterpret_cast<void*>(&CompatVerifyVersionInfoA)) ? 1u : 0u;
         versionPatched += PatchImport(mainModule, "KERNEL32.dll", "VerifyVersionInfoW", reinterpret_cast<void*>(&CompatVerifyVersionInfoW)) ? 1u : 0u;
-        if (build == StartupCompatBuild::MW116 || build == StartupCompatBuild::MW123)
+        if (build == StartupCompatBuild::MW116 || build == StartupCompatBuild::MW123 ||
+            build == StartupCompatBuild::MW130)
         {
             PatchImport(mainModule, "KERNEL32.dll", "GetVersionExW", reinterpret_cast<void*>(&CompatGetVersionExW));
             PatchImport(mainModule, "ntdll.dll", "RtlGetVersion", reinterpret_cast<void*>(&CompatRtlGetVersion));
             const bool dynamicPatched = g_realGetProcAddress &&
                 PatchImport(mainModule, "KERNEL32.dll", "GetProcAddress", reinterpret_cast<void*>(&Compat116GetProcAddress));
             InterlockedExchange(&g_compat116DynamicVersionPatched, dynamicPatched ? 1 : 0);
-            if (build == StartupCompatBuild::MW123)
+            if (build == StartupCompatBuild::MW123 || build == StartupCompatBuild::MW130)
             {
-                Write123StartupLog("[MW123-COMPAT] extended Windows-version compatibility enabled: GetVersionExW + RtlGetVersion + dynamic GetProcAddress\r\n");
+                Write123StartupLog("[EARLY-COMPAT-%s] extended Windows-version compatibility enabled: GetVersionExW + RtlGetVersion + dynamic GetProcAddress\r\n",
+                    StartupCompatBuildName(build));
             }
         }
         InterlockedExchange(&g_compat123Patched, static_cast<LONG>(versionPatched));
@@ -4153,18 +4248,18 @@ namespace
             Write123StartupLog("[MW116-STABILITY] windowsTarget=10.0.%lu safeMode=stock-passthrough networkHooks=dns-only fullNetTrace=%s\r\n",
                 static_cast<unsigned long>(CompatWindowsBuild()), FullNetworkTraceRequested() ? "yes" : "no");
         }
-        else if (build == StartupCompatBuild::MW123)
+        else if (build == StartupCompatBuild::MW123 || build == StartupCompatBuild::MW130)
         {
-            Write123StartupLog("[MW123-STABILITY] mode=%s windowsTarget=10.0.%lu networkHooks=%s exitIATHooks=%s exceptionLogging=%s\r\n",
-                mw123Production ? "production" : "diagnostic",
+            Write123StartupLog("[EARLY-STABILITY-%s] mode=%s windowsTarget=10.0.%lu networkHooks=%s exitIATHooks=%s exceptionLogging=%s\r\n",
+                StartupCompatBuildName(build), minimalNullRecovery ? "production" : "diagnostic",
                 static_cast<unsigned long>(CompatWindowsBuild()),
                 UseDnsOnlyNetworkHooks() ? "dns-only" : "full-diagnostic",
-                mw123Production ? "off" : "on",
-                mw123Production ? "null-recovery-only" : "full");
+                minimalNullRecovery ? "off" : "on",
+                minimalNullRecovery ? "null-recovery-only" : "full");
         }
 
         unsigned exitPatched = 0;
-        if (!mw116Production && !mw123Production)
+        if (!mw116Production && !minimalNullRecovery)
         {
             exitPatched += PatchImport(mainModule, "KERNEL32.dll", "ExitProcess", reinterpret_cast<void*>(&Trace123ExitProcess)) ? 1u : 0u;
             exitPatched += PatchImport(mainModule, "KERNEL32.dll", "TerminateProcess", reinterpret_cast<void*>(&Trace123TerminateProcess)) ? 1u : 0u;
@@ -4192,10 +4287,11 @@ namespace
             StartupCompatBuildName(build), versionPatched, versionExpected,
             InterlockedCompareExchange(&g_compat116DynamicVersionPatched, 0, 0), launcherPatched, safeModePatched, exitPatched,
             mw116Production ? "off(production)" :
-            (mw123Production ? "armed(null-call-only,production)" : "armed(max=8,main-image-return-only)"));
-        if (build == StartupCompatBuild::MW123)
+            (minimalNullRecovery ? "armed(null-call-only,production)" : "armed(max=8,main-image-return-only)"));
+        if (build == StartupCompatBuild::MW123 || build == StartupCompatBuild::MW130)
         {
-            Write123StartupLog("[MW123-CRT] debugUcrtLoaded=%s releaseUcrtLoaded=%s expected=debug-no/release-yes\r\n",
+            Write123StartupLog("[EARLY-CRT-%s] debugUcrtLoaded=%s releaseUcrtLoaded=%s expected=debug-no/release-yes\r\n",
+                StartupCompatBuildName(build),
                 GetModuleHandleW(L"ucrtbased.dll") ? "YES" : "no",
                 GetModuleHandleW(L"ucrtbase.dll") ? "yes" : "NO");
         }
@@ -5893,6 +5989,9 @@ namespace
             ConsolePrint("[MW116-PROD] minimal startup mode active console=off VEH=off startupThreadSampler=off exitIATHooks=off externalExitMonitor=on\r\n");
         if (MW123ProductionMode())
             ConsolePrint("[MW123-PROD] minimal startup mode active nullRecovery=on exceptionLogging=off exitIATHooks=off networkHooks=dns-only\r\n");
+        if (MW130ProductionMode())
+            ConsolePrint("[MW130-PROD] nullRecovery=restricted-to-0x45E398 followupCrashTrace=passive-bounded preEntryShims=%s exitIATHooks=off networkHooks=dns-only\r\n",
+                MW130LegacyStartupShimsRequested() ? "opt-in-legacy" : "off");
         if (InterlockedCompareExchange(&g_liveFingerprintValid, 0, 0) != 0)
         {
             ConsolePrint("[STARTUP] live exe fingerprint timestamp=0x%08X imageSize=0x%08X entryPoint=0x%08X startupCompat=%s\r\n",
@@ -5913,9 +6012,10 @@ namespace
         // keep the proxy/DNS/backend path only.  The delayed frontend scanner,
         // runtime memory dump and live storage hook tracer are research tools
         // and are intentionally not armed on normal Retail startup.
-        if (exactSteamRetail)
+        if (exactSteamRetail || CurrentStartupCompatBuild() == StartupCompatBuild::MW130)
         {
-            ConsolePrint("[RETAIL-STABLE] research scanners/probes disabled frontendProbe=off runtimeDump=off onlineLiveHooks=off\r\n");
+            ConsolePrint("[%s] research scanners/probes disabled frontendProbe=off runtimeDump=off onlineLiveHooks=off\r\n",
+                exactSteamRetail ? "RETAIL-STABLE" : "MW130-STABLE");
         }
         else
         {
@@ -5928,13 +6028,15 @@ namespace
             const StartupCompatBuild build = CurrentStartupCompatBuild();
             const char* startupLog = build == StartupCompatBuild::MW116 ? "mw2019_116_startup.log" :
                 (build == StartupCompatBuild::MW120 ? "mw2019_120_startup.log" :
-                (build == StartupCompatBuild::MW128 ? "mw2019_128_startup.log" : "mw2019_123_startup.log"));
+                (build == StartupCompatBuild::MW128 ? "mw2019_128_startup.log" :
+                (build == StartupCompatBuild::MW130 ? "mw2019_130_startup.log" : "mw2019_123_startup.log")));
             ConsolePrint("[COMPAT-STARTUP] supported early build=%s fingerprint timestamp=0x%08X imageSize=0x%08X entryPoint=0x%08X\r\n",
                 StartupCompatBuildName(build), g_liveTimestamp, g_liveImageSize, g_liveEntryPoint);
             const unsigned versionExpected = 4u;
             ConsolePrint("[COMPAT-STARTUP] Windows-version direct IAT hooks installed=%ld/%u target=10.0.%lu\r\n",
                 InterlockedCompareExchange(&g_compat123Patched, 0, 0), versionExpected, static_cast<unsigned long>(CompatWindowsBuild()));
-            if (build == StartupCompatBuild::MW116 || build == StartupCompatBuild::MW123)
+            if (build == StartupCompatBuild::MW116 || build == StartupCompatBuild::MW123 ||
+                build == StartupCompatBuild::MW130)
                 ConsolePrint("[COMPAT-VERSION] build=%s dynamic GetProcAddress resolver installed=%ld/1 covers=version%s\r\n",
                     StartupCompatBuildName(build),
                     InterlockedCompareExchange(&g_compat116DynamicVersionPatched, 0, 0),
@@ -5957,6 +6059,8 @@ namespace
                 ConsolePrint("[COMPAT-STARTUP] intrusive exit/exception tracing disabled for 1.16 production mode; external exit-code monitor enabled\r\n");
             else if (build == StartupCompatBuild::MW123 && !MW123DeepTraceRequested())
                 ConsolePrint("[COMPAT-STARTUP] 1.23 production tracing: null-execute recovery only; exit IAT hooks and unrelated VEH logging disabled\r\n");
+            else if (build == StartupCompatBuild::MW130 && !MW130DeepTraceRequested())
+                ConsolePrint("[COMPAT-STARTUP] 1.30: known-site null recovery and bounded passive follow-up crash tracing; no exit hooks; details in mw2019_retail_crash.log\r\n");
             else
                 ConsolePrint("[COMPAT-STARTUP] early exit/exception tracing installed=%ld/7 + VEH; details go to %s\r\n",
                     InterlockedCompareExchange(&g_compat123ExitTracePatched, 0, 0), startupLog);
@@ -6024,7 +6128,12 @@ namespace
                 InstallLocalManifestTrust();
                 InstallReplay120NativeCompatibility();
             }
-            QueueLsgKey3DiskScanV79();
+            // 1.30 currently fails before the first backend request. Do not
+            // start an unrelated full-EXE disk scan during its crash isolation.
+            if (CurrentStartupCompatBuild() == StartupCompatBuild::MW130)
+                ConsolePrint("[MW130-STABLE] LSG key candidate scan deferred until startup is stable\r\n");
+            else
+                QueueLsgKey3DiskScanV79();
         }
         else if (g_liveTimestamp == 0x69DD404Eu && g_liveImageSize == 0x21679200u &&
             g_liveEntryPoint == 0x06E4931Cu)

@@ -1,13 +1,4 @@
 #pragma once
-#include "platform.h"
-#include "wire.h"
-#include <filesystem>
-
-namespace relay_provider
-{
-    void start(const std::filesystem::path &directory);
-    void stop();
-    bool enabled();
-    wire::Bytes serverToken(const platform::LobbyIdentity &id);
-    std::string status();
-} // namespace relay_provider
+// Compatibility include for the organized ReplayDW source tree.
+// Keep the declaration in a single physical header to avoid C2011/C2084.
+#include "Services/Relay/relay_provider.h"

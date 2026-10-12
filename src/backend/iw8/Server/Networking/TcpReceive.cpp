@@ -44,6 +44,17 @@ namespace
         const char* name;
     };
 
+    // Minimal valid Blizzard PFTY file. Real cache samples are a sequence of
+    // NUL-terminated scope/regex pairs (for example "s2maps\\0...\\0").
+    // "(?!)" is a valid regex that never matches, so profanity filtering stays
+    // functionally empty while the stock parser receives the native container
+    // shape instead of an arbitrary placeholder.
+    constexpr unsigned char kLocalPfty[] = {
+        's','2','m','a','p','s',0x00,'(','?','!',')',0x00
+    };
+    constexpr const char* kLocalPftySha256 =
+        "797e3cc063cf3de1a143612e3fe74e751d30bdff06ff9d6d9b65dad64c14f4f9";
+
     constexpr unsigned char kKeylistLf[] = {'\n'};
     constexpr unsigned char kKeylistCrlf[] = {'\r', '\n'};
     constexpr unsigned char kKeylistAsciiZero[] = {'0'};
@@ -319,6 +330,56 @@ namespace revamped::iw8
                     static_cast<unsigned long long>(client.id), result);
         }
 
+        // Blizzard content-depot traffic is plain HTTP on :1119, not BGS TLS.
+        // The 1.20 client may either honor our local proto_url or synthesize the
+        // legacy US.depot.battle.net:1119/<hash>.<usage> URL. Handle both before
+        // feeding :1119 bytes into SChannel.
+        if (client.localPort == 1119 &&
+            result >= 4 &&
+            (std::equal(buffer, buffer + 4, reinterpret_cast<const unsigned char*>("GET ")) ||
+             (result >= 5 && std::equal(buffer, buffer + 5, reinterpret_cast<const unsigned char*>("HEAD ")))))
+        {
+            const std::string request(reinterpret_cast<const char*>(buffer),
+                                      static_cast<std::size_t>(result));
+            const bool isPfty =
+                request.find(".pfty ") != std::string::npos ||
+                request.find("/__revamped/bnet-resource/") != std::string::npos;
+
+            if (isPfty)
+            {
+                const bool isHead = request.rfind("HEAD ", 0) == 0;
+                char header[512]{};
+                const int headerLength = _snprintf_s(
+                    header, sizeof(header), _TRUNCATE,
+                    "HTTP/1.1 200 OK\r\n"
+                    "Content-Type: application/octet-stream\r\n"
+                    "Content-Length: %llu\r\n"
+                    "Cache-Control: no-store\r\n"
+                    "Connection: close\r\n"
+                    "\r\n",
+                    static_cast<unsigned long long>(sizeof(kLocalPfty)));
+
+                const bool headerOk = headerLength > 0 &&
+                    SendAllNonBlocking(client.socket, header,
+                                       static_cast<std::size_t>(headerLength));
+                const bool bodyOk = isHead || (headerOk &&
+                    SendAllNonBlocking(client.socket, kLocalPfty,
+                                       sizeof(kLocalPfty)));
+
+                log::Print(
+                    "[BNET-DEPOT] id=%llu port=1119 status=200 bytes=%llu sha256=%s method=%s source=legacy-depot-fallback result=%s",
+                    static_cast<unsigned long long>(client.id),
+                    static_cast<unsigned long long>(sizeof(kLocalPfty)),
+                    kLocalPftySha256,
+                    isHead ? "HEAD" : "GET",
+                    (headerOk && bodyOk) ? "sent" : "send-failed");
+
+                CloseClient(index, (headerOk && bodyOk) ?
+                    "bnet-depot-pfty-200" : "bnet-depot-pfty-send-failed");
+                return;
+            }
+        }
+
         if (client.localPort == 1119 || client.localPort == 443)
         {
             auto* session = static_cast<TlsSession*>(client.tlsState);
@@ -395,6 +456,52 @@ namespace revamped::iw8
                     static_cast<unsigned long long>(g_tlsCrlDer.size()),
                     bodyOk ? "ok" : "send-failed");
                 CloseClient(index, bodyOk ? "crl-200" : "crl-send-failed");
+                return;
+            }
+
+            if (request.rfind("GET /__revamped/bnet-resource/", 0) == 0 ||
+                request.rfind("HEAD /__revamped/bnet-resource/", 0) == 0)
+            {
+                const bool isHead = request.rfind("HEAD ", 0) == 0;
+                const bool isPfty = request.find(".pfty ") != std::string::npos;
+                if (!isPfty)
+                {
+                    static const char notFound[] =
+                        "HTTP/1.1 404 Not Found\r\n"
+                        "Content-Length: 0\r\n"
+                        "Connection: close\r\n\r\n";
+                    SendAllNonBlocking(client.socket, notFound, sizeof(notFound) - 1);
+                    CloseClient(index, "bnet-resource-non-pfty-404");
+                    return;
+                }
+
+                char header[512]{};
+                const int headerLength = _snprintf_s(
+                    header, sizeof(header), _TRUNCATE,
+                    "HTTP/1.1 200 OK\r\n"
+                    "Content-Type: application/octet-stream\r\n"
+                    "Content-Length: %llu\r\n"
+                    "Cache-Control: no-store\r\n"
+                    "Connection: close\r\n"
+                    "\r\n",
+                    static_cast<unsigned long long>(sizeof(kLocalPfty)));
+                const bool headerOk = headerLength > 0 &&
+                    SendAllNonBlocking(client.socket, header,
+                                       static_cast<std::size_t>(headerLength));
+                const bool bodyOk = isHead || (headerOk &&
+                    SendAllNonBlocking(client.socket, kLocalPfty,
+                                       sizeof(kLocalPfty)));
+
+                log::Print(
+                    "[BNET-DEPOT] id=%llu port=80 status=200 bytes=%llu sha256=%s method=%s source=ResourcesService-proto-url result=%s",
+                    static_cast<unsigned long long>(client.id),
+                    static_cast<unsigned long long>(sizeof(kLocalPfty)),
+                    kLocalPftySha256,
+                    isHead ? "HEAD" : "GET",
+                    (headerOk && bodyOk) ? "sent" : "send-failed");
+
+                CloseClient(index, (headerOk && bodyOk) ?
+                    "bnet-resource-pfty-200" : "bnet-resource-pfty-send-failed");
                 return;
             }
 

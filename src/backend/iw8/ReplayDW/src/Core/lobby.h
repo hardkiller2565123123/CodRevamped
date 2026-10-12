@@ -22,6 +22,16 @@ namespace lobby
     };
 
     void serve(const IO &io);
+
+    // Bridge a CodRevamped-authenticated native LSG connection into ReplayDW's
+    // online/push registry without pretending ReplayDW issued the login lease.
+    void registerHostedConnection(
+        uint64_t connection,
+        const platform::LobbyIdentity &identity,
+        std::function<bool(std::span<const uint8_t>)> writer);
+    void unregisterHostedConnection(uint64_t connection);
+    bool publishHostedPush(uint64_t connection, std::span<const uint8_t> payload);
+
     void publishOperatorUpdates(uint32_t title, std::span<const services::Delivery> deliveries);
     struct OnlinePlayer
     {

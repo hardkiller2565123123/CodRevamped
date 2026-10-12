@@ -21,34 +21,29 @@ namespace revamped::iw8::bgs
     {
         using ServiceHandler = bool(*)(RequestContext&);
 
-        bool LsgForceTestEnabled()
+        void CompleteGameAccountSelectionIfNeeded(RequestContext& context)
         {
-            char value[8]{};
-            const DWORD count = GetEnvironmentVariableA("CODREVAMPED_FORCE_LSG_TEST", value, static_cast<DWORD>(sizeof(value)));
-            return count != 0 && value[0] == '1';
-        }
-
-        void ApplyLsgForceTestIfNeeded(RequestContext& context)
-        {
-            if (!LsgForceTestEnabled() || !context.session.authenticated ||
-                !context.session.sessionCreatedNotificationSent || context.session.gameAccountSelected)
+            if (!context.session.authenticated ||
+                !context.session.sessionCreatedNotificationSent ||
+                context.session.gameAccountSelected ||
+                !context.session.gameAccountId.valid)
                 return;
 
-            // TEST-ONLY: emulate the BGS game-account-selection completion event
-            // without writing any client state. This lets us test whether 1.44 is
-            // waiting on that BGS gate before it begins the native DW/LSG handoff.
+            // Battle.net AuthenticationListener method 14 is OnGameAccountSelected.
+            // IW8's PC frontend uses this server-driven completion event to finish
+            // the native Live/Battle.net account state after Logon + CreateSession.
+            // This is the normal BGS protocol transition; no client memory, fence,
+            // entitlement, or UI state is written by the server.
             std::vector<Byte> body;
-            AppendVarintField(body, 1u, 0u);
+            AppendVarintField(body, 1u, 0u); // ERROR_OK
             AppendEntityIdField(body, 2u, context.session.gameAccountId);
             QueueServerNotification(context, AuthenticationListenerHash, 14u, body,
-                "AuthenticationListener.OnGameAccountSelected [LSG TEST]");
+                "AuthenticationListener.OnGameAccountSelected");
             context.session.gameAccountSelected = true;
-            log::Print("[BGS-LSG-TEST] id=%llu forced server-side OnGameAccountSelected notification high=0x%016llX low=0x%016llX appVersion=%s%llu clientMemoryWrites=off",
+            log::Print("[BGS-AUTH] id=%llu queued native OnGameAccountSelected high=0x%016llX low=0x%016llX after session creation clientMemoryWrites=off",
                 static_cast<unsigned long long>(context.connectionId),
                 static_cast<unsigned long long>(context.session.gameAccountId.high),
-                static_cast<unsigned long long>(context.session.gameAccountId.low),
-                context.session.hasApplicationVersion ? "" : "<unknown>/",
-                static_cast<unsigned long long>(context.session.applicationVersion));
+                static_cast<unsigned long long>(context.session.gameAccountId.low));
         }
 
         struct ServiceDefinition
@@ -287,7 +282,7 @@ namespace revamped::iw8::bgs
         }
 
         ObserveRequestShape(context);
-        ApplyLsgForceTestIfNeeded(context);
+        CompleteGameAccountSelectionIfNeeded(context);
 
         const auto* service = FindService(context.rpc.header.serviceHash);
         if (!service)
@@ -301,7 +296,9 @@ namespace revamped::iw8::bgs
             return true;
         }
 
-        return service->handler(context);
+        const bool handled = service->handler(context);
+        CompleteGameAccountSelectionIfNeeded(context);
+        return handled;
     }
 
     bool HandleClientResponse(std::uint64_t connectionId, const RpcEnvelope& rpc, SessionState& session)

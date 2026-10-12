@@ -300,6 +300,7 @@ namespace revamped::iw8::demonware
             std::size_t startupStatsMissing = 0;
             {
                 std::lock_guard<std::mutex> lock(g_objectStoreMutex);
+                LoadLegacyObjectStoreLocked();
                 objectReplies.reserve(objectIds.size());
                 errorReplies.reserve(objectIds.size());
                 for (std::size_t i = 0; i < objectIds.size(); ++i)
@@ -435,6 +436,7 @@ namespace revamped::iw8::demonware
             std::size_t persistedCount = 0;
             {
                 std::lock_guard<std::mutex> lock(g_objectStoreMutex);
+                LoadLegacyObjectStoreLocked();
                 for (const std::string& objectJson : uploadedObjects)
                 {
                     std::string metadataJson;
@@ -470,6 +472,8 @@ namespace revamped::iw8::demonware
                     g_objectStoreObjects[key] = stored;
                     storedObjects.emplace_back(std::move(stored));
                 }
+                if (!SaveLegacyObjectStoreLocked())
+                    std::printf("[DW-OBJECTSTORE-PERSIST] save failed after generic PUT\n");
                 persistedCount = g_objectStoreObjects.size();
             }
 

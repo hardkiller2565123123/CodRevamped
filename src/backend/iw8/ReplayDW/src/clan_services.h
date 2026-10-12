@@ -1,12 +1,4 @@
 #pragma once
-#include "services.h"
-
-namespace services
-{
-    bool clanDeliveryValid(const std::filesystem::path &, uint32_t title, const Delivery &);
-    std::optional<Reply> clanServices(const std::filesystem::path &,
-                                      const platform::LobbyIdentity &,
-                                      uint8_t service,
-                                      uint8_t task,
-                                      wire::Reader &);
-} // namespace services
+// Compatibility include for the organized ReplayDW source tree.
+// Keep the declaration in a single physical header to avoid C2011/C2084.
+#include "Services/Clans/clan_services.h"

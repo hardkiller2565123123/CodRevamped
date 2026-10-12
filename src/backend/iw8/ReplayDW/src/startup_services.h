@@ -1,11 +1,4 @@
 #pragma once
-#include "services.h"
-
-namespace services
-{
-    void initializeStartup(const std::filesystem::path &directory);
-    std::optional<Reply> startup(const platform::LobbyIdentity &,
-                                 uint8_t service,
-                                 uint8_t task,
-                                 wire::Reader &);
-} // namespace services
+// Compatibility include for the organized ReplayDW source tree.
+// Keep the declaration in a single physical header to avoid C2011/C2084.
+#include "Services/Startup/startup_services.h"

@@ -32,11 +32,69 @@ namespace services
             return value.get<uint64_t>();
         }
 
+        Json localDefaultRules()
+        {
+            Json value{
+                {"schema", 1},
+                {"current_season", 3},
+                {"activations", Json::array()},
+                {"seasons", Json::object()}
+            };
+
+            // Six premium activations (one per IW8 season).
+            for (std::uint64_t season = 1; season <= 6; ++season)
+            {
+                value["activations"].push_back(Json{
+                    {"id", std::uint64_t{3000001} + (season - 1) * 1000},
+                    {"item", std::uint64_t{910000} + season},
+                    {"season", season},
+                    {"skips", 0},
+                    {"name", "activate_battlepass" + std::to_string(season)}
+                });
+            }
+
+            // Seven tier-skip token definitions complete the exact 13-row
+            // publication shape consumed by the Replay battle-pass service.
+            for (std::uint64_t token = 0; token < 7; ++token)
+            {
+                value["activations"].push_back(Json{
+                    {"id", std::uint64_t{3000002} + token},
+                    {"item", std::uint64_t{911000} + token},
+                    {"season", 0},
+                    {"skips", token + 1},
+                    {"name", "skip_tier"}
+                });
+            }
+
+            for (std::uint64_t season = 1; season <= 6; ++season)
+            {
+                Json tiers = Json::array();
+                for (std::uint64_t rank = 0; rank <= 100; ++rank)
+                {
+                    // Keep progression deterministic and monotonic.  The stock
+                    // UI owns the visual reward track; the local backend owns
+                    // durable rank/XP and COD-point grants.
+                    const bool freeTier = rank == 0 || (rank % 10) == 0;
+                    const std::uint64_t points =
+                        rank && (rank % 10) == 0 ? 100 : 0;
+                    tiers.push_back(Json{
+                        {"rank", rank},
+                        {"xp", rank * 1000},
+                        {"free", freeTier},
+                        {"items", Json::array()},
+                        {"cod_points", points}
+                    });
+                }
+                value["seasons"][std::to_string(season)] = std::move(tiers);
+            }
+            return value;
+        }
+
         Json rules(const std::filesystem::path &root)
         {
             auto value = read(root / "battlepass/5800/rules.json", Json());
             if (value.is_null())
-                return value;
+                value = localDefaultRules();
             wire::require(value.is_object() && value.at("schema") == 1 &&
                           number(value, "current_season", 6) >= 1 &&
                           value.at("activations").is_array() &&
@@ -48,6 +106,22 @@ namespace services
                 wire::require(ids.insert(number(row, "id")).second &&
                               number(row, "item", INT32_MAX) && number(row, "season", 6) <= 6 &&
                               number(row, "skips", 100) <= 100 && row.at("name").is_string());
+            }
+            for (std::uint64_t season = 1; season <= 6; ++season)
+            {
+                const auto &tiers = value.at("seasons").at(std::to_string(season));
+                wire::require(tiers.is_array() && tiers.size() == 101);
+                std::uint64_t previous = 0;
+                for (std::size_t rank = 0; rank < tiers.size(); ++rank)
+                {
+                    const auto current = number(tiers.at(rank), "xp");
+                    wire::require(number(tiers.at(rank), "rank", 100) == rank &&
+                                  (!rank || current > previous) &&
+                                  tiers.at(rank).at("free").is_boolean() &&
+                                  tiers.at(rank).at("items").is_array());
+                    (void)number(tiers.at(rank), "cod_points", UINT32_MAX);
+                    previous = current;
+                }
             }
             return value;
         }
@@ -249,7 +323,55 @@ namespace services
         if (id.titleId != 5800 || (context != "5800" && context != "iw8"))
             return;
         recoverAchievementWrites(root, id.titleId);
-        const auto data = states(statePath(root, id, context));
+        auto data = states(statePath(root, id, context));
+
+        // CodRevamped's local preservation backend publishes the current pass
+        // as owned. Persist that state instead of forcing a frontend predicate,
+        // so the stock Battle Pass UI and later XP events observe the same
+        // durable account state.
+        const auto config = rules(root);
+        const auto currentSeason = number(config, "current_season", 6);
+        const auto currentId = std::uint64_t{3000000} + (currentSeason - 1) * 1000;
+        bool changed = false;
+        auto *current = find(data, currentId);
+        if (!current)
+        {
+            data.push_back(initial(
+                currentId,
+                "battlepass_season" + std::to_string(currentSeason),
+                1));
+            current = &data.back();
+            changed = true;
+        }
+        if (!current->value("premium", false))
+        {
+            (*current)["premium"] = true;
+            changed = true;
+        }
+        if (!current->contains("multiProgress"))
+        {
+            (*current)["multiProgress"] = Json::array({
+                {{"name", "xp"}, {"current", std::uint64_t{0}}, {"target", std::uint64_t{0}}},
+                {{"name", "rank"}, {"current", std::uint64_t{0}}, {"target", std::uint64_t{100}}}
+            });
+            (*current)["claimed"] = Json::array();
+            changed = true;
+        }
+
+        if (changed)
+        {
+            const achievement_store::Write write{
+                id.userId, id.platformAccountId, context, {}, data, Destination::states};
+            const achievement_store::Validator validate =
+                [](const achievement_store::Write &candidate)
+                {
+                    wire::require(candidate.kind == Destination::states &&
+                                  candidate.document.is_array() &&
+                                  candidate.document.size() <= 15000);
+                };
+            achievement_store::commit(root, id.titleId, {&write, 1}, validate);
+        }
+
         // Same-Replay 0x14105E1C0 resets each of the seven ownership flags and
         // reads Int32 battlepassN_owned. JSON booleans are not its wire contract.
         for (const auto &row : data)

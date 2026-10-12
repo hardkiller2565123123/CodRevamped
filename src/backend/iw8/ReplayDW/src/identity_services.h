@@ -1,10 +1,4 @@
 #pragma once
-#include "services.h"
-
-namespace services
-{
-    std::optional<Reply> identity(const platform::LobbyIdentity &,
-                                  uint8_t,
-                                  uint8_t,
-                                  wire::Reader &);
-}
+// Compatibility include for the organized ReplayDW source tree.
+// Keep the declaration in a single physical header to avoid C2011/C2084.
+#include "Services/Identity/identity_services.h"

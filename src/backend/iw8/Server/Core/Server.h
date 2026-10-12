@@ -46,6 +46,12 @@ namespace revamped::iw8
             bool authIdleLogged = false;
             void* tlsState = nullptr;
 
+            // Port 1119 is shared by the Battle.net TLS/RPC endpoint and the
+            // stock Battle.net depot's plain HTTP downloader.  Keep a small
+            // per-connection buffer so a fragmented depot GET can be parsed
+            // without ever passing plaintext into SChannel.
+            std::vector<std::uint8_t> depotHttpInput;
+
             // IW8 Demonware lobby/LSG state.  This is server-side protocol
             // state only; it never changes stock client auth/fence/LUI truth.
             std::vector<std::uint8_t> lsgInput;

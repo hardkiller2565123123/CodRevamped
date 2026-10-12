@@ -18,12 +18,19 @@ namespace revamped::iw8::bgs
         // 32-byte handle is used by open BGS implementations for the BNet
         // profanity resource and matches the stock handle shape: region=US,
         // usage=pfty, hash=<32 bytes>, proto_url optional/omitted.
+        // SHA-256 of the local minimal PFTY resource served by TcpReceive.cpp:
+        //   "s2maps\\0(?!)\\0"
+        // Blizzard's depot handle hash is the content digest, so keeping this
+        // synchronized lets the stock resource downloader validate the local
+        // file normally instead of accepting a fabricated/foreign hash.
         constexpr std::array<Byte, 32> kBnetProfanityHash = {
-            0x06, 0xCD, 0x1B, 0x9A, 0x6E, 0xC5, 0x80, 0xE4,
-            0xCF, 0xF7, 0xB0, 0x42, 0xA0, 0x53, 0x19, 0x07,
-            0x59, 0xC3, 0xA1, 0x45, 0x4B, 0xC7, 0x9D, 0xBB,
-            0x6D, 0x3E, 0xFF, 0x2C, 0xB4, 0x16, 0x8B, 0x61
+            0x79, 0x7E, 0x3C, 0xC0, 0x63, 0xCF, 0x3D, 0xE1,
+            0xA1, 0x43, 0x61, 0x2E, 0x3F, 0xE7, 0x4E, 0x75,
+            0x1D, 0x30, 0xBD, 0xFF, 0x06, 0xFF, 0x9D, 0x6D,
+            0x9B, 0x65, 0xDA, 0xD6, 0x4C, 0x14, 0xF4, 0xF9
         };
+        constexpr const char* kBnetProfanityProtoUrl =
+            "http://us.battle.net/__revamped/bnet-resource/${hash}.${usage}";
 
         std::vector<Byte> LocalContentHash(std::uint32_t program, std::uint32_t stream, std::uint32_t version)
         {
@@ -75,10 +82,11 @@ namespace revamped::iw8::bgs
                 AppendFixed32Field(response, 1u, kUsRegion);
                 AppendFixed32Field(response, 2u, kProfanityUsage);
                 AppendBytesField(response, 3u, hash);
+                AppendStringField(response, 4u, kBnetProfanityProtoUrl);
                 QueueResponse(context, response, "ResourcesService.GetContentHandle BNet profanity response");
 
                 log::Print(
-                    "[BGS-RESOURCES] id=%llu GetContentHandle token=%u program=0x%08X stream=0x%08X version=%s0x%08X region=0x%08X usage=0x%08X hashBytes=32 protoUrl=omitted-bnet-pfty",
+                    "[BGS-RESOURCES] id=%llu GetContentHandle token=%u program=0x%08X stream=0x%08X version=%s0x%08X region=0x%08X usage=0x%08X hashBytes=32 protoUrl=local-http-pfty",
                     static_cast<unsigned long long>(context.connectionId),
                     context.rpc.header.token, program, stream,
                     hasVersion ? "" : "<default>/", version,
