@@ -37,7 +37,7 @@ CodRevamped
 │   ├── 🚧 Version 1.26 — Not Tested 
 │   ├── 🚧 Version 1.27 — Not Tested 
 │   ├── ✅ Version 1.28 — Launching - Crashing
-│   ├── ✅ Version 1.30 — Launching - Connecting To Server. Arxan Crash Present May Refuse To Launch. Version is also it Spanish forcing into English Soon.
+│   ├── ✅ Version 1.30 — Launching - Connecting To Server. Arxan Crash Present May Refuse To Launch. 
 │   ├── 🚧 Version 1.31 — Not Tested 
 │   ├── 🚧 Version 1.34 — Not Tested 
 │   ├── 🚧 Version 1.36 — Not Tested 
