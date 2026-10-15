@@ -59,7 +59,7 @@ CodRevamped
 │   ├── 🚧 Version 1.64 — Not Tested 
 │   ├── 🚧 Version 1.65 — Not Tested 
 │   ├── 🚧 Version 1.67 — Not Tested 
-│   └── ✅ Retail / Steam Retail - Checking For updates.
+│   └── ✅ Retail / Steam Retail - Menu. Required Patch For Checking For Updates. Will be Fixed Later looking for the missing peice.
 │
 │
 ├── Call of Duty: Vanguard
