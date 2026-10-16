@@ -1,7 +1,11 @@
 #pragma once
 #include <string>
 #include <cstdlib>
+#include <fstream>
+#include <iterator>
+#include <cstdio>
 #include "LocalManifestData.h"
+#include "RetailManifestSigner.h"
 
 namespace revamped::iw8::localpublisher
 {
@@ -9,12 +13,41 @@ namespace revamped::iw8::localpublisher
     inline constexpr const char* PlaylistNameTu24 = "unified_large_playlist_tu24.aggr";
     inline constexpr const char* PlaylistNameTu69 = "unified_large_playlist_tu69.aggr";
 
+    // Shared by retail REST metadata and the corresponding Raven HTTP route.
+    // The advertised contentLength must describe exactly the served bytes.
+    inline const std::string& RetailStoreBody()
+    {
+        static const std::string body = "{\"categories\":[]}";
+        return body;
+    }
+
+    // Manifest object names are versioned by the publisher. Accept versioned
+    // patch/comms objects without hard-coding each client build, but reject
+    // traversal, signs, arbitrary filenames and unexpected channels.
     inline bool IsManifest(const std::string& name)
     {
-        return name == "1_manifest_patch_pc_8.19.txt" ||
-            name == "1_manifest_comms_pc_8.19.txt" ||
-            name == "1_manifest_patch_pc_8.69.txt" ||
-            name == "1_manifest_comms_pc_8.69.txt";
+        constexpr const char* patch = "1_manifest_patch_pc_";
+        constexpr const char* comms = "1_manifest_comms_pc_";
+        std::size_t start = std::string::npos;
+        if (name.compare(0, std::char_traits<char>::length(patch), patch) == 0)
+            start = std::char_traits<char>::length(patch);
+        else if (name.compare(0, std::char_traits<char>::length(comms), comms) == 0)
+            start = std::char_traits<char>::length(comms);
+        if (start == std::string::npos || name.size() <= start + 4 ||
+            name.compare(name.size() - 4, 4, ".txt") != 0)
+            return false;
+        const std::string version = name.substr(start, name.size() - start - 4);
+        if (version.size() > 16 || version.front() == '.' || version.back() == '.')
+            return false;
+        bool digit = false;
+        bool previousDot = false;
+        for (const char c : version)
+        {
+            if (c >= '0' && c <= '9') { digit = true; previousDot = false; }
+            else if (c == '.' && digit && !previousDot) { previousDot = true; }
+            else return false;
+        }
+        return digit && !previousDot;
     }
 
     inline bool IsPlaylist(const std::string& name)
@@ -33,6 +66,64 @@ namespace revamped::iw8::localpublisher
         const std::string setting(value);
         std::free(value);
         return setting != "0";
+    }
+
+    // Exact filename selection prevents accidentally serving a signed 1.20
+    // payload as if it were compatible with another client version.
+    // For 8.19, an externally provisioned file takes precedence; only the
+    // original 1.20 fallback uses the embedded payload.
+    inline bool LoadManifest(const std::string& name, std::string& out)
+    {
+        out.clear();
+        if (!IsManifest(name) || !LocalManifestEnabled())
+            return false;
+        // Retail 8.69 must ALWAYS serve the body signed by its persisted
+        // local key, which is also exported to the client. Previously a
+        // leftover CODREVAMPED_IW8_MANIFEST_DIR took precedence here and
+        // silently served an unrelated signature while startup still logged
+        // "automatic signing ready". Keep explicit-file overrides for
+        // other versions, not for this Retail-specific trust pair.
+        if (name == "1_manifest_patch_pc_8.69.txt" ||
+            name == "1_manifest_comms_pc_8.69.txt")
+            return retailsigning::LoadAutomaticManifest(name, out);
+        char* env = nullptr;
+        std::size_t n = 0;
+        if (_dupenv_s(&env, &n, "CODREVAMPED_IW8_MANIFEST_DIR") == 0 && env && *env)
+        {
+            const std::string filename = std::string(env) + "\\" + name;
+            std::free(env);
+            std::ifstream file(filename, std::ios::binary);
+            if (file)
+            {
+                std::string bytes((std::istreambuf_iterator<char>(file)),
+                    std::istreambuf_iterator<char>());
+                if (!file.bad() && !bytes.empty() && bytes.size() <= 4u * 1024u * 1024u)
+                {
+                    out.swap(bytes);
+                    return true;
+                }
+            }
+        }
+        else std::free(env);
+        if (name == "1_manifest_patch_pc_8.19.txt" ||
+            name == "1_manifest_comms_pc_8.19.txt")
+        {
+            out = localmanifestdata::Body;
+            return true;
+        }
+        return false;
+    }
+
+    inline bool HasManifest(const std::string& name)
+    {
+        std::string content;
+        return LoadManifest(name, content);
+    }
+
+    inline bool IsLegacyManifest(const std::string& name)
+    {
+        return name == "1_manifest_patch_pc_8.19.txt" ||
+            name == "1_manifest_comms_pc_8.19.txt";
     }
 
     inline const std::string& ManifestBody()

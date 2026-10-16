@@ -1,0 +1,49 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <EnableDefaultPageItems>false</EnableDefaultPageItems>
+    <EnableDefaultApplicationDefinition>false</EnableDefaultApplicationDefinition>
+    <AssemblyName>CodRevamped</AssemblyName>
+    <RootNamespace>CodRevamped.Launcher</RootNamespace>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <UseAppHost>true</UseAppHost>
+    <SelfContained>false</SelfContained>
+    <PublishSingleFile>true</PublishSingleFile>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <CodRevampedRoot>$(MSBuildThisFileDirectory)..\..\</CodRevampedRoot>
+    <OutputPath>$(CodRevampedRoot)artifacts\launcher\$(Configuration)\</OutputPath>
+    <BaseIntermediateOutputPath>$(CodRevampedRoot)artifacts\obj\CodRevamped.Launcher\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Resource Include="Assets\BattlePassSeason3.png" />
+    <EmbeddedResource Include="$(CodRevampedRoot)artifacts\server\Debug\RevampedIW8Server.exe"
+                      LogicalName="CodRevamped.Embedded.Server" Condition="'$(Configuration)'=='Debug'" />
+    <EmbeddedResource Include="$(CodRevampedRoot)artifacts\dll\MW2019\Debug\version.dll"
+                      LogicalName="CodRevamped.Embedded.Client" Condition="'$(Configuration)'=='Debug'" />
+  </ItemGroup>
+  <!-- CodRevamped.sln already declares IW8Server and MW2019 as project dependencies
+       of this launcher. Let Visual Studio build those native projects in its normal
+       graph; nesting an MSBuild task here can fail without reporting the native
+       project's actual error (MSB4181) and tries to compile them twice. -->
+  <Target Name="ValidateDebugNativeOutputs" BeforeTargets="CoreCompile"
+          Condition="'$(Configuration)'=='Debug' And '$(DesignTimeBuild)'!='true'">
+    <Error Condition="!Exists('$(CodRevampedRoot)artifacts\server\Debug\RevampedIW8Server.exe')"
+           Text="Missing IW8Server Debug output: artifacts\server\Debug\RevampedIW8Server.exe. Build CodRevamped.sln (Debug|x64), which builds IW8Server before the launcher." />
+    <Error Condition="!Exists('$(CodRevampedRoot)artifacts\dll\MW2019\Debug\version.dll')"
+           Text="Missing MW2019 Debug output: artifacts\dll\MW2019\Debug\version.dll. Build CodRevamped.sln (Debug|x64), which builds MW2019 before the launcher." />
+  </Target>
+  <!-- A single-file Debug distribution is published at artifacts\Debug\CodRevamped.exe.
+       The extracted native DLL and server remain separate processes at runtime. -->
+  <Target Name="PublishDebugSingleFile" AfterTargets="Build"
+          Condition="'$(Configuration)'=='Debug' And '$(DesignTimeBuild)'!='true' And '$(CodRevampedLauncherInsidePublish)'!='true'">
+    <Exec Command="dotnet publish &quot;$(MSBuildProjectFullPath)&quot; -c Debug -r win-x64 --no-build --no-restore -p:CodRevampedLauncherInsidePublish=true -p:PublishSingleFile=true -p:PublishDir=&quot;$(CodRevampedRoot)artifacts\Debug\&quot;" />
+  </Target>
+</Project>

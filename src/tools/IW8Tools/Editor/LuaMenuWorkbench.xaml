@@ -1,0 +1,95 @@
+<Window x:Class="CodRevamped.IW8Tools.LuaMenuWorkbench"
+ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+ Title="CodRevamped | Lua Menu Builder" Width="1450" Height="950" MinWidth="1100" MinHeight="700"
+ Background="#11151D" Foreground="#EFF5FA">
+ <DockPanel Margin="13">
+  <StackPanel DockPanel.Dock="Top" Margin="5,3,5,10">
+   <TextBlock Text="CODREVAMPED / LUI MENU WORKBENCH" FontSize="23" FontWeight="Bold" Foreground="#5ABCEC"/>
+   <TextBlock Text="MW2019 · replay screen references · drag to position · export editable Lua source" Foreground="#9BABBF"/>
+   <WrapPanel Margin="0,8,0,0">
+    <Button Content="New template" Click="New_Click"/>
+    <Button Content="Open project" Click="Open_Click"/>
+    <Button Content="Save project" Click="Save_Click"/>
+    <Button Content="Build Lua source" Click="Build_Click"/>
+    <Button Content="Stage to game/lua" Click="Stage_Click"/>
+    <Button Content="Prepare in-game test" Click="TestInGame_Click"/>
+    <Button Content="Preview click" Click="Preview_Click"/>
+   </WrapPanel>
+  </StackPanel>
+  <Border DockPanel.Dock="Bottom" CornerRadius="7" Background="#1B2431" Padding="9" Margin="2,9,2,0">
+   <TextBlock Name="Status" Text="Create a menu or load a project. Preview does not execute code inside the game." TextWrapping="Wrap" Foreground="#A8BFDA"/>
+  </Border>
+  <Grid>
+   <Grid.ColumnDefinitions><ColumnDefinition Width="285"/><ColumnDefinition Width="*"/><ColumnDefinition Width="300"/></Grid.ColumnDefinitions>
+   <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto" Margin="0,0,10,0">
+    <StackPanel>
+     <TextBlock Text="MENU / CONTEXT" FontSize="17" FontWeight="SemiBold" Margin="0,2,0,9"/>
+     <TextBlock Text="Reference screen"/>
+     <ComboBox Name="ScreenChoice" SelectionChanged="ScreenChoice_Changed" SelectedIndex="0" Background="#293648" Foreground="White">
+      <ComboBoxItem Content="Gunsmith"/><ComboBoxItem Content="Loadouts"/><ComboBoxItem Content="Multiplayer"/><ComboBoxItem Content="Warzone"/>
+     </ComboBox>
+     <TextBlock Text="Menu ID" Margin="0,9,0,0"/>
+     <TextBox Name="MenuId" Text="CRGunsmithPanel" LostFocus="Metadata_LostFocus"/>
+     <TextBlock Text="Menu title" Margin="0,5,0,0"/>
+     <TextBox Name="MenuTitle" Text="Custom Gunsmith Panel" LostFocus="Metadata_LostFocus"/>
+     <Button Content="Load reference screenshot (PNG/JPG)" Click="Image_Click"/>
+     <TextBlock Text="A screenshot from your exact game build replaces the schematic preview background. Screenshots are references only and are NOT shipped inside Lua." TextWrapping="Wrap" FontSize="11" Foreground="#9BAEC4"/>
+     <Separator Margin="0,12"/>
+     <TextBlock Text="LAYERS" FontSize="16" FontWeight="SemiBold"/>
+     <ListBox Name="Layers" Height="220" Margin="0,6" Background="#1A2430" Foreground="White" SelectionChanged="Layers_SelectionChanged"/>
+     <WrapPanel><Button Content="+ Button" Click="AddButton_Click"/><Button Content="+ Label" Click="AddLabel_Click"/><Button Content="+ Panel" Click="AddPanel_Click"/></WrapPanel>
+     <WrapPanel><Button Content="Duplicate" Click="Duplicate_Click"/><Button Content="Remove" Click="Remove_Click"/></WrapPanel>
+     <Separator Margin="0,12"/>
+     <TextBlock Text="SOURCE BUILD" FontSize="16" FontWeight="SemiBold"/>
+     <TextBlock Text="Output folder"/>
+     <TextBox Name="BuildFolder"/>
+     <Button Content="Choose output folder" Click="ChooseBuild_Click"/>
+     <TextBlock Text="Game folder (for source staging)"/>
+     <TextBox Name="GameFolder"/>
+     <Button Content="Choose game folder" Click="ChooseGame_Click"/>
+     <TextBlock Text="Staging creates game/lua/&lt;menu-id&gt;/*.lua, not an executable in-game VM hook." FontSize="11" TextWrapping="Wrap" Foreground="#D3B67D" Margin="0,8,0,0"/>
+    </StackPanel>
+   </ScrollViewer>
+   <Grid Grid.Column="1" Background="#121820">
+    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+    <TextBlock Text="PREVIEW · 1920×1080 DESIGN COORDINATES" Foreground="#90A8BC" Margin="10,9"/>
+    <Border Grid.Row="1" BorderThickness="1" BorderBrush="#3C4F65" Background="#070B0F" Margin="4" ClipToBounds="True">
+     <Viewbox Stretch="Uniform">
+      <Grid Width="960" Height="540" ClipToBounds="True">
+       <Border Background="#0B121B"/>
+       <Image Name="Reference" Stretch="Fill" Opacity="0.85" Visibility="Collapsed"/>
+       <Canvas Name="Wireframe" IsHitTestVisible="False"/>
+       <Canvas Name="Overlay" Background="Transparent" MouseMove="Overlay_MouseMove" MouseLeftButtonUp="Overlay_MouseLeftButtonUp"/>
+       <TextBlock Text="SCHEMATIC REFERENCE / NOT STOCK ASSETS" HorizontalAlignment="Right" VerticalAlignment="Bottom" Foreground="#7E97AA" Margin="9" FontSize="11" IsHitTestVisible="False"/>
+      </Grid>
+     </Viewbox>
+    </Border>
+   </Grid>
+   <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto" Margin="9,0,0,0">
+    <StackPanel>
+     <TextBlock Text="SELECTED CONTROL" FontSize="17" FontWeight="SemiBold" Margin="0,2,0,10"/>
+     <TextBlock Text="ID"/><TextBox Name="WidgetId"/>
+     <TextBlock Text="Caption" Margin="0,7,0,0"/><TextBox Name="WidgetText"/>
+     <TextBlock Text="Left / Top / Width / Height" Margin="0,8,0,3"/>
+     <UniformGrid Columns="2">
+      <StackPanel><TextBlock Text="Left (px)"/><TextBox Name="WidgetX"/></StackPanel>
+      <StackPanel><TextBlock Text="Top (px)"/><TextBox Name="WidgetY"/></StackPanel>
+      <StackPanel><TextBlock Text="Width (px)"/><TextBox Name="WidgetW"/></StackPanel>
+      <StackPanel><TextBlock Text="Height (px)"/><TextBox Name="WidgetH"/></StackPanel>
+     </UniformGrid>
+     <TextBlock Text="Font size" Margin="0,7,0,0"/><TextBox Name="WidgetFont"/>
+     <TextBlock Text="Color (#RRGGBB)" Margin="0,7,0,0"/><TextBox Name="WidgetColor"/>
+     <TextBlock Text="Action (experimental in-game binding)" Margin="0,8,0,2"/>
+     <ComboBox Name="WidgetAction" SelectedIndex="0" Background="#293648" Foreground="White"><ComboBoxItem Content="none"/><ComboBoxItem Content="open_menu"/><ComboBoxItem Content="console_command"/></ComboBox>
+     <TextBlock Text="Action value (menu ID or command)"/><TextBox Name="WidgetActionValue"/>
+     <Button Content="Apply control edits" Click="Apply_Click" Margin="0,8,0,0"/>
+     <Separator Margin="0,16,0,9"/>
+     <TextBlock Text="LUA SOURCE" FontSize="16" FontWeight="SemiBold"/>
+     <TextBlock Text="Generated LUI module. Read-only preview; build exports a .lua file that you can subsequently edit." FontSize="11" Foreground="#9BB1C8" TextWrapping="Wrap"/>
+     <TextBox Name="LuaCode" IsReadOnly="True" FontFamily="Consolas" FontSize="11" Height="290" TextWrapping="NoWrap" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Background="#131D28" Foreground="#D6E3EF"/>
+    </StackPanel>
+   </ScrollViewer>
+  </Grid>
+ </DockPanel>
+</Window>

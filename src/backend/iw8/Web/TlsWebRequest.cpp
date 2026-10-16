@@ -86,13 +86,20 @@ namespace revamped::iw8
                             std::char_traits<char>::length(kRavenPublisherPrefix));
 
                     if (!objectName.empty() &&
-                        localpublisher::LocalManifestEnabled() &&
-                        localpublisher::IsManifest(objectName))
+                        localpublisher::IsManifest(objectName) &&
+                        localpublisher::HasManifest(objectName))
                     {
-                        localBody = localpublisher::ManifestBody();
-                        localLabel = "local signed manifest (RSA-PSS; native validation active)";
+                        localpublisher::LoadManifest(objectName, localBody);
+                        localLabel = "per-build local manifest (client validation remains active)";
                         localContentType = "application/json; charset=utf-8";
                         localBodyKind = "local-publisher-manifest";
+                        hasLocalBody = true;
+                    }
+                    else if (result.path.rfind(kRavenPublisherPrefix, 0) == 0 &&
+                        (objectName == "store_v2.json" || objectName == "store_v2_warzone.json"))
+                    {
+                        localBody = localpublisher::RetailStoreBody();
+                        localLabel = "local ObjectStore retail store layout";
                         hasLocalBody = true;
                     }
                     else if (objectName == "store_v2.json")

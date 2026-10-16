@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" TreatAsLocalProperty="Platform">
+  <PropertyGroup Label="X64Only"><Platform Condition="'$(Platform)'=='' Or '$(Platform)'=='Win32' Or '$(Platform)'=='Any CPU'">x64</Platform><PreferredToolArchitecture>x64</PreferredToolArchitecture></PropertyGroup>
+  <PropertyGroup><CodRevampedRoot>$(MSBuildThisFileDirectory)..\..\..\</CodRevampedRoot></PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64"><Configuration>Debug</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64"><Configuration>Release</Configuration><Platform>x64</Platform></ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion><Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{715ABC62-5D39-4137-A680-3EC0AA973654}</ProjectGuid>
+    <RootNamespace>IW8ToolsNative</RootNamespace><WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType><UseDebugLibraries>true</UseDebugLibraries><PlatformToolset>v143</PlatformToolset><CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType><UseDebugLibraries>false</UseDebugLibraries><PlatformToolset>v143</PlatformToolset><CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <PropertyGroup><CodRevampedRoot>$(MSBuildThisFileDirectory)..\..\..\</CodRevampedRoot></PropertyGroup>
+  <PropertyGroup>
+    <TargetName>IW8Tools.Native</TargetName>
+    <OutDir>$(CodRevampedRoot)artifacts\tools\$(Configuration)\IW8Tools\</OutDir>
+    <IntDir>$(CodRevampedRoot)artifacts\obj\$(Configuration)\IW8ToolsNative\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile><LanguageStandard>stdcpp20</LanguageStandard><WarningLevel>Level3</WarningLevel><PrecompiledHeader>NotUsing</PrecompiledHeader><ConformanceMode>true</ConformanceMode></ClCompile>
+    <Link><SubSystem>Console</SubSystem></Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="$(CodRevampedRoot)src\tools\IW8Tools\Native\IW8ToolsNative.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\tools\IW8Tools\Native\IW8PackageInspect.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\tools\IW8MapPack\IW8MapPack.cpp">
+      <PreprocessorDefinitions>main=IW8MapPack_Entry;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\tools\IW8ReverseLab\IW8ReverseLab.cpp">
+      <PreprocessorDefinitions>main=IW8ReverseLab_Entry;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\tools\IW8FastfileLab\IW8FastfileLab.cpp">
+      <PreprocessorDefinitions>main=IW8FastfileLab_Entry;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="$(CodRevampedRoot)src\tools\MWAssetLab\MWAssetLab.cpp">
+      <PreprocessorDefinitions>wmain=MWAssetLab_Entry;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+</Project>

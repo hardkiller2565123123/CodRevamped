@@ -1,0 +1,4 @@
+#include <windows.h>
+// 100k source-name dataset packaged as a resource in version.dll.
+// No second game-side text file is required.
+41021 RCDATA "BotNames.dat"

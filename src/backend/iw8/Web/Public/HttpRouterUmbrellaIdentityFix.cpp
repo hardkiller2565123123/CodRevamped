@@ -1,3 +1,4 @@
+#include "../LocalPlayerName.h"
 namespace revamped::iw8::web
 {
     namespace
@@ -66,6 +67,7 @@ namespace revamped::iw8::web
             return result;
         }
 
+        const std::string playerName = localplayer::Name();
         const std::uint64_t userId = CurrentLocalCrossplayUserId();
         const std::string ticket = CurrentLocalCrossplayTicket();
 
@@ -87,7 +89,7 @@ namespace revamped::iw8::web
             "{\"umbrellaID\":" + std::to_string(userId) +
             ",\"userID\":" + std::to_string(userId) +
             ",\"accountType\":\"bnet\"" +
-            ",\"username\":\"revamped\"" +
+            ",\"username\":\"" + playerName + "\"" +
             ",\"accessToken\":\"" + JsonEscape(ticket) + "\"" +
             ",\"expires\":" + std::to_string(accessExpires) +
             ",\"accessIssuedAt\":" + std::to_string(now) +
@@ -103,9 +105,9 @@ namespace revamped::iw8::web
             // for the normal FETCHING_UNO_ACCOUNT stage, but also expose the
             // actual first-party Battle.net provider account.
             ",\"accounts\":["
-                "{\"provider\":\"bnet\",\"username\":\"revamped\",\"accountID\":" +
+                "{\"provider\":\"bnet\",\"username\":\"" + playerName + "\",\"accountID\":" +
                     std::to_string(userId) + ",\"authorized\":true},"
-                "{\"provider\":\"uno\",\"username\":\"revamped\",\"accountID\":" +
+                "{\"provider\":\"uno\",\"username\":\"" + playerName + "\",\"accountID\":" +
                     std::to_string(userId) + ",\"authorized\":true}"
             "]" +
             ",\"hasUno\":true" +
@@ -118,14 +120,16 @@ namespace revamped::iw8::web
         result.label += " umbrellaIdentity=nonzero linkedProviders={bnet,uno} hasUno=true schema=bdUmbrellaCrossplayInfo";
 
         AppendAuthPipelineV58(
-            "UMBRELLA_LOCAL_IDENTITY userId=%llu accountType=bnet username=revamped linkedProviders={bnet,uno} hasUno=true ticketLen=%llu ivSeedPresent=%s schema=bdUmbrellaCrossplayInfo stateWrites=off",
+            "UMBRELLA_LOCAL_IDENTITY userId=%llu accountType=bnet username=%s linkedProviders={bnet,uno} hasUno=true ticketLen=%llu ivSeedPresent=%s schema=bdUmbrellaCrossplayInfo stateWrites=off",
             static_cast<unsigned long long>(userId),
+            playerName.c_str(),
             static_cast<unsigned long long>(ticket.size()),
             ivSeedB64.empty() ? "no" : "yes");
 
         log::Print(
-            "[AUTH-LSG] UMBRELLA_LOCAL_IDENTITY userId=%llu accountType=bnet linkedProviders={bnet,uno} hasUno=true ticketLen=%llu ivSeedPresent=%s schema=bdUmbrellaCrossplayInfo",
+            "[AUTH-LSG] UMBRELLA_LOCAL_IDENTITY userId=%llu accountType=bnet username=%s linkedProviders={bnet,uno} hasUno=true ticketLen=%llu ivSeedPresent=%s schema=bdUmbrellaCrossplayInfo",
             static_cast<unsigned long long>(userId),
+            playerName.c_str(),
             static_cast<unsigned long long>(ticket.size()),
             ivSeedB64.empty() ? "no" : "yes");
 

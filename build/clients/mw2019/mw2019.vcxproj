@@ -1,5 +1,7 @@
-<?xml version='1.0' encoding='utf-8'?>
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+<?xml version='1.0' encoding='UTF-8'?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build" TreatAsLocalProperty="Platform">
+  <PropertyGroup Label="X64Only"><Platform Condition="'$(Platform)'=='' Or '$(Platform)'=='Win32' Or '$(Platform)'=='Any CPU'">x64</Platform><PreferredToolArchitecture>x64</PreferredToolArchitecture></PropertyGroup>
+  <PropertyGroup><CodRevampedRoot>$(MSBuildThisFileDirectory)..\..\..\</CodRevampedRoot></PropertyGroup>
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
@@ -18,7 +20,7 @@
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <ProjectName>MW2019</ProjectName>
   </PropertyGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props"/>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
@@ -32,17 +34,17 @@
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-  <ImportGroup Label="ExtensionSettings" />
-  <ImportGroup Label="Shared" />
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props"/>
+  <ImportGroup Label="ExtensionSettings"/>
+  <ImportGroup Label="Shared"/>
   <ImportGroup Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform"/>
   </ImportGroup>
-  <PropertyGroup Label="UserMacros" />
-  <Import Project="$(CodRevampedRoot)build\CodRevamped.Shared.props" />
+  <PropertyGroup Label="UserMacros"/>
+  <Import Project="$(CodRevampedRoot)build\CodRevamped.Shared.props"/>
   <PropertyGroup>
     <TargetName>version</TargetName>
-    <OutDir>$(CodRevampedRoot)artifacts\bin\MW2019\$(Configuration)\</OutDir>
+    <OutDir>$(CodRevampedRoot)artifacts\dll\MW2019\$(Configuration)\</OutDir>
     <IntDir>$(CodRevampedRoot)artifacts\obj\MW2019\$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)'=='Debug'">true</LinkIncremental>
     <LinkIncremental Condition="'$(Configuration)'=='Release'">false</LinkIncremental>
@@ -68,9 +70,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="$(CodRevampedRoot)src\clients\mw2019\MW2019RedirectProxy.cpp" />
-    <ClCompile Include="$(CodRevampedRoot)src\clients\mw2019\MW2019FrontendFenceTracer.cpp" />
+    <ClCompile Include="$(CodRevampedRoot)src\clients\mw2019\MW2019RedirectProxy.cpp"/>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\mw2019\MW2019FrontendFenceTracer.cpp"/>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\mw2019\Features\Bots\BotProfiles.cpp"/>
+  <ClCompile Include="$(CodRevampedRoot)src\clients\mw2019\Features\CustomMaps\CustomMapRuntime.cpp"/>
+  <ClCompile Include="$(CodRevampedRoot)src\clients\mw2019\Features\Lua\LuaMenuRuntime.cpp"/></ItemGroup>
+  <ItemDefinitionGroup>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>$(CodRevampedRoot)src\clients\mw2019\Features\Bots;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ResourceCompile Include="$(CodRevampedRoot)src\clients\mw2019\Features\Bots\BotNames.rc"/>
   </ItemGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets" />
+  <ItemGroup>
+    <ProjectReference Include="$(CodRevampedRoot)build\shared\Dependencies.vcxproj">
+      <Project>{44CB4612-AE25-521E-A321-C14A52E6E466}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets"/>
+  <ImportGroup Label="ExtensionTargets"/>
+<ItemGroup><ClInclude Include="$(CodRevampedRoot)src\clients\mw2019\Features\Loading\HostLaunchTrace.h"/></ItemGroup>  <ItemGroup><ClInclude Include="$(CodRevampedRoot)src\clients\mw2019\Features\CustomMaps\CustomMapProbe.h"/><ClInclude Include="$(CodRevampedRoot)src\clients\mw2019\Features\CustomMaps\CustomMapRuntime.h"/><ClInclude Include="$(CodRevampedRoot)src\clients\mw2019\Features\Lua\LuaMenuRuntime.h"/></ItemGroup>
 </Project>

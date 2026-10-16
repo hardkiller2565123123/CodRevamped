@@ -1,0 +1,14 @@
+{
+  "source_merge": {
+    "full_game_project": "CodRevamped(7).zip",
+    "previous_map_and_bots_overlay": "CodRevamped_MW120_IW8Tools_FullMap_Combined.zip"
+  },
+  "new_outputs": [
+    "CodRevamped.sln",
+    "DLLs/<game>/<configuration>",
+    "Tools/<configuration>",
+    "Servers/<configuration>",
+    "maps/<mp_id>"
+  ],
+  "note": "Source tree; includes new first-party CodRevamped native map-loader source. External Replay fastfile writer, proprietary game assets and live runtime verification are not included."
+}

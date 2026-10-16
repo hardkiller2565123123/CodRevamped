@@ -1,2 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003"><PropertyGroup><CodRevampedRoot>$(MSBuildThisFileDirectory)</CodRevampedRoot></PropertyGroup></Project>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <CodRevampedRoot>$(MSBuildThisFileDirectory)</CodRevampedRoot>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(MSBuildProjectName)' == 'CodRevamped.Launcher'">
+    <BaseIntermediateOutputPath>$(CodRevampedRoot)artifacts\obj\CodRevamped.Launcher\</BaseIntermediateOutputPath>
+    <MSBuildProjectExtensionsPath>$(BaseIntermediateOutputPath)</MSBuildProjectExtensionsPath>
+    <DefaultItemExcludes>$(DefaultItemExcludes);obj\**;bin\**;**\obj\**;**\bin\**</DefaultItemExcludes>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(MSBuildProjectName)' == 'IW8Tools.Editor'">
+    <!-- Keep the SDK restore, WPF markup and C# generated files together. -->
+    <BaseIntermediateOutputPath>$(CodRevampedRoot)artifacts\obj\IW8Tools\</BaseIntermediateOutputPath>
+    <MSBuildProjectExtensionsPath>$(BaseIntermediateOutputPath)</MSBuildProjectExtensionsPath>
+    <!-- The legacy Editor/obj folder can survive a move of BaseIntermediateOutputPath.
+         It must not become source input when the SDK scans **/*.cs. -->
+    <DefaultItemExcludes>$(DefaultItemExcludes);obj\**;bin\**;**\obj\**;**\bin\**</DefaultItemExcludes>
+    <DefaultItemExcludesInProjectFolder>$(DefaultItemExcludesInProjectFolder);obj\**;bin\**;**\obj\**;**\bin\**</DefaultItemExcludesInProjectFolder>
+  </PropertyGroup>
+</Project>

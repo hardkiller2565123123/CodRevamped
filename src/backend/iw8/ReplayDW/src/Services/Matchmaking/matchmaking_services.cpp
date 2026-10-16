@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <array>
 #include <chrono>
+#include <cstdio>
 #include <fstream>
 #include <set>
 
@@ -18,6 +19,7 @@ namespace services
         using Json = nlohmann::json;
 
         uint64_t occupiedSlots(const Json &members, const Json &slots);
+        Json lobbySlots(const Json &lobby);
 
         uint64_t now()
         {
@@ -232,6 +234,33 @@ namespace services
                     }
             }
             botRules["replay_dw_reservedSquads"] = reserved;
+
+            // The local 1.20 client only built a bot pool after successfully
+            // injecting dw_bot_count into a native 145/15 host update. In a
+            // normal public search that optional injection never reached the
+            // backend, so an otherwise valid CreateLobby stayed empty.
+            //
+            // Publish the available native bot quota directly in the same
+            // authenticated ruleset document as the playlist/map. Bot records
+            // are still created by the game (not by the Demonware emulator).
+            // Recompute before each notification so a joining human always
+            // has priority over a vacant bot slot; never make fake members.
+            if (lobby.at("title").get<uint32_t>() == 5800 &&
+                !backendDocument.contains("private_lobby") &&
+                !lobby.value("operator_bots_requested", false) &&
+                !lobby.value("disbanded", false))
+            {
+                const auto capacity = lobby.at("maximum_members").get<uint64_t>();
+                const auto occupied = occupiedSlots(lobby.at("members"), lobbySlots(lobby));
+                wire::require(occupied <= capacity && capacity <= 200);
+                // No mode-specific quota.  The 1.20 engine owns a 200-slot
+                // native bot pool and one or more slots belong to humans.
+                // Server advertises a desired lobby roster, never synthetic
+                // authenticated users or confirmed AI entities.
+                const auto target = capacity - occupied;
+                botRules["replay_dw_fillBots"] = 0;
+                botRules["replay_dw_botCount"] = target;
+            }
             wire::require(botRules.size() <= 128);
             return backendDocument;
         }
@@ -243,6 +272,25 @@ namespace services
                     const std::set<uint64_t> *recipients = nullptr)
         {
             const auto backendDocument = nativeBackendDocument(lobby);
+            // Visible in IW8Server's console even when the native client has
+            // no developer-console output enabled. Never log account tokens.
+            if ((event == 2005 || event == 2006) &&
+                lobby.at("title").get<uint32_t>() == 5800 &&
+                !lobby.at("backend_doc").contains("private_lobby"))
+            {
+                const auto occupied = occupiedSlots(lobby.at("members"), lobbySlots(lobby));
+                const auto capacity = lobby.at("maximum_members").get<uint64_t>();
+                const auto bots = backendDocument.at("ruleset_payload")
+                                      .at("dvar_overrides").value("replay_dw_botCount", 0u);
+                std::fprintf(stderr,
+                             "[DW-MM120-AUTOBOTS] event=%u realSlots=%llu capacity=%llu "
+                             "botQuota=%llu manual=%u\n",
+                             event,
+                             static_cast<unsigned long long>(occupied),
+                             static_cast<unsigned long long>(capacity),
+                             static_cast<unsigned long long>(bots),
+                             unsigned(lobby.value("operator_bots_requested", false)));
+            }
             const auto host = lobby.at("host_doc").dump(), backend = backendDocument.dump();
             wire::require(host.size() < 16384 && backend.size() < 16384);
             // Verified registered async-matchmaker decoder 0x14213F1C0. String size
@@ -1113,7 +1161,20 @@ namespace services
                     wire::base64(listen["security_key"].get<std::string>(), 16).size() == 16);
                 const auto selection = selectPlaylist(directory, id.titleId, query);
                 if (!selection)
+                {
+                    const auto& filter = query.at("ruleset_payload").at("filter");
+                    std::printf("[MM-START] rejected title=%u player=%llu playlist=%s version=%s mode=%s onlyJoin=%s reason=catalog-selection-failed\n",
+                        id.titleId, static_cast<unsigned long long>(id.userId),
+                        filter.contains("playlist_id") ? filter.at("playlist_id").dump().c_str() : "missing",
+                        filter.contains("playlist_version") ? filter.at("playlist_version").dump().c_str() : "missing",
+                        query.contains("playlist_config") ? "quickplay" : "playlist",
+                        query.at("ruleset_payload").value("only_join_existing_lobbies", false) ? "yes" : "no");
                     return Reply{108, {}, "matchmaker-playlist-or-map-unavailable"};
+                }
+                std::printf("[MM-START] selected title=%u player=%llu requested=%s resultPlaylist=%s maxMembers=%u\n",
+                    id.titleId, static_cast<unsigned long long>(id.userId),
+                    query.at("ruleset_payload").at("filter").at("playlist_id").dump().c_str(),
+                    selection->metadata.at("playlist_id").dump().c_str(), selection->maximumMembers);
                 if (auto joined = publicJoin(directory, id, query, users))
                     return joined;
                 if (query.at("ruleset_payload").value("only_join_existing_lobbies", false))
@@ -1458,7 +1519,7 @@ namespace services
                                            .value("state", std::string{});
                     wire::require(operatorCanStart(lobby) &&
                                   (phase.empty() || phase == "intermission") &&
-                                  count > 0 && count <= 199);
+                                  count <= 199);
                     const auto slots = occupiedSlots(
                         lobby.at("members"), lobby["backend_doc"]["player_id_to_slots"]);
                     const auto capacity = lobby.at("maximum_members").get<uint64_t>();
@@ -1481,8 +1542,19 @@ namespace services
                         overrides[key] = name == std::string_view("replay_dw_botCount") ? count : 0;
                     }
                     wire::require(overrides.size() <= 128);
-                    lobby["operator_bots_requested"] = true;
-                    lobby["operator_bot_count"] = count;
+                    if (count)
+                    {
+                        lobby["operator_bots_requested"] = true;
+                        lobby["operator_bot_count"] = count;
+                    }
+                    else
+                    {
+                        // When the final real player takes the last bot slot,
+                        // retain a zero native override but do not persist an
+                        // invalid operator_bot_count=0 transaction record.
+                        lobby.erase("operator_bots_requested");
+                        lobby.erase("operator_bot_count");
+                    }
                     host.erase("dw_bot_count");
                 }
                 const auto oldPhase = lobby["host_doc"]["game_state"].value("state", std::string{});
@@ -1624,8 +1696,11 @@ namespace services
             {
                 set("party_minLobbyTime", 0);
                 set("party_minVoteTime", 0);
-                set("party_minplayers", 1);
-                set("replay_dw_forceStart", 1);
+                // Backend start requests do not bypass the six-participant
+                // launch check enforced by the native IW8 host.
+                set("party_minplayers", 6);
+                set("br_minplayers", 6);
+                set("replay_dw_forceStart", 0);
             }
             wire::require(overrides.size() <= 128);
             const auto revision = state.at("update_id").get<uint64_t>();

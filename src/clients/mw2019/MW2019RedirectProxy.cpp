@@ -1,3 +1,4 @@
+#pragma comment(lib, "Advapi32.lib")
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
 #include <WinSock2.h>
@@ -8,6 +9,8 @@
 #include <TlHelp32.h>
 #include <intrin.h>
 #include <cstdint>
+#include <algorithm>
+#include <cstddef>
 #include <cstring>
 #include <cwchar>
 #include <cstdarg>
@@ -16,6 +19,16 @@
 #include <vector>
 #include "../../backend/iw8/LocalManifestData.h"
 #include "../../shared/common/utils/MinHook.hpp"
+#include "Features/Bots/BotProfiles.h"
+#include "Features/CustomMaps/CustomMapRuntime.h"
+#include "Features/Lua/LuaMenuRuntime.h"
+// Shared dependencies for the legacy inline feature headers included below.
+// Standard headers MUST be parsed at global scope, not inside namespace {}.
+#include <atomic>
+#include <initializer_list>
+#include "../../shared/iw8/AssetFormat.h"
+#include "Features/Loading/HostLaunchTrace.h"
+
 
 #pragma comment(lib, "Ws2_32.lib")
 #pragma intrinsic(_ReturnAddress)
@@ -134,6 +147,8 @@ namespace
     constexpr std::uint32_t kMW130EntryPoint = 0x05475338u;
     // Two observed early execute-null crashes returned to this exact RVA.
     constexpr std::uintptr_t kMW130ObservedNullCallReturnRva = 0x0045E398u;
+    constexpr std::uintptr_t kMW130ObservedSecondFaultRva = 0x02835FB3u;
+    constexpr std::uint64_t kMW130ObservedSecondFaultAddress = 0xFFFFF78000000900ull;
 
     enum class StartupCompatBuild : LONG
     {
@@ -197,6 +212,9 @@ namespace
     volatile LONG g_compat123VehCount = 0;
     volatile LONG g_compat123VehGuard = 0;
     volatile LONG g_compat123NullExecRecoveries = 0;
+    // A/B diagnostic: with this set, preserve the original exception instead
+    // of synthesizing a return from the missing 1.30 bootstrap callback.
+    volatile LONG g_mw130SkipNullRecovery = 0;
     std::uint32_t g_liveTimestamp = 0;
     std::uint32_t g_liveImageSize = 0;
     std::uint32_t g_liveEntryPoint = 0;
@@ -300,18 +318,87 @@ namespace
         ConsolePrint("============================================================\r\n");
     }
 
+    void ConsolePrint(const char* format, ...) noexcept;
+
+    // Retail-only diagnostics. No game-state hooks or exception interception.
+    constexpr DWORD kRetailDumpTimestamp = 0x69DD404Eu;
+    constexpr DWORD kRetailDumpImageSize = 0x21679200u;
+    constexpr DWORD kRetailDumpEntryPoint = 0x06E4931Cu;
+
+    bool IsRetailDumpBuild() noexcept
+    {
+        return g_liveTimestamp == kRetailDumpTimestamp &&
+            g_liveImageSize == kRetailDumpImageSize &&
+            g_liveEntryPoint == kRetailDumpEntryPoint;
+    }
+
+    bool RetailLogPath(const wchar_t* filename, wchar_t* path, size_t count) noexcept
+    {
+        if (!filename || !path || count < MAX_PATH)
+            return false;
+        const DWORD chars = GetModuleFileNameW(nullptr, path, static_cast<DWORD>(count));
+        if (!chars || chars >= count)
+            return false;
+        wchar_t* slash = wcsrchr(path, L'\\');
+        if (!slash)
+            return false;
+        slash[1] = L'\0';
+        if (IsRetailDumpBuild())
+        {
+            if (wcscat_s(path, count, L"CodRevampedRuntimeDump") != 0)
+                return false;
+            if (!CreateDirectoryW(path, nullptr) && GetLastError() != ERROR_ALREADY_EXISTS)
+                return false;
+            if (wcscat_s(path, count, L"\\") != 0)
+                return false;
+        }
+        return wcscat_s(path, count, filename) == 0;
+    }
+
+    // WER LocalDumps saves a postmortem full .dmp even when the game exits too
+    // quickly for Task Manager. It does not consume first-chance exceptions.
+    // Note: intentional ExitProcess/TerminateProcess calls cannot trigger WER.
+    void ConfigureRetailWerDumps() noexcept
+    {
+        if (!IsRetailDumpBuild())
+            return;
+        wchar_t path[32768]{};
+        if (!RetailLogPath(L".", path, _countof(path)))
+            return;
+        wchar_t* slash = wcsrchr(path, L'\\');
+        if (!slash)
+            return;
+        *slash = L'\0';
+
+        HKEY key = nullptr;
+        const LSTATUS opened = RegCreateKeyExW(HKEY_CURRENT_USER,
+            L"SOFTWARE\\Microsoft\\Windows\\Windows Error Reporting\\LocalDumps\\ModernWarfare.exe",
+            0, nullptr, REG_OPTION_NON_VOLATILE, KEY_SET_VALUE, nullptr, &key, nullptr);
+        if (opened != ERROR_SUCCESS)
+        {
+            ConsolePrint("[RETAIL-DUMP] WER registry open failed error=%ld\r\n", static_cast<long>(opened));
+            return;
+        }
+        const DWORD type = 2;  // WER full user-mode dump
+        const DWORD count = 4; // keep at most four WER dumps
+        const LSTATUS folderResult = RegSetValueExW(key, L"DumpFolder", 0, REG_EXPAND_SZ,
+            reinterpret_cast<const BYTE*>(path), static_cast<DWORD>((wcslen(path) + 1) * sizeof(wchar_t)));
+        const LSTATUS typeResult = RegSetValueExW(key, L"DumpType", 0, REG_DWORD,
+            reinterpret_cast<const BYTE*>(&type), sizeof(type));
+        const LSTATUS countResult = RegSetValueExW(key, L"DumpCount", 0, REG_DWORD,
+            reinterpret_cast<const BYTE*>(&count), sizeof(count));
+        RegCloseKey(key);
+        ConsolePrint("[RETAIL-DUMP] WER full dumps folder=%ls folderStatus=%ld typeStatus=%ld countStatus=%ld\r\n",
+            path, static_cast<long>(folderResult), static_cast<long>(typeResult), static_cast<long>(countResult));
+    }
+
     void WriteRedirectLog(const char* text) noexcept
     {
         if (!text)
             return;
         wchar_t exePath[32768]{};
-        if (!GetModuleFileNameW(nullptr, exePath, static_cast<DWORD>(sizeof(exePath) / sizeof(exePath[0]))))
+        if (!RetailLogPath(L"mw2019_redirect.log", exePath, _countof(exePath)))
             return;
-        wchar_t* slash = wcsrchr(exePath, L'\\');
-        if (!slash)
-            return;
-        slash[1] = L'\0';
-        wcscat_s(exePath, sizeof(exePath) / sizeof(exePath[0]), L"mw2019_redirect.log");
         HANDLE file = CreateFileW(exePath, FILE_APPEND_DATA, FILE_SHARE_READ | FILE_SHARE_WRITE,
             nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
         if (file == INVALID_HANDLE_VALUE)
@@ -334,13 +421,8 @@ namespace
 
         wchar_t exePath[32768]{};
         constexpr size_t exePathCount = sizeof(exePath) / sizeof(exePath[0]);
-        if (!GetModuleFileNameW(nullptr, exePath, static_cast<DWORD>(exePathCount)))
+        if (!RetailLogPath(L"mw2019_retail_crash.log", exePath, exePathCount))
             return;
-        wchar_t* slash = wcsrchr(exePath, L'\\');
-        if (!slash)
-            return;
-        slash[1] = L'\0';
-        wcscat_s(exePath, exePathCount, L"mw2019_retail_crash.log");
 
         HANDLE file = CreateFileW(exePath, FILE_APPEND_DATA, FILE_SHARE_READ | FILE_SHARE_WRITE,
             nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
@@ -754,6 +836,371 @@ namespace
 
     bool RetailProbeRangeReadable(const std::uintptr_t address, const std::size_t size) noexcept;
 
+    // Steam Retail 2026: exact patch-fence getter identified in the supplied
+    // mapped executable.  This is *not* the storage-state getter.
+    // The first 13 bytes match the older IW8 Live_PatchGetState signature,
+    // and its body reads the per-controller fence-state byte from a table.
+
+    // Retail local manifest trust. The server creates a persistent RSA-2048 key
+    // and writes only its public DER to %LOCALAPPDATA%\CodRevamped.
+    // The stock key is substituted as DATA only when ObjectStore is requested.
+    // Exact-image and exact-stock-byte checks prevent cross-version writes.
+    constexpr std::uintptr_t kRetailManifestPublicKeyRva=0x07000590ull;
+    static const unsigned char kRetailStockManifestPublicKey[270]={
+        0x30, 0x82, 0x01, 0x0A, 0x02, 0x82, 0x01, 0x01, 0x00, 0xB9, 0x1F, 0xF4, 0x85, 0xD3, 0x8F, 0x35,
+        0xA8, 0x12, 0x88, 0x43, 0xD2, 0x93, 0x94, 0x2C, 0xB4, 0xCA, 0x7E, 0xBE, 0xC5, 0xBA, 0x09, 0x2A,
+        0xC3, 0xD9, 0x50, 0x2A, 0xC9, 0x75, 0xBA, 0x75, 0x33, 0x9B, 0x23, 0x0E, 0x35, 0x16, 0x3A, 0xC9,
+        0xE3, 0x8E, 0xD9, 0xBF, 0x63, 0x5D, 0x32, 0x4E, 0xCB, 0x41, 0x0D, 0x39, 0x4F, 0x31, 0xAD, 0xB6,
+        0x1B, 0x02, 0x5A, 0xCF, 0x7C, 0x10, 0x0F, 0x3E, 0x47, 0x75, 0x48, 0xC0, 0xBD, 0x58, 0xBB, 0xF1,
+        0xBF, 0xDF, 0x10, 0xB9, 0x0D, 0xDE, 0x48, 0x5C, 0x24, 0xD2, 0xFB, 0xE7, 0x82, 0x6A, 0x07, 0xF8,
+        0x93, 0x54, 0x73, 0xBB, 0xA6, 0xA8, 0xCA, 0xE4, 0x61, 0xF4, 0x79, 0xE5, 0x9C, 0x94, 0x92, 0xA5,
+        0x29, 0x07, 0xCB, 0xA1, 0x0B, 0xAF, 0x1A, 0x3B, 0x60, 0x10, 0xC0, 0x97, 0x76, 0x04, 0x27, 0x2E,
+        0x94, 0xB5, 0x24, 0x7A, 0x0E, 0x1A, 0xA7, 0x0C, 0x75, 0x52, 0xEF, 0x0D, 0x3C, 0x3C, 0xD0, 0xCA,
+        0x51, 0x0F, 0x1D, 0x9E, 0x17, 0xF5, 0xC3, 0x6E, 0xC8, 0x7F, 0x2E, 0x2D, 0x33, 0x04, 0xD4, 0x3A,
+        0x26, 0xAB, 0x94, 0xC2, 0x1A, 0x95, 0x39, 0x5C, 0x14, 0xEF, 0xD4, 0xA1, 0x71, 0x08, 0x2A, 0x56,
+        0x3D, 0x5D, 0xE6, 0xF2, 0xDF, 0xA6, 0xA6, 0x63, 0xFA, 0x80, 0xDE, 0xDF, 0x52, 0x39, 0x2D, 0x66,
+        0x79, 0x26, 0x83, 0x85, 0xCD, 0xA7, 0x1B, 0x6C, 0x8A, 0x9B, 0x92, 0x6E, 0x28, 0x1C, 0x16, 0xB2,
+        0x81, 0x1E, 0x19, 0xBC, 0x9E, 0x87, 0xC6, 0xD9, 0x1C, 0xF5, 0x01, 0xB0, 0xCD, 0x60, 0x6E, 0xBE,
+        0xC0, 0xE8, 0x3E, 0x7F, 0x92, 0x89, 0xE7, 0x1E, 0xEF, 0x31, 0x99, 0xD3, 0x04, 0x20, 0x6F, 0x5A,
+        0x6D, 0x12, 0x8A, 0x54, 0x01, 0x9D, 0x3F, 0x4A, 0xBE, 0x5B, 0x7F, 0xDF, 0x52, 0x5B, 0x33, 0xCC,
+        0x6E, 0x21, 0x5A, 0x2D, 0xBA, 0xA4, 0x9B, 0x82, 0x8F, 0x02, 0x03, 0x01, 0x00, 0x01
+    };
+    // Read-only diagnostic for the native Retail update stage. No new hooks,
+    // writable game state, debugger attachment, or exception interception.
+    // Report the live public key identity and controller fence states while
+    // the game is fetching manifests, to distinguish key restoration from
+    // downstream patch-fence failures.
+    alignas(8) unsigned char g_retailExpectedManifestDer[270]{};
+    volatile LONG g_retailManifestExpectedReady = 0;
+    volatile LONG g_retailManifestMonitorStarted = 0;
+
+    void RememberRetailExpectedManifestKey(const unsigned char* key) noexcept
+    {
+        if (!key) return;
+        std::memcpy(g_retailExpectedManifestDer,key,270);
+        InterlockedExchange(&g_retailManifestExpectedReady,1);
+    }
+
+    DWORD WINAPI RetailNativeUpdateReadOnlyMonitor(LPVOID) noexcept
+    {
+        constexpr std::uintptr_t kNativeFenceTableRva = 0x128805C0ull;
+        if (!IsExactRetailSteamImage()) return 0;
+        const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+        if (!base) return 0;
+        ConsolePrint("[RETAIL-NATIVE-OBSERVE] running read-only key/fence sampler; no patch-fence hook\r\n");
+        int lastKey = -1;
+        unsigned char lastStates[4] = {255,255,255,255};
+        // Ten samples per second, at most 150 seconds, single worker.
+        for (unsigned sample=0;sample<1500;++sample)
+        {
+            unsigned char observedKey[270]{};
+            SIZE_T keyBytes=0;
+            const BOOL keyReadable=ReadProcessMemory(GetCurrentProcess(),
+                reinterpret_cast<const void*>(base+kRetailManifestPublicKeyRva),
+                observedKey,sizeof(observedKey),&keyBytes);
+            int keyState=3; // 0=installed local, 1=restored stock, 2=other, 3=unreadable
+            if (keyReadable && keyBytes==sizeof(observedKey))
+            {
+                if (InterlockedCompareExchange(&g_retailManifestExpectedReady,0,0)!=0 &&
+                    std::memcmp(observedKey,g_retailExpectedManifestDer,sizeof(observedKey))==0)
+                    keyState=0;
+                else if (std::memcmp(observedKey,kRetailStockManifestPublicKey,sizeof(observedKey))==0)
+                    keyState=1;
+                else
+                    keyState=2;
+            }
+            if (keyState!=lastKey)
+            {
+                const char* status=keyState==0?"LOCAL":keyState==1?"STOCK":
+                    keyState==2?"OTHER":"UNREADABLE";
+                ConsolePrint("[RETAIL-NATIVE-OBSERVE] elapsedMs=%u key=%s\r\n",sample*100,status);
+                lastKey=keyState;
+            }
+            unsigned char fenceBytes[32]{};
+            SIZE_T fenceRead=0;
+            const BOOL fenceReadable=ReadProcessMemory(GetCurrentProcess(),
+                reinterpret_cast<const void*>(base+kNativeFenceTableRva),
+                fenceBytes,sizeof(fenceBytes),&fenceRead);
+            if (fenceReadable && fenceRead==sizeof(fenceBytes))
+            {
+                unsigned char states[4]={fenceBytes[0],fenceBytes[8],fenceBytes[16],fenceBytes[24]};
+                if (std::memcmp(states,lastStates,sizeof(states))!=0 || sample%100==0)
+                {
+                    ConsolePrint("[RETAIL-NATIVE-OBSERVE] elapsedMs=%u fenceTable="
+                        "%u,%u,%u,%u key=%s\r\n",sample*100,
+                        static_cast<unsigned>(states[0]),static_cast<unsigned>(states[1]),
+                        static_cast<unsigned>(states[2]),static_cast<unsigned>(states[3]),
+                        keyState==0?"LOCAL":keyState==1?"STOCK":keyState==2?"OTHER":"UNREADABLE");
+                    std::memcpy(lastStates,states,sizeof(states));
+                }
+            }
+            else if (sample==0)
+                ConsolePrint("[RETAIL-NATIVE-OBSERVE] fence table unavailable; no memory modified\r\n");
+            Sleep(100);
+        }
+        ConsolePrint("[RETAIL-NATIVE-OBSERVE] finished read-only monitoring\r\n");
+        return 0;
+    }
+
+    void StartRetailNativeUpdateReadOnlyMonitor() noexcept
+    {
+        if (InterlockedCompareExchange(&g_retailManifestMonitorStarted,1,0)!=0) return;
+        HANDLE thread=CreateThread(nullptr,0,&RetailNativeUpdateReadOnlyMonitor,nullptr,0,nullptr);
+        if (thread) CloseHandle(thread);
+        else {
+            ConsolePrint("[RETAIL-NATIVE-OBSERVE] worker start failed win32=%lu\r\n",GetLastError());
+            InterlockedExchange(&g_retailManifestMonitorStarted,0);
+        }
+    }
+
+    bool RetailPublicKeyDerValid(const unsigned char* der,size_t length) noexcept
+    {
+        constexpr unsigned char prefix[]={0x30,0x82,0x01,0x0A,0x02,0x82,0x01,0x01,0x00};
+        constexpr unsigned char suffix[]={0x02,0x03,0x01,0x00,0x01};
+        return length==270 && std::memcmp(der,prefix,sizeof(prefix))==0 &&
+            std::memcmp(der+265,suffix,sizeof(suffix))==0 && (der[9]&0x80)!=0;
+    }
+    // Same FNV-1a fingerprint as the server. For diagnostics only.
+    std::uint64_t RetailManifestKeyFingerprint(const unsigned char* data,size_t len) noexcept
+    {
+        std::uint64_t h=14695981039346656037ull;
+        for(size_t i=0;i<len;++i) {h^=data[i]; h*=1099511628211ull;}
+        return h;
+    }
+    bool ReadRetailManifestPublicFile(const wchar_t* path,unsigned char (&out)[270],
+                                     FILETIME& modified) noexcept
+    {
+        if (!path || !*path) return false;
+        HANDLE file=CreateFileW(path,GENERIC_READ,FILE_SHARE_READ,nullptr,OPEN_EXISTING,
+                                FILE_ATTRIBUTE_NORMAL,nullptr);
+        if(file==INVALID_HANDLE_VALUE) return false;
+        DWORD received=0;
+        const BOOL ok=GetFileSize(file,nullptr)==sizeof(out) &&
+            ReadFile(file,out,sizeof(out),&received,nullptr) &&
+            GetFileTime(file,nullptr,nullptr,&modified);
+        CloseHandle(file);
+        return ok && received==sizeof(out) && RetailPublicKeyDerValid(out,sizeof(out));
+    }
+    // Exact Steam Retail only.  DO NOT patch this public key during DLL load.
+    // The protected loader restored an early replacement within ~500ms.
+    // Wait for the first ObjectStore hostname lookup (which precedes both
+    // manifest content requests), then perform a single guarded data-only
+    // replacement.  No executable hook, no watcher thread, no fence override.
+    volatile LONG g_retailManifestTrustBusy = 0;
+    volatile LONG g_retailManifestTrustLogged = 0;
+
+    void RetailOnManifestObjectStoreRequested() noexcept
+    {
+        if (!IsExactRetailSteamImage()) return;
+        if (InterlockedCompareExchange(&g_retailManifestTrustBusy, 1, 0) != 0)
+            return; // No competing writes from simultaneous DNS resolutions.
+
+        wchar_t gameExe[32768]{}, gamePath[32768]{};
+        const DWORD len = GetModuleFileNameW(nullptr, gameExe,
+            static_cast<DWORD>(_countof(gameExe)));
+        if (len && len < _countof(gameExe))
+        {
+            wchar_t* slash = wcsrchr(gameExe, L'\\');
+            if (slash)
+            {
+                *(slash + 1) = L'\0';
+                swprintf_s(gamePath, L"%lsretail_manifest_public.der", gameExe);
+            }
+        }
+
+        unsigned char local[270]{};
+        FILETIME fileTime{};
+        const bool validKey = ReadRetailManifestPublicFile(gamePath, local, fileTime) &&
+            std::memcmp(local, kRetailStockManifestPublicKey, sizeof(local)) != 0;
+        if (!validKey)
+        {
+            ConsolePrint("[RETAIL-LAZY-TRUST] objectstore requested; missing or invalid game-root retail_manifest_public.der; no game memory modified\r\n");
+            InterlockedExchange(&g_retailManifestTrustBusy, 0);
+            return;
+        }
+
+        RememberRetailExpectedManifestKey(local);
+        auto* const base = reinterpret_cast<unsigned char*>(GetModuleHandleW(nullptr));
+        if (!base)
+        {
+            InterlockedExchange(&g_retailManifestTrustBusy, 0);
+            return;
+        }
+        auto* const target = base + kRetailManifestPublicKeyRva;
+        unsigned char current[270]{};
+        SIZE_T copied = 0;
+        if (!ReadProcessMemory(GetCurrentProcess(), target, current, sizeof(current), &copied) ||
+            copied != sizeof(current))
+        {
+            ConsolePrint("[RETAIL-LAZY-TRUST] key=UNREADABLE no changes\r\n");
+            InterlockedExchange(&g_retailManifestTrustBusy, 0);
+            return;
+        }
+        if (std::memcmp(current, local, sizeof(local)) == 0)
+        {
+            if (InterlockedCompareExchange(&g_retailManifestTrustLogged, 1, 0) == 0)
+                ConsolePrint("[RETAIL-LAZY-TRUST] key=LOCAL already selected fingerprint=0x%016llX\r\n",
+                    static_cast<unsigned long long>(RetailManifestKeyFingerprint(local, sizeof(local))));
+            InterlockedExchange(&g_retailManifestTrustBusy, 0);
+            return;
+        }
+        // The original .rdata bytes must be present.  If the protector is
+        // actively transforming the page, never write through that state.
+        if (std::memcmp(current, kRetailStockManifestPublicKey, sizeof(current)) != 0)
+        {
+            ConsolePrint("[RETAIL-LAZY-TRUST] key=OTHER/TRANSIENT no replacement; refusing unsafe write\r\n");
+            InterlockedExchange(&g_retailManifestTrustBusy, 0);
+            return;
+        }
+        MEMORY_BASIC_INFORMATION mbi{};
+        if (!VirtualQuery(target, &mbi, sizeof(mbi)) ||
+            mbi.State != MEM_COMMIT || (mbi.Protect & (PAGE_GUARD | PAGE_NOACCESS)))
+        {
+            ConsolePrint("[RETAIL-LAZY-TRUST] protected/uncommitted key page; no replacement\r\n");
+            InterlockedExchange(&g_retailManifestTrustBusy, 0);
+            return;
+        }
+        DWORD previousProtection = 0;
+        if (!VirtualProtect(target, sizeof(local), PAGE_READWRITE, &previousProtection))
+        {
+            ConsolePrint("[RETAIL-LAZY-TRUST] VirtualProtect failed win32=%lu; no key change\r\n", GetLastError());
+            InterlockedExchange(&g_retailManifestTrustBusy, 0);
+            return;
+        }
+        // Data-only replacement: the native RSA-PSS verifier still runs and
+        // the patch-fence state getter remains entirely unmodified.
+        std::memcpy(target, local, sizeof(local));
+        DWORD unusedProtection = 0;
+        const BOOL protectionRestored = VirtualProtect(target, sizeof(local),
+            previousProtection, &unusedProtection);
+        unsigned char verification[270]{};
+        copied = 0;
+        const bool selected = ReadProcessMemory(GetCurrentProcess(), target,
+            verification, sizeof(verification), &copied) &&
+            copied == sizeof(verification) &&
+            std::memcmp(verification, local, sizeof(local)) == 0;
+        ConsolePrint("[RETAIL-LAZY-TRUST] trigger=objectstore key=%s fingerprint=0x%016llX protectionRestored=%u rsaVerify=ON fenceHook=OFF\r\n",
+            selected ? "LOCAL" : "NOT-LOCAL",
+            static_cast<unsigned long long>(RetailManifestKeyFingerprint(local, sizeof(local))),
+            static_cast<unsigned>(protectionRestored != FALSE));
+        InterlockedExchange(&g_retailManifestTrustBusy, 0);
+    }
+
+    constexpr std::uintptr_t kRetailPatchFenceGetStateRva = 0x02DBF2C0ull;
+    using RetailPatchFenceGetStateFn = int (__fastcall*)(void*);
+    RetailPatchFenceGetStateFn g_retailPatchFenceGetStateOriginal = nullptr;
+    volatile LONG g_retailPatchFenceCalls = 0;
+    // Runtime mode is selected once, before installing the hook.
+    // 0 = current forced-success behavior, 1 = observe and return original,
+    // 2 = no patch-fence hook installed (baseline comparison).
+    volatile LONG g_retailFenceMode = 0;
+    // Retail stability: in-process MiniDumpWriteDump caused stalled/empty files
+    // during protected-code startup. Keep passive VEH and WER configuration;
+    // do not initiate snapshot threads from the patch-fence detour.
+
+    int __fastcall RetailPatchFenceGetStateDetour(void* fence)
+    {
+        // Preserve the original result for comparison: unlike forced success,
+        // the original getter reports the current state-table entry.
+        const LONG count = InterlockedIncrement(&g_retailPatchFenceCalls);
+        const auto original = g_retailPatchFenceGetStateOriginal;
+        const int actual = original ? original(fence) : 0;
+        const LONG mode = g_retailFenceMode;
+        const int returned = mode == 1 ? actual : 1;
+        if (count <= 12 || (actual != 1 && (count % 256) == 0))
+            ConsolePrint("[RETAIL-PATCH-FENCE] call=%ld object=%p real=%d returned=%d mode=%s\r\n",
+                count, fence, actual, returned, mode == 1 ? "observe" : "force");
+        return returned;
+    }
+
+    DWORD WINAPI RetailPatchFenceWorker(LPVOID) noexcept
+    {
+        Sleep(2500);
+        if (!IsExactRetailSteamImage())
+            return 0;
+        // Retail native update checking is the default; do not patch the
+        // game's patch-fence getter unless deliberately re-enabled for tests.
+        g_retailFenceMode = 2;
+        wchar_t modeValue[32]{};
+        if (GetEnvironmentVariableW(L"CODREVAMPED_RETAIL_FENCE_MODE", modeValue,
+                static_cast<DWORD>(_countof(modeValue))) > 0)
+        {
+            if (_wcsicmp(modeValue, L"off") == 0)
+                g_retailFenceMode = 2;
+            else if (_wcsicmp(modeValue, L"observe") == 0)
+                g_retailFenceMode = 1;
+            else if (_wcsicmp(modeValue, L"force") == 0)
+                g_retailFenceMode = 0;
+        }
+        if (g_retailFenceMode == 2)
+        {
+            ConsolePrint("[RETAIL-PATCH-FENCE] mode=off; no MinHook patch installed; DNS remains active\r\n");
+            return 0;
+        }
+        ConsolePrint("[RETAIL-PATCH-FENCE] mode=%s (force is legacy behavior)\r\n",
+            g_retailFenceMode == 1 ? "observe" : "force");
+        const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+        if (!base)
+            return 0;
+        // Validate the exact code signature before installing a detour. The
+        // RIP displacement varies by build, but the opcode layout must match.
+        constexpr unsigned char prefix[] = { 0x8B, 0x01, 0x48, 0x8D, 0x0D };
+        constexpr unsigned char suffix[] = { 0x0F, 0xB6, 0x04, 0xC1, 0xC3 };
+        const auto* target = reinterpret_cast<const unsigned char*>(base + kRetailPatchFenceGetStateRva);
+        if (!RetailProbeRangeReadable(reinterpret_cast<std::uintptr_t>(target), 14) ||
+            std::memcmp(target, prefix, sizeof(prefix)) != 0 ||
+            std::memcmp(target + 9, suffix, sizeof(suffix)) != 0)
+        {
+            ConsolePrint("[RETAIL-PATCH-FENCE] signature mismatch, NOT PATCHING rva=0x%llX\r\n",
+                static_cast<unsigned long long>(kRetailPatchFenceGetStateRva));
+            return 0;
+        }
+        ConsolePrint("[RETAIL-PATCH-FENCE] validated target=%p bytes=%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X\r\n",
+            target, target[0], target[1], target[2], target[3], target[4], target[5],
+            target[6], target[7], target[8], target[9], target[10], target[11],
+            target[12], target[13]);
+        const MH_STATUS init = MH_Initialize();
+        if (init != MH_OK && init != MH_ERROR_ALREADY_INITIALIZED)
+        {
+            ConsolePrint("[RETAIL-PATCH-FENCE] MinHook init failed=%d\r\n", static_cast<int>(init));
+            return 0;
+        }
+        const MH_STATUS created = MH_CreateHook(
+            const_cast<unsigned char*>(target),
+            reinterpret_cast<void*>(&RetailPatchFenceGetStateDetour),
+            reinterpret_cast<void**>(&g_retailPatchFenceGetStateOriginal));
+        if (created != MH_OK)
+        {
+            ConsolePrint("[RETAIL-PATCH-FENCE] create failed=%d\r\n", static_cast<int>(created));
+            return 0;
+        }
+        const MH_STATUS enabled = MH_EnableHook(const_cast<unsigned char*>(target));
+        if (enabled != MH_OK)
+        {
+            ConsolePrint("[RETAIL-PATCH-FENCE] enable failed=%d\r\n", static_cast<int>(enabled));
+            MH_RemoveHook(const_cast<unsigned char*>(target));
+            return 0;
+        }
+        ConsolePrint("[RETAIL-PATCH-FENCE] installed target=%p trampoline=%p detour=%p mode=getter-only\r\n",
+            target, reinterpret_cast<void*>(g_retailPatchFenceGetStateOriginal),
+            reinterpret_cast<void*>(&RetailPatchFenceGetStateDetour));
+        ConsolePrint("[RETAIL-PATCH-FENCE] armed single-hook rva=0x%llX mode=%s\r\n",
+            static_cast<unsigned long long>(kRetailPatchFenceGetStateRva),
+            g_retailFenceMode == 1 ? "observe" : "force");
+        return 0;
+    }
+
+    void QueueRetailPatchFence() noexcept
+    {
+        if (!IsExactRetailSteamImage())
+            return;
+        HANDLE thread = CreateThread(nullptr, 0, &RetailPatchFenceWorker, nullptr, 0, nullptr);
+        if (thread)
+            CloseHandle(thread);
+        else
+            ConsolePrint("[RETAIL-PATCH-FENCE] worker create failed=%lu\r\n", GetLastError());
+    }
+
     // -------------------------------------------------------------------------
     // Steam Retail ONLINE "general" live diagnostic.
     // Logging-only: does not alter return values, callback arguments, records,
@@ -954,8 +1401,14 @@ namespace
 
     int __fastcall RetailStorageRawStateDetour(void* object)
     {
-        const int result = g_retailStorageRawStateOriginal ?
+        const int actual = g_retailStorageRawStateOriginal ?
             g_retailStorageRawStateOriginal(object) : 0;
+        // Retail experiment: report the storage bootstrap as ready so the frontend
+        // can advance beyond the update gate. The original still executes.
+        constexpr int result = 2;
+        if (actual != result)
+            ConsolePrint("[RETAIL-UPDATE-FORCE] raw-state actual=%d forced=%d object=%p\r\n",
+                actual, result, object);
         const LONG previous = InterlockedExchange(
             &g_retailLastRawStorageState, static_cast<LONG>(result));
 
@@ -967,8 +1420,14 @@ namespace
 
     int __fastcall RetailStorageMappedStateDetour(void* object)
     {
-        const int result = g_retailStorageMappedStateOriginal ?
+        const int actual = g_retailStorageMappedStateOriginal ?
             g_retailStorageMappedStateOriginal(object) : 0;
+        // Retail experiment: force the mapped storage state to READY (4).
+        // No other login, network, or manifest result is modified.
+        constexpr int result = 4;
+        if (actual != result)
+            ConsolePrint("[RETAIL-UPDATE-FORCE] mapped-state actual=%d forced=%d object=%p\r\n",
+                actual, result, object);
         const LONG previous = InterlockedExchange(
             &g_retailLastMappedStorageState, static_cast<LONG>(result));
 
@@ -1072,7 +1531,7 @@ namespace
         if (!base)
             return 0;
 
-        ConsolePrint("[RETAIL-ONLINE-LIVE] begin mode=LOGGING_ONLY stateWrites=off resultOverrides=off "
+        ConsolePrint("[RETAIL-ONLINE-LIVE] begin mode=RETAIL_STORAGE_READY_FORCE stateWrites=off resultOverrides=raw:2,mapped:4 "
             "rawStateRva=0x%llX mappedStateRva=0x%llX lookupRva=0x%llX readRva=0x%llX callbackRva=0x%llX mainTickRva=0x%llX slotStartRva=0x%llX earlyManagerHooks=disabled\r\n",
             static_cast<unsigned long long>(kRetailStorageRawStateRva),
             static_cast<unsigned long long>(kRetailStorageMappedStateRva),
@@ -1914,9 +2373,39 @@ namespace
 
         if (code == EXCEPTION_ACCESS_VIOLATION && info->ExceptionRecord->NumberParameters >= 2)
         {
-            WriteRetailCrashLog("[RETAIL-VEH] access operation=%llu target=0x%llX\r\n",
-                static_cast<unsigned long long>(info->ExceptionRecord->ExceptionInformation[0]),
-                static_cast<unsigned long long>(info->ExceptionRecord->ExceptionInformation[1]));
+            const auto operation = static_cast<unsigned long long>(info->ExceptionRecord->ExceptionInformation[0]);
+            const auto target = static_cast<unsigned long long>(info->ExceptionRecord->ExceptionInformation[1]);
+            WriteRetailCrashLog("[RETAIL-VEH] access operation=%llu target=0x%llX\r\n", operation, target);
+
+            // The observed 1.30 follow-up fault targets the *kernel* alias of
+            // KUSER_SHARED_DATA, not a normal user-process allocation. Do not
+            // try VirtualProtect, create a fake mapping or skip this instruction.
+            // Preserve the exception for the existing protection/SEH handler.
+            if (g_liveTimestamp == kMW130Timestamp && g_liveImageSize == kMW130ImageSize &&
+                g_liveEntryPoint == kMW130EntryPoint &&
+                rva == kMW130ObservedSecondFaultRva && operation == 1 &&
+                target == kMW130ObservedSecondFaultAddress)
+            {
+                char opcodes[16 * 3 + 1]{};
+                bool readable = false;
+                __try
+                {
+                    const auto* bytes = reinterpret_cast<const unsigned char*>(rip);
+                    for (unsigned i = 0; i < 16; ++i)
+                        _snprintf_s(opcodes + i * 3, sizeof(opcodes) - i * 3, _TRUNCATE, "%02X ", bytes[i]);
+                    readable = true;
+                }
+                __except (EXCEPTION_EXECUTE_HANDLER)
+                {
+                    readable = false;
+                }
+                MEMORY_BASIC_INFORMATION mbi{};
+                const SIZE_T queried = VirtualQuery(
+                    reinterpret_cast<LPCVOID>(static_cast<std::uintptr_t>(target)), &mbi, sizeof(mbi));
+                WriteRetailCrashLog("[MW130-KUSER-FAULT] siteRva=0x%llX target=0x%llX kernelSharedDataAlias=yes virtualQuery=%s faultInstruction16=%s action=pass-through\r\n",
+                    static_cast<unsigned long long>(rva), target,
+                    queried ? "mapped" : "not-user-mapped", readable ? opcodes : "unreadable");
+            }
         }
 
 #if defined(_M_X64)
@@ -2350,6 +2839,8 @@ namespace
 
     INT WSAAPI RedirectGetAddrInfoA(PCSTR node, PCSTR service, const ADDRINFOA* hints, PADDRINFOA* result) noexcept
     {
+        if (node && EqualsNoCase(node, "objectstore.prod.demonware.net"))
+            RetailOnManifestObjectStoreRequested();
         if (IsAuth3Host(node))
             InstallEarlyAuth3LocalSigningTrust("getaddrinfoA-auth3");
         void* caller = _ReturnAddress();
@@ -2378,6 +2869,8 @@ namespace
             WideCharToMultiByte(CP_UTF8, 0, node, -1, host, static_cast<int>(sizeof(host)), nullptr, nullptr);
         if (service)
             WideCharToMultiByte(CP_UTF8, 0, service, -1, serviceText, static_cast<int>(sizeof(serviceText)), nullptr, nullptr);
+        if (node && EqualsNoCase(host, "objectstore.prod.demonware.net"))
+            RetailOnManifestObjectStoreRequested();
         if (node && IsAuth3Host(host))
             InstallEarlyAuth3LocalSigningTrust("GetAddrInfoW-auth3");
         TracePrint("DNS GetAddrInfoW module=%s host=%s service=%s redirect=%s target=%s",
@@ -2389,6 +2882,8 @@ namespace
 
     hostent* WSAAPI RedirectGetHostByName(const char* name) noexcept
     {
+        if (name && EqualsNoCase(name, "objectstore.prod.demonware.net"))
+            RetailOnManifestObjectStoreRequested();
         if (IsAuth3Host(name))
             InstallEarlyAuth3LocalSigningTrust("gethostbyname-auth3");
         void* caller = _ReturnAddress();
@@ -3047,6 +3542,17 @@ namespace
     bool MW130ProductionMode() noexcept
     {
         return CurrentStartupCompatBuild() == StartupCompatBuild::MW130 && !MW130DeepTraceRequested();
+    }
+
+    // Diagnostic A/B test. Disable *our* exception handler on 1.30 so any
+    // existing game/third-party exception handlers receive exceptions without
+    // another handler in front of them. Does not touch OS exception dispatch.
+    bool MW130NoVehRequested() noexcept
+    {
+        char value[8]{};
+        const DWORD count = GetEnvironmentVariableA(
+            "CODREVAMPED_MW130_NO_VEH", value, static_cast<DWORD>(sizeof(value)));
+        return count > 0 && count < sizeof(value) && value[0] == '1';
     }
 
     // 1.30 showed a second access violation after the known null-call recovery.
@@ -3723,6 +4229,192 @@ namespace
         return true;
     }
 
+    // Inspect the executable trampoline that was observed at the MW 1.30
+    // startup callsite. The target begins FF 25 xx xx xx xx: an x64 indirect
+    // jmp through a RIP-relative pointer. A nonzero CALL operand therefore
+    // does not guarantee the terminal destination is nonzero or executable.
+    //
+    // Diagnostics only: never rewrite trampoline slots, page protections,
+    // exceptions or thread context. Limit to three hops and validate every
+    // address before dereferencing it. Only called for the exact 1.30 image.
+    // The 1.30 crash does not end in the first FF25 stub: the observed
+    // trampoline redirects to an executable address only 0x85 bytes away.
+    // Record the *code at that destination* so its next branch/call can be
+    // identified in IDA without guessing a replacement function pointer.
+    // This is bounded, read-only, fingerprint-scoped and leaves VEH unchanged.
+    void TraceMW130TerminalCode(unsigned hop, std::uintptr_t address) noexcept
+    {
+        MEMORY_BASIC_INFORMATION page{};
+        const SIZE_T query = VirtualQuery(
+            reinterpret_cast<LPCVOID>(address), &page, sizeof(page));
+        const auto regionBase = reinterpret_cast<std::uintptr_t>(page.BaseAddress);
+        constexpr DWORD kExec = PAGE_EXECUTE | PAGE_EXECUTE_READ |
+            PAGE_EXECUTE_READWRITE | PAGE_EXECUTE_WRITECOPY;
+        const bool executable = query && page.State == MEM_COMMIT &&
+            (page.Protect & kExec) != 0 &&
+            (page.Protect & (PAGE_GUARD | PAGE_NOACCESS)) == 0 &&
+            regionBase <= address && address - regionBase < page.RegionSize;
+
+        char owner[MAX_PATH]{};
+        ModuleNameFromAddress(reinterpret_cast<void*>(address), owner, sizeof(owner));
+        Write123StartupLog(
+            "[MW130-THUNK-CODE] hop=%u destination=0x%llX owner=%s allocationBase=%p "
+            "base=%p regionSize=0x%llX state=0x%lX protect=0x%lX type=0x%lX "
+            "executable=%s action=inspect-only\r\n",
+            hop, static_cast<unsigned long long>(address), owner,
+            query ? page.AllocationBase : nullptr, query ? page.BaseAddress : nullptr,
+            static_cast<unsigned long long>(query ? page.RegionSize : 0),
+            static_cast<unsigned long>(query ? page.State : 0),
+            static_cast<unsigned long>(query ? page.Protect : 0),
+            static_cast<unsigned long>(query ? page.Type : 0),
+            executable ? "yes" : "no");
+
+        if (!executable)
+            return;
+        constexpr size_t kLimit = 64;
+        const size_t available = static_cast<size_t>(page.RegionSize - (address - regionBase));
+        const size_t count = available < kLimit ? available : kLimit;
+        unsigned char code[kLimit]{};
+        bool read = false;
+        __try
+        {
+            std::memcpy(code, reinterpret_cast<const void*>(address), count);
+            read = true;
+        }
+        __except (EXCEPTION_EXECUTE_HANDLER)
+        {
+            read = false;
+        }
+        if (!read)
+        {
+            Write123StartupLog("[MW130-THUNK-CODE] hop=%u destination=0x%llX bytes=unreadable\r\n",
+                hop, static_cast<unsigned long long>(address));
+            return;
+        }
+        for (size_t offset = 0; offset < count; offset += 16)
+        {
+            char hex[16 * 3 + 1]{};
+            const size_t lineBytes = (count - offset < 16) ? count - offset : 16;
+            for (size_t index = 0; index < lineBytes; ++index)
+                _snprintf_s(hex + 3 * index, sizeof(hex) - 3 * index,
+                    _TRUNCATE, "%02X ", code[offset + index]);
+            Write123StartupLog("[MW130-THUNK-HEX] hop=%u offset=+0x%02llX bytes=%s\r\n",
+                hop, static_cast<unsigned long long>(offset), hex);
+        }
+    }
+
+    void TraceMW130ThunkChain(std::uintptr_t entry) noexcept
+    {
+        std::uintptr_t address = entry;
+        for (unsigned hop = 0; hop < 3 && address; ++hop)
+        {
+            MEMORY_BASIC_INFORMATION codePage{};
+            const SIZE_T codeQuery = VirtualQuery(
+                reinterpret_cast<LPCVOID>(address), &codePage, sizeof(codePage));
+            const auto start = reinterpret_cast<std::uintptr_t>(codePage.BaseAddress);
+            const bool readable = codeQuery && codePage.State == MEM_COMMIT &&
+                (codePage.Protect & (PAGE_GUARD | PAGE_NOACCESS)) == 0 &&
+                start <= address && codePage.RegionSize >= 6 &&
+                address - start <= codePage.RegionSize - 6;
+            unsigned char opcode[6]{};
+            bool opcodeRead = false;
+            if (readable)
+            {
+                __try
+                {
+                    std::memcpy(opcode, reinterpret_cast<const void*>(address), sizeof(opcode));
+                    opcodeRead = true;
+                }
+                __except (EXCEPTION_EXECUTE_HANDLER)
+                {
+                    opcodeRead = false;
+                }
+            }
+            if (!opcodeRead || opcode[0] != 0xFF || opcode[1] != 0x25)
+            {
+                Write123StartupLog("[MW130-THUNK] hop=%u address=0x%llX codeMapped=%s codeProtect=0x%lX codeType=0x%lX form=%s action=stop\r\n",
+                    hop, static_cast<unsigned long long>(address),
+                    codeQuery ? "yes" : "no",
+                    static_cast<unsigned long>(codeQuery ? codePage.Protect : 0),
+                    static_cast<unsigned long>(codeQuery ? codePage.Type : 0),
+                    opcodeRead ? "not-FF25-indirect-jump" : "unreadable");
+                // The initial private FF25 thunk is mapped and its immediate
+                // destination was executable in v5. Capture the next 64 bytes:
+                // a valid trampoline does not imply a valid nested CALL.
+                TraceMW130TerminalCode(hop, address);
+                break;
+            }
+
+            std::int32_t displacement = 0;
+            std::memcpy(&displacement, opcode + 2, sizeof(displacement));
+            const std::uintptr_t nextInstruction = address + sizeof(opcode);
+            const std::uint64_t distance = displacement < 0 ?
+                static_cast<std::uint64_t>(-static_cast<std::int64_t>(displacement)) :
+                static_cast<std::uint64_t>(displacement);
+            // Prevent wraparound even with malformed trampoline bytes.
+            if ((displacement < 0 && nextInstruction < distance) ||
+                (displacement >= 0 && distance > UINTPTR_MAX - nextInstruction))
+            {
+                Write123StartupLog("[MW130-THUNK] hop=%u address=0x%llX form=FF25 slot=overflow action=stop\r\n",
+                    hop, static_cast<unsigned long long>(address));
+                break;
+            }
+            const std::uintptr_t slot = displacement < 0 ?
+                nextInstruction - static_cast<std::uintptr_t>(distance) :
+                nextInstruction + static_cast<std::uintptr_t>(distance);
+            MEMORY_BASIC_INFORMATION slotPage{};
+            const SIZE_T slotQuery = VirtualQuery(
+                reinterpret_cast<LPCVOID>(slot), &slotPage, sizeof(slotPage));
+            const auto slotBase = reinterpret_cast<std::uintptr_t>(slotPage.BaseAddress);
+            const bool slotMapped = slotQuery && slotPage.State == MEM_COMMIT &&
+                (slotPage.Protect & (PAGE_GUARD | PAGE_NOACCESS)) == 0 &&
+                slotBase <= slot && slotPage.RegionSize >= sizeof(std::uintptr_t) &&
+                slot - slotBase <= slotPage.RegionSize - sizeof(std::uintptr_t);
+            std::uintptr_t destination = 0;
+            bool slotRead = false;
+            if (slotMapped)
+            {
+                __try
+                {
+                    std::memcpy(&destination, reinterpret_cast<const void*>(slot), sizeof(destination));
+                    slotRead = true;
+                }
+                __except (EXCEPTION_EXECUTE_HANDLER)
+                {
+                    slotRead = false;
+                }
+            }
+            MEMORY_BASIC_INFORMATION destinationPage{};
+            const SIZE_T destinationQuery = slotRead && destination ? VirtualQuery(
+                reinterpret_cast<LPCVOID>(destination), &destinationPage,
+                sizeof(destinationPage)) : 0;
+            constexpr DWORD kExecute = PAGE_EXECUTE | PAGE_EXECUTE_READ |
+                PAGE_EXECUTE_READWRITE | PAGE_EXECUTE_WRITECOPY;
+            const bool destinationExecutable = destinationQuery &&
+                destinationPage.State == MEM_COMMIT &&
+                (destinationPage.Protect & kExecute) != 0 &&
+                (destinationPage.Protect & (PAGE_GUARD | PAGE_NOACCESS)) == 0;
+            Write123StartupLog("[MW130-THUNK] hop=%u address=0x%llX codeType=0x%lX form=FF25 displacement=%lld slot=0x%llX slotReadable=%s slotProtect=0x%lX destination=0x%llX destinationMapped=%s destinationProtect=0x%lX destinationExecutable=%s\r\n",
+                hop, static_cast<unsigned long long>(address),
+                static_cast<unsigned long>(codePage.Type),
+                static_cast<long long>(displacement),
+                static_cast<unsigned long long>(slot), slotRead ? "yes" : "no",
+                static_cast<unsigned long>(slotQuery ? slotPage.Protect : 0),
+                static_cast<unsigned long long>(destination),
+                destinationQuery ? "yes" : "no",
+                static_cast<unsigned long>(destinationQuery ? destinationPage.Protect : 0),
+                destinationExecutable ? "yes" : "no");
+            if (!slotRead || !destination || !destinationExecutable || destination == address)
+                break;
+            if (hop == 2)
+            {
+                TraceMW130TerminalCode(hop + 1, destination);
+                break;
+            }
+            address = destination;
+        }
+    }
+
     bool TryRecover123NullExecute(PEXCEPTION_POINTERS info) noexcept
     {
 #if !defined(_M_X64)
@@ -3770,6 +4462,91 @@ namespace
         const bool mw130 = CurrentStartupCompatBuild() == StartupCompatBuild::MW130;
         if (mw130 && returnRva != kMW130ObservedNullCallReturnRva)
             return false;
+        if (mw130)
+        {
+            // The logged instruction ending at 0x45E398 is:
+            //   FF 94 24 80 25 00 00   call qword ptr [rsp+0x2580]
+            // The CPU pushes the return address first; at the exception RIP=0,
+            // the original call's slot therefore resides at rsp+0x2588.
+            // Check the actual operand rather than assuming every RIP=0 is the
+            // same failure. All observations are read-only.
+            constexpr unsigned char expectedCall[] = {0xFF, 0x94, 0x24, 0x80, 0x25, 0x00, 0x00};
+            bool callMatches = false;
+            bool targetReadable = false;
+            std::uintptr_t operand = 0;
+            __try
+            {
+                callMatches = std::memcmp(
+                    reinterpret_cast<const void*>(returnAddress - sizeof(expectedCall)),
+                    expectedCall, sizeof(expectedCall)) == 0;
+                operand = *reinterpret_cast<const std::uintptr_t*>(rsp + 0x2588u);
+                targetReadable = true;
+            }
+            __except (EXCEPTION_EXECUTE_HANDLER)
+            {
+                targetReadable = false;
+            }
+            Write123StartupLog("[MW130-CALL-TARGET] returnRva=0x%llX callOpcodeVerified=%s stackSlot=RSP+0x2588 slotReadable=%s target=0x%llX nullRecoveryDisabled=%s\r\n",
+                static_cast<unsigned long long>(returnRva), callMatches ? "yes" : "NO",
+                targetReadable ? "yes" : "NO", static_cast<unsigned long long>(operand),
+                InterlockedCompareExchange(&g_mw130SkipNullRecovery, 0, 0) ? "yes" : "no");
+
+            // The observed CALL operand is nonzero, but its first instruction
+            // redirects through a private-memory FF25 trampoline. Trace its
+            // terminal instruction bytes as well as pointer values: the first
+            // hop is executable, so RIP=0 occurs somewhere deeper in control flow.
+            // Capture the allocation metadata and bounded instruction bytes,
+            // without trying to execute/patch the target or repair the context.
+            MEMORY_BASIC_INFORMATION mbi{};
+            const SIZE_T queried = targetReadable && operand ?
+                VirtualQuery(reinterpret_cast<LPCVOID>(operand), &mbi, sizeof(mbi)) : 0;
+            const DWORD executablePages = PAGE_EXECUTE | PAGE_EXECUTE_READ |
+                PAGE_EXECUTE_READWRITE | PAGE_EXECUTE_WRITECOPY;
+            const bool executable = queried && mbi.State == MEM_COMMIT &&
+                (mbi.Protect & executablePages) != 0 &&
+                (mbi.Protect & (PAGE_GUARD | PAGE_NOACCESS)) == 0;
+            char targetBytes[16 * 3 + 1]{};
+            bool bytesReadable = false;
+            if (executable && reinterpret_cast<std::uintptr_t>(mbi.BaseAddress) <= operand &&
+                mbi.RegionSize >= 16 && operand - reinterpret_cast<std::uintptr_t>(mbi.BaseAddress) <= mbi.RegionSize - 16)
+            {
+                __try
+                {
+                    for (unsigned i = 0; i < 16; ++i)
+                        _snprintf_s(targetBytes + i * 3, sizeof(targetBytes) - i * 3,
+                            _TRUNCATE, "%02X ", reinterpret_cast<const unsigned char*>(operand)[i]);
+                    bytesReadable = true;
+                }
+                __except (EXCEPTION_EXECUTE_HANDLER)
+                {
+                    bytesReadable = false;
+                }
+            }
+            Write123StartupLog("[MW130-CALL-MEMORY] target=0x%llX mapped=%s state=0x%lX protect=0x%lX type=0x%lX executable=%s bytes16=%s\r\n",
+                static_cast<unsigned long long>(operand), queried ? "yes" : "no",
+                static_cast<unsigned long>(queried ? mbi.State : 0),
+                static_cast<unsigned long>(queried ? mbi.Protect : 0),
+                static_cast<unsigned long>(queried ? mbi.Type : 0),
+                executable ? "yes" : "no", bytesReadable ? targetBytes : "unavailable");
+
+            // Resolve the observed private executable FF25 trampoline chain.
+            // All reads are bounded; the game and third-party handlers still
+            // own the exception and the original target remains unmodified.
+            if (targetReadable && operand && executable)
+                TraceMW130ThunkChain(operand);
+
+            // Only attempt the original minimal recovery for an observed zero
+            // operand. Nonzero means this may be a nested thunk/handler issue.
+            if (!callMatches || !targetReadable || operand != 0 ||
+                InterlockedCompareExchange(&g_mw130SkipNullRecovery, 0, 0) != 0)
+            {
+                Write123StartupLog("[MW130-RECOVERY] action=pass-through reason=%s\r\n",
+                    !callMatches ? "call-opcode-mismatch" :
+                    !targetReadable ? "slot-unreadable" :
+                    operand != 0 ? "nonzero-operand-despite-execute-null" : "disabled-by-user");
+                return false;
+            }
+        }
         const LONG recovery = InterlockedIncrement(&g_compat123NullExecRecoveries);
         if (recovery > (mw130 ? 2 : 8))
         {
@@ -4056,6 +4833,15 @@ namespace
         const StartupCompatBuild build = fingerprintOk ?
             DetectStartupCompatBuild(timestamp, imageSize, entryPoint) : StartupCompatBuild::None;
         InterlockedExchange(&g_startupCompatBuild, static_cast<LONG>(build));
+        if (build == StartupCompatBuild::MW130)
+        {
+            char skipRecovery[8]{};
+            const DWORD count = GetEnvironmentVariableA(
+                "CODREVAMPED_MW130_SKIP_NULL_RECOVERY", skipRecovery,
+                static_cast<DWORD>(sizeof(skipRecovery)));
+            InterlockedExchange(&g_mw130SkipNullRecovery,
+                count > 0 && count < sizeof(skipRecovery) && skipRecovery[0] == '1' ? 1 : 0);
+        }
 
         Write123StartupLog("[BOOT] live fingerprint ok=%s timestamp=0x%08X imageSize=0x%08X entryPoint=0x%08X startupCompat=%s\r\n",
             fingerprintOk ? "yes" : "no", timestamp, imageSize, entryPoint, StartupCompatBuildName(build));
@@ -4170,7 +4956,12 @@ namespace
         const bool mw123Production = build == StartupCompatBuild::MW123 && !MW123DeepTraceRequested();
         const bool mw130Production = build == StartupCompatBuild::MW130 && !MW130DeepTraceRequested();
         const bool minimalNullRecovery = mw123Production || mw130Production;
-        if (!mw116Production)
+        if (build == StartupCompatBuild::MW130 && MW130NoVehRequested())
+        {
+            g_compat123Veh = nullptr;
+            Write123StartupLog("[MW130-ISOLATION] our-VEH=off option=CODREVAMPED_MW130_NO_VEH; null-recovery=off; Windows/game exception handling unchanged\r\n");
+        }
+        else if (!mw116Production)
         {
             g_compat123Veh = AddVectoredExceptionHandler(1, &Trace123VectoredException);
             if (minimalNullRecovery)
@@ -4187,11 +4978,15 @@ namespace
 
         if (build == StartupCompatBuild::MW130)
         {
-            WriteRetailCrashLog("\r\n[MW130-CRASH-TRACE] session-start fingerprint=%08X/%08X/%08X same-VEH=yes passive-followup=yes\r\n",
-                timestamp, imageSize, entryPoint);
+            WriteRetailCrashLog("\r\n[MW130-CRASH-TRACE] session-start fingerprint=%08X/%08X/%08X our-VEH=%s passive-followup=%s\r\n",
+                timestamp, imageSize, entryPoint, g_compat123Veh ? "installed" : "disabled",
+                g_compat123Veh ? "yes" : "no");
+            Write123StartupLog("[MW130-ISOLATION] nullRecovery=%s (CODREVAMPED_MW130_SKIP_NULL_RECOVERY=1 disables the speculative return; expected to expose the original null-call failure)\r\n",
+                InterlockedCompareExchange(&g_mw130SkipNullRecovery, 0, 0) ? "disabled" : "observed-site-only");
             if (!MW130LegacyStartupShimsRequested())
             {
-                Write123StartupLog("[MW130-ISOLATION] pre-entry OS/launcher/registry/DPAPI/dialog IAT shims disabled; original game bootstrap untouched; observed nullcall recovery and DNS routing retained\r\n");
+                Write123StartupLog("[MW130-ISOLATION] pre-entry OS/launcher/registry/DPAPI/dialog IAT shims disabled; game bootstrap untouched; nullRecovery=%s DNS-routing=on\r\n",
+                    g_compat123Veh ? "observed-zero-operand-only" : "off(no-VEH)");
                 return;
             }
             Write123StartupLog("[MW130-ISOLATION] opt-in legacy 1.23-style startup shims enabled; crash comparison mode\r\n");
@@ -5433,6 +6228,12 @@ namespace
         return true;
     }
 
+    #include "Features/Assets/AssetInventory.h"
+    #include "Features/CustomMaps/CustomMapProbe.h"
+    #include "Features/Fastfiles/VerdanskFastfileProbe.h"
+    #include "Features/Fastfiles/VerdanskCollisionMode.h"
+    #include "Features/Bots/BotSystem.h"
+
     void InstallReplay120NativeCompatibility() noexcept
     {
         if (!Replay120CompatEnabled())
@@ -5474,6 +6275,60 @@ namespace
             "StringTableLookup", 0x013E2BA0ull,
             reinterpret_cast<void*>(&Replay120StringLookupDetour),
             reinterpret_cast<void**>(&g_replay120StringLookupOriginal)) ? 1u : 0u;
+
+        // Perform an exact, read-only 1.20 Verdansk collision-file preflight.
+        // This also repairs the working directory only when it can prove
+        // the relative zone path is missing but the EXE-relative path opens.
+        // An inventory of 1024 stock fastfiles is useful for research, but
+        // can hold up early client startup on a slow or busy installation.
+        // Run it only when explicitly requested for a separate diagnostics run.
+        wchar_t assetScanFlag[8]{};
+        const DWORD assetScanChars=GetEnvironmentVariableW(
+            L"CODREVAMPED_120_ASSET_SCAN",assetScanFlag,
+            static_cast<DWORD>(std::size(assetScanFlag)));
+        if (assetScanChars == 1 && assetScanFlag[0] == L'1')
+            replay120_asset_inventory::Run();
+        else
+            ConsolePrint("[ASSET120] deep inventory skipped at startup; set CODREVAMPED_120_ASSET_SCAN=1 to enable\r\n");
+        replay120_custom_maps::Run();
+        // Do not even enter the experimental C++ filesystem/package-loader
+        // startup path unless a developer explicitly opted in. Previously this
+        // call happened unconditionally even when maps/ was absent. Some 1.20
+        // startup traces stop here before the native preflight can return.
+        wchar_t mapOptIn[8]{};
+        const DWORD mapOptInLength = GetEnvironmentVariableW(
+            L"CODREVAMPED_120_CUSTOM_MAPS", mapOptIn,
+            static_cast<DWORD>(std::size(mapOptIn)));
+        if (mapOptInLength == 1 && mapOptIn[0] == L'1')
+        {
+            ConsolePrint("[MAP120] developer opt-in=on; entering native map preflight\r\n");
+            const bool nativeMaps = codrevamped::replay120::custommaps::Install(
+                reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
+                g_liveImageSize, &ConsolePrint);
+            ConsolePrint("[MAP120] native map preflight returned result=%s\r\n",
+                nativeMaps ? "active" : "disabled");
+        }
+        else
+        {
+            ConsolePrint("[MAP120] native preflight NOT ENTERED; opt-in=off; stock map loader unchanged\r\n");
+        }
+        ConsolePrint("[REPLAY120-STAGE] native maps complete; starting Lua preflight\r\n");
+        if (g_liveTimestamp == kMW120Timestamp &&
+            g_liveImageSize == kMW120ImageSize &&
+            g_liveEntryPoint == kMW120EntryPoint)
+        {
+            codrevamped::replay120::luamenus::Install(
+                reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),g_liveImageSize,&ConsolePrint);
+        }
+        ConsolePrint("[REPLAY120-STAGE] Lua preflight returned; starting Verdansk probe\r\n");
+        replay120_fastfiles::ProbeVerdanskCollisionFiles();
+        ConsolePrint("[REPLAY120-STAGE] Verdansk probe returned; starting collision compatibility\r\n");
+        // Install before the native map-load transition starts.
+        replay120_collision_mode::Install();
+        ConsolePrint("[REPLAY120-STAGE] collision compatibility returned; starting local bots\r\n");
+
+        replay120_local_bots::Install();
+        ConsolePrint("[REPLAY120-STAGE] local bots returned; startup feature installation finished\r\n");
 
         ConsolePrint(
             "[REPLAY120] native compatibility installed=%u/6 "
@@ -5974,9 +6829,39 @@ namespace
         }
     }
 
+    // Retail-specific bootstrap.  The ONLY proactive work is the main EXE's
+    // DNS IAT: it must be armed before the game's first network resolution.
+    // The public key is not touched until an ObjectStore request actually occurs.
+    DWORD WINAPI RetailMinimalDnsWorker(LPVOID) noexcept
+    {
+        Sleep(1500); // Return from loader startup before touching the main IAT.
+        g_traceStartTick = GetTickCount64();
+        g_ws2 = GetModuleHandleW(L"WS2_32.dll");
+        if (!g_ws2) g_ws2 = LoadLibraryW(L"WS2_32.dll");
+        if (!g_ws2) return 0;
+        g_getAddrInfoA = reinterpret_cast<GetAddrInfoAFn>(GetProcAddress(g_ws2, "getaddrinfo"));
+        g_getAddrInfoW = reinterpret_cast<GetAddrInfoWFn>(GetProcAddress(g_ws2, "GetAddrInfoW"));
+        g_getHostByName = reinterpret_cast<GetHostByNameFn>(GetProcAddress(g_ws2, "gethostbyname"));
+        if (!g_getAddrInfoA || !g_getAddrInfoW || !g_getHostByName) return 0;
+
+        HMODULE const mainModule = GetModuleHandleW(nullptr);
+        unsigned dns = 0;
+        for (const char* dll : { "WS2_32.dll", "api-ms-win-downlevel-winsock-l1-1-0.dll" })
+        {
+            dns += PatchImport(mainModule, dll, "getaddrinfo",
+                reinterpret_cast<void*>(&RedirectGetAddrInfoA)) ? 1u : 0u;
+            dns += PatchImport(mainModule, dll, "GetAddrInfoW",
+                reinterpret_cast<void*>(&RedirectGetAddrInfoW)) ? 1u : 0u;
+            dns += PatchImport(mainModule, dll, "gethostbyname",
+                reinterpret_cast<void*>(&RedirectGetHostByName)) ? 1u : 0u;
+        }
+        ConsolePrint("[RETAIL-LAZY-BOOT] dnsIat=%u rsaImportHook=OFF fenceHook=OFF EAT=OFF moduleScan=OFF VEH=OFF logger=on-demand keyWrite=on-objectstore\r\n", dns);
+        return 0;
+    }
+
     DWORD WINAPI RedirectWorker(LPVOID) noexcept
     {
-        DeleteFileW(L"mw2019_redirect.log");
+        // Do not delete the previous crash/session logs; each Retail launch appends.
         g_traceStartTick = GetTickCount64();
         wchar_t backgroundTest[8]{};
         const bool hideConsole = GetEnvironmentVariableW(L"CODREVAMPED_BACKGROUND_TEST",
@@ -6003,6 +6888,12 @@ namespace
             g_liveImageSize == 0x21679200u &&
             g_liveEntryPoint == 0x06E4931Cu;
 
+        if (exactSteamRetail)
+        {
+            ConfigureRetailWerDumps();
+            ConsolePrint("[RETAIL-STABILITY] borderless worker=off windowMode=game-managed\r\n");
+        }
+
         // Exact 1.20 frontend ownership compatibility must be armed before the
         // Engine Lua library registers its premium predicates.
         if (MW120ExactLiveBuild())
@@ -6016,6 +6907,16 @@ namespace
         {
             ConsolePrint("[%s] research scanners/probes disabled frontendProbe=off runtimeDump=off onlineLiveHooks=off\r\n",
                 exactSteamRetail ? "RETAIL-STABLE" : "MW130-STABLE");
+            if (exactSteamRetail)
+            {
+                // Minimal Retail startup isolation: do not create an extra
+                // key/fence memory polling thread while testing early exits.
+                // The stock RSA verifier and original public key stay intact.
+                ConsolePrint("[RETAIL-BOOT-ISOLATION] no RSA import hook, no public-key writes, no native memory sampler\r\n");
+                // Hard-disable the old forced-success hook in Retail, even if
+                // CODREVAMPED_RETAIL_FENCE_MODE was previously set to 'force'.
+                ConsolePrint("[RETAIL-PATCH-FENCE] disabled native-state-only; old environment mode ignored\r\n");
+            }
         }
         else
         {
@@ -6069,15 +6970,13 @@ namespace
 
         QueueMW116StartupWatchdog();
 
-        wchar_t skipCrashTrace[8]{};
-        const bool skipRetailCrashTrace = g_liveTimestamp == 0x69DD404Eu &&
-            g_liveImageSize == 0x21679200u && g_liveEntryPoint == 0x06E4931Cu &&
-            GetEnvironmentVariableW(L"CODREVAMPED_RETAIL_NO_VEH", skipCrashTrace,
-                static_cast<DWORD>(std::size(skipCrashTrace))) && skipCrashTrace[0] == L'1';
-        if (!skipRetailCrashTrace)
-            InstallRetailCrashTrace();
+        // Early Retail termination occurs even after disabling the native
+        // RSA hook. Do not install our extra VEH at all in isolation mode:
+        // first-chance anti-tamper exceptions must be handled by the game.
+        if (exactSteamRetail)
+            ConsolePrint("[CRASH-TRACE] Steam Retail minimal boot: extra VEH disabled; game handlers unchanged\r\n");
         else
-            ConsolePrint("[CRASH-TRACE] Steam retail diagnostic: VEH logging disabled\r\n");
+            InstallRetailCrashTrace();
 
         if (!ResolveWinsock())
         {
@@ -6089,11 +6988,10 @@ namespace
         // For those exact fingerprints, stay on ordinary IAT hooks only; do not
         // rewrite WS2_32's export table or patch Winsock provider DLLs.  1.16
         // previously took the unknown-retail EAT path before crashing.
-        wchar_t iatOnlyRequested[8]{};
-        const bool retailIatOnly = g_liveTimestamp == 0x69DD404Eu &&
-            g_liveImageSize == 0x21679200u && g_liveEntryPoint == 0x06E4931Cu &&
-            GetEnvironmentVariableW(L"CODREVAMPED_RETAIL_IAT_ONLY", iatOnlyRequested,
-                static_cast<DWORD>(std::size(iatOnlyRequested))) && iatOnlyRequested[0] == L'1';
+        // Never rewrite WS2_32's export table on this protected Retail build.
+        // A single main-game IAT DNS redirect remains sufficient for the
+        // captured keylist and Demonware login hostname requests.
+        const bool retailIatOnly = exactSteamRetail;
         if (retailIatOnly)
         {
             ConsolePrint("[WS2-EXPORT] Steam retail diagnostic: EAT hooks disabled; DNS IAT hooks retained\r\n");
@@ -6158,7 +7056,9 @@ namespace
             ConsolePrint("[REDIRECT] socket/WSASocket/connect/WSAConnect/WSAIoctl/select tracing is passthrough-only; destination, sockaddr, return value, and WSA error are not modified\r\n");
             ConsolePrint("[REDIRECT] WSAID_CONNECTEX results are wrapped only for logging, then forwarded to the real provider ConnectEx pointer\r\n");
         }
-        if (IsSupportedStartupCompatBuild() || retailIatOnly)
+        if (retailIatOnly)
+            ConsolePrint("[RETAIL-BOOT-ISOLATION] WS2_32 EAT disabled; main EXE DNS IAT only; no app-module IAT patches\r\n");
+        else if (IsSupportedStartupCompatBuild())
             ConsolePrint("[REDIRECT] IAT-only mode: WS2_32 EAT hooks disabled; one delayed app-module IAT pass will run once\r\n");
         else if (UseDnsOnlyNetworkHooks())
             ConsolePrint("[REDIRECT] current/unknown retail stability mode: WS2_32 EAT is DNS-only; one delayed DNS-only app-module IAT pass will run once\r\n");
@@ -6172,6 +7072,11 @@ namespace
 
         // One delayed pass only.  This catches Battle.net/Demonware helper DLLs
         // that are loaded after the executable starts, without running a module scanner.
+        if (exactSteamRetail)
+        {
+            ConsolePrint("[RETAIL-BOOT-ISOLATION] loaded-module IAT pass skipped to avoid altering Steam/Discord DLLs\r\n");
+            return 0;
+        }
         Sleep(18000);
         OneShotLoadedModuleNetworkPass();
         return 0;
@@ -6352,8 +7257,24 @@ BOOL WINAPI DllMain(HMODULE module, DWORD reason, LPVOID reserved)
         // launcher/bootstrap checks before the normal game flow. Detect by exact
         // live fingerprint and install the scoped compatibility path before the
         // EXE entry point runs.
+        std::uint32_t timestamp = 0, sizeOfImage = 0, entryPoint = 0;
+        if (ReadMainFingerprint(timestamp, sizeOfImage, entryPoint) &&
+            timestamp == 0x69DD404Eu && sizeOfImage == 0x21679200u &&
+            entryPoint == 0x06E4931Cu)
+        {
+            // Retail: no logger/console, WER registration, anti-tamper probes,
+            // RSA patch, MinHook, scheduler, or full startup compatibility here.
+            g_liveTimestamp = timestamp;
+            g_liveImageSize = sizeOfImage;
+            g_liveEntryPoint = entryPoint;
+            InterlockedExchange(&g_liveFingerprintValid, 1);
+            if (HANDLE thread = CreateThread(nullptr, 0,
+                    RetailMinimalDnsWorker, nullptr, 0, nullptr))
+                CloseHandle(thread);
+            return TRUE;
+        }
+        // Legacy supported game builds preserve their established behavior.
         Install123StartupCompatibility();
-
         if (HANDLE thread = CreateThread(nullptr, 0, RedirectWorker, nullptr, 0, nullptr))
             CloseHandle(thread);
     }

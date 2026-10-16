@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<ItemGroup Label="ProjectConfigurations">
+  <ProjectConfiguration Include="Debug|x64"><Configuration>Debug</Configuration><Platform>x64</Platform></ProjectConfiguration>
+  <ProjectConfiguration Include="Release|x64"><Configuration>Release</Configuration><Platform>x64</Platform></ProjectConfiguration>
+</ItemGroup>
+<PropertyGroup Label="Globals"><VCProjectVersion>17.0</VCProjectVersion><Keyword>Win32Proj</Keyword><ProjectGuid>{9263CD22-2EBD-4243-910C-221284A740E7}</ProjectGuid><RootNamespace>IW8MapPack</RootNamespace><WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion></PropertyGroup>
+<Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+<PropertyGroup Label="Configuration"><ConfigurationType>Application</ConfigurationType><PlatformToolset>v143</PlatformToolset><CharacterSet>Unicode</CharacterSet></PropertyGroup>
+<Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+<ItemDefinitionGroup><ClCompile><LanguageStandard>stdcpp20</LanguageStandard><WarningLevel>Level4</WarningLevel><PrecompiledHeader>NotUsing</PrecompiledHeader></ClCompile></ItemDefinitionGroup>
+<ItemGroup><ClCompile Include="$(ProjectDir)..\..\..\src\tools\IW8MapPack\IW8MapPack.cpp"/></ItemGroup>
+<PropertyGroup><OutDir>$(ProjectDir)..\..\..\Tools\$(Configuration)\IW8MapPack\</OutDir><IntDir>$(ProjectDir)..\..\..\artifacts\obj\IW8MapPack\$(Configuration)\</IntDir></PropertyGroup>
+<Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+</Project>

@@ -1,0 +1,7 @@
+{
+  "schema": 1,
+  "target": "Replay-1.20",
+  "id": "mp_crtest",
+  "nativeFastfilesBuilt": false,
+  "notes": "Source blockout only. Use IW8Tools to attach own shaders, export native sources, compile and deploy."
+}

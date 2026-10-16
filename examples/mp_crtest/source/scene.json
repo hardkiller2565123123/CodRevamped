@@ -1,0 +1,122 @@
+[
+  {
+    "Name": "ArenaFloor",
+    "X": 0,
+    "Y": 0,
+    "Z": -16,
+    "Width": 1024,
+    "Length": 1024,
+    "Height": 32,
+    "Yaw": 0,
+    "Shape": "box",
+    "UVScale": 128
+  },
+  {
+    "Name": "ArenaNorth",
+    "X": 0,
+    "Y": 496,
+    "Z": 144,
+    "Width": 1024,
+    "Length": 32,
+    "Height": 288,
+    "Yaw": 0,
+    "Shape": "box",
+    "UVScale": 128
+  },
+  {
+    "Name": "ArenaSouth",
+    "X": 0,
+    "Y": -496,
+    "Z": 144,
+    "Width": 1024,
+    "Length": 32,
+    "Height": 288,
+    "Yaw": 0,
+    "Shape": "box",
+    "UVScale": 128
+  },
+  {
+    "Name": "ArenaEast",
+    "X": 496,
+    "Y": 0,
+    "Z": 144,
+    "Width": 32,
+    "Length": 1024,
+    "Height": 288,
+    "Yaw": 0,
+    "Shape": "box",
+    "UVScale": 128
+  },
+  {
+    "Name": "ArenaWest",
+    "X": -496,
+    "Y": 0,
+    "Z": 144,
+    "Width": 32,
+    "Length": 1024,
+    "Height": 288,
+    "Yaw": 0,
+    "Shape": "box",
+    "UVScale": 128
+  },
+  {
+    "Name": "CoverLeft",
+    "X": -128,
+    "Y": 0,
+    "Z": 40,
+    "Width": 72,
+    "Length": 72,
+    "Height": 80,
+    "Yaw": 0,
+    "Shape": "box",
+    "UVScale": 128
+  },
+  {
+    "Name": "CoverRight",
+    "X": 128,
+    "Y": 0,
+    "Z": 40,
+    "Width": 72,
+    "Length": 72,
+    "Height": 80,
+    "Yaw": 0,
+    "Shape": "box",
+    "UVScale": 128
+  },
+  {
+    "Name": "WestRamp",
+    "X": -300,
+    "Y": -100,
+    "Z": 48,
+    "Width": 128,
+    "Length": 240,
+    "Height": 96,
+    "Yaw": 0,
+    "Shape": "ramp",
+    "UVScale": 128
+  },
+  {
+    "Name": "CourtyardPillar",
+    "X": 0,
+    "Y": -240,
+    "Z": 64,
+    "Width": 96,
+    "Length": 96,
+    "Height": 128,
+    "Yaw": 0,
+    "Shape": "cylinder",
+    "UVScale": 64
+  },
+  {
+    "Name": "EastRamp",
+    "X": 300,
+    "Y": 100,
+    "Z": 48,
+    "Width": 128,
+    "Length": 240,
+    "Height": 96,
+    "Yaw": 180,
+    "Shape": "ramp",
+    "UVScale": 128
+  }
+]

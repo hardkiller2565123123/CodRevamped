@@ -107,6 +107,15 @@ namespace revamped::iw8::demonware
             80u, 0xF5u, "bdMarketplace", "getBalancesV3",
             ReplyPolicy::NoResultSuccess
         };
+        // Retail 8.69 requests the marketplace inventory page through task
+        // 67. The observed StructBuffer carries tag 1 = "6000" (context),
+        // tag 2 = empty page cursor and tag 3 = 1000 (page size), matching
+        // the existing task 69 inventory-page request schema. Keep this
+        // dedicated to task 67 rather than changing any 1.20 task routing.
+        constexpr TaskRoute kRetailInventoryPageRoute = {
+            80u, 67u, "bdMarketplace", "getInventoryPageRetail",
+            ReplyPolicy::NoResultSuccess
+        };
         constexpr TaskRoute kMarketplacePurchaseRoute = {
             80u, 106u, "bdMarketplace", "purchase",
             ReplyPolicy::None
@@ -133,9 +142,14 @@ namespace revamped::iw8::demonware
             ReplyPolicy::StructAchievementsUserState
         };
 
+        // A fresh Retail account has no public player-card record yet. Returning
+        // a successful task with zero rows leaves the client's first-run
+        // profile initialization ambiguous. Use the already implemented
+        // BD_NO_PROFILE_INFO_EXISTS result so the client can create its local
+        // default profile. This changes only bdProfiles/getPublicInfos.
         constexpr TaskRoute kProfileGetPublicRoute = {
             8u, 1u, "bdProfiles", "getPublicInfos",
-            ReplyPolicy::NoResultSuccess, TaskSemantic::ProfilesGetPublic
+            ReplyPolicy::LegacyProfileNotFound, TaskSemantic::ProfilesGetPublic
         };
         constexpr TaskRoute kProfileSetPublicRoute = {
             8u, 3u, "bdProfiles", "setPublicInfo",
@@ -249,6 +263,8 @@ namespace revamped::iw8::demonware
 
             if (serviceId == 80u && taskId == 58u)
                 return &kValidateInventoryItemsTokenRoute;
+            if (serviceId == 80u && taskId == 67u)
+                return &kRetailInventoryPageRoute;
             if (serviceId == 80u && taskId == 0xF3u)
                 return &kBnetReconciliationRoute;
             if (serviceId == 80u && taskId == 0x84u)
@@ -2056,7 +2072,12 @@ namespace revamped::iw8::demonware
                 }
             }
 
-            if (!haveContext || !haveMaxResults || context != "5800" ||
+            // Exact Steam retail sends the same two-field request with its
+            // native title context 6000 (captured 2026-10-12). Keep the old
+            // 5800 contract and reject unrelated contexts as before.
+            const bool supportedContext = context == "5800" ||
+                (context == "6000" && web::UsesNativeSteamLoginKey());
+            if (!haveContext || !haveMaxResults || !supportedContext ||
                 maxResults == 0 || maxResults > 16)
             {
                 return false;
@@ -2072,9 +2093,13 @@ namespace revamped::iw8::demonware
             return FinishLegacyTaskReply(reply, replyPlain);
         }
 
-        if (route.serviceId == 80u && route.taskId == 69u)
+        if (route.serviceId == 80u &&
+            (route.taskId == 69u || route.taskId == 67u))
         {
-            // 1.20 observed request: context, page token, items-per-page.
+            // Task 69 is the verified 1.20 inventory page. Retail's task 67
+            // uses the same three-field request shape with title context 6000.
+            // Serialize the existing terminal empty page rather than a
+            // generic no-results reply that omits the expected StructBuffer.
             // bdGetInventoryItemInfoResponse: account, context, nextPageToken,
             // repeated items. This single-user local backend owns zero items.
             const std::uint8_t* body = nullptr;
@@ -2099,7 +2124,9 @@ namespace revamped::iw8::demonware
                 else if (field.tag != 4 || field.wireType != 0)
                     return false;
             }
-            if (context != "5800" || !pagePresent || pageSize == 0 || pageSize > 4096)
+            const bool retailPage = route.taskId == 67u;
+            const char* expectedContext = retailPage ? "6000" : "5800";
+            if (context != expectedContext || !pagePresent || pageSize == 0 || pageSize > 4096)
                 return false;
             std::vector<std::uint8_t> account, response, reply;
             AppendPbU64(account, 1u, 1u);
@@ -2109,7 +2136,10 @@ namespace revamped::iw8::demonware
             AppendPbString(response, 3u, ""); // terminal page, no item records
             BuildLegacyTaskEnvelope(reply, transactionId, request.taskId);
             AppendTypedStruct(reply, response);
-            std::printf("[DW-INVENTORY] context=5800 account=bnet-1 items=0 nextPage=empty\n");
+            std::printf("[DW-INVENTORY] task=%u context=%s account=bnet-1 "
+                "items=0 nextPage=empty pageSize=%llu response=struct-terminal-page\n",
+                static_cast<unsigned>(route.taskId), context.c_str(),
+                static_cast<unsigned long long>(pageSize));
             return FinishLegacyTaskReply(reply, replyPlain);
         }
 

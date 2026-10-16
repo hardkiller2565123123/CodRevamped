@@ -1,4 +1,5 @@
 #include "ReplayDwServiceBridge.h"
+#include "Replay120MatchmakingCatalog.h"
 
 #include "../ReplayDW/src/Core/lobby.h"
 #include "../ReplayDW/src/Core/platform.h"
@@ -13,6 +14,8 @@
 #include <array>
 #include <chrono>
 #include <filesystem>
+#include <fstream>
+#include <cstdio>
 #include <limits>
 #include <map>
 #include <mutex>
@@ -98,6 +101,51 @@ namespace revamped::iw8::demonware
             return std::filesystem::path(path).parent_path() / L"ReplayDWData";
         }
 
+        // The built-in TU19 playlist definitions must be visible to the
+        // authoritative ReplayDW matchmaker.  Previously they existed in a
+        // header but were never installed into the service's data directory;
+        // "startSearch" could only return a fake success with no lobby.
+        // Do not overwrite an operator-supplied catalog.
+        void EnsureReplay120PlaylistCatalog(const std::filesystem::path& root)
+        {
+            const auto directory = root / L"playlists" / L"5800";
+            const auto path = directory / L"catalog.json";
+            if (std::filesystem::exists(path))
+            {
+                if (!std::filesystem::is_regular_file(path))
+                    throw std::runtime_error("ReplayDW playlist catalog path is not a file");
+                std::printf("[DW-MM120-CATALOG] source=existing path=%ls\n", path.c_str());
+                return;
+            }
+
+            std::filesystem::create_directories(directory);
+            const auto pending = directory / L"catalog.json.pending";
+            const auto& bytes = matchmaking_catalog_120::CatalogStorage;
+            {
+                std::ofstream output(pending, std::ios::binary | std::ios::trunc);
+                if (!output.write(bytes.data(), static_cast<std::streamsize>(bytes.size())) ||
+                    !output.flush())
+                    throw std::runtime_error("Failed writing TU19 playlist catalog");
+            }
+            // Races/restarts must never replace a manually configured catalog.
+            if (std::filesystem::exists(path))
+            {
+                std::filesystem::remove(pending);
+                return;
+            }
+            if (!MoveFileExW(pending.c_str(), path.c_str(), MOVEFILE_WRITE_THROUGH))
+            {
+                std::filesystem::remove(pending);
+                if (!std::filesystem::is_regular_file(path))
+                    throw std::runtime_error("Failed to publish TU19 playlist catalog");
+            }
+            std::printf("[DW-MM120-CATALOG] source=built-in-tu19 playlists=%u "
+                        "gametypes=%u bytes=%zu path=%ls\n",
+                        matchmaking_catalog_120::PlaylistCount,
+                        matchmaking_catalog_120::GametypeCount,
+                        bytes.size(), path.c_str());
+        }
+
         void InitializeReplayDw()
         {
             try
@@ -106,11 +154,18 @@ namespace revamped::iw8::demonware
                 std::filesystem::create_directories(root);
                 platform::initialize(root);
                 services::initialize(root);
+                EnsureReplay120PlaylistCatalog(root);
                 g_localIdentity = platform::localIdentity(5800u);
                 g_replayDwReady = true;
             }
+            catch (const std::exception& error)
+            {
+                std::printf("[DW-MM120-INIT] ready=no reason=%s\n", error.what());
+                g_replayDwReady = false;
+            }
             catch (...)
             {
+                std::printf("[DW-MM120-INIT] ready=no reason=unknown\n");
                 g_replayDwReady = false;
             }
         }
@@ -328,6 +383,14 @@ namespace revamped::iw8::demonware
                 requestPayloadBytes);
             wire::Reader reader{payload};
             auto reply = services::dispatch(identity, serviceId, taskId, reader, true);
+            if (serviceId == 145u && (taskId == 2u || taskId == 3u || taskId == 18u))
+            {
+                std::printf("[DW-MM120-NATIVE] task=%u source=ReplayDW result=%u "
+                            "operation=%s rows=%zu notifications=%zu\n",
+                            static_cast<unsigned>(taskId), reply.error,
+                            reply.operation.c_str(), reply.results.size(),
+                            reply.pushes.size() + reply.deliveries.size());
+            }
 
             if (reply.error == 108u &&
                 (reply.operation.find("unimplemented") != std::string::npos ||
@@ -369,8 +432,21 @@ namespace revamped::iw8::demonware
             }
             return true;
         }
+        catch (const std::exception& error)
+        {
+            if (serviceId == 145u)
+                std::printf("[DW-MM120-NATIVE] task=%u source=ReplayDW "
+                            "dispatch=FAILED reason=%s\n",
+                            static_cast<unsigned>(taskId), error.what());
+            replyPlain.clear();
+            return false;
+        }
         catch (...)
         {
+            if (serviceId == 145u)
+                std::printf("[DW-MM120-NATIVE] task=%u source=ReplayDW "
+                            "dispatch=FAILED reason=unknown\n",
+                            static_cast<unsigned>(taskId));
             replyPlain.clear();
             return false;
         }

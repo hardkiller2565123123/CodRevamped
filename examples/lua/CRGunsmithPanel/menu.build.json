@@ -1,0 +1,9 @@
+{
+  "schema": 1,
+  "target": "MW2019-Replay-1.20",
+  "id": "CRGunsmithPanel",
+  "screen": "Gunsmith",
+  "format": "lui-source",
+  "runtime": "requires-verified-lui-loader",
+  "widgets": 2
+}

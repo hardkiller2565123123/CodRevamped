@@ -1,3 +1,4 @@
+#include "../LocalPlayerName.h"
 namespace revamped::iw8::web
 {
     namespace
@@ -98,8 +99,8 @@ namespace revamped::iw8::web
             WriteLe64At(ticket, 25u, localUserId);
 
             std::fill(ticket.begin() + 33u, ticket.begin() + 97u, 0u);
-            static constexpr char localUsername[] = "revamped";
-            std::copy(localUsername, localUsername + sizeof(localUsername) - 1u, ticket.begin() + 33u);
+            const auto localUsername = localplayer::Name();
+            std::copy(localUsername.begin(), localUsername.end(), ticket.begin() + 33u);
 
             const std::string patchedClientTicket = Base64Encode(ticket);
             if (!ReplaceJsonStringValue(response, "client_ticket", patchedClientTicket))
@@ -117,10 +118,11 @@ namespace revamped::iw8::web
             g_authPipeline.lastAuth3ClientTicket = patchedClientTicket;
 
             AppendAuthPipelineV58(
-                "AUTH3_LOCAL_IDENTITY titleId=%u userId=%llu licenseId=%llu username=revamped clientTicketPatched=yes",
+                "AUTH3_LOCAL_IDENTITY titleId=%u userId=%llu licenseId=%llu username=%s clientTicketPatched=yes",
                 static_cast<unsigned>(titleId),
                 static_cast<unsigned long long>(localUserId),
-                static_cast<unsigned long long>(localUserId));
+                static_cast<unsigned long long>(localUserId),
+                localUsername.c_str());
 
             return response;
         }

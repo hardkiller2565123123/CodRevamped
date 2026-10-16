@@ -158,7 +158,7 @@ namespace revamped::iw8::web
                 const std::string responseBody =
                     std::string("{\"accountType\":\"full\",\"unoID\":") +
                     std::to_string(localUserId) +
-                    ",\"userName\":\"revamped\""
+                    ",\"userName\":\"" + localplayer::Name() + "\""
                     ",\"emailVerified\":true,\"over18\":true"
                     ",\"country\":\"US\""
                     ",\"created\":\"2020-01-01T00:00:00Z\""
@@ -167,8 +167,8 @@ namespace revamped::iw8::web
                 result.label = "local existing UNO full account";
                 result.response = BuildResponse(200, "OK",
                     "application/json; charset=utf-8", responseBody);
-                log::Print("[UNO-PROFILE] response=success unoId=%llu accountType=full username=revamped existing=yes",
-                    static_cast<unsigned long long>(localUserId));
+                log::Print("[UNO-PROFILE] response=success unoId=%llu accountType=full username=%s existing=yes",
+                    static_cast<unsigned long long>(localUserId), localplayer::Name().c_str());
             }
         }
         else if (result.method == "POST" &&
@@ -546,7 +546,7 @@ namespace revamped::iw8::web
                     // accountType must therefore be a UNO account type (full), not
                     // the first-party platform string (steam).
                     nativeUnoFields = ",\"unoID\":" + std::to_string(localUserId) +
-                        ",\"userName\":\"revamped\"";
+                        ",\"userName\":\"" + localplayer::Name() + "\"";
                 }
 
                 // Compatibility superset: old Auth3 snake_case fields remain in

@@ -1,5 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build" TreatAsLocalProperty="Platform">
+  <PropertyGroup Label="X64Only"><Platform Condition="'$(Platform)'=='' Or '$(Platform)'=='Win32' Or '$(Platform)'=='Any CPU'">x64</Platform><PreferredToolArchitecture>x64</PreferredToolArchitecture></PropertyGroup>
+  <PropertyGroup><CodRevampedRoot>$(MSBuildThisFileDirectory)..\..\..\</CodRevampedRoot></PropertyGroup>
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
@@ -42,7 +44,7 @@
   <Import Project="$(CodRevampedRoot)build\CodRevamped.Shared.props" />
   <PropertyGroup>
     <TargetName>version</TargetName>
-    <OutDir>$(CodRevampedRoot)artifacts\bin\BO6\$(Configuration)\</OutDir>
+    <OutDir>$(CodRevampedRoot)artifacts\dll\BO6\$(Configuration)\</OutDir>
     <IntDir>$(CodRevampedRoot)artifacts\obj\BO6\$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)'=='Debug'">true</LinkIncremental>
     <LinkIncremental Condition="'$(Configuration)'=='Release'">false</LinkIncremental>

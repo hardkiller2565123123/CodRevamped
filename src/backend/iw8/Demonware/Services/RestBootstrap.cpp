@@ -6,6 +6,9 @@ namespace revamped::iw8::demonware
 {
     namespace
     {
+        // Shared serializer defined in Internal/JsonObjectStoreParsing.cpp.
+        std::string Base64Encode(const std::string& bytes);
+
         bool ContainsAscii(const std::uint8_t* data, std::size_t size, const char* needle)
         {
             if (!data || !needle || !*needle)
@@ -396,9 +399,8 @@ namespace revamped::iw8::demonware
 
             if (localpublisher::IsManifest(name))
             {
-                content = localpublisher::ManifestBody();
                 contentType = "application/json; charset=utf-8";
-                return true;
+                return localpublisher::LoadManifest(name, content);
             }
 
             if (localpublisher::IsPlaylist(name))
@@ -407,13 +409,23 @@ namespace revamped::iw8::demonware
                 contentType = "application/octet-stream";
                 return true;
             }
+            // Retail fetches this list during frontend bootstrap and retries
+            // when metadata advertises NotFound. The local publisher and HTTP
+            // content router already provide its neutral, one-LF-byte body;
+            // expose that identical body through the Retail REST metadata path.
+            if (localpublisher::IsContentCreatorList(name))
+            {
+                content = localpublisher::ContentCreatorListBody();
+                contentType = "text/plain; charset=utf-8";
+                return true;
+            }
 
             if (name == "store_v2.json" || name == "store_v2_warzone.json")
             {
                 // Neutral local store layout. The store itself is not required
                 // for offline gameplay; Retail only needs a valid existing
                 // publisher object while update/store bootstrap completes.
-                content = "{\"categories\":[]}";
+                content = localpublisher::RetailStoreBody();
                 contentType = "application/json; charset=utf-8";
                 return true;
             }
@@ -474,8 +486,13 @@ namespace revamped::iw8::demonware
 
                 if (available)
                 {
-                    const std::string checksum = localpublisher::IsManifest(name)
-                        ? localpublisher::ManifestChecksum
+                    // Text publisher assets follow the SHA-1/Base64 metadata
+                    // contract verified with native manifests. Keep the older
+                    // synthetic hashes on other Retail objects unchanged.
+                    const bool sha1Content = localpublisher::IsManifest(name) ||
+                        localpublisher::IsContentCreatorList(name);
+                    const std::string checksum = sha1Content
+                        ? localpublisher::retailsigning::ManifestSha1ChecksumBase64(content)
                         : RestPublisherDigest32(content);
                     const std::string objectVersion = RestPublisherDigest32(
                         owner + std::string(1u, '\0') +
@@ -488,9 +505,19 @@ namespace revamped::iw8::demonware
                     if (!objects.empty())
                         objects.push_back(',');
 
+                    // The 1.20 manifest metadata path includes a nonzero
+                    // numeric objectID; the Retail REST path previously omitted
+                    // it even though both paths serve the same object types.
+                    // Keep the IDs identical across both native transports.
+                    const bool isManifest = localpublisher::IsManifest(name);
+                    const std::string manifestObjectId = !isManifest ? std::string{} :
+                        (name.find("_manifest_patch_") != std::string::npos
+                            ? std::string("\"objectID\":120001,")
+                            : std::string("\"objectID\":120002,"));
+
                     objects +=
                         "{\"requestIndex\":" + std::to_string(i) +
-                        ",\"metadata\":{"
+                        ",\"metadata\":{" + manifestObjectId +
                         "\"name\":\"" + JsonEscapeRest(name) + "\","
                         "\"owner\":\"" + JsonEscapeRest(owner) + "\","
                         "\"checksum\":\"" + JsonEscapeRest(checksum) + "\","
@@ -510,8 +537,12 @@ namespace revamped::iw8::demonware
                     ++hitCount;
                     std::printf(
                         "[DW-REST-PUBLISHER] index=%zu owner=%s name=%s "
-                        "response=metadata-success bytes=%zu url=%s\n",
+                        "response=metadata-success bytes=%zu objectID=%u "
+                        "category=%s checksum=%s url=%s\n",
                         i, owner.c_str(), name.c_str(), content.size(),
+                        isManifest ? (name.find("_manifest_patch_") != std::string::npos
+                            ? 120001u : 120002u) : 0u,
+                        isManifest ? "1" : "null", checksum.c_str(),
                         contentUrl.c_str());
                 }
                 else
@@ -558,6 +589,124 @@ namespace revamped::iw8::demonware
 
         std::mutex g_restUserObjectMutex;
         std::vector<RestStoredUserObject> g_restUserObjects;
+        bool g_restUserObjectsLoaded = false;
+
+        std::filesystem::path RestUserObjectPath()
+        {
+            return std::filesystem::current_path() / "ReplayDWData" /
+                "retail-user-objectstore" / "objects.bin";
+        }
+
+        bool ReadRestObjectString(std::ifstream& in, std::string& out,
+            std::uint32_t maxLength)
+        {
+            std::uint32_t length = 0;
+            if (!in.read(reinterpret_cast<char*>(&length), sizeof(length)) || length > maxLength)
+                return false;
+            out.resize(length);
+            return !length || static_cast<bool>(in.read(out.data(), length));
+        }
+
+        void WriteRestObjectString(std::ofstream& out, const std::string& value)
+        {
+            const auto length = static_cast<std::uint32_t>(value.size());
+            out.write(reinterpret_cast<const char*>(&length), sizeof(length));
+            out.write(value.data(), length);
+        }
+
+        // Caller holds g_restUserObjectMutex. Never accept arbitrary filenames
+        // from game requests: all identities are fields inside this one store.
+        void LoadRestUserObjectsLocked()
+        {
+            if (g_restUserObjectsLoaded)
+                return;
+            g_restUserObjectsLoaded = true;
+            std::ifstream in(RestUserObjectPath(), std::ios::binary);
+            if (!in)
+                return;
+            std::uint32_t magic = 0, count = 0;
+            if (!in.read(reinterpret_cast<char*>(&magic), 4) || magic != 0x32575352u ||
+                !in.read(reinterpret_cast<char*>(&count), 4) || count > 2048u)
+                return;
+            std::vector<RestStoredUserObject> restored;
+            for (std::uint32_t i = 0; i < count; ++i)
+            {
+                RestStoredUserObject item;
+                if (!ReadRestObjectString(in, item.owner, 256u) ||
+                    !ReadRestObjectString(in, item.name, 256u) ||
+                    !ReadRestObjectString(in, item.contentBase64, 65536u) ||
+                    !ReadRestObjectString(in, item.checksum, 256u) ||
+                    !ReadRestObjectString(in, item.objectVersion, 256u) ||
+                    !in.read(reinterpret_cast<char*>(&item.contentLength), 8) ||
+                    !in.read(reinterpret_cast<char*>(&item.created), 8) ||
+                    !in.read(reinterpret_cast<char*>(&item.modified), 8))
+                    return; // Never publish a partially parsed store.
+                restored.emplace_back(std::move(item));
+            }
+            g_restUserObjects = std::move(restored);
+            std::printf("[DW-REST-OBJECTSTORE] loaded persisted objects=%zu\n",
+                g_restUserObjects.size());
+        }
+
+        bool SaveRestUserObjectsLocked()
+        {
+            if (g_restUserObjects.size() > 2048u)
+                return false;
+            std::error_code ec;
+            const auto path = RestUserObjectPath();
+            std::filesystem::create_directories(path.parent_path(), ec);
+            if (ec)
+                return false;
+            const auto temporary = path.string() + ".tmp";
+            {
+                std::ofstream out(temporary, std::ios::binary | std::ios::trunc);
+                if (!out)
+                    return false;
+                const std::uint32_t magic = 0x32575352u;
+                const auto count = static_cast<std::uint32_t>(g_restUserObjects.size());
+                out.write(reinterpret_cast<const char*>(&magic), 4);
+                out.write(reinterpret_cast<const char*>(&count), 4);
+                for (const auto& item : g_restUserObjects)
+                {
+                    if (item.owner.size() > 256u || item.name.size() > 256u ||
+                        item.contentBase64.size() > 65536u ||
+                        item.checksum.size() > 256u || item.objectVersion.size() > 256u)
+                        return false;
+                    WriteRestObjectString(out, item.owner);
+                    WriteRestObjectString(out, item.name);
+                    WriteRestObjectString(out, item.contentBase64);
+                    WriteRestObjectString(out, item.checksum);
+                    WriteRestObjectString(out, item.objectVersion);
+                    out.write(reinterpret_cast<const char*>(&item.contentLength), 8);
+                    out.write(reinterpret_cast<const char*>(&item.created), 8);
+                    out.write(reinterpret_cast<const char*>(&item.modified), 8);
+                }
+                out.flush();
+                if (!out)
+                    return false;
+            }
+            // Windows rename does not replace an existing destination. Back up
+            // the previous good file before publishing the new store.
+            auto backup = path;
+            backup += ".bak";
+            std::filesystem::remove(backup, ec);
+            ec.clear();
+            if (std::filesystem::exists(path))
+            {
+                std::filesystem::rename(path, backup, ec);
+                if (ec)
+                    return false;
+            }
+            std::filesystem::rename(temporary, path, ec);
+            if (ec)
+            {
+                std::error_code ignored;
+                if (std::filesystem::exists(backup))
+                    std::filesystem::rename(backup, path, ignored);
+                return false;
+            }
+            return true;
+        }
 
         std::uint64_t RestBase64DecodedLength(const std::string& value)
         {
@@ -791,6 +940,7 @@ namespace revamped::iw8::demonware
             }
 
             std::lock_guard<std::mutex> lock(g_restUserObjectMutex);
+            LoadRestUserObjectsLocked();
 
             for (RestStoredUserObject& object : parsed)
             {
@@ -818,10 +968,14 @@ namespace revamped::iw8::demonware
                     replaced ? "yes" : "no");
             }
 
+            const bool savedToDisk = SaveRestUserObjectsLocked();
+            std::printf("[DW-REST-OBJECTSTORE] diskPersist=%s objects=%zu\n",
+                savedToDisk ? "yes" : "FAILED", g_restUserObjects.size());
+
             std::printf(
                 "[DW-REST-OBJECTSTORE] resource=VectorizedUserObjectsResource/put_objects "
                 "response=success stored=%zu persistedTotal=%zu validationTokens=0 "
-                "mode=local-session-store\n",
+                "mode=local-persistent-store\n",
                 parsed.size(), g_restUserObjects.size());
 
             return true;
@@ -863,6 +1017,7 @@ namespace revamped::iw8::demonware
             std::size_t persistedCount = 0;
 
             std::lock_guard<std::mutex> lock(g_restUserObjectMutex);
+            LoadRestUserObjectsLocked();
             persistedCount = g_restUserObjects.size();
 
             for (std::size_t i = 0; i < objectIds.size(); ++i)
@@ -984,6 +1139,13 @@ namespace revamped::iw8::demonware
                 // hasPlayed=true deliberately models an established local profile
                 // rather than another first-run account. The remaining shared
                 // progression fields use neutral local defaults.
+                const bool retailProfile = web::UsesNativeSteamLoginKey();
+                const std::string profile =
+                    "{\"clanID\":0,\"seasonRank\":0,\"seasonNumber\":0,"
+                    "\"rankXP\":0,\"seasonXP\":0,\"battlepassXP\":0,"
+                    "\"battlepassOwned\":false,\"hasPlayed\":" +
+                    std::string(retailProfile ? "[]" : "true") +
+                    ",\"wishlistSkus\":[],\"wishlistItems\":[]}";
                 std::string body =
                     "{\"usersStructuredData\":[{"
                     "\"userID\":" + std::to_string(userId) +
@@ -992,24 +1154,31 @@ namespace revamped::iw8::demonware
                     ",\"context\":\"cod-shared\""
                     ",\"schemaName\":\"cod-shared-profile\""
                     ",\"version\":2"
-                    ",\"structuredData\":{"
-                        "\"clanID\":0,"
-                        "\"seasonRank\":0,"
-                        "\"seasonNumber\":0,"
-                        "\"rankXP\":0,"
-                        "\"seasonXP\":0,"
-                        "\"battlepassXP\":0,"
-                        "\"battlepassOwned\":false,"
-                        "\"hasPlayed\":true,"
-                        "\"wishlistSkus\":[],"
-                        "\"wishlistItems\":[]"
-                    "}}],\"errors\":[]}";
+                    ",\"structuredData\":" + profile + "}],\"errors\":[]}";
+
+                if (retailProfile)
+                {
+                    // Retail dump: 6CCE110 reads usersStructuredData[],
+                    // 6CCE192 reads each entry's items[], 6CCE275 reads a
+                    // payload string, and 6CCE293 requires numeric errorCode.
+                    // A structuredData object directly on the user is not
+                    // consumed by that native response parser.
+                    // Caller 1F02E129 sets the decode flag; 6CCE250 calls the
+                    // base64 decoder 6C6FF90 (table RVA 7173B40).
+                    // The profile consumer 6D46550 reads hasPlayed as an
+                    // array, not a bool. A new local profile has no entries.
+                    body = "{\"usersStructuredData\":[{\"userID\":" +
+                        std::to_string(userId) + ",\"accountType\":\"uno\",\"items\":[{"
+                        "\"payload\":\"" + Base64Encode(profile) +
+                        "\",\"errorCode\":0}]}],\"errors\":[]}";
+                }
 
                 std::printf(
                     "[DW-REST-STRUCTURED] resource=UsersStructuredData/get_structured_data "
                     "response=success userId=%llu schema=cod-shared-profile version=2 "
-                    "hasPlayed=true mode=local-offline\n",
-                    static_cast<unsigned long long>(userId));
+                    "hasPlayed=%s mode=local-offline\n",
+                    static_cast<unsigned long long>(userId),
+                    retailProfile ? "empty-array" : "true");
                 return body;
             }
 

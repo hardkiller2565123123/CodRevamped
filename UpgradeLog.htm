@@ -1,0 +1,297 @@
+﻿<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+ <html xmlns:msxsl="urn:schemas-microsoft-com:xslt"><head><meta content="en-us" http-equiv="Content-Language" /><meta content="text/html; charset=utf-16" http-equiv="Content-Type" /><title _locID="ConversionReport0">
+          Migration Report
+        </title><style> 
+                    /* Body style, for the entire document */
+                    body
+                    {
+                        background: #F3F3F4;
+                        color: #1E1E1F;
+                        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+                        padding: 0;
+                        margin: 0;
+                    }
+
+                    /* Header1 style, used for the main title */
+                    h1
+                    {
+                        padding: 10px 0px 10px 10px;
+                        font-size: 21pt;
+                        background-color: #E2E2E2;
+                        border-bottom: 1px #C1C1C2 solid; 
+                        color: #201F20;
+                        margin: 0;
+                        font-weight: normal;
+                    }
+
+                    /* Header2 style, used for "Overview" and other sections */
+                    h2
+                    {
+                        font-size: 18pt;
+                        font-weight: normal;
+                        padding: 15px 0 5px 0;
+                        margin: 0;
+                    }
+
+                    /* Header3 style, used for sub-sections, such as project name */
+                    h3
+                    {
+                        font-weight: normal;
+                        font-size: 15pt;
+                        margin: 0;
+                        padding: 15px 0 5px 0;
+                        background-color: transparent;
+                    }
+
+                    /* Color all hyperlinks one color */
+                    a
+                    {
+                        color: #1382CE;
+                    }
+
+                    /* Table styles */ 
+                    table
+                    {
+                        border-spacing: 0 0;
+                        border-collapse: collapse;
+                        font-size: 10pt;
+                    }
+
+                    table th
+                    {
+                        background: #E7E7E8;
+                        text-align: left;
+                        text-decoration: none;
+                        font-weight: normal;
+                        padding: 3px 6px 3px 6px;
+                    }
+
+                    table td
+                    {
+                        vertical-align: top;
+                        padding: 3px 6px 5px 5px;
+                        margin: 0px;
+                        border: 1px solid #E7E7E8;
+                        background: #F7F7F8;
+                    }
+
+                    /* Local link is a style for hyperlinks that link to file:/// content, there are lots so color them as 'normal' text until the user mouse overs */
+                    .localLink
+                    {
+                        color: #1E1E1F;
+                        background: #EEEEED;
+                        text-decoration: none;
+                    }
+
+                    .localLink:hover
+                    {
+                        color: #1382CE;
+                        background: #FFFF99;
+                        text-decoration: none;
+                    }
+
+                    /* Center text, used in the over views cells that contain message level counts */ 
+                    .textCentered
+                    {
+                        text-align: center;
+                    }
+
+                    /* The message cells in message tables should take up all avaliable space */
+                    .messageCell
+                    {
+                        width: 100%;
+                    }
+
+                    /* Padding around the content after the h1 */ 
+                    #content 
+                    {
+	                    padding: 0px 12px 12px 12px; 
+                    }
+
+                    /* The overview table expands to width, with a max width of 97% */ 
+                    #overview table
+                    {
+                        width: auto;
+                        max-width: 75%; 
+                    }
+
+                    /* The messages tables are always 97% width */
+                    #messages table
+                    {
+                        width: 97%;
+                    }
+
+                    /* All Icons */
+                    .IconSuccessEncoded, .IconInfoEncoded, .IconWarningEncoded, .IconErrorEncoded
+                    {
+                        min-width:18px;
+                        min-height:18px; 
+                        background-repeat:no-repeat;
+                        background-position:center;
+                    }
+
+                    /* Success icon encoded */
+                    .IconSuccessEncoded
+                    {
+                        /* Note: Do not delete the comment below. It is used to verify the correctness of the encoded image resource below before the product is released */
+                        /* [---XsltValidateInternal-Base64EncodedImage:IconSuccess#Begin#background-image: url(data:image/png;base64,#Separator#);#End#] */
+                        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABcElEQVR4Xq2TsUsCURzHv15g8ZJcBWlyiYYgCIWcb9DFRRwMW5TA2c0/QEFwFkxxUQdxVlBwCYWOi6IhWgQhBLHJUCkhLr/BW8S7gvrAg+N+v8/v+x68Z8MGy+XSCyABQAXgBgHGALoASkIIDWSLeLBetdHryMjd5IxQPWT4rn1c/P7+xxp72Cs9m5SZ0Bq2vPnbPFafK2zDvmNHypdC0BPkLlQhxJsCAhQoZwdZU5mwxh720qGo8MzTxTTKZDPCx2HoVzp6lz0Q9tKhyx0kGs8Ny+TkWRKk8lCROwEduhyg9l/6lunOPSfmH3NUH6uQ0KHLAe7JYvJjevm+DAMGJHToKtigE+vwvIidxLamb8IBY9e+C5LiXREkfho3TSd06HJA13/oh6T51MTsfQbHrsMynQ5dDihFjiK8JJAU9AKIWTp76dCVN7HWHrajmUEGvyF9nkbAE6gLIS7kTUyuf2gscLoJrElZo/Mvj+nPz/kLTmfnEwP3tB0AAAAASUVORK5CYII=);
+                    }
+
+                    /* Information icon encoded */
+                    .IconInfoEncoded
+                    {
+                        /* Note: Do not delete the comment below. It is used to verify the correctness of the encoded image resource below before the product is released */
+                        /* [---XsltValidateInternal-Base64EncodedImage:IconInformation#Begin#background-image: url(data:image/png;base64,#Separator#);#End#] */
+                        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABHElEQVR4Xs2TsUoDQRRF7wwoziokjZUKadInhdhukR9YP8DMX1hYW+QvdsXa/QHBbcXC7W0CamWTQnclFutceIQJwwaWNLlwm5k5d94M76mmaeCrrmsLYOocY12FcxZFUeozCqKqqgYA8uevv1H6VuPxcwlfk5N92KHBxfFeCSAxxswlYAW/Xr989x/mv9gkhtyMDhcAxgzRsp7flj8B/HF1RsMXq+NZMkopaHe7lbKxQUEIGbKsYNoGn969060hZBkQex/W8oRQwsQaW2o3Ago2SVcJUzAgY3N0lTCZZm+zPS8HB51gMmS1DEYyOz9acKO1D8JWTlafKIMxdhvlfdyT94Vv5h7P8Ky7nQzACmhvKq3zk3PjW9asz9D/1oigecsioooAAAAASUVORK5CYII=);
+                    }
+
+                    /* Warning icon encoded */
+                    .IconWarningEncoded
+                    {
+                        /* Note: Do not delete the comment below. It is used to verify the correctness of the encoded image resource below before the product is released */
+                        /* [---XsltValidateInternal-Base64EncodedImage:IconWarning#Begin#background-image: url(data:image/png;base64,#Separator#);#End#] */
+                        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAx0lEQVR4XpWSMQ7CMAxFf4xAyBMLCxMrO8dhaBcuwdCJS3RJBw7SA/QGTCxdWJgiQYWKXJWKIXHIlyw5lqr34tQgEOdcBsCOx5yZK3hCCKdYXneQkh4pEfqzLfu+wVDSyyzFoJjfz9NB+pAF+eizx2Vruts0k15mPgvS6GYvpVtQhB61IB/dk6AF6fS4Ben0uIX5odtFe8Q/eW1KvFeH4e8khT6+gm5B+t3juyDt7n0jpe+CANTd+oTUjN/U3yVaABnSUjFz/gFq44JaVSCXeQAAAABJRU5ErkJggg==);
+                    }
+
+                    /* Error icon encoded */
+                    .IconErrorEncoded
+                    {
+                        /* Note: Do not delete the comment below. It is used to verify the correctness of the encoded image resource below before the product is released */
+                        /* [---XsltValidateInternal-Base64EncodedImage:IconError#Begin#background-image: url(data:image/png;base64,#Separator#);#End#] */
+                        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABQElEQVR4XqWTvUoEQRCE6wYPZUA80AfwAQz23uCMjA7MDRQEIzPBVEyNTQUFIw00vcQTTMzuAh/AxEQQT8HF/3G/oGGnEUGuoNnd6qoZuqltyKEsyzVJq5I6rnUp6SjGeGhESikzzlc1eL7opfuVbrqbU1Zw9NCgtQMaZpY0eNnaaL2fHusvTK5vKu7sjSS1Y4y3QUA6K3e3Mau5UFDyMP7tYF9o8cAHZv68vipoIJg971PZIZ5HiwdvYGGvFVFHmGmZ2MxwmQYPXubPl9Up0tfoMQGetXd6mRbvhBw+boZ6WF7Mbv1+GsHRk0fQmPAH1GfmZirbCfDJ61tw3Px8/8pZsPAG4jlVhcPgZ7adwNWBB68lkRQWFiTgFlbnLY3DGGM7izIJIyT/jjIvEJw6fdJTc6krDzh6aMwMP9bvDH4ADSsa9uSWVJkAAAAASUVORK5CYII=);
+                    }
+                 </style><script type="text/javascript" language="javascript"> 
+          
+            // Startup 
+            // Hook up the the loaded event for the document/window, to linkify the document content
+            var startupFunction = function() { linkifyElement("messages"); };
+            
+            if(window.attachEvent)
+            {
+              window.attachEvent('onload', startupFunction);
+            }
+            else if (window.addEventListener) 
+            {
+              window.addEventListener('load', startupFunction, false);
+            }
+            else 
+            {
+              document.addEventListener('load', startupFunction, false);
+            } 
+            
+            // Toggles the visibility of table rows with the specified name 
+            function toggleTableRowsByName(name)
+            {
+               var allRows = document.getElementsByTagName('tr');
+               for (i=0; i < allRows.length; i++)
+               {
+                  var currentName = allRows[i].getAttribute('name');
+                  if(!!currentName && currentName.indexOf(name) == 0)
+                  {
+                      var isVisible = allRows[i].style.display == ''; 
+                      isVisible ? allRows[i].style.display = 'none' : allRows[i].style.display = '';
+                  }
+               }
+            }
+            
+            function scrollToFirstVisibleRow(name) 
+            {
+               var allRows = document.getElementsByTagName('tr');
+               for (i=0; i < allRows.length; i++)
+               {
+                  var currentName = allRows[i].getAttribute('name');
+                  var isVisible = allRows[i].style.display == ''; 
+                  if(!!currentName && currentName.indexOf(name) == 0 && isVisible)
+                  {
+                     allRows[i].scrollIntoView(true); 
+                     return true; 
+                  }
+               }
+               
+               return false;
+            }
+            
+            // Linkifies the specified text content, replaces candidate links with html links 
+            function linkify(text)
+            {
+                 if(!text || 0 === text.length)
+                 {
+                     return text; 
+                 }
+
+                 // Find http, https and ftp links and replace them with hyper links 
+                 var urlLink = /(http|https|ftp)\:\/\/[a-zA-Z0-9\-\.]+(:[a-zA-Z0-9]*)?\/?([a-zA-Z0-9\-\._\?\,\/\\\+&%\$#\=~;\{\}])*/gi;
+                 
+                 return text.replace(urlLink, '<a href="$&">$&</a>') ;
+            }
+            
+            // Linkifies the specified element by ID
+            function linkifyElement(id)
+            {
+                var element = document.getElementById(id);
+                if(!!element)
+                {
+                  element.innerHTML = linkify(element.innerHTML); 
+                }
+            }
+            
+            function ToggleMessageVisibility(projectName)
+            {
+              if(!projectName || 0 === projectName.length)
+              {
+                return; 
+              }
+              
+              toggleTableRowsByName("MessageRowClass" + projectName);
+              toggleTableRowsByName('MessageRowHeaderShow' + projectName);
+              toggleTableRowsByName('MessageRowHeaderHide' + projectName); 
+            }
+            
+            function ScrollToFirstVisibleMessage(projectName)
+            {
+              if(!projectName || 0 === projectName.length)
+              {
+                return; 
+              }
+              
+              // First try the 'Show messages' row
+              if(!scrollToFirstVisibleRow('MessageRowHeaderShow' + projectName))
+              {
+                // Failed to find a visible row for 'Show messages', try an actual message row 
+                scrollToFirstVisibleRow('MessageRowClass' + projectName); 
+              }
+            }
+           </script></head><body><h1 _locID="ConversionReport">
+          Migration Report - </h1><div id="content"><h2 _locID="OverviewTitle">Overview</h2><div id="overview"><table><tr><th></th><th _locID="ProjectTableHeader">Project</th><th _locID="PathTableHeader">Path</th><th _locID="ErrorsTableHeader">Errors</th><th _locID="WarningsTableHeader">Warnings</th><th _locID="MessagesTableHeader">Messages</th></tr><tr><td class="IconErrorEncoded" /><td><strong><a href="#Backend">Backend</a></strong></td><td>Backend</td><td class="textCentered"><a href="#BackendError">1</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconErrorEncoded" /><td><strong><a href="#Clients">Clients</a></strong></td><td>Clients</td><td class="textCentered"><a href="#ClientsError">1</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconErrorEncoded" /><td><strong><a href="#Shared">Shared</a></strong></td><td>Shared</td><td class="textCentered"><a href="#SharedError">1</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconErrorEncoded" /><td><strong><a href="#Tools">Tools</a></strong></td><td>tools</td><td class="textCentered"><a href="#ToolsError">1</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#BO4">BO4</a></strong></td><td>build\clients\bo4\bo4.vcxproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#BO4 Bootstrap (dxgi)">BO4 Bootstrap (dxgi)</a></strong></td><td>build\clients\bo4\internal\Bootstrap.vcxproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#BO4 runtime">BO4 runtime</a></strong></td><td>build\clients\bo4\internal\Runtime.vcxproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#BO6">BO6</a></strong></td><td>build\clients\bo6\bo6.vcxproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#ColdWar">ColdWar</a></strong></td><td>build\clients\coldwar\coldwar.vcxproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#COLDWAR runtime">COLDWAR runtime</a></strong></td><td>build\clients\coldwar\internal\Runtime.vcxproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#IW8FastfileLab">IW8FastfileLab</a></strong></td><td>build\tools\IW8FastfileLab\IW8FastfileLab.vcxproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#IW8MapPack">IW8MapPack</a></strong></td><td>build\tools\IW8MapPack\IW8MapPack.vcxproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#IW8ReverseLab">IW8ReverseLab</a></strong></td><td>build\tools\IW8ReverseLab\IW8ReverseLab.vcxproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#IW8Server">IW8Server</a></strong></td><td>build\backend\IW8Server.vcxproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#IW8Tools">IW8Tools</a></strong></td><td>src\tools\IW8Tools\Editor\IW8Tools.Editor.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#MW2019">MW2019</a></strong></td><td>build\clients\mw2019\mw2019.vcxproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#MW3">MW3</a></strong></td><td>build\clients\mw3\mw3.vcxproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#MWAssetLab">MWAssetLab</a></strong></td><td>build\tools\MWAssetLab\MWAssetLab.vcxproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#Shared.Common">Shared.Common</a></strong></td><td>build\shared\Common.vcxproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#Shared.Core">Shared.Core</a></strong></td><td>build\shared\Core.vcxproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#Shared.Dependencies">Shared.Dependencies</a></strong></td><td>build\shared\Dependencies.vcxproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#Shared.Diagnostics">Shared.Diagnostics</a></strong></td><td>build\shared\Diagnostics.vcxproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#Shared.Features">Shared.Features</a></strong></td><td>build\shared\Features.vcxproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#Shared.Patches">Shared.Patches</a></strong></td><td>build\shared\Patches.vcxproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#Shared.Runtime">Shared.Runtime</a></strong></td><td>build\shared\Runtime.vcxproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#Solution"><span _locID="OverviewSolutionSpan">Solution</span></a></strong></td><td>CodRevamped.sln</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#" onclick="ScrollToFirstVisibleMessage('Solution'); return false;">1</a></td></tr></table></div><h2 _locID="SolutionAndProjectsTitle">Solution and projects</h2><div id="messages"><a name="Backend" /><h3>Backend</h3><table><tr id="BackendHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr name="ErrorRowClassBackend"><td class="IconErrorEncoded"><a name="BackendError" /></td><td class="messageCell"><strong>Backend:
+        </strong><span>The application which this project type is based on was not found. Please try this link for further information: 66a26720-8fb5-11d2-aa7e-00c04f688dde</span></td></tr></table><a name="Clients" /><h3>Clients</h3><table><tr id="ClientsHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr name="ErrorRowClassClients"><td class="IconErrorEncoded"><a name="ClientsError" /></td><td class="messageCell"><strong>Clients:
+        </strong><span>The application which this project type is based on was not found. Please try this link for further information: 66a26720-8fb5-11d2-aa7e-00c04f688dde</span></td></tr></table><a name="Shared" /><h3>Shared</h3><table><tr id="SharedHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr name="ErrorRowClassShared"><td class="IconErrorEncoded"><a name="SharedError" /></td><td class="messageCell"><strong>Shared:
+        </strong><span>The application which this project type is based on was not found. Please try this link for further information: 66a26720-8fb5-11d2-aa7e-00c04f688dde</span></td></tr></table><a name="Tools" /><h3>Tools</h3><table><tr id="ToolsHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr name="ErrorRowClassTools"><td class="IconErrorEncoded"><a name="ToolsError" /></td><td class="messageCell"><strong>tools:
+        </strong><span>The application which this project type is based on was not found. Please try this link for further information: 66a26720-8fb5-11d2-aa7e-00c04f688dde</span></td></tr></table><a name="BO4" /><h3>BO4</h3><table><tr id="BO4HeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">BO4 logged no messages.
+                  </td></tr></table><a name="BO4 Bootstrap (dxgi)" /><h3>BO4 Bootstrap (dxgi)</h3><table><tr id="BO4 Bootstrap (dxgi)HeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">BO4 Bootstrap (dxgi) logged no messages.
+                  </td></tr></table><a name="BO4 runtime" /><h3>BO4 runtime</h3><table><tr id="BO4 runtimeHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">BO4 runtime logged no messages.
+                  </td></tr></table><a name="BO6" /><h3>BO6</h3><table><tr id="BO6HeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">BO6 logged no messages.
+                  </td></tr></table><a name="ColdWar" /><h3>ColdWar</h3><table><tr id="ColdWarHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">ColdWar logged no messages.
+                  </td></tr></table><a name="COLDWAR runtime" /><h3>COLDWAR runtime</h3><table><tr id="COLDWAR runtimeHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">COLDWAR runtime logged no messages.
+                  </td></tr></table><a name="IW8FastfileLab" /><h3>IW8FastfileLab</h3><table><tr id="IW8FastfileLabHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">IW8FastfileLab logged no messages.
+                  </td></tr></table><a name="IW8MapPack" /><h3>IW8MapPack</h3><table><tr id="IW8MapPackHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">IW8MapPack logged no messages.
+                  </td></tr></table><a name="IW8ReverseLab" /><h3>IW8ReverseLab</h3><table><tr id="IW8ReverseLabHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">IW8ReverseLab logged no messages.
+                  </td></tr></table><a name="IW8Server" /><h3>IW8Server</h3><table><tr id="IW8ServerHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">IW8Server logged no messages.
+                  </td></tr></table><a name="IW8Tools" /><h3>IW8Tools</h3><table><tr id="IW8ToolsHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">IW8Tools logged no messages.
+                  </td></tr></table><a name="MW2019" /><h3>MW2019</h3><table><tr id="MW2019HeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">MW2019 logged no messages.
+                  </td></tr></table><a name="MW3" /><h3>MW3</h3><table><tr id="MW3HeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">MW3 logged no messages.
+                  </td></tr></table><a name="MWAssetLab" /><h3>MWAssetLab</h3><table><tr id="MWAssetLabHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">MWAssetLab logged no messages.
+                  </td></tr></table><a name="Shared.Common" /><h3>Shared.Common</h3><table><tr id="Shared.CommonHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">Shared.Common logged no messages.
+                  </td></tr></table><a name="Shared.Core" /><h3>Shared.Core</h3><table><tr id="Shared.CoreHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">Shared.Core logged no messages.
+                  </td></tr></table><a name="Shared.Dependencies" /><h3>Shared.Dependencies</h3><table><tr id="Shared.DependenciesHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">Shared.Dependencies logged no messages.
+                  </td></tr></table><a name="Shared.Diagnostics" /><h3>Shared.Diagnostics</h3><table><tr id="Shared.DiagnosticsHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">Shared.Diagnostics logged no messages.
+                  </td></tr></table><a name="Shared.Features" /><h3>Shared.Features</h3><table><tr id="Shared.FeaturesHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">Shared.Features logged no messages.
+                  </td></tr></table><a name="Shared.Patches" /><h3>Shared.Patches</h3><table><tr id="Shared.PatchesHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">Shared.Patches logged no messages.
+                  </td></tr></table><a name="Shared.Runtime" /><h3>Shared.Runtime</h3><table><tr id="Shared.RuntimeHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">Shared.Runtime logged no messages.
+                  </td></tr></table><a name="Solution" /><h3 _locID="ProjectDisplayNameHeader">Solution</h3><table><tr id="SolutionHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr name="MessageRowHeaderShowSolution"><td class="IconInfoEncoded" /><td class="messageCell"><a _locID="ShowAdditionalMessages" href="#" name="SolutionMessage" onclick="ToggleMessageVisibility('Solution'); return false;">
+          Show 1 additional messages
+        </a></td></tr><tr name="MessageRowClassSolution" style="display: none"><td class="IconInfoEncoded"><a name="SolutionMessage" /></td><td class="messageCell"><strong>CodRevamped.sln:
+        </strong><span>The solution file does not require migration.</span></td></tr><tr style="display: none" name="MessageRowHeaderHideSolution"><td class="IconInfoEncoded" /><td class="messageCell"><a _locID="HideAdditionalMessages" href="#" name="SolutionMessage" onclick="ToggleMessageVisibility('Solution'); return false;">
+          Hide 1 additional messages
+        </a></td></tr></table></div></div></body></html>

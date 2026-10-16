@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <!-- Disable implicit Compile glob so old obj/bin generated .g.cs/.g.i.cs
+         cannot enter compilation alongside the current artifacts/obj output. -->
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <OutputPath>$(MSBuildThisFileDirectory)..\..\..\..\artifacts\tools\$(Configuration)\IW8Tools\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <AssemblyName>CodRevamped.IW8Tools</AssemblyName>
+    <RootNamespace>CodRevamped.IW8Tools</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Include all authored C# files (including future subdirectories), never generated ones.
+         WPF / SDK targets still add their own newly generated source files separately. -->
+    <Compile Include="**\*.cs"
+             Exclude="obj\**;bin\**;**\obj\**;**\bin\**;$(DefaultItemExcludes)" />
+  </ItemGroup>
+  <Target Name="BuildIW8Native" AfterTargets="Build" Condition="'$(DesignTimeBuild)' != 'true'">
+    <MSBuild Projects="$(MSBuildThisFileDirectory)..\..\..\..\build\tools\IW8ToolsNative\IW8ToolsNative.vcxproj"
+             Targets="Build" BuildInParallel="false"
+             Properties="Configuration=$(Configuration);Platform=x64;SolutionDir=$(MSBuildThisFileDirectory)..\..\..\..\" />
+  </Target>
+  <Target Name="CleanIW8Native" AfterTargets="Clean" Condition="'$(DesignTimeBuild)' != 'true'">
+    <MSBuild Projects="$(MSBuildThisFileDirectory)..\..\..\..\build\tools\IW8ToolsNative\IW8ToolsNative.vcxproj"
+             Targets="Clean" BuildInParallel="false"
+             Properties="Configuration=$(Configuration);Platform=x64;SolutionDir=$(MSBuildThisFileDirectory)..\..\..\..\" />
+  </Target>
+</Project>

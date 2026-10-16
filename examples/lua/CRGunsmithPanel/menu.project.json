@@ -1,0 +1,11 @@
+{
+  "Schema": 1,
+  "MenuId": "CRGunsmithPanel",
+  "DisplayName": "Gunsmith Custom Option",
+  "Screen": "Gunsmith",
+  "ReferenceImage": "",
+  "Widgets": [
+    { "Id": "cr_title", "Kind": "label", "Text": "CUSTOM GUNSMITH", "X": 92, "Y": 160, "Width": 480, "Height": 50, "FontSize": 30, "Color": "#F5F5F5", "Action": "none", "ActionValue": "" },
+    { "Id": "cr_option", "Kind": "button", "Text": "CUSTOM OPTION", "X": 92, "Y": 250, "Width": 390, "Height": 58, "FontSize": 22, "Color": "#FFFFFF", "Action": "none", "ActionValue": "" }
+  ]
+}

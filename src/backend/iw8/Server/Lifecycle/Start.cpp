@@ -1,4 +1,5 @@
 #include "Start.h"
+#include "../../LocalPublisherContent.h"
 
 namespace revamped::iw8
 {
@@ -12,6 +13,16 @@ namespace revamped::iw8
             return false;
         }
         log::Initialize();
+        // Initialize both Retail manifests BEFORE opening listeners. Otherwise
+        // the local public key would only appear after the first client request,
+        // potentially racing the client's native signature verification.
+        std::string patchManifest, commsManifest;
+        if (!localpublisher::LoadManifest("1_manifest_patch_pc_8.69.txt", patchManifest) ||
+            !localpublisher::LoadManifest("1_manifest_comms_pc_8.69.txt", commsManifest))
+            log::Print("[IW8-RETAIL-MANIFEST] WARNING: native 8.69 manifests unavailable");
+        else
+            log::Print("[IW8-RETAIL-MANIFEST] 8.69 patch and comms prepared patchBytes=%zu commsBytes=%zu",
+                patchManifest.size(), commsManifest.size());
         if (!InitializeBundleSigner())
             log::Print("[TRUST-BOOT] WARNING: local BGS bundle signer setup failed. Start the server beside ModernWarfare.exe and inspect the error before launching the game.");
         if (!web::InitializeLocalAuthSigner())

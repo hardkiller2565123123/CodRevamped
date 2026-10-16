@@ -76,7 +76,7 @@ namespace revamped::iw8::demonware
                  IsInGameStoreName(name) ||
                  localpublisher::IsContentCreatorList(name) ||
                  localpublisher::IsPlaylist(name) ||
-                 (localpublisher::LocalManifestEnabled() && localpublisher::IsManifest(name)));
+                 localpublisher::HasManifest(name));
         }
 
         std::string PublisherContextFromUrl(const std::string& url)
@@ -96,7 +96,8 @@ namespace revamped::iw8::demonware
         {
             static const std::int64_t publishedAt = UnixTimeSeconds();
             const std::string checksum = localpublisher::IsManifest(name)
-                ? localpublisher::ManifestChecksum : StableDigest32(content);
+                ? localpublisher::retailsigning::ManifestSha1ChecksumBase64(content)
+                : StableDigest32(content);
             const std::string objectVersion =
                 StableDigest32(owner + std::string(1, '\0') +
                     name + std::string(1, '\0') + checksum);
@@ -127,8 +128,13 @@ namespace revamped::iw8::demonware
             const std::string& owner, const std::string& name, const std::string& context)
         {
             if (localpublisher::IsManifest(name))
+            {
+                std::string manifest;
+                if (!localpublisher::LoadManifest(name, manifest))
+                    return {};
                 return BuildLocalPublisherMetadataJsonForContent(owner, name, context,
-                    localpublisher::ManifestBody(), BuildPublisherContentUrl(name));
+                    manifest, BuildPublisherContentUrl(name));
+            }
             if (localpublisher::IsPlaylist(name))
                 return BuildLocalPublisherMetadataJsonForContent(owner, name, context,
                     localpublisher::PlaylistBody(), BuildPublisherContentUrl(name));
@@ -205,7 +211,7 @@ namespace revamped::iw8::demonware
                 const std::string& name = objectIds[i].second;
                 std::size_t localBytes = 0;
                 if (localpublisher::IsPlaylist(name)) localBytes = localpublisher::PlaylistBody().size();
-                else if (localpublisher::IsManifest(name)) localBytes = localpublisher::ManifestBody().size();
+                else if (localpublisher::IsManifest(name)) { std::string data; if (localpublisher::LoadManifest(name, data)) localBytes = data.size(); }
                 else if (localpublisher::IsContentCreatorList(name)) localBytes = localpublisher::ContentCreatorListBody().size();
                 else if (name == kIw8StoreLayoutName || name == kIw8StoreLayoutLegacyName)
                     localBytes = std::char_traits<char>::length(kIw8StoreLayoutJson);

@@ -1,5 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build" TreatAsLocalProperty="Platform">
+  <PropertyGroup Label="X64Only"><Platform Condition="'$(Platform)'=='' Or '$(Platform)'=='Win32' Or '$(Platform)'=='Any CPU'">x64</Platform><PreferredToolArchitecture>x64</PreferredToolArchitecture></PropertyGroup>
+  <PropertyGroup><CodRevampedRoot>$(MSBuildThisFileDirectory)..\..\..\</CodRevampedRoot></PropertyGroup>
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
@@ -42,7 +44,7 @@
   <Import Project="$(CodRevampedRoot)build\CodRevamped.Shared.props" />
   <PropertyGroup>
     <TargetName>version</TargetName>
-    <OutDir>$(CodRevampedRoot)artifacts\bin\ColdWar\$(Configuration)\</OutDir>
+    <OutDir>$(CodRevampedRoot)artifacts\dll\ColdWar\$(Configuration)\</OutDir>
     <IntDir>$(CodRevampedRoot)artifacts\obj\ColdWar\$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)'=='Debug'">true</LinkIncremental>
     <LinkIncremental Condition="'$(Configuration)'=='Release'">false</LinkIncremental>
@@ -86,8 +88,14 @@
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
-  <Target Name="BuildClientRuntime" BeforeTargets="Link">
+  <!-- The ColdWar DLL links both the shared runtime and its own game runtime.
+       Build both before LINK, even when Visual Studio skips project references
+       during a single-project build. Never link against stale or absent .lib files. -->
+  <Target Name="BuildClientRuntime" BeforeTargets="Link" DependsOnTargets="ResolveProjectReferences">
+    <MSBuild Projects="$(CodRevampedRoot)build\shared\Runtime.vcxproj" Targets="Build" BuildInParallel="false" Properties="Configuration=$(Configuration);Platform=x64;SolutionDir=$(CodRevampedRoot)" />
     <MSBuild Projects="$(CodRevampedRoot)build\clients\coldwar\internal\Runtime.vcxproj" Targets="Build" BuildInParallel="false" Properties="Configuration=$(Configuration);Platform=x64;SolutionDir=$(CodRevampedRoot)" />
+    <Error Condition="!Exists('$(CodRevampedRoot)artifacts\lib\$(Configuration)\CodRevamped.Runtime.lib')" Text="Missing CodRevamped.Runtime.lib after building Shared.Runtime. Check the Shared.Runtime compile errors first." />
+    <Error Condition="!Exists('$(CodRevampedRoot)artifacts\lib\$(Configuration)\CodRevamped.ColdWar.lib')" Text="Missing CodRevamped.ColdWar.lib after building ColdWar runtime. Check the runtime compile errors first." />
   </Target>
   <ItemGroup Label="ClientSourceView">
     <None Include="$(CodRevampedRoot)src\clients\coldwar\game\T9Dvar.cpp" />

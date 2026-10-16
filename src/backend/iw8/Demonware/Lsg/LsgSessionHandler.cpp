@@ -791,7 +791,34 @@ namespace revamped::iw8
                                 demonware::TaskSemanticName(route->semantic),
                                 route->serviceName ? route->serviceName : "?",
                                 route->taskName ? route->taskName : "?");
-                            if (route->replyPolicy == demonware::ReplyPolicy::None)
+                            // The semantic stubs acknowledge these tasks but never create
+                            // a lobby or emit bdAsyncMatchMaking's event 2005.  That
+                            // leaves the frontend stuck at "Connecting to matchmaking
+                            // service", with no host document for the bot-fill gate.
+                            // Route the complete 1.20 native matchmaking lifecycle
+                            // through ReplayDW (which persists player info, binds the
+                            // token, creates a playlist-backed lobby and delivers the
+                            // async host document).  The map loader is unrelated.
+                            const bool nativeMatchmaking =
+                                taskRequest.serviceId == 145u &&
+                                (taskRequest.taskId == 2u ||
+                                 taskRequest.taskId == 3u ||
+                                 taskRequest.taskId == 18u);
+                            if (nativeMatchmaking)
+                            {
+                                if (!tryReplayDw())
+                                {
+                                    // Never silently return the old fake-success
+                                    // document: it hides the real failure and makes
+                                    // the client retry forever without a lobby.
+                                    log::Print(
+                                        "[DW-MM120-NATIVE] id=%llu task=%u bridge=FAILED "
+                                        "policy=no-fake-success action=inspect-ReplayDW-init-or-request",
+                                        static_cast<unsigned long long>(client.id),
+                                        static_cast<unsigned>(taskRequest.taskId));
+                                }
+                            }
+                            else if (route->replyPolicy == demonware::ReplyPolicy::None)
                             {
                                 if (!tryReplayDw())
                                 {

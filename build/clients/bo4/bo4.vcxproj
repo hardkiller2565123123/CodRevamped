@@ -1,7 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build" TreatAsLocalProperty="Platform">
+  <PropertyGroup><CodRevampedRoot>$(MSBuildThisFileDirectory)..\..\..\</CodRevampedRoot></PropertyGroup>
   <PropertyGroup Label="ForceBO4X64">
-    <Platform Condition="'$(Platform)'=='' Or '$(Platform)'=='Win32'">x64</Platform>
+    <Platform Condition="'$(Platform)'=='' Or '$(Platform)'=='Win32' Or '$(Platform)'=='Any CPU'">x64</Platform>
     <PreferredToolArchitecture>x64</PreferredToolArchitecture>
   </PropertyGroup>
   <ItemGroup Label="ProjectConfigurations">
@@ -46,7 +47,7 @@
   <Import Project="$(CodRevampedRoot)build\CodRevamped.Shared.props" />
   <PropertyGroup>
     <TargetName>version</TargetName>
-    <OutDir>$(CodRevampedRoot)artifacts\bin\BO4\$(Configuration)\</OutDir>
+    <OutDir>$(CodRevampedRoot)artifacts\dll\BO4\$(Configuration)\</OutDir>
     <IntDir>$(CodRevampedRoot)artifacts\obj\BO4\$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)'=='Debug'">true</LinkIncremental>
     <LinkIncremental Condition="'$(Configuration)'=='Release'">false</LinkIncremental>

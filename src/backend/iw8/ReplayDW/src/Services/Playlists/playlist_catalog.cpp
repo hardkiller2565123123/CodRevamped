@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <cmath>
 #include <charconv>
+#include <cstdio>
 #include <fstream>
 #include <iterator>
 #include <map>
@@ -178,9 +179,23 @@ namespace services
         const auto version = number(catalog.at("system").at("version"), UINT32_MAX);
         const auto &filter = query.at("ruleset_payload").at("filter");
         wire::require(filter.is_object());
-        if (number(filter.at("playlist_version"), UINT32_MAX) != version)
-            return std::nullopt;
+        const auto clientVersion = number(filter.at("playlist_version"), UINT32_MAX);
         const auto requested = number(filter.at("playlist_id"), 127);
+        // A 1.20 executable can send the publisher's native playlist version,
+        // while our offline bootstrap catalogue has revision 1.  Accept this
+        // alias ONLY for this title and our own revision-1 bootstrap; a real
+        // publisher catalog still requires an exact version match.
+        const bool localBootstrapVersionAlias =
+            title == 5800u && version == 1u && clientVersion != version;
+        if (clientVersion != version && !localBootstrapVersionAlias)
+        {
+            std::printf("[MM-CATALOG] reject=version title=%u requestedId=%u clientVersion=%u catalogVersion=%u\n",
+                title, requested, clientVersion, version);
+            return std::nullopt;
+        }
+        if (localBootstrapVersionAlias)
+            std::printf("[MM-CATALOG] local-version-alias title=%u requestedId=%u clientVersion=%u bootstrapVersion=%u\n",
+                title, requested, clientVersion, version);
         std::vector<unsigned> candidates{requested};
         if (query.contains("playlist_config"))
         {
@@ -291,11 +306,19 @@ namespace services
                               entry["weight"].get<double>() >= 0);
             }
         }
+        std::printf("[MM-CATALOG] search title=%u requestedId=%u requestedVersion=%u catalogVersion=%u candidates=%zu availableMapsPolicy=%s installedPackages=%s requiredMap=%s\n",
+            title, requested, clientVersion, version, candidates.size(),
+            policy.contains("available_maps") ? "yes" : "no",
+            installedMaps ? "yes" : "no",
+            requiredMap.empty() ? "none" : requiredMap.c_str());
         for (const auto id : candidates)
         {
             const auto found = playlists.find(id);
             if (found == playlists.end())
+            {
+                std::printf("[MM-CATALOG] reject=unknown-playlist title=%u id=%u\n", title, id);
                 continue;
+            }
             const auto &playlist = found->second;
             Json searchConfiguration = Json::object();
             if (query.contains("playlist_config"))
@@ -347,7 +370,12 @@ namespace services
                     eligible.push_back(entry);
             }
             if (eligible.empty())
+            {
+                std::printf("[MM-CATALOG] reject=no-eligible-map title=%u id=%u inspected=%zu policy=%s packages=%s\n",
+                    title, id, count, policy.contains("available_maps") ? "restricted" : "all",
+                    installedMaps ? "restricted" : "all");
                 continue;
+            }
             std::set<unsigned> teamCounts;
             std::set<unsigned> squadSizes;
             bool squadMode = false, ordinaryMode = false;
@@ -421,7 +449,8 @@ namespace services
             rules["dvar_overrides"] = dvars;
             rules["map_weights"] = weights;
             rules["filter"]["playlist_id"] = id;
-            rules["filter"]["playlist_version"] = version;
+            rules["filter"]["playlist_version"] =
+                localBootstrapVersionAlias ? clientVersion : version;
             PlaylistSelection selected;
             std::set<unsigned> capacities;
             for (const auto &entry : eligible)
@@ -456,7 +485,7 @@ namespace services
             if (!teamCounts.empty())
                 selected.teamCount = *teamCounts.begin();
             selected.metadata = {{"playlist_id", id},
-                                 {"playlist_version", version},
+                                 {"playlist_version", localBootstrapVersionAlias ? clientVersion : version},
                                  {"context", playlist.value("context", std::string{})},
                                  {"eligible_entries", eligible},
                                  {"score_limit", playlist.value("score_limit", Json())},
@@ -481,8 +510,13 @@ namespace services
             for (const auto &entry : eligible)
                 selected.metadata["game_types"][entry["gametype"].get<std::string>()] =
                     modes.at(entry["gametype"].get<std::string>());
+            std::printf("[MM-CATALOG] selected title=%u id=%u maps=%zu slots=%u nativeVersion=%u\n",
+                title, id, eligible.size(), selected.maximumMembers,
+                localBootstrapVersionAlias ? clientVersion : version);
             return selected;
         }
+        std::printf("[MM-CATALOG] search-failed title=%u requestedId=%u version=%u candidates=%zu\n",
+            title, requested, clientVersion, candidates.size());
         return std::nullopt;
     }
 } // namespace services

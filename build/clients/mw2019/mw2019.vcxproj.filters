@@ -1,6 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<?xml version='1.0' encoding='utf-8'?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <ItemGroup>
+    <Filter Include="Features\Bots"><UniqueIdentifier>{778B0E33-4E07-4B11-86BD-AC5F177B1204}</UniqueIdentifier></Filter>
     <Filter Include="Source Files">
       <UniqueIdentifier>{2AC5D5B0-A4B7-4ED7-96E3-E8F85CB90F9B}</UniqueIdentifier>
     </Filter>
@@ -12,5 +13,11 @@
     <ClCompile Include="$(CodRevampedRoot)src\clients\mw2019\MW2019FrontendFenceTracer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-</Project>
+    <ClCompile Include="$(CodRevampedRoot)src\clients\mw2019\Features\Bots\BotProfiles.cpp"><Filter>Features\Bots</Filter></ClCompile>
+  <ClCompile Include="$(CodRevampedRoot)src\clients\mw2019\Features\CustomMaps\CustomMapRuntime.cpp"><Filter>Features\CustomMaps</Filter></ClCompile></ItemGroup>
+  <ItemGroup><ResourceCompile Include="$(CodRevampedRoot)src\clients\mw2019\Features\Bots\BotNames.rc"><Filter>Features\Bots</Filter></ResourceCompile></ItemGroup>
+  <ItemGroup><ClInclude Include="$(CodRevampedRoot)src\clients\mw2019\Features\Bots\BotSystem.h"><Filter>Features\Bots</Filter></ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\mw2019\Features\Bots\BotProfiles.h"><Filter>Features\Bots</Filter></ClInclude>
+    <ClInclude Include="$(CodRevampedRoot)src\clients\mw2019\Features\Bots\BotProfilePolicy.h"><Filter>Features\Bots</Filter></ClInclude><ClInclude Include="$(CodRevampedRoot)src\clients\mw2019\Features\CustomMaps\CustomMapRuntime.h"><Filter>Features\CustomMaps</Filter></ClInclude></ItemGroup>
+<ItemGroup><Filter Include="Features\Assets"><UniqueIdentifier>{F1B19BAA-9E47-4D40-9119-1D564039ADE2}</UniqueIdentifier></Filter></ItemGroup><ItemGroup><ClInclude Include="$(CodRevampedRoot)src\clients\mw2019\Features\Assets\AssetInventory.h"><Filter>Features\Assets</Filter></ClInclude></ItemGroup><ItemGroup><Filter Include="Features\Loading"><UniqueIdentifier>{A82A9525-79B2-450E-8550-0E391F4394A1}</UniqueIdentifier></Filter></ItemGroup><ItemGroup><ClInclude Include="$(CodRevampedRoot)src\clients\mw2019\Features\Loading\HostLaunchTrace.h"><Filter>Features\Loading</Filter></ClInclude></ItemGroup>  <ItemGroup><Filter Include="Features\CustomMaps"><UniqueIdentifier>{8F073C63-D78B-4A20-8E7A-AD6C87EF6802}</UniqueIdentifier></Filter></ItemGroup><ItemGroup><ClInclude Include="$(CodRevampedRoot)src\clients\mw2019\Features\CustomMaps\CustomMapProbe.h"><Filter>Features\CustomMaps</Filter></ClInclude></ItemGroup>
+<ItemGroup><Filter Include="Features\Lua"><UniqueIdentifier>{8A36BA11-C815-43EE-A1B3-38F83A96469F}</UniqueIdentifier></Filter></ItemGroup><ItemGroup><ClCompile Include="$(CodRevampedRoot)src\clients\mw2019\Features\Lua\LuaMenuRuntime.cpp"><Filter>Features\Lua</Filter></ClCompile></ItemGroup><ItemGroup><ClInclude Include="$(CodRevampedRoot)src\clients\mw2019\Features\Lua\LuaMenuRuntime.h"><Filter>Features\Lua</Filter></ClInclude></ItemGroup></Project>

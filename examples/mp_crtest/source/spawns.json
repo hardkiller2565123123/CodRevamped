@@ -1,0 +1,30 @@
+[
+  {
+    "Type": "info_player_start",
+    "X": 0,
+    "Y": 0,
+    "Z": 96,
+    "Yaw": 0
+  },
+  {
+    "Type": "mp_tdm_spawn",
+    "X": 0,
+    "Y": 160,
+    "Z": 96,
+    "Yaw": 0
+  },
+  {
+    "Type": "mp_tdm_spawn_allies_start",
+    "X": -192,
+    "Y": 0,
+    "Z": 96,
+    "Yaw": 0
+  },
+  {
+    "Type": "mp_tdm_spawn_axis_start",
+    "X": 192,
+    "Y": 0,
+    "Z": 96,
+    "Yaw": 180
+  }
+]

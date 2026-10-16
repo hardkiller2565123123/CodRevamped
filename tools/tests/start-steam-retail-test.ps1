@@ -1,5 +1,5 @@
 [CmdletBinding()]
-param([switch]$ParserProbe)
+param([switch]$ParserProbe, [switch]$VisibleWithAudio)
 $ErrorActionPreference = 'Stop'
 $retailDir = 'D:\SteamLibrary\steamapps\common\Call of Duty Modern Warfare'
 $repoDir = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
@@ -22,7 +22,8 @@ foreach ($name in @('version.dll', 'steam_retail_parser.log', 'mw2019_redirect.l
 Copy-Item -LiteralPath $dll -Destination $retailDir
 if ((Get-FileHash $dll).Hash -ne (Get-FileHash (Join-Path $retailDir 'version.dll')).Hash) { throw 'DLL deployment mismatch' }
 $settings = @{
-    CODREVAMPED_BACKGROUND_TEST = '1'
+    CODREVAMPED_BACKGROUND_TEST = $(if ($VisibleWithAudio) { '0' } else { '1' })
+    CODREVAMPED_MW120_HIDE_WINDOW = '0'
     CODREVAMPED_RETAIL_IAT_ONLY = '1'
     CODREVAMPED_RETAIL_NO_VEH = '1'
     CODREVAMPED_RETAIL_PARSER_PROBE = $(if ($ParserProbe) { '1' } else { '0' })
@@ -35,8 +36,9 @@ try {
         $previous[$key] = [Environment]::GetEnvironmentVariable($key, 'Process')
         [Environment]::SetEnvironmentVariable($key, $settings[$key], 'Process')
     }
-    $launcher = Start-Process -FilePath (Join-Path $retailDir 'bootstrapper.exe') -WorkingDirectory $retailDir -WindowStyle Hidden -PassThru
-    Write-Output "Verified deployment; hidden bootstrap PID=$($launcher.Id); parserProbe=$ParserProbe"
+    $windowStyle = if ($VisibleWithAudio) { 'Normal' } else { 'Hidden' }
+    $launcher = Start-Process -FilePath (Join-Path $retailDir 'bootstrapper.exe') -WorkingDirectory $retailDir -WindowStyle $windowStyle -PassThru
+    Write-Output "Verified deployment; bootstrap PID=$($launcher.Id); parserProbe=$ParserProbe; visibleWithAudio=$VisibleWithAudio"
 } finally {
     foreach ($key in $previous.Keys) { [Environment]::SetEnvironmentVariable($key, $previous[$key], 'Process') }
 }
